@@ -62,10 +62,10 @@ import * as M from "./materials";
  * was plainly round; on the desk it was a mosaic of flat squares — and the desk
  * is where this object is, about 60 px across, with each tile ~18 px of which
  * the entire rounded shoulder is three. Rounding three pixels does nothing for
- * the other fifteen. What fixed it was `DOME` below, which crowns each facelet
- * so the whole tile carries a gradient, plus enough gloss for the lamp to lay a
- * specular streak along that crown. At this size the streak *is* the roundness;
- * the geometry only decides where it falls.
+ * the other fifteen. What fixed it was crowning each facelet — `PAD_CROWN`
+ * below — so the whole tile carries a gradient, plus enough gloss for the lamp
+ * to lay a specular streak along that crown. At this size the streak *is* the
+ * roundness; the geometry only decides where it falls.
  *
  * The fifth version was missing the one feature no rounded box can produce: the
  * centre facelet of a real cube is a *disc*, and the four pieces around it are
@@ -213,53 +213,6 @@ function faceColours(c: Cubie): Map<string, string> {
   return out;
 }
 
-/**
- * How far each cubie is blended toward a sphere through its face centres.
- *
- * A facelet is not flat. Every version of this cube before now assumed it was,
- * and that assumption survived four rounds of adjusting the radius because a
- * flat tile with rounded edges genuinely does look round when you magnify it —
- * the shoulder is right there, curving. It doesn't survive being looked at from
- * across a desk, which is where this object actually lives: at about 60 px the
- * whole shoulder is three pixels and the eleven pixels of tile between two
- * shoulders are a single flat colour. Eighteen pixels of unshaded colour is a
- * square, and no amount of rounding three of them fixes that.
- *
- * Real mouldings are pillowed, and the reason is manufacturing rather than
- * design — a perfectly flat face sinks as the plastic cools, so it's tooled
- * with a slight crown so it comes out flat-ish. Look at a photograph and you
- * can see it: each tile carries its own soft gradient, brightest where it faces
- * the light, and that gradient is what says "moulded" at any size at all.
- */
-const DOME = 0.2;
-
-/**
- * Bulge each face outward, by blending every vertex toward the sphere that
- * passes through the face centres.
- *
- * The centre of a face already sits at that radius so it doesn't move; the
- * further out toward an edge a vertex is, the further it has to come in, which
- * leaves the face crowned. Normals are recomputed afterwards — they're the
- * whole point, since they're what both the shading and the vertex colouring
- * below read.
- */
-function dome(geo: BufferGeometry) {
-  const half = CUBE.cubie / 2;
-  const position = geo.attributes.position;
-  const v = new Vector3();
-  const onSphere = new Vector3();
-
-  for (let i = 0; i < position.count; i++) {
-    v.fromBufferAttribute(position, i);
-    onSphere.copy(v).normalize().multiplyScalar(half);
-    v.lerp(onSphere, DOME);
-    position.setXYZ(i, v.x, v.y, v.z);
-  }
-
-  position.needsUpdate = true;
-  geo.computeVertexNormals();
-}
-
 function smoothstep(edge0: number, edge1: number, x: number): number {
   const t = Math.min(1, Math.max(0, (x - edge0) / (edge1 - edge0)));
   return t * t * (3 - 2 * t);
@@ -285,18 +238,31 @@ const SHADOW = 0.46;
  * The pads
  * ---------------------------------------------------------------------------
  *
- * A facelet is a separate moulded pad sitting proud of the piece it's part of,
- * and its outline is not a square. The centre one is a disc; the four around it
- * are cut back to an arc that follows the disc. The version before this drew
- * that as a texture, which is a picture of the right thing on the wrong shape —
- * a circle painted on a square tile reads as a decal, because the silhouette,
- * the rim highlight and the shadow in the seam all still belong to the square.
- * None of those come from paint. They come from an outline, so the pads are
- * built as geometry with the outline they actually have.
+ * A facelet is a moulded pad, and its outline is not a square. The centre one is
+ * a disc; the four around it are cut back to an arc that follows the disc. The
+ * version before this drew that as a texture, which is a picture of the right
+ * thing on the wrong shape — a circle painted on a square tile reads as a decal,
+ * because the silhouette, the rim highlight and the shadow in the seam all still
+ * belong to the square. None of those come from paint. They come from an
+ * outline, so the pads are built as geometry with the outline they actually
+ * have.
+ *
+ * The first attempt at that built them as flat lozenges standing on top of the
+ * piece, and it was worse than the texture. A piece is a *rounded* box: its flat
+ * top is only 14 mm of an 18.6 mm face, so a pad wide enough to nearly fill the
+ * cell hangs its whole rim out over the shoulder, floating, with shadow under
+ * it. Twenty-six rounded blocks with fifty-four buttons stuck to them.
+ *
+ * So a pad isn't *on* the piece's face, it *is* the piece's face. Its rim sits
+ * exactly on the surface the piece already has — `bodyHeight` below is that
+ * surface, solved rather than guessed — and it lifts from there by a fraction of
+ * a millimetre before crowning. Near the edge of a cell it therefore wraps down
+ * over the shoulder the way the colour did two versions ago, which was the one
+ * thing that version had right.
  */
 
 /** Gap between a pad and the edge of the piece it's moulded into. */
-const SEAM = 0.0005;
+const SEAM = 0.00035;
 const PAD_HALF = CUBE.cubie / 2 - SEAM;
 /**
  * Superellipse exponent for the pads that aren't round.
@@ -319,16 +285,39 @@ const DISC_R = 0.0089;
  * part of. Small, and it's the difference between four square tiles around a
  * circle and four tiles that were made for it.
  */
-const ARC_R = 0.0107;
-/** How far a pad stands proud of the piece under it. */
-const PAD_RISE = 0.0004;
+const ARC_R = 0.0104;
+/** How far a pad's rim stands proud of the piece's own surface. */
+const PAD_LIP = 0.00018;
 /** And how much higher its middle is than its rim. */
-const PAD_CROWN = 0.0009;
-/** Rings across a pad, and points around its outline. */
-const PAD_RINGS = 5;
-const PAD_STEPS = 44;
+const PAD_CROWN = 0.0008;
+/**
+ * Rings across a pad, and points around its outline.
+ *
+ * The rings bunch toward the rim rather than spacing evenly, which is where
+ * they're needed: the outer quarter of a pad's radius is where it turns down
+ * over the piece's shoulder, and an evenly spaced set puts one ring across all
+ * of that and eight across the nearly flat middle.
+ */
+const PAD_RINGS = 9;
+const PAD_RING_BIAS = 1.7;
+const PAD_STEPS = 40;
 /** How dark the piece is where it shows around and between the pads. */
 const BODY_DIM = 0.62;
+
+/**
+ * The height of a piece's own surface at a point on its face.
+ *
+ * A rounded box, solved rather than sampled: flat across the middle, then a
+ * quarter-round of `bevel` toward each edge. The pads need it because their rims
+ * have to land *on* this and not above it — the difference between a facelet and
+ * a button is about a millimetre of daylight.
+ */
+function bodyHeight(u: number, v: number): number {
+  const flat = CUBE.cubie / 2 - CUBE.bevel;
+  const du = Math.max(0, Math.abs(u) - flat);
+  const dv = Math.max(0, Math.abs(v) - flat);
+  return flat + Math.sqrt(Math.max(0, CUBE.bevel ** 2 - du * du - dv * dv));
+}
 
 /**
  * The outline of one pad, in the plane of the face it sits on.
@@ -400,14 +389,33 @@ function padGeometry(
   rim: Color,
 ): BufferGeometry {
   const outline = padOutline(centre, cu, cv);
-  const base = CUBE.cubie / 2;
 
-  /** Rings from the skirt's foot up and in to the crown. */
-  const rings: number[][][] = [outline.map(([u, v]) => [u, v, 0])];
-  for (let i = 0; i <= PAD_RINGS; i++) {
-    const out = 1 - i / PAD_RINGS;
-    const height = PAD_RISE + PAD_CROWN * Math.sqrt(Math.max(0, 1 - out * out));
-    rings.push(outline.map(([u, v]) => [u * out, v * out, height]));
+  /*
+   * Rings, from the foot of the rim up and in to the crown.
+   *
+   * Every height is measured from the piece's own surface rather than from a
+   * plane, so the pad follows the shoulder instead of hanging over it. The foot
+   * ring sits exactly on that surface and the next one is a lip above it, which
+   * is the whole of the step you see around a facelet.
+   */
+  const rings: number[][][] = [
+    outline.map(([u, v]) => [u, v, bodyHeight(u, v)]),
+  ];
+  for (let i = 0; i < PAD_RINGS; i++) {
+    const out = 1 - (i / PAD_RINGS) ** PAD_RING_BIAS;
+    rings.push(
+      outline.map(([u, v]) => {
+        const su = u * out;
+        const sv = v * out;
+        return [
+          su,
+          sv,
+          bodyHeight(su, sv) +
+            PAD_LIP +
+            PAD_CROWN * Math.sqrt(Math.max(0, 1 - out * out)),
+        ];
+      }),
+    );
   }
 
   const positions: number[] = [];
@@ -419,7 +427,7 @@ function padGeometry(
     const xyz = [0, 0, 0];
     xyz[across] = p[0];
     xyz[down] = p[1];
-    xyz[axis] = sign * (base + p[2]);
+    xyz[axis] = sign * p[2];
     return xyz;
   };
 
@@ -468,7 +476,7 @@ function padGeometry(
 
   // Cap the middle, which the innermost ring has scaled almost to a point.
   const top = rings[rings.length - 1];
-  const peak = [0, 0, PAD_RISE + PAD_CROWN];
+  const peak = [0, 0, CUBE.cubie / 2 + PAD_LIP + PAD_CROWN];
   for (let i = 0; i < PAD_STEPS; i++) {
     const j = (i + 1) % PAD_STEPS;
     tri(top[i], top[j], peak, colour, colour);
@@ -527,7 +535,14 @@ function buildCube(): BufferGeometry {
       CUBE.bevel,
     );
 
-    dome(geo);
+    /*
+     * Left as the rounded box it is, with no crown of its own.
+     *
+     * The crown moved to the pads, and it has to be only there: `bodyHeight`
+     * solves this exact shape to land each pad's rim on it, so bulging the box
+     * after the fact would put the surface somewhere the pads don't know about
+     * and float every one of them again.
+     */
 
     const normals = geo.attributes.normal;
     const colours = new Float32Array(normals.count * 3);
