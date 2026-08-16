@@ -16,8 +16,13 @@ export interface Daylight {
   level: number;
   /** Warmth of the window light. Dawn and dusk are gold, midday is blue-white. */
   windowColor: string;
-  /** How hard the window pushes. */
+  /** Local glow around the opening itself. */
   windowIntensity: number;
+  /** Direct sun, which is what actually casts the window patch. */
+  sunColor: string;
+  sunIntensity: number;
+  /** Soft shadowless daylight arriving from the window's side of the room. */
+  skyIntensity: number;
   /** The lamp comes up as the window falls away. */
   lampIntensity: number;
   /** Ambient bounce colour — cool by day, warm at night from the lamp. */
@@ -82,12 +87,46 @@ export function daylight(now: Date = new Date()): Daylight {
     windowColor,
     // Never fully zero: a city window at night still carries some skyglow, and
     // a pure-black window reads as a hole in the wall rather than as glass.
-    windowIntensity: 0.06 + level * 2.4,
+    windowIntensity: 0.1 + level * 2.4,
+    /*
+     * Direct sun.
+     *
+     * Separate from the sky fill above because they do completely different
+     * jobs: this one is shadow-casting and has to punch through a 90 cm opening
+     * hard enough to lay a bright, clearly-edged patch on the floor, while the
+     * fill is a shadowless wash that stops the far side of everything going
+     * black. Running one light for both is what made midday look like fog.
+     *
+     * The exponent front-loads it, so the sun arrives shortly after dawn rather
+     * than easing in over four hours the way a linear ramp would.
+     */
+    sunColor: mixHex(GOLDEN, "#fff2df", midday),
+    sunIntensity: Math.pow(level, 0.75) * 3.4,
+    /*
+     * Sky.
+     *
+     * Physically this is daylight passing straight through a solid wall, which
+     * is wrong and is exactly what makes it useful: it's directional, so it
+     * still models everything it touches, but it's shadowless, so it lifts the
+     * whole room the way a large bright opening actually does. The alternative
+     * — cranking the ambient until midday is bright enough — is what produced
+     * the flat grey noon this replaced.
+     */
+    skyIntensity: level * 1.75,
     // The lamp fades in as daylight goes, and stays on a little into the
     // morning the way a real one does before anyone thinks to switch it off.
     lampIntensity: 0.5 + (1 - level) * 3.2,
     bounceColor: mixHex("#3a2c22", "#9fb6d6", level),
-    bounceIntensity: 0.05 + level * 0.38,
+    /*
+     * Bounce, feeding a hemisphere light rather than a flat ambient.
+     *
+     * Much lower than it used to be. Ambient is the one term that adds value to
+     * every surface no matter which way it faces, so it is also the fastest way
+     * to destroy a render — the old 0.43 at noon was lifting the shadows until
+     * nothing in the frame had any shape left. Contrast has to come from the sun
+     * and the lamp; this only stops the unlit side going to pure black.
+     */
+    bounceIntensity: 0.07 + level * 0.34,
     label: formatIst(now),
     night,
   };

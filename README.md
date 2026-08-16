@@ -35,9 +35,26 @@ The flat page is not a degradation. It carries the same content, renders on the
 server, and is what a recruiter skimming on a train actually wants. Building it
 properly is what lets the 3D be uncompromising, since nobody is stuck with it.
 
-**The room runs on Gurugram time.** Real IST drives the window, the desk lamp
-and the bounce, so the balance inverts across the day rather than the scene
-being permanently "night".
+**The room runs on Gurugram time.** Real IST drives the sun, the window, the
+desk lamp and the bounce, so the balance inverts across the day rather than the
+scene being permanently "night". The wall is built as four slabs around a real
+opening, so the sun passes through it and lays a window-shaped patch across the
+desk — a bright rectangle painted on the wall gives you the light source with
+none of the evidence.
+
+**The camera doesn't follow the pointer.** It's the obvious thing to do with a
+first-person scene and it's wrong here: the screens are real text, and text that
+shears every time the mouse moves is text nobody reads. The rest pose is a fixed
+composed frame with about three millimetres of drift, and leaning in is what
+focus is for.
+
+**The right monitor is a whole music client** — sidebar, library, track list,
+transport bar — rather than a card about music, because the premise is that
+you're looking at an actual screen and nobody's actual screen shows a bespoke
+summary widget. The library, the history and the position are all real.
+
+Design rules for everything rendered as DOM live in
+[`docs/ui-detailing.md`](docs/ui-detailing.md).
 
 **Work commits are redacted at the source.** Private-repo activity is processed
 inside a scheduled GitHub Action and committed as static JSON, so the token that
@@ -119,3 +136,17 @@ photographing empty space when the layout changes.
 - **R3F sizes its canvas container with `height: 100%`.** Against a parent with
   only `min-height` that resolves to zero and the canvas silently renders ~150px
   tall, with no error anywhere.
+- **`RoundedBox` caps its radius at half the *smallest* dimension.** On a 4 mm
+  desk mat that's 2 mm, so the corners stay square however much you ask for.
+  `roundedPlate` in `scene/geometry.ts` extrudes a rounded outline instead,
+  which rounds the axis that actually shows.
+- **A partial `torusGeometry` always starts its arc at +X and sweeps toward +Y**,
+  and it takes no `thetaStart`. So a half torus is the *top* half — a mug handle
+  built from one has to be rolled a quarter turn, or it lies flat against the
+  cup like a saucer welded to the side.
+- **Correctly-scaled details disappear.** A real glazing bar is 24 mm and
+  renders under two pixels wide from the seat; the window frame is deliberately
+  oversized. Same for the mouse's panel gaps, which were modelled as thin boxes
+  and stood proud of the curved shell as floating black rectangles — they're
+  drawn into the shell's texture now, where a seam is a straight line in UV
+  space no matter how curved it is in world space.

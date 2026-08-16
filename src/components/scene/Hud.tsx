@@ -65,7 +65,7 @@ export function Hud() {
       <button
         type="button"
         onClick={() => setForceFlat(true)}
-        className="sr-only z-50 focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:rounded-sm focus:bg-accent focus:px-4 focus:py-2 focus:font-mono focus:text-[13px] focus:text-graphite"
+        className="sr-only z-50 focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:rounded-full focus:bg-accent focus:px-5 focus:py-2.5 focus:font-mono focus:text-[13px] focus:text-graphite"
       >
         Skip the room, read this as a page
       </button>
@@ -84,7 +84,7 @@ export function Hud() {
             key={id}
             type="button"
             onClick={() => focusScreen(id)}
-            className="sr-only focus:not-sr-only focus:rounded-sm focus:bg-screen-raised focus:px-4 focus:py-2 focus:font-mono focus:text-[13px] focus:text-ink"
+            className="sr-only focus:not-sr-only focus:rounded-full focus:bg-screen-raised focus:px-5 focus:py-2.5 focus:font-mono focus:text-[13px] focus:text-ink"
           >
             {label}
           </button>
@@ -114,7 +114,7 @@ export function Hud() {
         <button
           type="button"
           onClick={() => setForceFlat(true)}
-          className="pointer-events-auto shrink-0 rounded-sm border border-screen-line px-3 py-1.5 font-mono text-[11px] uppercase tracking-wider text-ink-faint transition-colors hover:border-accent hover:text-ink focus-visible:border-accent focus-visible:text-ink focus-visible:outline-none"
+          className="pointer-events-auto shrink-0 rounded-full bg-screen-raised/80 px-4 py-2 font-mono text-[11px] uppercase tracking-wider text-ink-dim backdrop-blur-sm transition-colors duration-150 hover:bg-screen-hi hover:text-ink focus-visible:bg-screen-hi focus-visible:text-ink focus-visible:outline-none"
         >
           Read as a page
         </button>
@@ -129,7 +129,7 @@ export function Hud() {
         <button
           type="button"
           onClick={clearFocus}
-          className="fixed left-1/2 top-4 z-50 -translate-x-1/2 -translate-y-24 rounded-sm bg-screen-raised px-4 py-2 font-mono text-[12px] text-ink transition-transform focus-visible:translate-y-0 focus-visible:outline-none"
+          className="fixed left-1/2 top-4 z-50 -translate-x-1/2 -translate-y-24 rounded-full bg-screen-raised px-5 py-2.5 font-mono text-[12px] text-ink transition-transform focus-visible:translate-y-0 focus-visible:outline-none"
         >
           Lean back
         </button>

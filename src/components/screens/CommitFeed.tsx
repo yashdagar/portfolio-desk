@@ -11,6 +11,12 @@ import { groupCommits, relativeTime, useActivity } from "@/lib/useActivity";
  * message never left the Action that collected it. The contrast between a run
  * of readable lines and a run of bare labels is the most honest way to say
  * "there is more here than I can show you".
+ *
+ * This is the one screen where the rounding pass had to be careful. Turning
+ * every row into a card would waste half the panel, and density is the point
+ * here — a hundred and twenty lines is the argument. So the softening happens
+ * at the edges instead: the header stats become badges, the repo names become
+ * chips, and the rows only take a shape when you're pointing at one.
  */
 
 const KIND_COLOR: Record<CommitKind, string> = {
@@ -27,6 +33,25 @@ const KIND_COLOR: Record<CommitKind, string> = {
   other: "text-ink-faint",
 };
 
+/** A filled capsule. The unit of the whole design. */
+function Badge({
+  children,
+  tone = "dim",
+}: {
+  children: React.ReactNode;
+  tone?: "dim" | "accent";
+}) {
+  return (
+    <span
+      className={`rounded-full bg-screen-raised px-2.5 py-[3px] font-mono text-[12px] tabular-nums ${
+        tone === "accent" ? "text-accent" : "text-ink-dim"
+      }`}
+    >
+      {children}
+    </span>
+  );
+}
+
 /**
  * Only rendered for work commits.
  *
@@ -38,7 +63,7 @@ const KIND_COLOR: Record<CommitKind, string> = {
 function KindTag({ kind }: { kind: CommitKind }) {
   return (
     <span
-      className={`w-[52px] shrink-0 font-mono text-[13px] tabular-nums ${KIND_COLOR[kind]}`}
+      className={`w-[54px] shrink-0 rounded-chip bg-screen-raised px-1.5 py-[1px] text-center font-mono text-[12px] ${KIND_COLOR[kind]}`}
     >
       {kind}
     </span>
@@ -47,16 +72,20 @@ function KindTag({ kind }: { kind: CommitKind }) {
 
 function WorkRow({ commit }: { commit: Commit }) {
   return (
-    <li className="flex items-baseline gap-3 py-[3px] pl-3">
+    <li className="flex items-center gap-3 rounded-row px-2 py-[4px]">
       <KindTag kind={commit.kind} />
       {/*
-        A run of blocks rather than the real message. Fixed-width and identical
-        for every commit — a length-proportional redaction would leak how long
-        the subject was.
+        A capsule rather than the real message. Fixed width and identical for
+        every commit — a length-proportional redaction would leak how long the
+        subject was.
+
+        Fully rounded on purpose: a sharp-cornered bar reads as a loading
+        skeleton, which tells exactly the wrong story. A capsule reads as
+        something deliberately withheld.
       */}
       <span
         aria-label="redacted"
-        className="h-[9px] flex-1 rounded-[1px] bg-redact"
+        className="h-[10px] flex-1 rounded-full bg-redact"
       />
       <span className="shrink-0 font-mono text-[12px] text-ink-faint tabular-nums">
         {relativeTime(commit.at)}
@@ -82,17 +111,25 @@ function OwnRow({ commit }: { commit: Commit }) {
           href={commit.url}
           target="_blank"
           rel="noreferrer"
-          className="flex items-baseline gap-3 rounded-sm py-[3px] pl-3 transition-colors hover:bg-screen-raised focus-visible:bg-screen-raised focus-visible:outline-none"
+          className="flex items-baseline gap-3 rounded-row px-2 py-[4px] transition-colors duration-150 hover:bg-screen-hi focus-visible:bg-screen-hi focus-visible:outline-none"
         >
           {body}
         </a>
       ) : (
-        <div className="flex items-baseline gap-3 py-[3px] pl-3">{body}</div>
+        <div className="flex items-baseline gap-3 px-2 py-[4px]">{body}</div>
       )}
     </li>
   );
 }
 
+/**
+ * A repo heading.
+ *
+ * The chip replaces what used to be a chip-less label sitting on a hairline
+ * rule. Both were separating the same two things, and the rule was the weaker
+ * of the two — a filled shape reads as a section marker from across the room,
+ * where a one-pixel line disappears at anything past arm's length.
+ */
 function GroupHeading({
   day,
   repo,
@@ -110,8 +147,10 @@ function GroupHeading({
       : (repo?.replace(/^yashdagar\//, "") ?? "—");
 
   return (
-    <div className="mt-4 flex items-baseline gap-2 border-b border-screen-line pb-1 first:mt-0">
-      <span className="font-mono text-[13px] text-accent">{label}</span>
+    <div className="mt-4 flex items-center gap-2 px-2 pb-1.5 first:mt-0">
+      <span className="rounded-chip bg-accent/12 px-2 py-[2px] font-mono text-[13px] text-accent">
+        {label}
+      </span>
       {visibility === "personal" && (
         <span className="font-mono text-[11px] text-ink-faint">private</span>
       )}
@@ -133,7 +172,7 @@ export function CommitFeed({ initial }: { initial?: ActivityFeed | null }) {
   if (failed) {
     return (
       <Shell>
-        <p className="text-ink-dim">
+        <p className="rounded-card bg-screen-raised p-4 text-ink-dim">
           Couldn&apos;t reach the feed. It refreshes from a scheduled job — try
           again shortly.
         </p>
@@ -154,15 +193,11 @@ export function CommitFeed({ initial }: { initial?: ActivityFeed | null }) {
 
   return (
     <Shell>
-      <header className="mb-4 flex items-baseline gap-4 border-b border-screen-line pb-3">
-        <h2 className="font-mono text-[15px] text-ink">commits</h2>
-        <span className="font-mono text-[13px] text-ink-dim tabular-nums">
-          {feed.totals.year} this year
-        </span>
+      <header className="mb-3 flex flex-wrap items-center gap-2 px-2">
+        <h2 className="mr-1 font-mono text-[15px] text-ink">commits</h2>
+        <Badge>{feed.totals.year} this year</Badge>
         {feed.totals.streak > 0 && (
-          <span className="font-mono text-[13px] text-accent tabular-nums">
-            {feed.totals.streak}d streak
-          </span>
+          <Badge tone="accent">{feed.totals.streak}d streak</Badge>
         )}
         <span className="ml-auto font-mono text-[12px] text-ink-faint">
           updated {relativeTime(feed.generatedAt)}
@@ -178,7 +213,7 @@ export function CommitFeed({ initial }: { initial?: ActivityFeed | null }) {
               visibility={group.visibility}
               count={group.commits.length}
             />
-            <ul className="mt-1">
+            <ul>
               {group.commits.map((commit) =>
                 commit.visibility === "work" ? (
                   <WorkRow key={commit.id} commit={commit} />
@@ -192,7 +227,7 @@ export function CommitFeed({ initial }: { initial?: ActivityFeed | null }) {
       </ol>
 
       {workCount > 0 && (
-        <footer className="mt-3 border-t border-screen-line pt-2 font-mono text-[12px] text-ink-faint">
+        <footer className="mt-3 rounded-card bg-screen-raised px-4 py-2.5 font-mono text-[12px] leading-relaxed text-ink-faint">
           {workCount} commits to private work repos are shown as type labels
           only. The messages never leave the job that collects them.
         </footer>
@@ -203,7 +238,12 @@ export function CommitFeed({ initial }: { initial?: ActivityFeed | null }) {
 
 function Shell({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex h-full w-full flex-col bg-screen px-5 py-4 font-sans text-[14px] leading-relaxed text-ink-dim">
+    /*
+      A very slight lift toward the top of the panel. A 16:9 field of perfectly
+      even near-black is the one thing a real monitor never shows, and the
+      gradient costs nothing.
+    */
+    <div className="flex h-full w-full flex-col bg-screen bg-[radial-gradient(120%_80%_at_50%_0%,#151a1e_0%,transparent_70%)] px-4 py-4 font-sans text-[14px] leading-relaxed text-ink-dim">
       {children}
     </div>
   );

@@ -16,7 +16,7 @@ import { ACESFilmicToneMapping, Object3D } from "three";
 import type { ActivityFeed } from "@/lib/activity";
 import { isPinned, sceneNow } from "@/lib/clock";
 import { daylight, type Daylight } from "@/lib/daylight";
-import { CAMERA, DESK, LAMP, SCREENS, WALL, WINDOW } from "@/lib/layout";
+import { CAMERA, DESK, LAMP_EMITTER, SCREENS, WALL, WINDOW } from "@/lib/layout";
 
 import { CameraRig } from "./CameraRig";
 import { HeroCamera } from "./HeroCamera";
@@ -35,42 +35,111 @@ function Lighting({ day }: { day: Daylight }) {
   /*
    * The lamp aims at the desk.
    *
-   * A point light ignores the shade it sits inside and throws a huge even disc
-   * onto the wall behind — which is what a bare bulb does, not a desk lamp. A
-   * spot pointed down puts the light where the shade is pointing, and the wall
-   * only catches the spill it should.
+   * A spot rather than a point light, because the emitter is a strip on the
+   * underside of a bar and it throws downward. A point light there would put an
+   * even disc on the wall behind, which is what a bare bulb does.
    *
    * The target is a real Object3D in the scene because three resolves a spot's
    * direction from `target.matrixWorld`, and a target that was never added to
    * the scene silently leaves the light aimed at the origin.
    */
   const [lampTarget] = useState(() => new Object3D());
+  const [sunTarget] = useState(() => new Object3D());
 
   return (
     <>
-      <ambientLight intensity={day.bounceIntensity} color={day.bounceColor} />
+      {/*
+        Bounce.
 
-      <primitive object={lampTarget} position={[0.16, DESK.surfaceY, 0.02]} />
-      <spotLight
-        position={LAMP.bulb}
-        target={lampTarget}
-        intensity={day.lampIntensity * 2.6}
-        angle={0.92}
-        penumbra={0.75}
-        distance={3.4}
-        decay={2}
-        color="#ffb15e"
-        castShadow
-        shadow-mapSize={[2048, 2048]}
-        shadow-bias={-0.002}
-        shadow-normalBias={0.05}
-        shadow-camera-near={0.12}
+        A hemisphere rather than a flat ambient. Flat ambient adds the same value
+        to every surface regardless of which way it faces, which is exactly how
+        you flatten a render — at noon the old one was contributing 0.43 to the
+        ceiling-facing desk and the camera-facing monitor backs alike, and the
+        whole room went grey and shapeless. A hemisphere at least distinguishes
+        up from down, so the floor stays dark and the desk surface lifts.
+      */}
+      <hemisphereLight
+        args={[day.bounceColor, "#241d18", day.bounceIntensity]}
       />
 
-      {/* Fill: daylight through the window, arriving from its actual position. */}
+      <primitive object={lampTarget} position={[0.1, DESK.surfaceY, 0.06]} />
+      <spotLight
+        position={LAMP_EMITTER}
+        target={lampTarget}
+        intensity={day.lampIntensity * 3.1}
+        /*
+          Wide and very soft. The old cone was 0.92 rad at penumbra 0.75, which
+          put a visible hard-edged ellipse across the desk and a diagonal cut
+          line through the middle of the frame — the single most artificial
+          thing in the render. A bar-shaped emitter doesn't have a cone edge at
+          all, so the falloff has to be entirely gradient.
+        */
+        angle={1.15}
+        penumbra={1}
+        distance={3.6}
+        decay={2}
+        color="#ffb877"
+        castShadow
+        shadow-mapSize={[2048, 2048]}
+        shadow-bias={-0.0015}
+        shadow-normalBias={0.04}
+        shadow-camera-near={0.15}
+      />
+
+      {/*
+        The sun, through the window.
+
+        Shadow-casting, and the wall is a solid slab with a hole in it, so the
+        only daylight that reaches the desk is the daylight that came through
+        the opening. That's what puts a bright window-shaped patch on the floor
+        and along the right-hand end of the desk, and it's the difference
+        between a room lit by daylight and a room with the daylight parameter
+        turned up.
+      */}
+      <primitive object={sunTarget} position={[-0.15, 0.55, 0.15]} />
       <directionalLight
-        position={[WINDOW.x - 1.2, WINDOW.y + 0.5, WALL.z + 2.2]}
+        position={[WINDOW.x + 1.9, WINDOW.y + 1.35, WALL.z - 2.1]}
+        target={sunTarget}
+        intensity={day.sunIntensity}
+        color={day.sunColor}
+        castShadow
+        shadow-mapSize={[2048, 2048]}
+        shadow-bias={-0.0012}
+        shadow-normalBias={0.03}
+        shadow-camera-near={0.5}
+        shadow-camera-far={12}
+        shadow-camera-left={-2.6}
+        shadow-camera-right={2.6}
+        shadow-camera-top={2.6}
+        shadow-camera-bottom={-2.6}
+      />
+
+      {/*
+        Sky fill, shadowless, from the window's side of the room.
+
+        The sun gives direction and a hard-edged patch; this is the broad soft
+        daylight a 90 cm opening actually throws, and it's what makes midday
+        read as midday. Aimed from slightly above and well to the right so it
+        still models everything it touches rather than washing it.
+      */}
+      <directionalLight
+        position={[WINDOW.x + 1.4, WINDOW.y + 0.9, WALL.z + 1.4]}
+        intensity={day.skyIntensity}
+        color={day.windowColor}
+      />
+
+      {/*
+        The opening's own glow, tight around the sill.
+
+        Short range on purpose: its job is the bright falloff down the reveal
+        and across the near end of the desk, not to light the room. That's the
+        directional above.
+      */}
+      <pointLight
+        position={[WINDOW.x - 0.12, WINDOW.y - 0.12, WALL.z + 0.2]}
         intensity={day.windowIntensity}
+        distance={2.4}
+        decay={1.9}
         color={day.windowColor}
       />
 
@@ -78,15 +147,20 @@ function Lighting({ day }: { day: Daylight }) {
         Practical: screen spill, one per monitor, placed behind the panel.
         In front they paint a blown-out hotspot on the very surface they're
         meant to be emitted by, which is an artefact no real monitor has.
+
+        Weak on purpose. At the old 0.42 the three of them sprayed cyan across
+        the desk and up the wall and every warm surface in the room went green;
+        their job is a rim on the monitor backs and the near edge of the desk,
+        not to light the scene.
       */}
       {SCREENS.map((s) => (
         <pointLight
           key={s.id}
-          position={[s.position[0] * 0.8, s.position[1] - 0.1, s.position[2] - 0.1]}
-          intensity={0.42}
-          distance={1.1}
+          position={[s.position[0] * 0.85, s.position[1] - 0.06, s.position[2] - 0.09]}
+          intensity={0.2}
+          distance={0.85}
           decay={2}
-          color="#6fc9d8"
+          color="#8fd4dd"
         />
       ))}
     </>
@@ -105,21 +179,23 @@ function Lighting({ day }: { day: Daylight }) {
 function Reflections({ day }: { day: Daylight }) {
   return (
     <Environment resolution={128} frames={1}>
+      {/* The window, on the right, where the bright side of the room now is. */}
       <Lightformer
         form="rect"
-        intensity={0.18 + day.level * 1.5}
+        intensity={0.18 + day.level * 1.6}
         color={day.windowColor}
-        position={[-2.4, 1.5, 0.4]}
-        rotation={[0, Math.PI / 2, 0]}
-        scale={[1.6, 2, 1]}
+        position={[2.6, 1.5, 0.2]}
+        rotation={[0, -Math.PI / 2, 0]}
+        scale={[1.6, 2.2, 1]}
       />
+      {/* The lamp bar, on the left. */}
       <Lightformer
         form="rect"
-        intensity={day.lampIntensity * 0.28}
+        intensity={day.lampIntensity * 0.3}
         color="#ffbe7a"
-        position={[1.4, 1.6, 0.2]}
-        rotation={[0, -Math.PI / 2, 0]}
-        scale={[0.8, 0.8, 1]}
+        position={[-1.5, 1.55, 0.1]}
+        rotation={[0, Math.PI / 2, 0]}
+        scale={[0.9, 0.5, 1]}
       />
       {/* The monitors themselves, as a wide soft source in front of the desk. */}
       <Lightformer
@@ -176,10 +252,17 @@ export function Scene({
       gl={{
         antialias: true,
         toneMapping: ACESFilmicToneMapping,
-        // Under 1 on purpose. ACES already rolls off the highlights, and at
-        // exposure 1 the daylit wall clips to near-white and the whole room
-        // flattens. Pulling it down is what buys back the shadows.
-        toneMappingExposure: 0.78,
+        /*
+          Under 1 on purpose. ACES already rolls off the highlights, and at
+          exposure 1 the daylit wall clips to near-white and the whole room
+          flattens.
+
+          Raised from 0.78 once the flat ambient came out. The old value was
+          compensating for a scene that was being lifted everywhere at once —
+          with contrast coming from the sun and the lamp instead, pulling the
+          exposure that far down just crushed the room.
+        */
+        toneMappingExposure: 0.92,
       }}
       camera={{ position: CAMERA.eye, fov: CAMERA.fov, near: 0.05, far: 30 }}
     >

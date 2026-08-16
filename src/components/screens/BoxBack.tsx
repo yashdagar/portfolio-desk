@@ -15,7 +15,12 @@ export function BoxBack({ id }: { id: BoxId }) {
   const box = BOXES[id];
 
   return (
-    <div className="flex h-full w-full flex-col bg-[#efe7d8] px-9 py-8 font-sans text-[#2c2620]">
+    /*
+      Rounded at panel scale, so the print reads as a card laid on the box
+      rather than as the box's own face. Warm paper, not screen — this is
+      printed matter and it plays by different rules than the monitors do.
+    */
+    <div className="flex h-full w-full flex-col rounded-panel bg-[#efe7d8] px-9 py-8 font-sans text-[#2c2620]">
       <header className="flex items-end justify-between border-b-2 border-[#2c2620] pb-3">
         <div>
           <h2 className="font-mono text-[38px] font-bold leading-none tracking-[0.18em]">
@@ -68,7 +73,9 @@ export function BoxBack({ id }: { id: BoxId }) {
             href={box.playHref}
             target="_blank"
             rel="noreferrer"
-            className="inline-flex items-center gap-2 rounded-sm bg-[#2c2620] px-5 py-2 font-mono text-[13px] uppercase tracking-wider text-[#efe7d8] transition-colors hover:bg-[#4a3f34] focus-visible:bg-[#4a3f34] focus-visible:outline-none"
+            // A pill, because that's what makes a call to action on a box back
+            // read as one rather than as a caption in a dark rectangle.
+            className="inline-flex items-center gap-2 rounded-full bg-[#2c2620] px-6 py-2.5 font-mono text-[13px] uppercase tracking-wider text-[#efe7d8] transition-colors duration-150 hover:bg-[#4a3f34] focus-visible:bg-[#4a3f34] focus-visible:outline-none"
           >
             <span aria-hidden>▶</span> Play
           </a>
@@ -78,7 +85,7 @@ export function BoxBack({ id }: { id: BoxId }) {
             href={box.repoHref}
             target="_blank"
             rel="noreferrer"
-            className="font-mono text-[13px] uppercase tracking-wider text-[#6a5f52] underline underline-offset-4 hover:text-[#2c2620] focus-visible:text-[#2c2620] focus-visible:outline-none"
+            className="rounded-full border border-[#2c262033] px-5 py-2.5 font-mono text-[13px] uppercase tracking-wider text-[#6a5f52] transition-colors duration-150 hover:border-[#2c2620] hover:text-[#2c2620] focus-visible:border-[#2c2620] focus-visible:text-[#2c2620] focus-visible:outline-none"
           >
             Source
           </a>

@@ -19,7 +19,22 @@
   /* Screen surfaces — these are emissive, so they read brighter than the room */
   --screen: #0e1113;
   --screen-raised: #161a1d;
+  /* Level 2: the fill something takes when it's hovered, focused or current. */
+  --screen-hi: #1e252a;
   --screen-line: #232a2e;
+
+  /*
+    Radius scale. See docs/ui-detailing.md.
+
+    Five steps and nothing off-scale, because radius is the loudest single
+    signal in this design and picking it per component is how a UI ends up
+    looking assembled rather than designed. The rule that holds it together:
+    a child's radius is one step below its parent's, never equal.
+  */
+  --r-chip: 6px;
+  --r-row: 10px;
+  --r-card: 16px;
+  --r-panel: 22px;
   --ink: #e6e9ea;
   --ink-dim: #8b9499;
   --ink-faint: #5a6367;
@@ -40,7 +55,13 @@
   --color-wall: var(--wall);
   --color-screen: var(--screen);
   --color-screen-raised: var(--screen-raised);
+  --color-screen-hi: var(--screen-hi);
   --color-screen-line: var(--screen-line);
+
+  --radius-chip: var(--r-chip);
+  --radius-row: var(--r-row);
+  --radius-card: var(--r-card);
+  --radius-panel: var(--r-panel);
   --color-ink: var(--ink);
   --color-ink-dim: var(--ink-dim);
   --color-ink-faint: var(--ink-faint);

@@ -1,7 +1,7 @@
 "use client";
 
 import { useFrame, useThree } from "@react-three/fiber";
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo } from "react";
 import { MathUtils, Vector3 } from "three";
 
 import { CAMERA, MONITOR, SCREENS } from "@/lib/layout";
@@ -14,11 +14,16 @@ function dampVec(current: Vector3, target: Vector3, lambda: number, dt: number) 
 }
 
 /**
- * Seated first-person camera.
+ * Seated camera, locked square to the desk.
  *
- * At rest the head turns with the pointer, clamped hard enough that you can
- * look around the desk but never away from it — an unbounded first-person look
- * in a room this small just finds the back of the wall.
+ * It used to turn with the pointer. That's the obvious thing to do with a
+ * first-person scene and it was wrong here: the screens are real text, and text
+ * that slides and shears every time the mouse moves is text nobody reads. The
+ * rest pose is now a fixed, composed frame — the room is a photograph until you
+ * choose to lean into something.
+ *
+ * What survives is a few millimetres of positional drift, far too small to
+ * disturb reading and just enough that the frame isn't a dead still.
  *
  * On focus the camera flies to a position computed from the panel's own size
  * and angle rather than a hand-placed waypoint, so the screen fills the frame
@@ -30,9 +35,6 @@ export function CameraRig() {
   const focus = useScene((s) => s.focus);
   const clearFocus = useScene((s) => s.clearFocus);
 
-  /** Pointer in normalised device coords, -1..1. */
-  const pointer = useRef({ x: 0, y: 0 });
-
   const rest = useMemo(() => new Vector3(...CAMERA.eye), []);
   const restTarget = useMemo(() => new Vector3(...CAMERA.target), []);
 
@@ -41,23 +43,6 @@ export function CameraRig() {
   const desiredPos = useMemo(() => new Vector3(), []);
   const desiredLook = useMemo(() => new Vector3(), []);
   const currentLook = useMemo(() => new Vector3().copy(restTarget), [restTarget]);
-
-  useEffect(() => {
-    const onMove = (e: PointerEvent) => {
-      pointer.current.x = (e.clientX / window.innerWidth) * 2 - 1;
-      pointer.current.y = (e.clientY / window.innerHeight) * 2 - 1;
-    };
-    const onLeave = () => {
-      pointer.current.x = 0;
-      pointer.current.y = 0;
-    };
-    window.addEventListener("pointermove", onMove);
-    window.addEventListener("pointerleave", onLeave);
-    return () => {
-      window.removeEventListener("pointermove", onMove);
-      window.removeEventListener("pointerleave", onLeave);
-    };
-  }, []);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -91,25 +76,19 @@ export function CameraRig() {
       desiredPos.set(px + nx * dist, py, pz + nz * dist);
       desiredLook.set(px, py, pz);
     } else {
-      // Rest: the head turns, the body doesn't. Yaw and pitch are applied to
-      // the look target rather than the camera's rotation so the motion reads
-      // as looking around rather than the whole room swinging.
-      const yaw = -pointer.current.x * CAMERA.yawLimit;
-      const pitch = -pointer.current.y * CAMERA.pitchLimit;
-
-      // A slow, tiny drift so the frame is never perfectly dead. Two
-      // incommensurate periods keep it from reading as a loop.
-      const driftX = Math.sin(t * 0.21) * 0.004 + Math.sin(t * 0.13) * 0.003;
-      const driftY = Math.cos(t * 0.17) * 0.003;
+      /*
+       * Rest: a fixed frame, breathing.
+       *
+       * Two incommensurate periods so it never reads as a loop, and an
+       * amplitude of about three millimetres — below the threshold where it
+       * disturbs reading, above the threshold where a still frame starts to
+       * look like the page has frozen.
+       */
+      const driftX = Math.sin(t * 0.21) * 0.0022 + Math.sin(t * 0.13) * 0.0014;
+      const driftY = Math.cos(t * 0.17) * 0.0018;
 
       desiredPos.set(rest.x + driftX, rest.y + driftY, rest.z);
-
-      const reach = 1.2;
-      desiredLook.set(
-        restTarget.x + Math.sin(yaw) * reach,
-        restTarget.y + Math.sin(pitch) * reach,
-        restTarget.z + (1 - Math.cos(yaw)) * reach,
-      );
+      desiredLook.copy(restTarget);
     }
 
     // Focusing snaps in a little more eagerly than it releases — arriving fast

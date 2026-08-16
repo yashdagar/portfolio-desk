@@ -16,7 +16,16 @@ const TOKEN_URL = "https://accounts.spotify.com/api/token";
 const NOW_PLAYING_URL =
   "https://api.spotify.com/v1/me/player/currently-playing";
 const RECENT_URL =
-  "https://api.spotify.com/v1/me/player/recently-played?limit=1";
+  "https://api.spotify.com/v1/me/player/recently-played?limit=10";
+
+export interface Track {
+  title: string;
+  artist: string;
+  album?: string;
+  albumArt?: string;
+  url?: string;
+  durationMs?: number;
+}
 
 export interface NowPlaying {
   /** False when nothing is playing — the UI then shows the last track instead. */
@@ -31,6 +40,15 @@ export interface NowPlaying {
   durationMs?: number;
   /** True when this is the most recent track rather than a current one. */
   stale?: boolean;
+  /**
+   * Recently played, most recent first.
+   *
+   * Fetched whether or not something is playing, because the screen is a player
+   * client and a player client with an empty library reads as a mockup. This is
+   * the one call that makes the rest of that interface true rather than
+   * decorative.
+   */
+  recent?: Track[];
 }
 
 async function accessToken(): Promise<string | null> {
@@ -67,22 +85,24 @@ interface SpotifyTrack {
   duration_ms: number;
 }
 
-function shape(track: SpotifyTrack, extra: Partial<NowPlaying>): NowPlaying {
+function condense(track: SpotifyTrack): Track {
   // Spotify returns images largest-first; the middle one (~300px) is the right
   // size for a monitor-sized panel without pulling a 640px asset every poll.
   const art =
     track.album.images.find((i) => i.width && i.width <= 400) ??
     track.album.images.at(-1);
   return {
-    playing: false,
     title: track.name,
     artist: track.artists.map((a) => a.name).join(", "),
     album: track.album.name,
     albumArt: art?.url,
     url: track.external_urls.spotify,
     durationMs: track.duration_ms,
-    ...extra,
   };
+}
+
+function shape(track: SpotifyTrack, extra: Partial<NowPlaying>): NowPlaying {
+  return { playing: false, ...condense(track), ...extra };
 }
 
 export async function GET() {
@@ -99,10 +119,30 @@ export async function GET() {
 
   const headers = { authorization: `Bearer ${token}` };
 
-  const current = await fetch(NOW_PLAYING_URL, {
-    headers,
-    cache: "no-store",
-  });
+  // Both at once. The history is needed for the client's track list whether or
+  // not something is playing, and firing them in sequence would put a second
+  // round trip to Spotify in front of every cold response.
+  const [current, recent] = await Promise.all([
+    fetch(NOW_PLAYING_URL, { headers, cache: "no-store" }),
+    fetch(RECENT_URL, { headers, cache: "no-store" }),
+  ]);
+
+  let history: Track[] = [];
+  if (recent.ok) {
+    const json = (await recent.json()) as { items?: { track: SpotifyTrack }[] };
+    const seen = new Set<string>();
+    history = (json.items ?? [])
+      .map((i) => i.track)
+      .filter((t) => {
+        // Spotify's history repeats a track every time it was played, and a
+        // list showing the same song six times looks broken rather than honest.
+        if (!t || seen.has(t.name)) return false;
+        seen.add(t.name);
+        return true;
+      })
+      .slice(0, 6)
+      .map(condense);
+  }
 
   // 204 means the player is idle; anything playing comes back as 200.
   if (current.status === 200) {
@@ -116,6 +156,7 @@ export async function GET() {
         shape(json.item, {
           playing: json.is_playing,
           progressMs: json.progress_ms ?? 0,
+          recent: history,
         }),
         // Short cache: long enough to absorb a burst of visitors, short enough
         // that the progress bar isn't visibly wrong.
@@ -124,17 +165,17 @@ export async function GET() {
     }
   }
 
-  const recent = await fetch(RECENT_URL, { headers, cache: "no-store" });
-  if (recent.ok) {
-    const json = (await recent.json()) as {
-      items: { track: SpotifyTrack }[];
-    };
-    const track = json.items?.[0]?.track;
-    if (track) {
-      return NextResponse.json<NowPlaying>(shape(track, { stale: true }), {
-        headers: { "cache-control": "public, max-age=60" },
-      });
-    }
+  if (history.length) {
+    const [last, ...rest] = history;
+    return NextResponse.json<NowPlaying>(
+      {
+        playing: false,
+        stale: true,
+        ...last,
+        recent: rest,
+      },
+      { headers: { "cache-control": "public, max-age=60" } },
+    );
   }
 
   return NextResponse.json<NowPlaying>(

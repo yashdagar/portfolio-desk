@@ -45,6 +45,13 @@ describe("daylight", () => {
     assert.ok(noon.windowIntensity > midnight.windowIntensity);
   });
 
+  it("only casts direct sun while the sun is up", () => {
+    // The sun is the shadow-caster, so a non-zero value in the small hours
+    // would put a window-shaped patch of light on the floor at 3am.
+    assert.equal(daylight(ist(3)).sunIntensity, 0);
+    assert.ok(daylight(ist(13)).sunIntensity > 2.5);
+  });
+
   it("never lets the window go fully black", () => {
     // A pure-black window reads as a hole in the wall, not as glass at night.
     assert.ok(daylight(ist(2)).windowIntensity > 0);
@@ -62,7 +69,7 @@ describe("daylight", () => {
   it("emits a valid hex colour at every hour", () => {
     for (let h = 0; h < 24; h += 0.25) {
       const d = daylight(ist(Math.floor(h), (h % 1) * 60));
-      for (const c of [d.windowColor, d.bounceColor]) {
+      for (const c of [d.windowColor, d.bounceColor, d.sunColor]) {
         assert.match(c, /^#[0-9a-f]{6}$/, `${c} at ${h}h`);
       }
       assert.ok(d.level >= 0 && d.level <= 1);

@@ -23,7 +23,7 @@ export function Flat({ feed }: { feed: ActivityFeed | null }) {
         <h1 className="text-4xl font-medium tracking-tight text-ink sm:text-5xl">
           {PROFILE.name}
         </h1>
-        <p className="mt-3 font-mono text-sm text-accent">
+        <p className="mt-4 inline-block rounded-full bg-accent/12 px-3.5 py-1.5 font-mono text-sm text-accent">
           {PROFILE.role} · {PROFILE.location}
         </p>
 
@@ -71,16 +71,21 @@ export function Flat({ feed }: { feed: ActivityFeed | null }) {
       </Section>
 
       <Section title="Now playing">
-        {/* Fixed height: the component is built for a monitor-shaped surface. */}
-        <div className="overflow-hidden rounded-lg ring-1 ring-screen-line">
-          <div className="h-[320px]">
+        {/*
+          Fixed height: the component is a player client built for a
+          monitor-shaped surface, and it needs enough room for a header, a track
+          list and a transport bar. At the 320px it used to get, all three were
+          fighting over the same forty pixels.
+        */}
+        <div className="overflow-hidden rounded-panel ring-1 ring-screen-line">
+          <div className="h-[560px]">
             <NowPlaying />
           </div>
         </div>
       </Section>
 
       <Section title="Commits">
-        <div className="overflow-hidden rounded-lg ring-1 ring-screen-line">
+        <div className="overflow-hidden rounded-panel ring-1 ring-screen-line">
           <div className="h-[560px]">
             <CommitFeed initial={feed} />
           </div>
@@ -115,7 +120,7 @@ function Section({
 function BoxCard({ id }: { id: "catan" | "chess" }) {
   const box = BOXES[id];
   return (
-    <article className="flex h-full flex-col rounded-lg bg-screen-raised p-6 ring-1 ring-screen-line">
+    <article className="flex h-full flex-col rounded-panel bg-screen-raised p-7">
       <h3 className="font-mono text-lg font-bold tracking-[0.16em] text-ink">
         {box.title}
       </h3>
@@ -137,7 +142,7 @@ function BoxCard({ id }: { id: "catan" | "chess" }) {
             href={box.playHref}
             target="_blank"
             rel="noreferrer"
-            className="inline-flex items-center gap-2 rounded bg-accent px-4 py-2 font-mono text-[12px] uppercase tracking-wider text-graphite transition-opacity hover:opacity-85"
+            className="inline-flex items-center gap-2 rounded-full bg-accent px-5 py-2.5 font-mono text-[12px] uppercase tracking-wider text-graphite transition-opacity duration-150 hover:opacity-85"
           >
             <span aria-hidden>▶</span> Play
           </a>
@@ -147,7 +152,7 @@ function BoxCard({ id }: { id: "catan" | "chess" }) {
             href={box.repoHref}
             target="_blank"
             rel="noreferrer"
-            className="font-mono text-[12px] uppercase tracking-wider text-ink-faint underline underline-offset-4 hover:text-ink"
+            className="rounded-full border border-screen-line px-5 py-2.5 font-mono text-[12px] uppercase tracking-wider text-ink-faint transition-colors duration-150 hover:border-accent hover:text-ink"
           >
             Source
           </a>
