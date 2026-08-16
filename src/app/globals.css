@@ -1,0 +1,84 @@
+@import "tailwindcss";
+
+/*
+  The Desk — design tokens.
+
+  Warm desaturated base, exactly one accent. The room is lit warm (2700K lamp),
+  so the accent runs cool to hold the warm/cool contrast the whole art direction
+  rests on. Screens are the only saturated light in the scene.
+*/
+:root {
+  /* Room */
+  --walnut: #3d2b21;
+  --walnut-light: #5c4234;
+  --graphite: #1a1918;
+  --graphite-light: #2a2827;
+  --wall: #e4ded4;
+  --wall-shadow: #c9c1b5;
+
+  /* Screen surfaces — these are emissive, so they read brighter than the room */
+  --screen: #0e1113;
+  --screen-raised: #161a1d;
+  --screen-line: #232a2e;
+  --ink: #e6e9ea;
+  --ink-dim: #8b9499;
+  --ink-faint: #5a6367;
+
+  /* The one accent */
+  --accent: #4ecdc4;
+  --accent-dim: #2a8f89;
+
+  /* Semantic, for the commit feed */
+  --add: #7ec699;
+  --del: #d98b8b;
+  --redact: #2f3639;
+}
+
+@theme inline {
+  --color-walnut: var(--walnut);
+  --color-graphite: var(--graphite);
+  --color-wall: var(--wall);
+  --color-screen: var(--screen);
+  --color-screen-raised: var(--screen-raised);
+  --color-screen-line: var(--screen-line);
+  --color-ink: var(--ink);
+  --color-ink-dim: var(--ink-dim);
+  --color-ink-faint: var(--ink-faint);
+  --color-accent: var(--accent);
+  --color-accent-dim: var(--accent-dim);
+  --color-add: var(--add);
+  --color-del: var(--del);
+  --color-redact: var(--redact);
+
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background: var(--graphite);
+  color: var(--ink);
+  font-family: var(--font-sans), system-ui, sans-serif;
+  /* The canvas owns the viewport; the fallback path re-enables scrolling. */
+  overscroll-behavior: none;
+}
+
+/* Nothing in the 3D path should ever show a text cursor or selection halo. */
+canvas {
+  display: block;
+  touch-action: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
