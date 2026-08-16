@@ -52,6 +52,16 @@ describe("daylight", () => {
     assert.ok(daylight(ist(13)).sunIntensity > 2.5);
   });
 
+  it("switches the room's own lights rather than dimming them", () => {
+    // The bias strip and the shelf spot are on at night and off in daylight,
+    // and — unlike the lamp — they have to be fully off well before noon.
+    // A strip glowing at a fifth of brightness at 3pm is the giveaway that
+    // this is a ramp rather than a switch.
+    assert.equal(daylight(ist(2)).nightIntensity, 1);
+    assert.equal(daylight(ist(15)).nightIntensity, 0);
+    assert.ok(daylight(ist(9)).nightIntensity === 0);
+  });
+
   it("never lets the window go fully black", () => {
     // A pure-black window reads as a hole in the wall, not as glass at night.
     assert.ok(daylight(ist(2)).windowIntensity > 0);

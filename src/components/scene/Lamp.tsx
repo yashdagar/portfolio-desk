@@ -1,9 +1,11 @@
 "use client";
 
 import { RoundedBox } from "@react-three/drei";
+import { useEffect, useState } from "react";
 
 import type { Daylight } from "@/lib/daylight";
 import { DESK, LAMP } from "@/lib/layout";
+import { useLampLevel, useScene } from "@/lib/store";
 
 import * as M from "./materials";
 
@@ -22,8 +24,37 @@ import * as M from "./materials";
  */
 export function Lamp({ day }: { day: Daylight }) {
   const stemTop = LAMP.poleHeight;
-  /** How bright the strip reads, independent of how much light it throws. */
-  const glow = Math.min(1, day.lampIntensity / 2.4);
+  const level = useLampLevel();
+  const cycleLamp = useScene((s) => s.cycleLamp);
+  const [hovered, setHovered] = useState(false);
+
+  /**
+   * How bright the strip reads, independent of how much light it throws.
+   *
+   * It has to follow the dimmer as well as the time of day, and it is the only
+   * feedback the interaction has. Clicking the lamp changes a spotlight the
+   * visitor cannot see the source of — if the strip didn't dim with it, turning
+   * the lamp off would look like the room breaking rather than like a switch.
+   */
+  const glow = Math.min(1, (day.lampIntensity * level) / 2.4);
+
+  /*
+   * The cursor.
+   *
+   * The room has no affordances — nothing here is underlined or outlined, which
+   * is the point — so the pointer is the whole of the invitation. Set on the
+   * body rather than on the canvas because the canvas is the full viewport and
+   * a style left on it survives the component; the cleanup here runs on unmount
+   * as well as on pointer-out, so a lamp that disappears while hovered doesn't
+   * leave the page stuck in a pointer.
+   */
+  useEffect(() => {
+    if (!hovered) return;
+    document.body.style.cursor = "pointer";
+    return () => {
+      document.body.style.cursor = "";
+    };
+  }, [hovered]);
 
   return (
     /*
@@ -36,7 +67,28 @@ export function Lamp({ day }: { day: Daylight }) {
       drifted, which reads as the lamp sinking into the desk. Every object that
       stands on this desk needs the same clearance.
     */
-    <group position={[LAMP.x, DESK.surfaceY + 0.0005, LAMP.z]}>
+    /*
+      The whole lamp is the switch.
+
+      Not just the dial, even though the dial is modelled and is the obvious
+      target. It's 8 mm across on an object a metre and a half from the camera —
+      about four pixels — so making it the only hit area would be a control
+      nobody could find and half the people who found it couldn't hit. The dial
+      is the *affordance*; the group is the button. Clicking any part of a desk
+      lamp to turn it on is also, separately, how touch lamps work.
+    */
+    <group
+      position={[LAMP.x, DESK.surfaceY + 0.0005, LAMP.z]}
+      onClick={(e) => {
+        e.stopPropagation();
+        cycleLamp();
+      }}
+      onPointerOver={(e) => {
+        e.stopPropagation();
+        setHovered(true);
+      }}
+      onPointerOut={() => setHovered(false)}
+    >
       {/*
         Base. Wide and low — it has to counterweight a 40cm cantilever, and it
         looks like it does.
@@ -50,10 +102,23 @@ export function Lamp({ day }: { day: Daylight }) {
         <meshStandardMaterial {...M.ALUMINIUM} />
       </mesh>
 
-      {/* A single control, because there is exactly one on the real thing. */}
+      {/*
+        A single control, because there is exactly one on the real thing — and
+        now it does something.
+
+        It lights up on hover, which is the only signal in the room that an
+        object is interactive. A ring of light under a fingertip is also what
+        the control on a dimmable lamp actually does, so the hint costs nothing
+        in realism: at rest it's a machined disc, and under the pointer it's a
+        dimmer someone is about to turn.
+      */}
       <mesh position={[0, 0.023, 0.055]}>
         <cylinderGeometry args={[0.008, 0.008, 0.002, 16]} />
-        <meshStandardMaterial {...M.ALUMINIUM} />
+        <meshStandardMaterial
+          {...M.ALUMINIUM}
+          emissive="#ffd9a3"
+          emissiveIntensity={hovered ? 1.6 : glow * 0.35}
+        />
       </mesh>
 
       {/*

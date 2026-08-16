@@ -7,10 +7,12 @@ import type { ActivityFeed, Commit } from "./activity";
 /**
  * Load the commit feed.
  *
- * A static file rather than an API call: the collector runs in a scheduled
- * Action because reading private repos needs a token, and this deployment is
- * public. That makes the feed a CDN asset, which is also why it can be fetched
- * without a loading spinner mattering much.
+ * From `/api/activity` rather than from `/data/activity.json`, and the
+ * difference is the whole point of the refetch below. The static file is baked
+ * into the deployment, so a tab left open overnight refetched exactly the bytes
+ * it was already given; the route reads the file the collector actually commits
+ * every twenty minutes, so leaving the page open now does what it looks like it
+ * does.
  */
 export function useActivity(initial: ActivityFeed | null = null) {
   // Seeded from the server so the first paint already has the real commits, not
@@ -21,7 +23,7 @@ export function useActivity(initial: ActivityFeed | null = null) {
 
   useEffect(() => {
     let alive = true;
-    fetch("/data/activity.json")
+    fetch("/api/activity")
       .then((r) => (r.ok ? r.json() : Promise.reject(new Error(String(r.status)))))
       .then((data: ActivityFeed) => alive && setFeed(data))
       .catch(() => alive && !initial && setFailed(true));

@@ -332,6 +332,32 @@ function Monitor({
         <meshStandardMaterial {...M.SOFT_PLASTIC} />
       </RoundedBox>
 
+      {/*
+        The bias strip, stuck to the back of the ultrawide.
+
+        Never seen directly — it faces the wall, which is the entire point of
+        the thing — so this exists for two reasons that aren't "being looked
+        at". It gives the glow on the wall an origin with an edge, so the light
+        reads as coming off a strip rather than as a haze someone painted; and
+        it's what bloom has to bite on, since the postprocessing chain picks up
+        emissive surfaces and there was nothing back here to pick up.
+
+        Only on the ultrawide. Kitting out all three would be tidier and wrong:
+        nobody buys three strips, they stick one on the monitor they sit in
+        front of.
+      */}
+      {placement.stand === "riser" && (
+        <mesh position={[0, -panelH * 0.16, -MONITOR.depth / 2 - 0.004]}>
+          <boxGeometry args={[panelW * 0.86, 0.007, 0.004]} />
+          <meshStandardMaterial
+            color={M.ACCENT_HEX}
+            emissive={M.ACCENT_HEX}
+            emissiveIntensity={2.4}
+            toneMapped={false}
+          />
+        </mesh>
+      )}
+
       <mesh
         geometry={glass}
         position={[0, 0, MONITOR.depth / 2 + 0.0005]}

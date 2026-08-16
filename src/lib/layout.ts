@@ -299,6 +299,26 @@ export const CAMERA = {
  * rests on. The arm reaches back in over the desk, so the light still lands in
  * the middle even though the lamp itself stands out of the way.
  */
+/**
+ * The lamp's dimmer positions, as multipliers on whatever the time of day asks
+ * for. Clicking the lamp steps through them in order.
+ *
+ * Four stops in this order because that is what a dial on a real desk lamp
+ * does: it comes up from low, goes round to bright, and the last click before
+ * it comes back is off. Cycling low → high → off → low means a visitor who
+ * clicks it twice has made it brighter, which is what they were trying to find
+ * out, and a visitor who keeps clicking gets the room dark — the most
+ * interesting state in the whole scene, and one nothing else exposes.
+ *
+ * The default is the *first* of these, not the brightest. The lamp had been set
+ * to throw as much light as the desk could take, which is a lighting rig rather
+ * than a lamp: the mug, the keyboard and the mat all sat in one flat pool with
+ * nothing falling off. At 0.55 the pool has an edge again and the far end of
+ * the desk goes properly dim, which is what a 40 cm cantilever over a 2.5 m
+ * desk actually does.
+ */
+export const LAMP_LEVELS = [0.55, 1, 1.55, 0] as const;
+
 export const LAMP = {
   x: -1.14,
   /*
@@ -622,9 +642,18 @@ export const BOX_DESIGN = { w: 860, h: 860 } as const;
  */
 export const CUBE = {
   /** One cubie's edge. Three of these plus two gaps make the 56 mm cube. */
-  cubie: 0.0185,
-  /** The hairline of shadow between two facelets. All the border there is. */
-  gap: 0.00045,
+  cubie: 0.0186,
+  /**
+   * The hairline of shadow between two facelets. All the border there is.
+   *
+   * Driven almost to nothing so the chamfer below can be generous. What made
+   * the first version read as a stack of dice was not the rounding on its own —
+   * it was rounding *plus* a flat-bottomed canyon between every pair of tiles.
+   * Take the floor of the canyon away and two rounded edges meet in a crisp V,
+   * which is a groove; leave it in and they face each other across a gap, which
+   * is a gap.
+   */
+  gap: 0.0002,
   /**
    * Chamfer on every cubie edge.
    *
@@ -641,13 +670,20 @@ export const CUBE = {
    * like. Hold a real one and the tiles very nearly touch; the dark between them
    * is a line you can barely get a fingernail into.
    *
-   * At 1.2 mm the flat tile is 16.1 mm and the channel is 2.85 mm, so the face
-   * reads as nine squares of colour rather than as nine objects. The eight
-   * corners of the cube give up some roundness for it — but a 1.2 mm radius on
-   * a 56 mm cube seen from 1.4 m is about a pixel and a half of silhouette, and
-   * the grooves were about eight.
+   * At 1.2 mm the tile read correctly and the piece stopped reading as moulded:
+   * nine flat squares with almost sharp edges is a printed grid, and a real
+   * facelet is visibly pillowed — you can see the light turn over its edge
+   * before it reaches the groove.
+   *
+   * 2.2 mm is where both hold, and it only works because the gap above went to
+   * 0.2 mm at the same time. The two numbers are one decision: what you see
+   * between two tiles is 2·bevel + gap wide, and it's the *gap* that decides
+   * whether that space reads as a shadow line or as a canyon with two blocks
+   * either side of it. Rounder edges over a near-zero floor give a deep V that
+   * catches a highlight along its length — which is the thing a photograph of a
+   * speedcube always shows and neither previous version had.
    */
-  bevel: 0.0012,
+  bevel: 0.0022,
   /*
    * Between the mat and the notebook, well forward, where a hand reaches
    * without looking.

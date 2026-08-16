@@ -16,10 +16,20 @@ import { ACESFilmicToneMapping, Object3D } from "three";
 import type { ActivityFeed } from "@/lib/activity";
 import { isPinned, sceneNow } from "@/lib/clock";
 import { daylight, type Daylight } from "@/lib/daylight";
+import { useLampLevel } from "@/lib/store";
 import { useWeather } from "@/lib/useWeather";
 import { withWeather } from "@/lib/weather";
-import { CAMERA, DESK, LAMP_EMITTER, SCREENS, WALL, WINDOW } from "@/lib/layout";
+import {
+  CAMERA,
+  DESK,
+  LAMP_EMITTER,
+  SCREENS,
+  SHELF,
+  WALL,
+  WINDOW,
+} from "@/lib/layout";
 
+import * as M from "./materials";
 import { CameraRig } from "./CameraRig";
 import { HeroCamera } from "./HeroCamera";
 import { Room } from "./Room";
@@ -47,6 +57,12 @@ function Lighting({ day }: { day: Daylight }) {
    */
   const [lampTarget] = useState(() => new Object3D());
   const [sunTarget] = useState(() => new Object3D());
+  const [shelfTarget] = useState(() => new Object3D());
+  const lampLevel = useLampLevel();
+
+  /** Panel centre of the ultrawide, which is where its bias strip is stuck. */
+  const biasY =
+    SCREENS.find((s) => s.id === "about")?.position[1] ?? DESK.surfaceY + 0.28;
 
   return (
     <>
@@ -86,8 +102,14 @@ function Lighting({ day }: { day: Daylight }) {
          * decay 2 is a third less light arriving. Multiplying it back up is
          * the honest fix; softening the decay would light the whole room from
          * one desk lamp.
+         *
+         * Multiplied by the dimmer, which defaults to its lowest stop. The
+         * fixed 5.6 stays as the "full brightness" figure it always was — the
+         * level is a scale on it, so the lamp still tracks the time of day at
+         * every setting rather than becoming a constant the moment anyone
+         * touches it.
          */
-        intensity={day.lampIntensity * 5.6}
+        intensity={day.lampIntensity * 5.6 * lampLevel}
         /*
           Wide and very soft. The old cone was 0.92 rad at penumbra 0.75, which
           put a visible hard-edged ellipse across the desk and a diagonal cut
@@ -184,6 +206,81 @@ function Lighting({ day }: { day: Daylight }) {
           color="#8fd4dd"
         />
       ))}
+
+      {/*
+        Bias lighting, behind the centre monitor.
+
+        The room had two lights after dark — a desk lamp and a city — and the
+        lamp only reaches the desk. Everything above the monitors went to black,
+        which isn't atmospheric, it's empty: at 22:30 a third of the frame was
+        carrying no information at all.
+
+        A strip stuck to the back of the main monitor is the right answer rather
+        than a convenient one. It's what is actually on a desk like this, it's
+        the accent colour the whole design has been carrying since the start,
+        and it lights precisely the wall the array was hiding. It also does the
+        thing bias lighting is sold for — a dark screen against a lit wall reads
+        as a screen, against a black wall it reads as a hole.
+
+        Three sources rather than one, spread along the panel, because a strip
+        is a metre long and a single point behind it paints a bullseye.
+      */}
+      {[-0.34, 0, 0.34].map((x) => (
+        <pointLight
+          key={x}
+          position={[x, biasY, WALL.z + 0.06]}
+          /*
+           * Low, and it took two goes to believe how low.
+           *
+           * The first pass ran these at 1.15 over a 1.5 m radius, which lit the
+           * whole wall from the shelf to the desk and turned 22:30 into early
+           * evening — and worse, it made teal the dominant colour in a frame
+           * whose entire art direction is a warm key against a cool fill. Bias
+           * lighting is *dim*. Its job is to stop the wall behind a bright
+           * screen being black, so it only has to beat black, and the moment it
+           * beats the desk lamp as well the room stops having a key light.
+           */
+          intensity={day.nightIntensity * 0.42}
+          distance={1.05}
+          decay={2}
+          color={M.ACCENT_HEX}
+        />
+      ))}
+
+      {/*
+        A ceiling spot over the shelf, on only at night.
+
+        The bias strip lights the wall behind the desk and can't reach the shelf
+        — it's a metre above and pointed the wrong way — so the boxes, the plant
+        and the print stayed black. This is the one light in the room that has
+        no visible source, and it's the least dishonest of the options: a
+        downlight over a display shelf is ordinary, whereas the alternatives
+        were to hang a second lamp in shot or to lift the ambient, and lifting
+        the ambient at night would undo every shadow the desk lamp casts.
+
+        Warm, narrow, and shadowless. It's here to say what's on the shelf, not
+        to light the room.
+      */}
+      <primitive object={shelfTarget} position={[SHELF.x, SHELF.y, SHELF.z]} />
+      <spotLight
+        position={[SHELF.x + 0.1, 2.42, SHELF.z + 0.62]}
+        target={shelfTarget}
+        /*
+         * Narrow, and aimed to fall off before it reaches the print.
+         *
+         * At 0.52 rad the cone cleared the shelf by half a metre either side
+         * and washed the wall from the ceiling down to the monitors, which is
+         * a room light rather than a shelf light — the whole upper wall lit
+         * evenly, and nothing in it looked deliberately picked out. Tightened
+         * until the pool ends roughly where the shelf does.
+         */
+        intensity={day.nightIntensity * 4.2}
+        angle={0.4}
+        penumbra={1}
+        distance={2.6}
+        decay={2}
+        color="#ffd2a4"
+      />
     </>
   );
 }
@@ -198,6 +295,11 @@ function Lighting({ day }: { day: Daylight }) {
  * that are actually there.
  */
 function Reflections({ day }: { day: Daylight }) {
+  // The lamp is a reflected source as well as a light. Switch it off and the
+  // aluminium stands should lose their warm highlight too, or the room goes
+  // dark while every metal surface stays lit by something that isn't there.
+  const lampLevel = useLampLevel();
+
   return (
     <Environment resolution={128} frames={1}>
       {/* The window, on the right, where the bright side of the room now is. */}
@@ -212,7 +314,7 @@ function Reflections({ day }: { day: Daylight }) {
       {/* The lamp bar, on the left. */}
       <Lightformer
         form="rect"
-        intensity={day.lampIntensity * 0.3}
+        intensity={day.lampIntensity * 0.3 * lampLevel}
         color="#ffbe7a"
         position={[-1.5, 1.55, 0.1]}
         rotation={[0, Math.PI / 2, 0]}

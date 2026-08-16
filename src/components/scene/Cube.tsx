@@ -220,11 +220,15 @@ function buildCube(): BufferGeometry {
   const colour = new Color();
 
   for (const c of cubies) {
+    // Six segments across the chamfer rather than four. At a 1.2 mm radius the
+    // difference was invisible; at 2.2 mm four steps show as facets along every
+    // edge, and an edge that catches a highlight has to be smooth or the
+    // highlight breaks into dashes.
     const geo = new RoundedBoxGeometry(
       CUBE.cubie,
       CUBE.cubie,
       CUBE.cubie,
-      4,
+      6,
       CUBE.bevel,
     );
 

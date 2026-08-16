@@ -1,20 +1,40 @@
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 
-import type { ActivityFeed } from "./activity";
+import { ACTIVITY_URL, type ActivityFeed } from "./activity";
 
 /**
  * Read the feed on the server so its text is in the HTML source.
  *
  * Fetching it only on the client leaves the commit list as "reading…" in the
  * markup — invisible to a crawler, to a preview card, and to anyone with
- * JavaScript off. Since the collector already writes a static file, the server
- * can just read it, and the client refetches afterwards for freshness.
+ * JavaScript off.
+ *
+ * The source is GitHub rather than the local `public/` copy, and that choice is
+ * the difference between a live feed and one that only looks live. The
+ * collector commits to the repo every twenty minutes; the file inside a
+ * deployment is frozen at whatever was committed when that deployment was
+ * built. Reading the committed file over the network means a collection is
+ * visible on the site within its cache window, with no deploy in between.
+ *
+ * The local file stays as the fallback, and it earns its place twice: it covers
+ * the network being unreachable at build time, and it's what a fresh clone
+ * renders before it has any deployment at all.
  *
  * Server-only: this imports node:fs, so a client component importing it fails
  * the build rather than shipping a broken bundle.
  */
 export async function readActivity(): Promise<ActivityFeed | null> {
+  try {
+    // Five minutes, matching what GitHub's CDN serves it with — asking more
+    // often than the origin caches only moves the staleness, it doesn't remove
+    // it, and the collector only runs every twenty.
+    const res = await fetch(ACTIVITY_URL, { next: { revalidate: 300 } });
+    if (res.ok) return (await res.json()) as ActivityFeed;
+  } catch {
+    // Fall through to the committed copy.
+  }
+
   try {
     const file = path.join(process.cwd(), "public", "data", "activity.json");
     return JSON.parse(await readFile(file, "utf8")) as ActivityFeed;

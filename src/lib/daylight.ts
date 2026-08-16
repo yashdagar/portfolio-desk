@@ -25,6 +25,17 @@ export interface Daylight {
   skyIntensity: number;
   /** The lamp comes up as the window falls away. */
   lampIntensity: number;
+  /**
+   * The room's own lights: the bias strip behind the monitors and the spot over
+   * the shelf. 0 through the day, 1 once it's properly dark.
+   *
+   * Deliberately not `1 - level`. The lamp fades in gradually because a desk
+   * lamp genuinely does get switched on early on a grey afternoon, but nobody
+   * runs bias lighting at half brightness at four o'clock — these go on when it
+   * gets dark and are off before that. A ramp that crosses over between dusk
+   * and full dark is what reads as a switch rather than as a dimmer.
+   */
+  nightIntensity: number;
   /** Ambient bounce colour — cool by day, warm at night from the lamp. */
   bounceColor: string;
   bounceIntensity: number;
@@ -116,6 +127,7 @@ export function daylight(now: Date = new Date()): Daylight {
     // The lamp fades in as daylight goes, and stays on a little into the
     // morning the way a real one does before anyone thinks to switch it off.
     lampIntensity: 0.5 + (1 - level) * 3.2,
+    nightIntensity: 1 - smoothstep(0.06, 0.42, level),
     bounceColor: mixHex("#3a2c22", "#9fb6d6", level),
     /*
      * Bounce, feeding a hemisphere light rather than a flat ambient.

@@ -182,6 +182,27 @@ export function classify(message: string): CommitKind {
   return "other";
 }
 
+/**
+ * Where the site reads the feed from at runtime: the committed file, served by
+ * GitHub, not the copy inside its own deployment.
+ *
+ * The collector runs in a scheduled Action and commits `activity.json` back to
+ * this repo. Reading it out of `public/` meant the live feed was whatever had
+ * been baked in at the last deploy — so the data refreshed every twenty minutes
+ * in the repo and never once on the site, and the only way to publish a commit
+ * was to redeploy the whole app. That coupling is the actual bug: a feed whose
+ * whole claim is "this is live" cannot depend on a build step.
+ *
+ * Fetching the same file from raw.githubusercontent.com breaks it. Nothing is
+ * given away by doing so — the file is already public, already committed, and
+ * already redacted before it is written — and the token still never comes near
+ * the deployment, which was the only reason for the Action in the first place.
+ * GitHub serves it with a five-minute cache, which is well inside the twenty
+ * minutes between collections.
+ */
+export const ACTIVITY_URL =
+  "https://raw.githubusercontent.com/yashdagar/portfolio-desk/main/public/data/activity.json";
+
 /*
  * ---------------------------------------------------------------------------
  * Shaping
