@@ -27,6 +27,20 @@ export const WALL = {
   height: 2.6,
 } as const;
 
+/**
+ * The window, off to the left and mostly outside the frame.
+ *
+ * It exists so the cool fill light has a visible origin. Light arriving from
+ * nowhere reads as a rendering artefact; the same light with a bright rectangle
+ * behind it reads as a room with a window in it.
+ */
+export const WINDOW = {
+  x: -1.34,
+  y: 1.42,
+  w: 0.82,
+  h: 1.05,
+} as const;
+
 /** A 27" 16:9 panel with a thin bezel. */
 export const MONITOR = {
   panelW: 0.598,
@@ -102,6 +116,19 @@ export const CAMERA = {
    */
   yawLimit: 0.46,
   pitchLimit: 0.2,
+} as const;
+
+/**
+ * The desk lamp: the key light's physical source.
+ *
+ * Far enough right to clear the monitor array from the resting camera. Its bulb
+ * ends up near [x - 0.3, 1.34, z - 0.02], which is where the key light sits.
+ */
+export const LAMP = {
+  x: 0.79,
+  z: -0.2,
+  /** World position of the bulb, so the light and the geometry can't drift. */
+  bulb: [0.49, 1.34, -0.22] as [number, number, number],
 } as const;
 
 /** The shelf on the wall, holding the board game boxes. */
