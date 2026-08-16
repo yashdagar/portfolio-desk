@@ -54,6 +54,14 @@ export function Surface({
         // front of the monitors, and raycast occlusion of a full-screen DOM
         // node costs a ray per frame per surface.
         occlude="blending"
+        /*
+          drei defaults this to [16777271, 0] and its wrapper spans the whole
+          viewport, so at the default any UI over the canvas is buried under a
+          transparent div seven million layers up. Capped low enough for normal
+          page chrome to sit above it, and still wide enough for drei to depth
+          sort the handful of surfaces in the scene against each other.
+        */
+        zIndexRange={[40, 0]}
         scale={(worldW * PX_PER_WORLD_UNIT) / designW}
         // Slightly forward of the plane it sits on, or it z-fights with it.
         position={[0, 0, 0.001]}

@@ -14,6 +14,7 @@ import { useEffect, useState } from "react";
 import { ACESFilmicToneMapping, Object3D } from "three";
 
 import type { ActivityFeed } from "@/lib/activity";
+import { isPinned, sceneNow } from "@/lib/clock";
 import { daylight, type Daylight } from "@/lib/daylight";
 import { CAMERA, DESK, LAMP, SCREENS, WALL, WINDOW } from "@/lib/layout";
 
@@ -143,27 +144,13 @@ function useDaylight(): Daylight {
   const [day, setDay] = useState<Daylight>(() => daylight());
 
   useEffect(() => {
-    /*
-     * `?t=HH:MM` pins the clock.
-     *
-     * The room looks completely different at 03:00 and 14:00, and without this
-     * the only way to see either is to wait. Both have to be judged, so both
-     * have to be reachable — and it makes the screenshot tooling able to assert
-     * on a specific hour rather than on whenever CI happened to run.
-     */
-    const forced = new URLSearchParams(window.location.search).get("t");
-    const match = forced && /^(\d{1,2}):(\d{2})$/.exec(forced);
-    if (match) {
-      const [h, m] = [Number(match[1]), Number(match[2])];
-      // Build a UTC instant that lands on this IST wall-clock time.
-      setDay(daylight(new Date(Date.UTC(2026, 0, 1, h - 5, m - 30))));
-      return;
-    }
+    setDay(daylight(sceneNow()));
+    // Pinned by ?t= — nothing to tick.
+    if (isPinned()) return;
 
-    setDay(daylight());
     // A minute is far finer than the light actually changes; it just means the
     // transition across dawn or dusk happens while someone's watching.
-    const id = setInterval(() => setDay(daylight()), 60_000);
+    const id = setInterval(() => setDay(daylight(sceneNow())), 60_000);
     return () => clearInterval(id);
   }, []);
 
