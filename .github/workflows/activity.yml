@@ -63,5 +63,15 @@ jobs:
           git config user.name "activity-bot"
           git config user.email "activity-bot@users.noreply.github.com"
           git add public/data/activity.json
-          git commit -m "chore(data): refresh activity feed [skip ci]"
+          # Deliberately no [skip ci].
+          #
+          # It reads as the obvious way to stop this job retriggering itself,
+          # but Vercel honours the same marker — so every refresh would be
+          # committed and then skipped at deploy, leaving the live site serving
+          # whatever activity.json was baked in at the last real deploy. The
+          # feed would look live in the repo and be frozen in production.
+          #
+          # Self-triggering isn't a risk anyway: the push trigger above only
+          # watches the collector and its lib, never public/data.
+          git commit -m "chore(data): refresh activity feed"
           git push
