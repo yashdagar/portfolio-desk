@@ -231,23 +231,44 @@ export const COFFEE: Mat = {
   metalness: 0.05,
 };
 
-/** Anodised headphone cup. */
+/**
+ * Anodised headphone cup, in grey.
+ *
+ * It was a near-black blue-grey, which on a monitor that is itself near-black
+ * meant the headphones hanging off it had no silhouette at all — they read as a
+ * lump in the bezel until the lamp caught them. Grey gives them an edge against
+ * both the panel behind and the pale wall above.
+ *
+ * Metalness comes almost all the way down, and it has to. A metal takes its
+ * colour from what it reflects rather than from its own albedo, so at the old
+ * 0.75 the grey barely mattered — the cup's flat outer face is turned at the
+ * camera, everything behind the camera is unlit room, and it rendered as a
+ * dark disc inside a bright rim however light the colour was set. Dropping
+ * metalness lets the albedo do the work; a little is left so the anodising
+ * still catches the lamp along the roll of the edge.
+ */
 export const EARCUP: Mat = {
-  color: "#3c4147",
-  roughness: 0.38,
-  metalness: 0.75,
+  color: "#a2a6a9",
+  roughness: 0.44,
+  metalness: 0.16,
 };
 
-/** Knit over memory foam. The softest surface anywhere in the scene. */
+/**
+ * Knit over memory foam. The softest surface anywhere in the scene.
+ *
+ * A step darker than the cup it sits in, so the two still separate now that
+ * both are grey — on the real ones the pad is a different material and reads
+ * as one.
+ */
 export const CUSHION: Mat = {
-  color: "#23272b",
+  color: "#71767a",
   roughness: 0.98,
   metalness: 0,
 };
 
 /** The headband's fabric canopy. */
 export const MESH_FABRIC: Mat = {
-  color: "#2e3338",
+  color: "#82878b",
   roughness: 0.96,
   metalness: 0,
 };

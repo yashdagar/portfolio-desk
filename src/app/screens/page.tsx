@@ -1,9 +1,10 @@
-import { About } from "@/components/screens/About";
+import { CentreScreen } from "@/components/screens/CentreScreen";
 import { BoxBack } from "@/components/screens/BoxBack";
 import { CommitFeed } from "@/components/screens/CommitFeed";
 import { NowPlaying } from "@/components/screens/NowPlaying";
 import {
   BOX_DESIGN,
+  MAIN_SCREEN_DESIGN,
   SCREEN_DESIGN,
   TALL_SCREEN_DESIGN,
 } from "@/lib/layout";
@@ -49,8 +50,12 @@ export default function ScreensPreview() {
       <Frame label="left · commits" w={SCREEN_DESIGN.w} h={SCREEN_DESIGN.h}>
         <CommitFeed />
       </Frame>
-      <Frame label="centre · about" w={SCREEN_DESIGN.w} h={SCREEN_DESIGN.h}>
-        <About />
+      <Frame
+        label="centre · leetcode"
+        w={MAIN_SCREEN_DESIGN.w}
+        h={MAIN_SCREEN_DESIGN.h}
+      >
+        <CentreScreen />
       </Frame>
       <Frame
         label="right · music (portrait, as mounted)"

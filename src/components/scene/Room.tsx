@@ -5,7 +5,7 @@ import { useFrame } from "@react-three/fiber";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { MathUtils, Vector3, type Group } from "three";
 
-import { About } from "@/components/screens/About";
+import { CentreScreen } from "@/components/screens/CentreScreen";
 import { BoxBack } from "@/components/screens/BoxBack";
 import { CommitFeed } from "@/components/screens/CommitFeed";
 import { NowPlaying } from "@/components/screens/NowPlaying";
@@ -269,7 +269,7 @@ function ScreenContent({
   activity: ActivityFeed | null;
 }) {
   if (id === "commits") return <CommitFeed initial={activity} />;
-  if (id === "about") return <About initial={activity} />;
+  if (id === "about") return <CentreScreen initial={activity} />;
   // The music screen is the portrait one, so it gets the portrait client.
   return <NowPlaying variant="tall" />;
 }
@@ -397,9 +397,21 @@ function Monitor({
         </group>
       )}
 
-      {placement.stand === "arm" ? (
-        <MonitorArm panelH={panelH} lift={lift} />
-      ) : (
+      {/*
+        Three screens, three different things holding them up.
+
+        Not variety for its own sake — it's what a desk assembled over time
+        actually looks like, and each one is the answer to a different problem.
+        The 27" keeps the neck and plate it shipped with. The ultrawide can't:
+        80 cm of panel on a single central neck visibly twists, so it gets a
+        flat blade on a long low foot. And the portrait screen can't use either,
+        because a shipped foot won't rotate.
+      */}
+      {placement.stand === "arm" && <MonitorArm panelH={panelH} lift={lift} />}
+
+      {placement.stand === "riser" && <Riser panelH={panelH} lift={lift} />}
+
+      {placement.stand === "foot" && (
         <>
           {/* Neck and foot. Aluminium, so they catch the lamp and read as
               hardware. */}
@@ -432,39 +444,145 @@ function Monitor({
 }
 
 /**
+ * The ultrawide's stand: a blade on a bar.
+ *
+ * What an 80 cm panel actually ships with, and for a reason that shows up the
+ * moment you use one. A monitor stand resists two things: the panel falling
+ * forward, and the panel twisting about the neck. A round neck on a small plate
+ * handles the first and nothing at all about the second, which is why a wide
+ * screen on one wobbles every time you type. The answer both LG and Dell arrive
+ * at is a flat vertical blade — deep front to back, wide side to side, so it's
+ * stiff in torsion — standing on a bar long enough to plant its feet outside
+ * the panel's centre of mass.
+ *
+ * It's also the right-looking object here. The neck-and-plate stand next to it
+ * is a small dark shape; this is a long horizontal line under a long horizontal
+ * screen, and repeating the panel's proportion under the panel is most of why
+ * the middle of the desk reads as deliberate.
+ */
+function Riser({ panelH, lift }: { panelH: number; lift: number }) {
+  const deskY = -panelH / 2 - lift;
+  const z = -0.03;
+
+  const bar = useMemo(() => roundedPlate(0.5, 0.13, 0.03, 0.013), []);
+  useEffect(() => () => bar.dispose(), [bar]);
+
+  return (
+    <group>
+      {/* The bar. Long, low, and shallow — it has to stay clear of a keyboard
+          pushed back against it. */}
+      <mesh geometry={bar} position={[0, deskY, z]} castShadow receiveShadow>
+        <meshStandardMaterial {...M.ALUMINIUM} />
+      </mesh>
+      {/* Feet, so the bar bridges rather than lies flat. The gap under it is
+          the detail that says the thing is machined. */}
+      {[-0.21, 0.21].map((x) => (
+        <mesh key={x} position={[x, deskY + 0.002, z]}>
+          <boxGeometry args={[0.05, 0.004, 0.11]} />
+          <meshStandardMaterial {...M.POWDER_COAT} />
+        </mesh>
+      ))}
+
+      {/* The blade. Wide across, thin front to back — the whole point. */}
+      <RoundedBox
+        args={[0.078, lift + 0.02, 0.02]}
+        radius={0.008}
+        smoothness={5}
+        position={[0, deskY + (lift + 0.02) / 2, z]}
+        castShadow
+      >
+        <meshStandardMaterial {...M.ALUMINIUM} />
+      </RoundedBox>
+
+      {/* Cable pass-through, punched near the top of the blade. Every one of
+          these has one, and it's the fastest way to say which object this is. */}
+      <mesh position={[0, deskY + lift * 0.62, z]} rotation={[Math.PI / 2, 0, 0]}>
+        <cylinderGeometry args={[0.014, 0.014, 0.022, 20]} />
+        <meshStandardMaterial {...M.POWDER_COAT} />
+      </mesh>
+    </group>
+  );
+}
+
+/**
+ * A segment of the monitor arm, laid between two points in the XY plane.
+ *
+ * A rounded box runs along its own +Y, so pointing it at an arbitrary angle is
+ * a rotation about Z of whatever the segment's direction is off vertical. Worth
+ * the helper: an articulated arm is defined by where its joints are, and
+ * writing the joints down and letting the maths place the links is the only
+ * version where moving one joint doesn't leave a gap somewhere else.
+ */
+function Link({
+  from,
+  to,
+  width,
+  z,
+  depth = 0.03,
+}: {
+  from: [number, number];
+  to: [number, number];
+  width: number;
+  z: number;
+  depth?: number;
+}) {
+  const dx = to[0] - from[0];
+  const dy = to[1] - from[1];
+  const len = Math.hypot(dx, dy);
+
+  return (
+    <RoundedBox
+      args={[width, len, depth]}
+      radius={Math.min(width, depth) / 2 - 0.001}
+      smoothness={5}
+      position={[(from[0] + to[0]) / 2, (from[1] + to[1]) / 2, z]}
+      // atan2(dy, dx) is the angle off +X; a box's length runs along +Y, so the
+      // rotation is that angle minus a quarter turn.
+      rotation={[0, 0, Math.atan2(dy, dx) - Math.PI / 2]}
+      castShadow
+    >
+      <meshStandardMaterial {...M.ALUMINIUM} />
+    </RoundedBox>
+  );
+}
+
+/**
  * The mount a portrait monitor actually hangs off.
  *
- * Two wrong answers preceded this one. The shipped foot was wrong because a
- * 60 cm panel stood on its side can't balance on a 21 cm plate, and because the
- * moulded stand doesn't rotate anyway. A weighted pole was closer but still
- * wrong: freestanding poles are display-stand furniture, and nobody with a
- * portrait screen on a desk this size uses one — they clamp an arm to the back
- * edge, which is what every reference photograph of this setup shows.
+ * Three wrong answers preceded this one. The shipped foot, because a 60 cm
+ * panel on its side won't balance on a 21 cm plate and the foot doesn't rotate.
+ * A weighted pole, because freestanding poles are display-stand furniture and
+ * nobody with a portrait screen on a desk uses one. And then a clamp with a
+ * straight boom running back to the panel — right in principle, invisible in
+ * practice: everything it was made of sat directly behind an 80 cm-tall screen,
+ * so all that ever showed was a stub of clamp under the bottom edge.
  *
- * The arm is also the better-looking answer, and for a reason that isn't about
- * accuracy. A base occupies the one part of the desk directly under the screen;
- * an arm hands that back. The desk runs unbroken beneath the panel, and the
- * screen reads as floating over it rather than standing on it.
+ * This one puts the articulation where it can be seen. The clamp goes on the
+ * back edge *outboard* of the panel, the arm rises beside the screen rather
+ * than behind it, and the elbow is folded hard — which is not styling, it's
+ * what a gas-spring arm does when the screen it carries is 30 cm from the
+ * clamp. There is nowhere else for that much link length to go, so it doubles
+ * back on itself, and the resulting tight V is the single most recognisable
+ * thing about these.
  *
  * Built in the monitor's own frame, so it inherits the toe-in for free — a
- * clamp squared to the world on a panel turned nine degrees is the kind of
+ * clamp squared to the world holding a panel turned nine degrees is the kind of
  * thing you can't see until you can't stop seeing it.
  */
 function MonitorArm({ panelH, lift }: { panelH: number; lift: number }) {
   /** The desk surface, in this monitor's local frame. */
   const deskY = -panelH / 2 - lift;
-  /**
-   * The desk's back edge, likewise local.
-   *
-   * The panel stands 117 mm forward of it; at nine degrees of toe that's
-   * essentially the same distance measured along the monitor's own axis, so
-   * the small angular correction is inside the width of the clamp itself.
-   */
+  /** The desk's back edge, likewise local. */
   const edgeZ = -0.118;
+  /** Outboard of the panel's right edge, where the arm has room to be seen. */
+  const x = 0.3;
+  /** The plane the linkage swings in, just behind the panel. */
+  const armZ = -0.062;
 
-  /** Top of the post: level with the middle of the panel, where the boom runs. */
-  const postTop = 0.03;
-  const postH = postTop - (deskY + 0.012);
+  /** Post top, elbow, and the VESA end — the three joints. */
+  const post: [number, number] = [x, deskY + 0.17];
+  const elbow: [number, number] = [x + 0.035, deskY + 0.55];
+  const vesa: [number, number] = [0.045, deskY + 0.335];
 
   return (
     <group>
@@ -481,7 +599,7 @@ function MonitorArm({ panelH, lift }: { panelH: number; lift: number }) {
         args={[0.072, 0.014, 0.076]}
         radius={0.005}
         smoothness={4}
-        position={[0, deskY + 0.007, edgeZ + 0.03]}
+        position={[x, deskY + 0.007, edgeZ + 0.03]}
         castShadow
         receiveShadow
       >
@@ -491,7 +609,7 @@ function MonitorArm({ panelH, lift }: { panelH: number; lift: number }) {
         args={[0.05, 0.086, 0.02]}
         radius={0.006}
         smoothness={4}
-        position={[0, deskY - 0.026, edgeZ - 0.012]}
+        position={[x, deskY - 0.026, edgeZ - 0.012]}
         castShadow
       >
         <meshStandardMaterial {...M.POWDER_COAT} />
@@ -500,59 +618,60 @@ function MonitorArm({ panelH, lift }: { panelH: number; lift: number }) {
         args={[0.058, 0.013, 0.05]}
         radius={0.005}
         smoothness={4}
-        position={[0, deskY - 0.062, edgeZ + 0.016]}
+        position={[x, deskY - 0.062, edgeZ + 0.016]}
         castShadow
       >
         <meshStandardMaterial {...M.POWDER_COAT} />
       </RoundedBox>
       {/* The screw that does the tightening, standing proud underneath. */}
-      <mesh position={[0, deskY - 0.073, edgeZ + 0.016]} castShadow>
+      <mesh position={[x, deskY - 0.073, edgeZ + 0.016]} castShadow>
         <cylinderGeometry args={[0.007, 0.007, 0.012, 16]} />
         <meshStandardMaterial {...M.ALUMINIUM} />
       </mesh>
 
-      {/* The post, rising out of the clamp. */}
+      {/* The post, rising out of the clamp and canted forward to the arm's
+          plane, which is where the linkage lives. */}
       <RoundedBox
-        args={[0.034, postH, 0.034]}
-        radius={0.012}
+        args={[0.036, 0.19, 0.036]}
+        radius={0.013}
         smoothness={5}
-        position={[0, deskY + 0.012 + postH / 2, edgeZ + 0.03]}
+        position={[x, deskY + 0.085, (edgeZ + 0.03 + armZ) / 2]}
+        rotation={[0.18, 0, 0]}
         castShadow
       >
         <meshStandardMaterial {...M.ALUMINIUM} />
       </RoundedBox>
 
-      {/*
-        The boom, running forward from the post to the back of the panel.
+      {/* Lower link, upper link, folded back over it. */}
+      <Link from={post} to={elbow} width={0.036} z={armZ} />
+      <Link from={elbow} to={vesa} width={0.03} z={armZ + 0.026} depth={0.026} />
 
-        Squared off rather than round: an extruded aluminium arm has a flat top
-        that carries a hard line of light along its whole length, and that line
-        is most of what tells you the thing is metal at this distance.
-      */}
-      <RoundedBox
-        args={[0.03, 0.03, 0.15]}
-        radius={0.01}
-        smoothness={5}
-        position={[0, postTop, edgeZ + 0.088]}
-        castShadow
-      >
-        <meshStandardMaterial {...M.ALUMINIUM} />
-      </RoundedBox>
+      {/* The three joints, as collars standing proud of the links they pin.
+          Without them the arm is two sticks that happen to touch. */}
+      {(
+        [
+          [post, 0.023, armZ],
+          [elbow, 0.021, armZ + 0.013],
+          [vesa, 0.019, armZ + 0.026],
+        ] as [[number, number], number, number][]
+      ).map(([p, r, jz], i) => (
+        <mesh
+          key={i}
+          position={[p[0], p[1], jz]}
+          rotation={[Math.PI / 2, 0, 0]}
+          castShadow
+        >
+          <cylinderGeometry args={[r, r, 0.04, 20]} />
+          <meshStandardMaterial {...M.POWDER_COAT} />
+        </mesh>
+      ))}
 
-      {/* Tilt knuckle, and the VESA plate bolted to the panel. */}
-      <mesh
-        position={[0, postTop, -0.03]}
-        rotation={[0, 0, Math.PI / 2]}
-        castShadow
-      >
-        <cylinderGeometry args={[0.019, 0.019, 0.036, 20]} />
-        <meshStandardMaterial {...M.POWDER_COAT} />
-      </mesh>
+      {/* Tilt knuckle and the VESA plate bolted to the back of the panel. */}
       <RoundedBox
-        args={[0.076, 0.076, 0.016]}
+        args={[0.078, 0.078, 0.016]}
         radius={0.006}
         smoothness={4}
-        position={[0, postTop, -0.016]}
+        position={[0.006, vesa[1], -0.018]}
         castShadow
       >
         <meshStandardMaterial {...M.POWDER_COAT} />

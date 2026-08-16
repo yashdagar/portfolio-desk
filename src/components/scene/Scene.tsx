@@ -64,11 +64,30 @@ function Lighting({ day }: { day: Daylight }) {
         args={[day.bounceColor, "#241d18", day.bounceIntensity]}
       />
 
-      <primitive object={lampTarget} position={[0.1, DESK.surfaceY, 0.06]} />
+      {/*
+        Aimed left of centre, where the lamp actually points.
+
+        The target used to sit at x = 0.1, almost the middle of the desk, from
+        an emitter that has since moved out to −0.74 — so the cone was throwing
+        most of its light across the desk toward the window rather than down
+        onto the half of it the lamp stands over. The pool now lands over the
+        keyboard and the mug, which is what a task light is for.
+      */}
+      <primitive object={lampTarget} position={[-0.2, DESK.surfaceY, 0.08]} />
       <spotLight
         position={LAMP_EMITTER}
         target={lampTarget}
-        intensity={day.lampIntensity * 3.1}
+        /*
+         * Up from 3.1, because the lamp reads as switched on and doing nothing.
+         *
+         * Inverse-square is unforgiving about being moved. The emitter went
+         * out to x = −1.14 and down to 520 mm, which lengthened the throw to
+         * the middle of the desk by about a quarter — and a quarter further at
+         * decay 2 is a third less light arriving. Multiplying it back up is
+         * the honest fix; softening the decay would light the whole room from
+         * one desk lamp.
+         */
+        intensity={day.lampIntensity * 5.6}
         /*
           Wide and very soft. The old cone was 0.92 rad at penumbra 0.75, which
           put a visible hard-edged ellipse across the desk and a diagonal cut
@@ -78,7 +97,7 @@ function Lighting({ day }: { day: Daylight }) {
         */
         angle={1.15}
         penumbra={1}
-        distance={3.6}
+        distance={4.2}
         decay={2}
         color="#ffb877"
         castShadow

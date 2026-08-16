@@ -169,80 +169,114 @@ export function outsideTexture(): CanvasTexture {
   ctx.fillStyle = ground;
   ctx.fillRect(0, HORIZON, W, H - HORIZON);
 
-  const ranks = skyline();
+  /*
+   * Each rank is drawn opaque on its own canvas and then composited once, at
+   * the rank's alpha. This is not an optimisation — it's the difference
+   * between a city and an x-ray of one.
+   *
+   * Drawn straight onto the sky at 24% alpha, every tower shows through every
+   * tower behind it: two overlapping buildings make a third, darker shape where
+   * they cross, and the eye reads all three as glass. Real buildings occlude.
+   * Compositing a finished, opaque layer means the towers hide each other
+   * exactly as they should, and the alpha then applies once to the whole rank —
+   * which is the correct model anyway, since what fades a distant skyline is
+   * the air in front of all of it, not each building being individually
+   * see-through.
+   */
+  for (const [i, rank] of skyline().entries()) {
+    const layer = surface();
+    const lc = layer.ctx;
 
-  for (const [i, rank] of ranks.entries()) {
-    const ink = `rgba(40,48,54,${rank.alpha})`;
+    lc.fillStyle = "#2c343a";
     // The floor lines are glass catching the sky, so they're *lighter* than the
     // building — and barely. At this distance they should read as a texture on
     // the tower, never as individual windows.
-    const glass = `rgba(255,255,255,${0.055 + i * 0.02})`;
+    const glass = `rgba(255,255,255,${0.06 + i * 0.025})`;
 
     for (const t of rank.towers) {
-      ctx.fillStyle = ink;
-      ctx.fillRect(t.x, t.top, t.w, rank.base - t.top + 60);
+      lc.fillStyle = "#2c343a";
+      lc.fillRect(t.x, t.top, t.w, rank.base - t.top + 60);
 
       if (t.setback) {
-        ctx.fillRect(t.setback.x, t.setback.top, t.setback.w, t.top - t.setback.top);
+        lc.fillRect(t.setback.x, t.setback.top, t.setback.w, t.top - t.setback.top);
       }
 
       // Parapet: a hair wider than the shaft and a few pixels deep. Real roofs
       // have one, and without it every tower ends in the same clean line.
-      ctx.fillRect(t.x - 1, t.top - 2, t.w + 2, 3);
+      lc.fillRect(t.x - 1, t.top - 2, t.w + 2, 3);
 
       if (t.mast > 0) {
-        ctx.fillRect(t.x + t.w / 2 - 0.75, t.top - t.mast, 1.5, t.mast);
+        lc.fillRect(t.x + t.w / 2 - 0.75, t.top - t.mast, 1.5, t.mast);
       }
 
-      ctx.fillStyle = glass;
+      lc.fillStyle = glass;
       const head = t.setback ? t.setback.top : t.top;
       for (let y = head + t.floor * 2; y < rank.base + 40; y += t.floor) {
         const inSetback = t.setback && y < t.top;
         const x = inSetback ? t.setback!.x : t.x;
         const w = inSetback ? t.setback!.w : t.w;
-        ctx.fillRect(x + 2, y, w - 4, 1.4);
+        lc.fillRect(x + 2, y, w - 4, 1.4);
       }
     }
-  }
 
-  /*
-   * Two tower cranes.
-   *
-   * The one piece of the view that isn't a building, and the reason it's worth
-   * the eight rectangles: a skyline of finished towers is a postcard, and a
-   * skyline with a crane in it is a place where something is being built this
-   * week. It is also, specifically and unavoidably, what Gurugram looks like.
-   */
-  ctx.fillStyle = "rgba(40,48,54,0.3)";
-  for (const [cx, mastH, jib] of [
-    [96, 132, 78],
-    [372, 108, 62],
-  ]) {
-    const top = HORIZON + 10 - mastH;
-    ctx.fillRect(cx - 1.5, top, 3, mastH);
-    // Jib one way, counter-jib the other and shorter, which is the shape that
-    // makes a crane a crane rather than a telegraph pole.
-    ctx.fillRect(cx, top + 6, jib, 2.5);
-    ctx.fillRect(cx - jib * 0.34, top + 6, jib * 0.34, 2.5);
-    // The hoist, hanging off the jib.
-    ctx.fillRect(cx + jib * 0.72, top + 8, 1.5, 26);
+    /*
+     * Two tower cranes, on the far rank, in the same layer as the buildings so
+     * they're properly behind the nearer ones.
+     *
+     * The one piece of the view that isn't a building, and the reason it's
+     * worth eight rectangles: a skyline of finished towers is a postcard, and a
+     * skyline with a crane in it is a place where something is being built this
+     * week. It is also, specifically and unavoidably, what Gurugram looks like.
+     */
+    if (i === 0) {
+      lc.fillStyle = "#2c343a";
+      for (const [cx, mastH, jib] of [
+        [96, 132, 78],
+        [372, 108, 62],
+      ]) {
+        const top = HORIZON + 10 - mastH;
+        lc.fillRect(cx - 1.5, top, 3, mastH);
+        // Jib one way, counter-jib the other and shorter, which is the shape
+        // that makes a crane a crane rather than a telegraph pole.
+        lc.fillRect(cx, top + 6, jib, 2.5);
+        lc.fillRect(cx - jib * 0.34, top + 6, jib * 0.34, 2.5);
+        // The hoist, hanging off the jib.
+        lc.fillRect(cx + jib * 0.72, top + 8, 1.5, 26);
+      }
+    }
+
+    ctx.globalAlpha = rank.alpha;
+    ctx.drawImage(layer.canvas, 0, 0);
+    ctx.globalAlpha = 1;
   }
 
   /*
    * A treeline at the base, softening where the city meets the sill.
    *
-   * Without it the towers stand on a hard horizontal line and the whole view
+   * Without it the towers stand on a hard horizontal rule and the whole view
    * reads as two flat layers. Trees are the one thing out there with an
    * irregular edge.
+   *
+   * Every crown goes into a single path and the path is filled once. Filled one
+   * at a time they were translucent circles, so each overlap compounded into a
+   * dark lens and the row came out as a string of beads with lozenges between
+   * them — which is exactly what a row of trees does not look like. One path
+   * fills as a union: the outline is still lumpy, the interior is one flat
+   * tone, and the alpha applies to the whole mass once.
    */
   const trees = rng(5501);
   ctx.fillStyle = "rgba(46,54,48,0.34)";
+  ctx.beginPath();
   for (let x = -10; x < W + 10; x += 9 + trees() * 12) {
+    const y = HORIZON + 96 + trees() * 10;
     const r = 11 + trees() * 15;
-    ctx.beginPath();
-    ctx.arc(x, HORIZON + 96 + trees() * 10, r, 0, Math.PI * 2);
-    ctx.fill();
+    // Move to where the arc actually begins. Without this, each arc is joined
+    // to the previous one by a straight line and the union grows a chord across
+    // every gap.
+    ctx.moveTo(x + r, y);
+    ctx.arc(x, y, r, 0, Math.PI * 2);
   }
+  ctx.fill();
 
   // Haze band sitting across the base of the skyline, which is what stops the
   // buildings looking like they're standing in the room.

@@ -17,11 +17,18 @@ export const DESK = {
   /**
    * Wide enough for three panels side by side.
    *
-   * The monitors used to be toed in, which let them overlap in plan and fit a
-   * narrower desk. Flat, they need their full 1.84 m laid out in a straight
-   * line, plus somewhere for the lamp and the mug to stand.
+   * The array is 1.80 m across now that the middle screen is an ultrawide, and
+   * it needs more than its own width: the lamp stands outboard of the left
+   * monitor and there has to be desk to the right of the portrait one. At 2.2 m
+   * the lamp's base finished 67 mm from the edge, which reads as a lamp about
+   * to fall off.
+   *
+   * Nothing is lost by going wider. The desk's front edge is 1.34 m from the
+   * eye and only ±0.86 m of it is inside the frame at all, so the extra 150 mm
+   * a side is off-camera — it exists to give the things standing on it room,
+   * not to be seen.
    */
-  width: 2.2,
+  width: 2.5,
   depth: 0.78,
   thickness: 0.032,
   /** Front edge, nearest the viewer. */
@@ -69,6 +76,24 @@ export const WINDOW = {
  */
 const PX_PER_M = 1840;
 
+/**
+ * The middle screen: a 34" ultrawide.
+ *
+ * Two thirds wider than the panels either side of it, and the same height, so
+ * the three tops stay on one line. That last part is what stops the array
+ * reading as a mistake — an ultrawide flanked by two shorter screens is a
+ * setup, an ultrawide flanked by two screens at a different height is a pile of
+ * monitors.
+ *
+ * It also earns its width by what's on it. The centre panel carries a profile
+ * page — a column of identity beside a column of numbers — and at 598 mm those
+ * two columns were fighting over the same forty characters.
+ */
+export const MAIN = {
+  panelW: 0.8,
+  panelH: 0.336,
+} as const;
+
 /** A 27" 16:9 panel with a thin bezel. */
 export const MONITOR = {
   panelW: 0.598,
@@ -106,12 +131,15 @@ export interface ScreenPlacement {
    * What holds it up.
    *
    * `foot` is the moulded stand a monitor ships with — a short neck on a flat
-   * plate. `arm` is what a screen hangs off once it's been turned portrait: a
+   * plate. `riser` is the ultrawide's: a wide flat blade on a long low foot,
+   * which is what a 34" panel needs because a single central neck can't stop
+   * 80 cm of screen wobbling. `arm` is what a screen hangs off once it's been
+   * turned portrait: a
    * clamp on the back edge of the desk, a post, and a boom out to the VESA
    * plate. A 60 cm panel on its side won't balance on a shipped foot, the foot
    * can't rotate anyway, and an arm hands back the desk space underneath.
    */
-  stand: "foot" | "arm";
+  stand: "foot" | "riser" | "arm";
 }
 
 /**
@@ -132,8 +160,30 @@ export interface ScreenPlacement {
  * left about the desk.
  */
 const TOE = 0.16;
-const PITCH = MONITOR.panelW + MONITOR.bezel * 2 + 0.014;
+/** Air between two chassis, edge to edge. */
+const GAP = 0.014;
+
+/**
+ * Centre-to-centre spacing, derived per neighbour rather than from one pitch.
+ *
+ * With three identical panels a single pitch was enough. With a wide one in
+ * the middle each side screen has to be pushed out by half of *its* width plus
+ * half of the middle one's, and the portrait screen is a different width again
+ * — so there are two different numbers here and there is no pitch.
+ */
+const beside = (halfWidth: number) =>
+  MAIN.panelW / 2 + MONITOR.bezel * 2 + GAP + halfWidth;
+
 const TOE_Z = (MONITOR.panelW / 2) * Math.sin(TOE);
+
+const WIDE = {
+  panelW: MAIN.panelW,
+  panelH: MAIN.panelH,
+  design: {
+    w: Math.round(MAIN.panelW * PX_PER_M),
+    h: Math.round(MAIN.panelH * PX_PER_M),
+  },
+} as const;
 
 const LANDSCAPE = {
   panelW: MONITOR.panelW,
@@ -155,30 +205,36 @@ const PORTRAIT = {
 
 const panelCentreY = DESK.surfaceY + MONITOR.liftY + MONITOR.panelH / 2;
 /**
+ * The ultrawide sits on a wider, lower base, so its own lift differs — but its
+ * panel centre has to land on the same line as the others, because they're all
+ * the same height and the whole point is that the tops agree.
+ */
+const MAIN_LIFT = MONITOR.liftY + MONITOR.panelH / 2 - MAIN.panelH / 2;
+const mainCentreY = DESK.surfaceY + MAIN_LIFT + MAIN.panelH / 2;
+/**
  * A portrait panel is 60 cm tall, so its stand has to be shorter or the thing
  * ends up towering over the array — and over the top of the frame.
  */
-const TALL_LIFT = 0.062;
+const TALL_LIFT = 0.1;
 const tallCentreY = DESK.surfaceY + TALL_LIFT + PORTRAIT.panelH / 2;
 
-/** Half the centre monitor plus half the portrait one, plus a bezel gap. */
-const MUSIC_X =
-  MONITOR.panelW / 2 + PORTRAIT.panelW / 2 + MONITOR.bezel * 2 + 0.014;
+const COMMITS_X = beside(MONITOR.panelW / 2);
+const MUSIC_X = beside(PORTRAIT.panelW / 2);
 
 export const SCREENS: ScreenPlacement[] = [
   {
     id: "commits",
-    position: [-PITCH, panelCentreY, -0.29 + TOE_Z],
+    position: [-COMMITS_X, panelCentreY, -0.29 + TOE_Z],
     rotationY: TOE,
     stand: "foot",
     ...LANDSCAPE,
   },
   {
     id: "about",
-    position: [0, panelCentreY, -0.29],
+    position: [0, mainCentreY, -0.29],
     rotationY: 0,
-    stand: "foot",
-    ...LANDSCAPE,
+    stand: "riser",
+    ...WIDE,
   },
   {
     id: "music",
@@ -226,7 +282,7 @@ export const CAMERA = {
  * the middle even though the lamp itself stands out of the way.
  */
 export const LAMP = {
-  x: -0.98,
+  x: -1.14,
   /*
    * Forward of the back edge, with desk visible behind it.
    *
@@ -450,6 +506,11 @@ export const HEADPHONES = {
  * portrait screen's density — a 13px label has to be the same physical size on
  * all three or the room looks like it has three different DPIs on one desk.
  */
+/** The ultrawide's design size. */
+export const MAIN_SCREEN_DESIGN = {
+  w: Math.round(MAIN.panelW * PX_PER_M),
+  h: Math.round(MAIN.panelH * PX_PER_M),
+} as const;
 export const SCREEN_DESIGN = {
   w: Math.round(MONITOR.panelW * PX_PER_M),
   h: Math.round(MONITOR.panelH * PX_PER_M),

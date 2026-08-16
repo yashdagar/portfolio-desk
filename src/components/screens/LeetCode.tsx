@@ -1,25 +1,11 @@
 import {
+  DIFFICULTY_TONE as TONE,
   LEETCODE_URL,
   type Difficulty,
   type LeetCodeStats,
 } from "@/lib/leetcode";
 
 const ORDER: Difficulty[] = ["Easy", "Medium", "Hard"];
-
-/**
- * LeetCode's own three colours: teal, amber, red.
- *
- * Borrowed rather than restyled into the room's palette, and deliberately. The
- * room has exactly one accent and everything obeys it — but these three are the
- * only reason the breakdown reads at a glance instead of being three
- * identical bars with different numbers, and anyone who has used the site knows
- * what amber means without reading the label.
- */
-const TONE: Record<Difficulty, string> = {
-  Easy: "#37bfa5",
-  Medium: "#e8a33d",
-  Hard: "#e05c62",
-};
 
 /**
  * The solve breakdown, as bars.
