@@ -1,6 +1,176 @@
 {
-  "generatedAt": "2026-08-16T06:47:57.800Z",
+  "generatedAt": "2026-08-16T14:05:48.458Z",
   "commits": [
+    {
+      "id": "4d821d45242c",
+      "visibility": "public",
+      "kind": "other",
+      "message": "A 40\" centre panel, a curtain, and a cube that reads as a speedcube",
+      "repo": "yashdagar/portfolio-desk",
+      "url": "https://github.com/yashdagar/portfolio-desk/commit/4d821d45242c3f7b78a2c5aabfdf9f7a0d6ba1a6",
+      "language": "TypeScript",
+      "at": "2026-08-16T13:13:46Z"
+    },
+    {
+      "id": "afcd4a5e5155",
+      "visibility": "public",
+      "kind": "other",
+      "message": "A wooden chess board, a speedcube, a monstera, and cables",
+      "repo": "yashdagar/portfolio-desk",
+      "url": "https://github.com/yashdagar/portfolio-desk/commit/afcd4a5e51555372c2549a26e7d512654e118b1f",
+      "language": "TypeScript",
+      "at": "2026-08-16T12:43:47Z"
+    },
+    {
+      "id": "044017e9a0e8",
+      "visibility": "public",
+      "kind": "other",
+      "message": "An ultrawide running the LeetCode profile, and three different stands",
+      "repo": "yashdagar/portfolio-desk",
+      "url": "https://github.com/yashdagar/portfolio-desk/commit/044017e9a0e86b44ffa47f411389ea43f1122d9f",
+      "language": "TypeScript",
+      "at": "2026-08-16T12:21:03Z"
+    },
+    {
+      "id": "7f23fae8a468",
+      "visibility": "public",
+      "kind": "other",
+      "message": "A skyline instead of a row of grey cubes",
+      "repo": "yashdagar/portfolio-desk",
+      "url": "https://github.com/yashdagar/portfolio-desk/commit/7f23fae8a468d7ef5264456c2ee6e686a9ace75c",
+      "language": "TypeScript",
+      "at": "2026-08-16T11:23:26Z"
+    },
+    {
+      "id": "de4e973b4a83",
+      "visibility": "public",
+      "kind": "other",
+      "message": "A real Porsche, a glass mug, and a mouse that isn't an egg",
+      "repo": "yashdagar/portfolio-desk",
+      "url": "https://github.com/yashdagar/portfolio-desk/commit/de4e973b4a83adf46e126cdd6425cdfd12619abc",
+      "language": "TypeScript",
+      "at": "2026-08-16T11:17:56Z"
+    },
+    {
+      "id": "1f17c6feb5b1",
+      "visibility": "public",
+      "kind": "other",
+      "message": "A pole stand, a triptych, and less phone in the portrait screen",
+      "repo": "yashdagar/portfolio-desk",
+      "url": "https://github.com/yashdagar/portfolio-desk/commit/1f17c6feb5b152e1cf0441aef624d9deac65eb8d",
+      "language": "TypeScript",
+      "at": "2026-08-16T10:27:55Z"
+    },
+    {
+      "id": "e4c3be7e2ce7",
+      "visibility": "public",
+      "kind": "other",
+      "message": "Weather, a clock, a plant, and a monitor on its side",
+      "repo": "yashdagar/portfolio-desk",
+      "url": "https://github.com/yashdagar/portfolio-desk/commit/e4c3be7e2ce7af8bd0393de2b604897c907d3090",
+      "language": "TypeScript",
+      "at": "2026-08-16T10:02:56Z"
+    },
+    {
+      "id": "5749db8c668d",
+      "visibility": "public",
+      "kind": "other",
+      "message": "Round every manufactured edge in the room",
+      "repo": "yashdagar/portfolio-desk",
+      "url": "https://github.com/yashdagar/portfolio-desk/commit/5749db8c668d9f237f4dcdab8e2aaa324dc6cd0a",
+      "language": "TypeScript",
+      "at": "2026-08-16T09:14:20Z"
+    },
+    {
+      "id": "7e194bd58daf",
+      "visibility": "public",
+      "kind": "other",
+      "message": "Rebuild the room: real window, lit properly, and a player on the right",
+      "repo": "yashdagar/portfolio-desk",
+      "url": "https://github.com/yashdagar/portfolio-desk/commit/7e194bd58dafe0a5a1c1a6758db10da6650cc722",
+      "language": "TypeScript",
+      "at": "2026-08-16T09:08:19Z"
+    },
+    {
+      "id": "58ede29798ef",
+      "visibility": "public",
+      "kind": "other",
+      "message": "Drop [skip ci] from the feed refresh commit",
+      "repo": "yashdagar/portfolio-desk",
+      "url": "https://github.com/yashdagar/portfolio-desk/commit/58ede29798ef0888b7a0593a2ab90c18e25b820d",
+      "language": "TypeScript",
+      "at": "2026-08-16T08:08:29Z"
+    },
+    {
+      "id": "1286bd76329b",
+      "visibility": "public",
+      "kind": "other",
+      "message": "Keyboard access, and the setup a handover needs",
+      "repo": "yashdagar/portfolio-desk",
+      "url": "https://github.com/yashdagar/portfolio-desk/commit/1286bd76329bb3d3382aca6cc971c3e0e844800c",
+      "language": "TypeScript",
+      "at": "2026-08-16T07:59:30Z"
+    },
+    {
+      "id": "b038d595876e",
+      "visibility": "public",
+      "kind": "other",
+      "message": "HUD, loading state, and a share card",
+      "repo": "yashdagar/portfolio-desk",
+      "url": "https://github.com/yashdagar/portfolio-desk/commit/b038d595876e7d7402dcac3b44ac694206d4ed3d",
+      "language": "TypeScript",
+      "at": "2026-08-16T07:55:35Z"
+    },
+    {
+      "id": "e37cce23e28f",
+      "visibility": "public",
+      "kind": "other",
+      "message": "Three delivery modes, and make the flat one good",
+      "repo": "yashdagar/portfolio-desk",
+      "url": "https://github.com/yashdagar/portfolio-desk/commit/e37cce23e28f5f4762cba2bc2e1798f37519ba22",
+      "language": "TypeScript",
+      "at": "2026-08-16T07:43:33Z"
+    },
+    {
+      "id": "5f334634b9cb",
+      "visibility": "public",
+      "kind": "other",
+      "message": "Materials, lighting, and a room that runs on Gurugram time",
+      "repo": "yashdagar/portfolio-desk",
+      "url": "https://github.com/yashdagar/portfolio-desk/commit/5f334634b9cb70fd0c94183810e03d7d1709eee4",
+      "language": "TypeScript",
+      "at": "2026-08-16T07:35:28Z"
+    },
+    {
+      "id": "05506a0e3edc",
+      "visibility": "public",
+      "kind": "other",
+      "message": "Mount real DOM onto the screens and the box lid",
+      "repo": "yashdagar/portfolio-desk",
+      "url": "https://github.com/yashdagar/portfolio-desk/commit/05506a0e3edcded351bce507fce55985608a7399",
+      "language": "TypeScript",
+      "at": "2026-08-16T07:22:41Z"
+    },
+    {
+      "id": "786fb92948b8",
+      "visibility": "public",
+      "kind": "other",
+      "message": "Greybox: room, seated camera, focus transitions",
+      "repo": "yashdagar/portfolio-desk",
+      "url": "https://github.com/yashdagar/portfolio-desk/commit/786fb92948b8971d86cb54c73fe2576ac034b3a2",
+      "language": "TypeScript",
+      "at": "2026-08-16T07:01:58Z"
+    },
+    {
+      "id": "3c2be3350300",
+      "visibility": "public",
+      "kind": "other",
+      "message": "Data layer: commit feed, redaction, Spotify",
+      "repo": "yashdagar/portfolio-desk",
+      "url": "https://github.com/yashdagar/portfolio-desk/commit/3c2be335030048b00802a42c1e72bad22e94d7fe",
+      "language": "TypeScript",
+      "at": "2026-08-16T06:51:46Z"
+    },
     {
       "id": "4ac1a65a3a99",
       "visibility": "public",
@@ -1233,7 +1403,7 @@
     }
   ],
   "totals": {
-    "year": 123,
+    "year": 140,
     "streak": 1
   }
 }
