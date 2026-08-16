@@ -3,14 +3,10 @@
  *
  *   node scripts/shot-cube.mjs <out.png> [url] [scale]
  *
- * The cube is about 55 px across in a 1440-wide frame, which is the size it has
- * to work at and also far too small to tell a modelling mistake from a
- * compression artefact. This clips the ~90 px around it and renders at a high
- * device scale factor, so the pixels are real rather than upscaled.
- *
- * Judge shape here; judge whether the shape was worth it in scripts/shot.mjs,
- * at the size the thing actually is. Several rounds of this cube were lost by
- * only ever doing the first.
+ * Clips the ~90 px around the cube and renders at a high device scale factor,
+ * so the pixels are real rather than upscaled. Judge shape here; judge whether
+ * the shape was worth having in scripts/shot.mjs, where the cube is the 55 px it
+ * actually is. Several rounds of this were lost by only ever doing the first.
  */
 import { chromium } from "playwright";
 
