@@ -57,14 +57,9 @@ export interface ActivityFeed {
 }
 
 /*
- * ---------------------------------------------------------------------------
- * Filtering
- * ---------------------------------------------------------------------------
- *
- * The feed's whole claim is that it shows real work. Automated commits — a
- * commit generator, a LeetCode sync extension — would drown that out and, worse,
- * advertise themselves to the exact audience most likely to look closely. So
- * they're removed at collection time, before anything is published.
+ * The feed's claim is that it shows real work, so automated commits — a commit
+ * generator, a LeetCode sync extension — are removed at collection time, before
+ * anything is published.
  */
 
 /** Repos whose commits never appear, matched on `owner/name` with `*` wildcards. */
@@ -127,12 +122,6 @@ export function dropTimestampClusters<T extends { at: string }>(items: T[]): T[]
   );
 }
 
-/*
- * ---------------------------------------------------------------------------
- * Classification
- * ---------------------------------------------------------------------------
- */
-
 const KIND_ALIASES: Record<string, CommitKind> = {
   feat: "feat",
   feature: "feat",
@@ -183,35 +172,20 @@ export function classify(message: string): CommitKind {
 }
 
 /**
- * Where the site reads the feed from at runtime: the committed file, served by
- * GitHub, not the copy inside its own deployment.
+ * The committed file served by GitHub, not the copy inside the deployment.
+ * Reading it out of `public/` meant the feed was whatever had been baked in at
+ * the last deploy, so a feed claiming to be live depended on a build step.
  *
- * The collector runs in a scheduled Action and commits `activity.json` back to
- * this repo. Reading it out of `public/` meant the live feed was whatever had
- * been baked in at the last deploy — so the data refreshed every twenty minutes
- * in the repo and never once on the site, and the only way to publish a commit
- * was to redeploy the whole app. That coupling is the actual bug: a feed whose
- * whole claim is "this is live" cannot depend on a build step.
- *
- * Fetching the same file from raw.githubusercontent.com breaks it. Nothing is
- * given away by doing so — the file is already public, already committed, and
- * already redacted before it is written — and the token still never comes near
- * the deployment, which was the only reason for the Action in the first place.
- * GitHub serves it with a five-minute cache, which is well inside the twenty
- * minutes between collections.
+ * Nothing is given away: the file is already public, already committed and
+ * already redacted before it is written.
  */
 export const ACTIVITY_URL =
   "https://raw.githubusercontent.com/yashdagar/portfolio-desk/main/public/data/activity.json";
 
 /*
- * ---------------------------------------------------------------------------
- * Shaping
- * ---------------------------------------------------------------------------
- *
- * The collector writes its output to `public/data/activity.json` in a public
- * repo, so anything that lands in a work commit is published permanently and
- * irrevocably. These two constructors are the only sanctioned way to build a
- * Commit, and `assertNoLeak` is checked against every one before writing.
+ * The collector writes to a public repo, so anything landing in a work commit is
+ * published permanently. These two constructors are the only sanctioned way to
+ * build a Commit, and `assertNoLeak` is checked against every one before writing.
  */
 
 /** Fields that must never appear on a `work` commit. */

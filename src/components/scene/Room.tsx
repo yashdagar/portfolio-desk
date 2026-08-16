@@ -55,12 +55,8 @@ function Desk() {
   const legInset = 0.08;
   const legH = DESK.surfaceY - DESK.thickness;
 
-  /*
-   * The desk is the largest object in the frame by a wide margin, and it was a
-   * flat brown. Two square metres of unbroken tone reads as plastic however
-   * good the lighting is — this is the one surface in the room where a texture
-   * is not optional.
-   */
+  // Two square metres of unbroken tone reads as plastic however good the
+  // lighting is. This is the one surface where a texture isn't optional.
   const grain = useMemo(() => woodTexture(), []);
   useEffect(() => () => grain.dispose(), [grain]);
 
@@ -103,15 +99,11 @@ function Desk() {
 }
 
 /**
- * The wall, built as four slabs around a hole.
- *
- * It used to be one plane with a bright rectangle stuck to it, which gave the
- * cool fill an origin but no consequence — the light source was visible and its
- * light was not. A real opening means the sun passes through it and lays a
- * window-shaped patch across the floor and the desk, and that patch is worth
- * more to the frame than the window is. It also gives the wall a thickness,
- * which is the reveal you see down the side of the opening and the thing that
- * stops a window reading as a sticker.
+ * The wall, built as four slabs around a hole rather than one plane with a
+ * bright rectangle stuck to it. A real opening lets the sun through to lay a
+ * window-shaped patch across the floor and desk, which is worth more to the
+ * frame than the window is, and gives the wall the reveal that stops a window
+ * reading as a sticker.
  */
 function Walls() {
   const left = WINDOW.x - WINDOW.w / 2;
@@ -147,12 +139,10 @@ function Walls() {
 }
 
 /**
- * What's on the other side of the glass.
- *
- * Not a photograph and not a skybox: a vertical gradient, sky over haze, at
- * whatever colour the daylight model says the sky is right now. It's only ever
- * seen through a 90 cm opening at the edge of frame, and anything more detailed
- * would pull the eye straight out of the room.
+ * What's on the other side of the glass: a vertical gradient, sky over haze, at
+ * whatever colour the daylight model says. It's only ever seen through a 90 cm
+ * opening at the edge of frame, and anything more detailed would pull the eye
+ * straight out of the room.
  */
 function Outside({ day }: { day: Daylight }) {
   const view = useMemo(() => outsideTexture(), []);
@@ -169,11 +159,10 @@ function Outside({ day }: { day: Daylight }) {
   return (
     <group position={[WINDOW.x, WINDOW.y, WALL.z - WINDOW.reveal - 0.06]}>
       {/*
-        The view is a luminance ramp multiplied by the daylight colour, so one
-        texture carries every hour of the day. Basic and untonemapped: whatever
-        is outside a window is brighter than anything a room's exposure is set
-        for, and rolling it off with the rest of the scene is what makes a
-        window look like a picture of a window.
+        A luminance ramp multiplied by the daylight colour, so one texture
+        carries every hour. Untonemapped, because whatever is outside a window
+        is brighter than the room's exposure is set for, and rolling it off with
+        the rest of the scene makes a window look like a picture of one.
       */}
       <mesh>
         <planeGeometry args={[WINDOW.w * 1.5, WINDOW.h * 1.35]} />
@@ -195,17 +184,13 @@ function Outside({ day }: { day: Daylight }) {
 }
 
 /**
- * Frame and glazing bars.
+ * Frame and glazing bars — a grid, not a single opening. A divided window is
+ * legible as a window at any size where a bare rectangle of sky is ambiguous,
+ * and the bars are the only dark shapes on the bright side of the room, which
+ * stops that corner blowing out to a featureless block.
  *
- * A grid, not a single opening. Two things follow from it: a divided window is
- * instantly legible as a window at any size, where a bare rectangle of sky is
- * ambiguous until you find its edges; and the bars are the only dark shapes on
- * the bright side of the room, which is what stops that corner going to a
- * featureless blown-out block.
- *
- * The bars are also deliberately chunky. They started at 24 mm, which is right
- * for a real casement and disappeared completely — at this distance a
- * correctly-scaled glazing bar is under two pixels wide.
+ * Deliberately chunky: at a real casement's 24 mm they vanished, being under two
+ * pixels wide at this distance.
  */
 function WindowFrame() {
   const z = WALL.z - WINDOW.reveal / 2;
@@ -333,18 +318,9 @@ function Monitor({
       </RoundedBox>
 
       {/*
-        The bias strip, stuck to the back of the ultrawide.
-
-        Never seen directly — it faces the wall, which is the entire point of
-        the thing — so this exists for two reasons that aren't "being looked
-        at". It gives the glow on the wall an origin with an edge, so the light
-        reads as coming off a strip rather than as a haze someone painted; and
-        it's what bloom has to bite on, since the postprocessing chain picks up
-        emissive surfaces and there was nothing back here to pick up.
-
-        Only on the ultrawide. Kitting out all three would be tidier and wrong:
-        nobody buys three strips, they stick one on the monitor they sit in
-        front of.
+        The bias strip. Never seen directly — it faces the wall — but it gives
+        the glow on the wall an origin with an edge, and it's what bloom has to
+        bite on. Only on the ultrawide: nobody buys three.
       */}
       {placement.stand === "riser" && (
         <mesh position={[0, -panelH * 0.16, -MONITOR.depth / 2 - 0.004]}>
@@ -378,10 +354,9 @@ function Monitor({
       </mesh>
 
       {/*
-        Not mounted in hero mode. Three full React trees transformed into CSS 3D
-        is the single most expensive thing in the scene, and on a phone the
-        panels are a few hundred pixels wide — the text would be unreadable at
-        that size anyway, and the same content sits in the DOM below.
+        Not mounted in hero mode. Three React trees transformed into CSS 3D is
+        the most expensive thing in the scene, and at phone size the text would
+        be unreadable anyway — the same content sits in the DOM below.
       */}
       {!hero && (
         <Surface
@@ -401,19 +376,12 @@ function Monitor({
       )}
 
       {/*
-        Hung on this monitor's own outer corner, in its local frame. Placing
-        them in world space meant re-deriving the corner from the panel size and
-        the toe-in by hand, and getting it wrong put them behind the screen.
+        In the monitor's local frame: deriving the corner from panel size and
+        toe-in by hand is what once put these behind the screen.
 
-        On the portrait monitor's right-hand edge, which took some finding. The
-        wide left-hand screen looked like the safer home and wasn't: a 74 mm ear
-        cup landed squarely on the commit feed's header and swallowed the word
-        "commits". Here the player keeps its artwork at eighty per cent of the
-        column, so the strip the cup covers is margin — and everything the cup
-        hangs past is empty wall between the desk and the window.
-
-        Tilted out a few degrees as well. A pair hooked over a corner hangs
-        askew; a pair hanging perfectly plumb has been placed by someone.
+        On the portrait monitor because a 74 mm cup on the left-hand screen
+        landed on the commit feed's header. Here it only covers margin. Tilted,
+        because a pair hanging perfectly plumb has been placed by someone.
       */}
       {placement.id === "music" && (
         <group
@@ -428,16 +396,6 @@ function Monitor({
         </group>
       )}
 
-      {/*
-        Three screens, three different things holding them up.
-
-        Not variety for its own sake — it's what a desk assembled over time
-        actually looks like, and each one is the answer to a different problem.
-        The 27" keeps the neck and plate it shipped with. The ultrawide can't:
-        94 cm of panel on a single central neck visibly twists, so it gets a
-        flat blade on a long low foot. And the portrait screen can't use either,
-        because a shipped foot won't rotate.
-      */}
       {placement.stand === "arm" && <MonitorArm panelH={panelH} lift={lift} />}
 
       {placement.stand === "riser" && <Riser panelH={panelH} lift={lift} />}
@@ -475,24 +433,13 @@ function Monitor({
 }
 
 /**
- * The ultrawide's stand: a blade on a bar.
- *
- * What an 80 cm panel actually ships with, and for a reason that shows up the
- * moment you use one. A monitor stand resists two things: the panel falling
- * forward, and the panel twisting about the neck. A round neck on a small plate
- * handles the first and nothing at all about the second, which is why a wide
- * screen on one wobbles every time you type. The answer both LG and Dell arrive
- * at is a flat vertical blade — deep front to back, wide side to side, so it's
- * stiff in torsion — standing on a bar long enough to plant its feet outside
- * the panel's centre of mass. At 40" the bar has to grow with the panel: a foot
- * that spans a third of the screen is a stand, one that spans a fifth is a
- * pedestal, and a pedestal under a metre of glass looks like it's about to go
- * over.
- *
- * It's also the right-looking object here. The neck-and-plate stand next to it
- * is a small dark shape; this is a long horizontal line under a long horizontal
- * screen, and repeating the panel's proportion under the panel is most of why
- * the middle of the desk reads as deliberate.
+ * The ultrawide's stand: a blade on a bar, which is what an 80 cm panel actually
+ * ships with. A stand resists the panel falling forward and the panel twisting
+ * about the neck; a round neck on a small plate handles the first and nothing at
+ * all about the second, which is why a wide screen on one wobbles as you type. A
+ * flat vertical blade is stiff in torsion, and the bar has to span enough of the
+ * screen to plant its feet outside the centre of mass — a third reads as a
+ * stand, a fifth as a pedestal about to go over.
  */
 function Riser({ panelH, lift }: { panelH: number; lift: number }) {
   const deskY = -panelH / 2 - lift;
@@ -541,10 +488,8 @@ function Riser({ panelH, lift }: { panelH: number; lift: number }) {
 /**
  * A segment of the monitor arm, laid between two points in the XY plane.
  *
- * A rounded box runs along its own +Y, so pointing it at an arbitrary angle is
- * a rotation about Z of whatever the segment's direction is off vertical. Worth
- * the helper: an articulated arm is defined by where its joints are, and
- * writing the joints down and letting the maths place the links is the only
+ * Worth the helper: an articulated arm is defined by where its joints are, and
+ * writing down the joints and letting the maths place the links is the only
  * version where moving one joint doesn't leave a gap somewhere else.
  */
 function Link({
@@ -581,27 +526,18 @@ function Link({
 }
 
 /**
- * The mount a portrait monitor actually hangs off.
+ * The mount a portrait monitor hangs off.
  *
- * Three wrong answers preceded this one. The shipped foot, because a 60 cm
- * panel on its side won't balance on a 21 cm plate and the foot doesn't rotate.
- * A weighted pole, because freestanding poles are display-stand furniture and
- * nobody with a portrait screen on a desk uses one. And then a clamp with a
- * straight boom running back to the panel — right in principle, invisible in
- * practice: everything it was made of sat directly behind an 80 cm-tall screen,
- * so all that ever showed was a stub of clamp under the bottom edge.
+ * The articulation is placed where it can be *seen*: a straight boom back to the
+ * panel is right in principle and invisible in practice, since all of it sits
+ * behind an 80 cm screen and only a stub of clamp ever shows. So the clamp goes
+ * outboard of the panel and the arm rises beside the screen.
  *
- * This one puts the articulation where it can be seen. The clamp goes on the
- * back edge *outboard* of the panel, the arm rises beside the screen rather
- * than behind it, and the elbow is folded hard — which is not styling, it's
- * what a gas-spring arm does when the screen it carries is 30 cm from the
- * clamp. There is nowhere else for that much link length to go, so it doubles
- * back on itself, and the resulting tight V is the single most recognisable
- * thing about these.
+ * The hard-folded elbow isn't styling — it's what a gas-spring arm does when the
+ * screen is 30 cm from the clamp and there is nowhere else for that much link
+ * length to go. The tight V is the most recognisable thing about these.
  *
- * Built in the monitor's own frame, so it inherits the toe-in for free — a
- * clamp squared to the world holding a panel turned nine degrees is the kind of
- * thing you can't see until you can't stop seeing it.
+ * Built in the monitor's own frame, so it inherits the toe-in for free.
  */
 function MonitorArm({ panelH, lift }: { panelH: number; lift: number }) {
   /** The desk surface, in this monitor's local frame. */
@@ -621,13 +557,10 @@ function MonitorArm({ panelH, lift }: { panelH: number; lift: number }) {
   return (
     <group>
       {/*
-        The clamp: a C around the back edge of the desk.
-
-        Three parts, because a C-clamp is three parts — a pad on top, a spine
-        dropping behind the edge, and a screw plate underneath pulling up. Built
-        as one block it reads as a lump; built as three it reads as something
-        tightened onto the desk, and the gap between the top pad and the bottom
-        plate is where the desk actually is.
+        The clamp, as three parts: a pad on top, a spine behind the edge, a screw
+        plate underneath. As one block it reads as a lump; as three it reads as
+        tightened onto the desk, and the gap between pad and plate is where the
+        desk actually is.
       */}
       <RoundedBox
         args={[0.072, 0.014, 0.076]}
@@ -754,24 +687,17 @@ function GameBox({
   id: BoxId;
   x: number;
   /**
-   * Stood on its edge, leaning back against the wall, lid facing the seat.
-   *
-   * The lids carry the real artwork and, laid flat on a shelf above eye level,
-   * not one pixel of either was ever visible — the camera sits at 1.3 m and the
-   * shelf is above it, so a flat box shows you its spine and its underside and
-   * nothing else. Standing one up is also just what people do with the box
-   * they're proud of.
+   * Stood on its edge, lid facing the seat. The camera is at 1.3 m and the shelf
+   * is above it, so a box lying flat shows its spine and underside and not one
+   * pixel of the artwork.
    */
   upright: boolean;
   art: BoxArt;
   /**
-   * A folding wooden case rather than a printed carton.
-   *
-   * Everything about how the object behaves is the same — it's picked up the
-   * same way and turns over to the same case study — so this is a skin, not a
-   * second component. What changes is what it's made of: crisp chamfered edges
-   * instead of a soft cardboard fillet, wood instead of coated board, and brass
-   * hardware, because a case that opens has to have something holding it shut.
+   * A folding wooden case rather than a printed carton — a skin, not a second
+   * component. Crisp chamfers instead of a soft cardboard fillet, wood instead
+   * of coated board, and brass hardware, because a case that opens has to have
+   * something holding it shut.
    */
   wooden?: boolean;
 }) {
@@ -783,11 +709,8 @@ function GameBox({
 
   const held = focus.kind === "box" && focus.id === id;
 
-  /*
-   * Upright, the box's local Z becomes its height and its local Y becomes its
-   * depth — so it stands 295 mm tall and only 75 mm thick, and it needs to sit
-   * back against the wall rather than centred on the shelf.
-   */
+  // Upright, the box's local Z becomes its height and its local Y its depth, so
+  // it sits back against the wall rather than centred on the shelf.
   const shelved = useMemo(
     () =>
       new Vector3(
@@ -810,56 +733,30 @@ function GameBox({
 
     mesh.position.lerp(held ? HELD : shelved, k);
 
-    /*
-     * Held, the box turns its *back* to you — which is where the case study is
-     * printed, and which is the −Y face.
-     *
-     * A rotation of −90° about X maps −Y onto +Z, i.e. straight at the camera;
-     * +90° would present the lid instead. The 0.14 tips the top edge back so it
-     * isn't a flat rectangle pasted on the frame. For the box that already
-     * stands upright this reads as a full flip, which is exactly what turning a
-     * box over looks like.
-     */
+    // Held, the box turns its −Y face to the camera, which is where the case
+    // study is printed; +90° would present the lid instead. The 0.14 tips the
+    // top edge back so it isn't a flat rectangle pasted on the frame.
     const targetX = held ? -Math.PI / 2 + 0.14 : restRotationX;
     mesh.rotation.x = MathUtils.lerp(mesh.rotation.x, targetX, k);
   });
 
-  /*
-   * Cardboard takes a warm tint; wood does not.
-   *
-   * The tint exists to lift a printed box on hover and to knock the base card
-   * back to something off-white. Applied to a wood texture it multiplies a
-   * colour into a colour that's already there, and the case comes out muddy —
-   * so the wooden one stays at full white and lets its map do the work.
-   */
   const body = wooden ? M.BOARD_WOOD : M.BOX_CARD;
   /*
-   * Two tints, because the body and the printed faces want different things.
-   *
-   * The overlay planes carry a map and have to be left at white or the texture
-   * gets multiplied by a colour on its way to the screen. The body underneath
-   * carries no map at all — it's only ever seen at the chamfers, in the sliver
-   * the planes don't cover — so it needs its material's own colour. Setting
-   * both to white left a bright unpainted rim running round the wooden case,
-   * which is a very convincing impression of a box made of paper.
+   * Two tints. The overlay planes carry a map and must stay white or the texture
+   * gets multiplied by a colour on its way to the screen; the body carries no
+   * map and is only seen at the chamfers, so it needs its material's own colour.
+   * Both white left a bright unpainted rim round the wooden case — a convincing
+   * impression of a box made of paper.
    */
   const tint = hovered && !held ? "#ffffff" : "#dcd6cb";
   const bodyTint = wooden ? body.color : tint;
   const printTint = wooden ? "#ffffff" : tint;
 
   /*
-   * A rounded body with the artwork applied on top of it.
-   *
-   * It used to be a box geometry with six materials, one per face, which is the
-   * tidy way to print a cube and gives you a cube — six flat faces meeting at
-   * perfect right angles, the most primitive-looking object in the room. A
-   * rounded box can't do per-face materials, because it's one extruded shell
-   * with no face groups, so the print becomes separate panels floating a
-   * fraction proud of each side.
-   *
-   * That turns out to be closer to how a real box is made anyway: the board is
-   * one object and the printed wrap is another, and the reason a game box has
-   * soft edges at all is that paper can't fold around a sharp one.
+   * The artwork goes on as separate panels floating proud of each side, because
+   * a rounded box is one extruded shell with no face groups and can't take
+   * per-face materials. Closer to how a real box is made anyway: the board is
+   * one object and the printed wrap is another.
    */
   const spineFaces: {
     key: string;
@@ -892,14 +789,10 @@ function GameBox({
     <group ref={ref} position={shelved}>
       <RoundedBox
         args={[BOX.w, BOX.h, BOX.d]}
-        /*
-         * A third of the box's own depth on the carton, and a chamfer on the
-         * wood. Cardboard is soft because paper cannot fold around a sharp
-         * corner; a hardwood case is machined, and its edges are broken by a
-         * couple of millimetres and no more. Rounding them the same amount is
-         * how two objects made of different things end up looking made of the
-         * same thing.
-         */
+        // Cardboard is soft because paper can't fold around a sharp corner; a
+        // hardwood case is machined and its edges broken by a couple of
+        // millimetres. Rounding both the same is how two objects made of
+        // different things end up looking made of the same thing.
         radius={wooden ? 0.005 : 0.022}
         smoothness={6}
         castShadow
@@ -984,25 +877,18 @@ function GameBox({
 }
 
 /**
- * Clasps and hinges, in brass.
- *
- * A case that opens needs something holding it shut, and this is the part that
- * finishes the argument the parting line starts. Two hooked clasps on the front
- * edge, two barrel hinges on the back, all of them the only warm metal anywhere
- * in the room — which is also why they read at this distance when nothing else
- * that small does.
+ * Clasps and hinges, in brass — what finishes the argument the parting line
+ * starts. The only warm metal in the room, which is why five millimetres of
+ * hardware reads at this distance when nothing else that small does.
  */
 function CaseHardware() {
   /** A whisker proud of the face, so each catches its own highlight. */
   const out = BOX.w / 2 + 0.0015;
 
   /*
-   * On the left and right faces, not the front and back.
-   *
-   * The case stands on its edge with the board facing the seat, so the only
-   * faces anyone can see are the four narrow ones around it. Hardware on the
-   * front and back would be on the two faces pointing at the wall and at the
-   * ceiling — correct for a box lying flat, invisible for one stood up.
+   * On the left and right faces. The case stands on its edge, so those are the
+   * only ones visible — front and back point at the wall and the ceiling, which
+   * is correct for a box lying flat and invisible for one stood up.
    */
   return (
     <group>
@@ -1086,11 +972,6 @@ function Shelf() {
           <meshStandardMaterial {...M.POWDER_COAT} />
         </RoundedBox>
       ))}
-      {/*
-        One up, one flat. Two boxes stacked was a block; a box stood against the
-        wall with another lying beside it is a shelf — and it shows one lid and
-        one spine, which is the pair of things worth showing.
-      */}
       <GameBox id="catan" x={SHELF.x - 0.23} upright art={art.catan} />
       <GameBox id="chess" x={SHELF.x + 0.07} upright art={art.chess} wooden />
       <Plant />
@@ -1099,12 +980,9 @@ function Shelf() {
 }
 
 /**
- * The triptych.
- *
- * Three thin black frames in a row, each showing its own third of one wide
- * photograph. The slicing is done with texture offsets rather than by cutting
- * three images, so the car lines up across the gaps exactly — by construction,
- * not by hand.
+ * Three frames each showing a third of one wide photograph, sliced with texture
+ * offsets rather than by cutting three images — so the car lines up across the
+ * gaps by construction rather than by hand.
  */
 function Triptych() {
   const panels = useMemo(() => triptychPanels(), []);
@@ -1113,14 +991,8 @@ function Triptych() {
   const pitch = TRIPTYCH.w + TRIPTYCH.gap;
   const span = pitch * (PANELS - 1);
 
-  /*
-   * Height comes from the artwork, not from a hand-picked number.
-   *
-   * The picture is one wide canvas sliced into thirds, so each panel's art has
-   * a fixed aspect — pick the frame height independently and the car comes out
-   * stretched, which on a shape this recognisable is immediately obvious and
-   * impossible to un-see.
-   */
+  // Height comes from the artwork's aspect. Pick it independently and the car
+  // comes out stretched.
   const artW = TRIPTYCH.w - TRIPTYCH.frame * 2;
   const artH = artW / PANEL_ASPECT;
   const frameH = artH + TRIPTYCH.frame * 2;
@@ -1129,8 +1001,7 @@ function Triptych() {
     <group position={[TRIPTYCH.x, TRIPTYCH.y, WALL.z + 0.006]}>
       {panels.map((tex, i) => (
         <group key={i} position={[i * pitch - span / 2, 0, 0]}>
-          {/* Frame: thin, black, square-cornered. Gallery frames have no
-              fillet, and adding one here would make them read as tablets. */}
+          {/* Square-cornered: a fillet would make these read as tablets. */}
           <mesh castShadow receiveShadow>
             <boxGeometry args={[TRIPTYCH.w, frameH, 0.016]} />
             <meshStandardMaterial {...M.FRAME} />
@@ -1146,14 +1017,8 @@ function Triptych() {
 }
 
 /**
- * The desk mat.
- *
- * Big — it runs the full width of the working area, under the keyboard and the
- * mouse both, because that's what a mat that size is for and because a small
- * pad under only the mouse leaves the keyboard sitting on bare wood looking
- * unplaced. Rounded in plan rather than as a box: drei's rounded box caps its
- * radius at half the smallest dimension, and on something four millimetres
- * thick that's no rounding at all.
+ * Rounded in plan rather than as a rounded box: drei caps the radius at half the
+ * smallest dimension, which on something 4 mm thick is no rounding at all.
  */
 function DeskMat() {
   const top = useMemo(
@@ -1201,12 +1066,6 @@ function Clutter() {
       <Mouse top={top + MAT.thickness} />
       <Cube top={top} />
 
-      {/*
-        Coaster. Cork, and the only warm-brown object on the desk that isn't the
-        desk — which is exactly why it works: a white mug standing directly on
-        an oiled walnut top is a ring waiting to happen, and everyone who owns
-        a wooden desk knows it.
-      */}
       <group position={[-0.66, top, 0.2]}>
         <mesh position={[0, 0.0025, 0]} castShadow receiveShadow>
           <cylinderGeometry args={[0.058, 0.056, 0.005, 40]} />
@@ -1215,12 +1074,6 @@ function Clutter() {
         <Mug position={[0, 0.005, 0]} />
       </group>
 
-      {/*
-        A notebook and a pen, at the right-hand edge. Not decoration: the right
-        third of the frame is where the lamp used to stand and it's empty
-        without something in it, and a flat rectangle there catches the window
-        light and gives that side of the desk a highlight to sit on.
-      */}
       <group position={[0.74, top, 0.19]} rotation={[0, -0.22, 0]}>
         <RoundedBox
           args={[0.15, 0.014, 0.21]}

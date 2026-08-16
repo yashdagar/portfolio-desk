@@ -35,26 +35,14 @@ import { HeroCamera } from "./HeroCamera";
 import { Room } from "./Room";
 
 /**
- * Three sources, per the art direction: a warm ~2700K desk lamp as key, the
- * window as cool ~6500K fill, and the screens as practical rim light. The
- * warm/cool opposition is doing most of the work — it's the reason a render
- * reads as lit rather than as flat-shaded geometry.
- *
- * All three are driven by real Gurugram time, so the balance inverts across the
- * day: window-dominant at noon, lamp-dominant at midnight.
+ * A warm ~2700K lamp as key, the window as cool ~6500K fill, the screens as
+ * practical rim. The warm/cool opposition does most of the work. All of it is
+ * driven by real Gurugram time, so the balance inverts across the day.
  */
 function Lighting({ day }: { day: Daylight }) {
-  /*
-   * The lamp aims at the desk.
-   *
-   * A spot rather than a point light, because the emitter is a strip on the
-   * underside of a bar and it throws downward. A point light there would put an
-   * even disc on the wall behind, which is what a bare bulb does.
-   *
-   * The target is a real Object3D in the scene because three resolves a spot's
-   * direction from `target.matrixWorld`, and a target that was never added to
-   * the scene silently leaves the light aimed at the origin.
-   */
+  // Targets are real Object3Ds in the scene because three resolves a spot's
+  // direction from `target.matrixWorld` — one that was never added silently
+  // leaves the light aimed at the origin.
   const [lampTarget] = useState(() => new Object3D());
   const [sunTarget] = useState(() => new Object3D());
   const [shelfTarget] = useState(() => new Object3D());
@@ -66,57 +54,29 @@ function Lighting({ day }: { day: Daylight }) {
 
   return (
     <>
-      {/*
-        Bounce.
-
-        A hemisphere rather than a flat ambient. Flat ambient adds the same value
-        to every surface regardless of which way it faces, which is exactly how
-        you flatten a render — at noon the old one was contributing 0.43 to the
-        ceiling-facing desk and the camera-facing monitor backs alike, and the
-        whole room went grey and shapeless. A hemisphere at least distinguishes
-        up from down, so the floor stays dark and the desk surface lifts.
-      */}
+      {/* A hemisphere, not a flat ambient: flat adds the same value whichever
+          way a surface faces, which is exactly how a render goes shapeless. */}
       <hemisphereLight
         args={[day.bounceColor, "#241d18", day.bounceIntensity]}
       />
 
-      {/*
-        Aimed left of centre, where the lamp actually points.
-
-        The target used to sit at x = 0.1, almost the middle of the desk, from
-        an emitter that has since moved out to −0.74 — so the cone was throwing
-        most of its light across the desk toward the window rather than down
-        onto the half of it the lamp stands over. The pool now lands over the
-        keyboard and the mug, which is what a task light is for.
-      */}
+      {/* Aimed left of centre, so the pool lands over the keyboard and mug
+          rather than across the desk toward the window. */}
       <primitive object={lampTarget} position={[-0.2, DESK.surfaceY, 0.08]} />
       <spotLight
         position={LAMP_EMITTER}
         target={lampTarget}
         /*
-         * Up from 3.1, because the lamp reads as switched on and doing nothing.
+         * Inverse-square is unforgiving about the emitter being moved: a quarter
+         * further at decay 2 is a third less light arriving. Multiplying back up
+         * is the honest fix; softening the decay lights the room from one lamp.
          *
-         * Inverse-square is unforgiving about being moved. The emitter went
-         * out to x = −1.14 and down to 520 mm, which lengthened the throw to
-         * the middle of the desk by about a quarter — and a quarter further at
-         * decay 2 is a third less light arriving. Multiplying it back up is
-         * the honest fix; softening the decay would light the whole room from
-         * one desk lamp.
-         *
-         * Multiplied by the dimmer, which defaults to its lowest stop. The
-         * fixed 5.6 stays as the "full brightness" figure it always was — the
-         * level is a scale on it, so the lamp still tracks the time of day at
-         * every setting rather than becoming a constant the moment anyone
-         * touches it.
+         * The dimmer scales this rather than replacing it, so the lamp still
+         * tracks the time of day at every setting.
          */
         intensity={day.lampIntensity * 5.6 * lampLevel}
-        /*
-          Wide and very soft. The old cone was 0.92 rad at penumbra 0.75, which
-          put a visible hard-edged ellipse across the desk and a diagonal cut
-          line through the middle of the frame — the single most artificial
-          thing in the render. A bar-shaped emitter doesn't have a cone edge at
-          all, so the falloff has to be entirely gradient.
-        */
+        // Wide and entirely gradient: a bar-shaped emitter has no cone edge, and
+        // a hard-edged ellipse across the desk was the most artificial thing here.
         angle={1.15}
         penumbra={1}
         distance={4.2}
@@ -129,16 +89,8 @@ function Lighting({ day }: { day: Daylight }) {
         shadow-camera-near={0.15}
       />
 
-      {/*
-        The sun, through the window.
-
-        Shadow-casting, and the wall is a solid slab with a hole in it, so the
-        only daylight that reaches the desk is the daylight that came through
-        the opening. That's what puts a bright window-shaped patch on the floor
-        and along the right-hand end of the desk, and it's the difference
-        between a room lit by daylight and a room with the daylight parameter
-        turned up.
-      */}
+      {/* Shadow-casting through a solid wall, so the only daylight reaching the
+          desk came through the opening — which is what puts the patch on it. */}
       <primitive object={sunTarget} position={[-0.15, 0.55, 0.15]} />
       <directionalLight
         position={[WINDOW.x + 1.9, WINDOW.y + 1.35, WALL.z - 2.1]}
@@ -157,27 +109,15 @@ function Lighting({ day }: { day: Daylight }) {
         shadow-camera-bottom={-2.6}
       />
 
-      {/*
-        Sky fill, shadowless, from the window's side of the room.
-
-        The sun gives direction and a hard-edged patch; this is the broad soft
-        daylight a 90 cm opening actually throws, and it's what makes midday
-        read as midday. Aimed from slightly above and well to the right so it
-        still models everything it touches rather than washing it.
-      */}
+      {/* Shadowless sky fill: the sun gives direction, this gives the broad soft
+          daylight a 90 cm opening actually throws. */}
       <directionalLight
         position={[WINDOW.x + 1.4, WINDOW.y + 0.9, WALL.z + 1.4]}
         intensity={day.skyIntensity}
         color={day.windowColor}
       />
 
-      {/*
-        The opening's own glow, tight around the sill.
-
-        Short range on purpose: its job is the bright falloff down the reveal
-        and across the near end of the desk, not to light the room. That's the
-        directional above.
-      */}
+      {/* Short range on purpose: the falloff down the reveal, not room light. */}
       <pointLight
         position={[WINDOW.x - 0.12, WINDOW.y - 0.12, WALL.z + 0.2]}
         intensity={day.windowIntensity}
@@ -187,14 +127,10 @@ function Lighting({ day }: { day: Daylight }) {
       />
 
       {/*
-        Practical: screen spill, one per monitor, placed behind the panel.
-        In front they paint a blown-out hotspot on the very surface they're
-        meant to be emitted by, which is an artefact no real monitor has.
-
-        Weak on purpose. At the old 0.42 the three of them sprayed cyan across
-        the desk and up the wall and every warm surface in the room went green;
-        their job is a rim on the monitor backs and the near edge of the desk,
-        not to light the scene.
+        Screen spill, behind the panel — in front they paint a hotspot on the
+        surface they're meant to be emitted by. Weak on purpose: their job is a
+        rim on the monitor backs, and stronger sprays cyan over every warm
+        surface in the room.
       */}
       {SCREENS.map((s) => (
         <pointLight
@@ -208,38 +144,16 @@ function Lighting({ day }: { day: Daylight }) {
       ))}
 
       {/*
-        Bias lighting, behind the centre monitor.
-
-        The room had two lights after dark — a desk lamp and a city — and the
-        lamp only reaches the desk. Everything above the monitors went to black,
-        which isn't atmospheric, it's empty: at 22:30 a third of the frame was
-        carrying no information at all.
-
-        A strip stuck to the back of the main monitor is the right answer rather
-        than a convenient one. It's what is actually on a desk like this, it's
-        the accent colour the whole design has been carrying since the start,
-        and it lights precisely the wall the array was hiding. It also does the
-        thing bias lighting is sold for — a dark screen against a lit wall reads
-        as a screen, against a black wall it reads as a hole.
-
-        Three sources rather than one, spread along the panel, because a strip
-        is a metre long and a single point behind it paints a bullseye.
+        Bias lighting, which stops the wall above the desk going to pure black
+        after dark. Three sources rather than one because a strip is a metre long
+        and a single point behind it paints a bullseye.
       */}
       {[-0.34, 0, 0.34].map((x) => (
         <pointLight
           key={x}
           position={[x, biasY, WALL.z + 0.06]}
-          /*
-           * Low, and it took two goes to believe how low.
-           *
-           * The first pass ran these at 1.15 over a 1.5 m radius, which lit the
-           * whole wall from the shelf to the desk and turned 22:30 into early
-           * evening — and worse, it made teal the dominant colour in a frame
-           * whose entire art direction is a warm key against a cool fill. Bias
-           * lighting is *dim*. Its job is to stop the wall behind a bright
-           * screen being black, so it only has to beat black, and the moment it
-           * beats the desk lamp as well the room stops having a key light.
-           */
+          // Very low. It only has to beat black, and the moment it beats the
+          // desk lamp the room stops having a key light.
           intensity={day.nightIntensity * 0.42}
           distance={1.05}
           decay={2}
@@ -248,32 +162,16 @@ function Lighting({ day }: { day: Daylight }) {
       ))}
 
       {/*
-        A ceiling spot over the shelf, on only at night.
-
-        The bias strip lights the wall behind the desk and can't reach the shelf
-        — it's a metre above and pointed the wrong way — so the boxes, the plant
-        and the print stayed black. This is the one light in the room that has
-        no visible source, and it's the least dishonest of the options: a
-        downlight over a display shelf is ordinary, whereas the alternatives
-        were to hang a second lamp in shot or to lift the ambient, and lifting
-        the ambient at night would undo every shadow the desk lamp casts.
-
-        Warm, narrow, and shadowless. It's here to say what's on the shelf, not
-        to light the room.
+        The one light with no visible source, on only at night — nothing else
+        reaches the shelf. The alternatives were a second lamp in shot, or
+        lifting the ambient, which would undo every shadow the desk lamp casts.
       */}
       <primitive object={shelfTarget} position={[SHELF.x, SHELF.y, SHELF.z]} />
       <spotLight
         position={[SHELF.x + 0.1, 2.42, SHELF.z + 0.62]}
         target={shelfTarget}
-        /*
-         * Narrow, and aimed to fall off before it reaches the print.
-         *
-         * At 0.52 rad the cone cleared the shelf by half a metre either side
-         * and washed the wall from the ceiling down to the monitors, which is
-         * a room light rather than a shelf light — the whole upper wall lit
-         * evenly, and nothing in it looked deliberately picked out. Tightened
-         * until the pool ends roughly where the shelf does.
-         */
+        // Tightened until the pool ends roughly where the shelf does; wider and
+        // it washes the whole upper wall and nothing looks picked out.
         intensity={day.nightIntensity * 4.2}
         angle={0.4}
         penumbra={1}
@@ -286,18 +184,13 @@ function Lighting({ day }: { day: Daylight }) {
 }
 
 /**
- * Reflections without an HDRI download.
- *
- * Brushed aluminium and glazed ceramic only look like themselves if there's
- * something for them to reflect, and with no environment they render as flat
- * grey. These lightformers stand in for the room's own bright surfaces — the
- * window, the lamp, the screens — so the specular highlights point at things
- * that are actually there.
+ * Reflections without an HDRI download. Brushed aluminium and glazed ceramic
+ * render as flat grey with no environment, so these lightformers stand in for
+ * the room's own bright surfaces and the highlights point at real things.
  */
 function Reflections({ day }: { day: Daylight }) {
-  // The lamp is a reflected source as well as a light. Switch it off and the
-  // aluminium stands should lose their warm highlight too, or the room goes
-  // dark while every metal surface stays lit by something that isn't there.
+  // The lamp is a reflected source as well as a light: switched off, the metal
+  // must lose its warm highlight too.
   const lampLevel = useLampLevel();
 
   return (
@@ -333,11 +226,8 @@ function Reflections({ day }: { day: Daylight }) {
 }
 
 /**
- * Re-evaluates the daylight on an interval.
- *
- * Computed on the client only. Doing it during SSR bakes the build machine's
- * clock into the markup, and the room would arrive at whatever time the deploy
- * happened to run.
+ * Client-only: computing this during SSR bakes the build machine's clock into
+ * the markup, and the room arrives at whatever time the deploy ran.
  */
 function useDaylight(): Daylight {
   const [day, setDay] = useState<Daylight>(() => daylight());
@@ -347,8 +237,7 @@ function useDaylight(): Daylight {
     // Pinned by ?t= — nothing to tick.
     if (isPinned()) return;
 
-    // A minute is far finer than the light actually changes; it just means the
-    // transition across dawn or dusk happens while someone's watching.
+    // Finer than the light changes, so dawn and dusk move while someone watches.
     const id = setInterval(() => setDay(daylight(sceneNow())), 60_000);
     return () => clearInterval(id);
   }, []);
@@ -366,14 +255,9 @@ export function Scene({
   const clock = useDaylight();
   const weather = useWeather();
 
-  /*
-   * Weather is a modifier on the clock, never a replacement for it.
-   *
-   * The room has to light itself whether or not anything can tell it what the
-   * sky is doing, so `withWeather` is a pure function that returns its input
-   * unchanged when there's nothing to apply. A failed lookup is a clear day,
-   * not a dark room.
-   */
+  // Weather modifies the clock, never replaces it: `withWeather` returns its
+  // input unchanged when there's nothing to apply, so a failed lookup is a clear
+  // day rather than a dark room.
   const day = withWeather(clock, weather);
 
   return (
@@ -386,35 +270,21 @@ export function Scene({
       gl={{
         antialias: true,
         toneMapping: ACESFilmicToneMapping,
-        /*
-          Under 1 on purpose. ACES already rolls off the highlights, and at
-          exposure 1 the daylit wall clips to near-white and the whole room
-          flattens.
-
-          Raised from 0.78 once the flat ambient came out. The old value was
-          compensating for a scene that was being lifted everywhere at once —
-          with contrast coming from the sun and the lamp instead, pulling the
-          exposure that far down just crushed the room.
-        */
+        // Under 1: at exposure 1 the daylit wall clips to near-white and the
+        // whole room flattens.
         toneMappingExposure: 0.92,
       }}
       camera={{ position: CAMERA.eye, fov: CAMERA.fov, near: 0.05, far: 30 }}
       /*
-        Measure clicks from the viewport, not from whatever they landed on.
-
         R3F defaults to `offsetX/offsetY`, which the DOM reports relative to the
-        *target* element. That's the container div for most of the frame and is
-        fine — but the screens mount real DOM through drei's `<Html>`, and a
-        click that lands on one of its wrappers arrives measured from the corner
-        of that wrapper instead. On the left monitor that's an error of ~90px
-        across and ~375px down, which is most of the way to another screen: the
-        ray goes off into the room, hits the invisible click-away plane behind
-        everything, and the monitor you clicked never focuses.
+        event *target* — and the screens mount real DOM through drei's `<Html>`,
+        so a click landing on one of its wrappers is measured from that wrapper's
+        corner. On the left monitor that is ~90px across and ~375px down, enough
+        that the ray misses the screen entirely and it never focuses.
 
-        `client` is safe here because this canvas is the viewport. In hero mode
-        it sits partway down a scrolling page, where clientY would be offset by
-        however far down it is — that path mounts no `<Html>` and takes no
-        clicks at all, so it keeps the default.
+        `client` is only safe because this canvas is the viewport. Hero mode sits
+        partway down a scrolling page, and takes no clicks at all, so it keeps
+        the default.
       */
       eventPrefix={hero ? undefined : "client"}
     >
@@ -426,24 +296,15 @@ export function Scene({
       {hero ? <HeroCamera /> : <CameraRig />}
 
       <EffectComposer>
-        {/*
-          Bloom on emissives only. The threshold sits above every lit surface in
-          the room so the glow comes from the bulb, the window and the screens —
-          the things that actually emit — rather than smearing the whole frame.
-        */}
+        {/* Threshold above every lit surface, so only true emissives bloom. */}
         <Bloom
           intensity={0.34}
           luminanceThreshold={0.9}
           luminanceSmoothing={0.25}
           mipmapBlur
         />
-        {/*
-          Fine grain, to break up the flat gradients on the wall.
-
-          Overlay rather than soft-light, and much weaker: soft light against
-          bloom's HDR values swings the hue hard, which painted a green and blue
-          speckled disc around the lamp.
-        */}
+        {/* Overlay, not soft-light: soft light against bloom's HDR values swings
+            the hue and paints a speckled disc around the lamp. */}
         <Noise premultiply blendFunction={BlendFunction.OVERLAY} opacity={0.06} />
         <Vignette eskil={false} offset={0.28} darkness={0.62} />
       </EffectComposer>

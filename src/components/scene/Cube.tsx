@@ -15,44 +15,26 @@ import { CUBE } from "@/lib/layout";
 import * as M from "./materials";
 
 /**
- * A speedcube, on the right-hand end of the desk.
+ * A stickerless speedcube, merged into one geometry so it's a single draw call.
  *
- * The only saturated object in a room of greys and warm browns, and the one
- * thing on the desk that says someone fiddles. Modelled as a modern speedcube
- * rather than a Rubik's-brand one: 56 mm, heavily chamfered, and *stickerless*.
+ * Stickerless is the constraint everything follows from and it went wrong
+ * repeatedly: each facelet is its own coloured plastic and the colour wraps over
+ * the chamfer into the slot, so the gaps on the white face are white. Only the
+ * deep interior is black. Anything that puts a dark ring round a tile has made
+ * it a sticker.
  *
- * Stickerless is the constraint everything else follows from, and it went wrong
- * repeatedly, so: each facelet is its own piece of coloured plastic, and the
- * colour wraps over the chamfer and down into the slot. There are no black
- * borders. The gaps on the white face are white and the gaps on the green face
- * are green — only the deep interior, turned away from every facelet, is black.
- * Any change that puts a dark ring around a tile has made it a sticker.
- *
- * Two things this is easy to get wrong, both of which cost several rounds:
- *
- *  - **Judge it on the desk, not magnified.** It is ~55 px across, each tile
- *    ~18 px. Detail that only survives at 8× isn't there. `scripts/shot-cube.mjs`
- *    renders both.
- *  - **The pad is not the only thing you see.** A piece is a square box and a
- *    pad isn't square, so a strip of box shows past every pad's edge and the eye
- *    measures *that* corner. `SQUARENESS` shapes the pad; the fade against
- *    `padRadius` in `buildCube` stops the box behind it being what reads.
- *
- * All twenty-six pieces merge into one geometry, so the cube is a single draw
- * call.
+ * Judge it at ~55 px, not magnified — `scripts/shot-cube.mjs` renders both. And
+ * note the pad is not the only thing visible: a piece is a square box and a pad
+ * isn't, so a strip of box shows past every pad's edge and the eye measures
+ * *that* corner unless the fade in `buildCube` takes it to black.
  */
 
 /**
- * Face colours, in the Western scheme, keyed by the *local* axis of a cubie so
- * the colours travel with the piece when a layer turns.
+ * Keyed by the *local* axis of a cubie, so colours travel with the piece.
  *
- * Brighter than they look on a picker, because every one goes through
- * convertSRGBToLinear, a dim room and ACES tonemapping, all of which pull toward
- * the middle. A #d92d20 red and a #f28c28 orange arrived close enough to read as
- * one face — the single worst thing that can happen to a cube — so the orange is
- * pushed well up and warm rather than sitting between red and yellow. White is a
- * touch off #ffffff, which would blow out next to the desk's brightest
- * highlight.
+ * Brighter than they look on a picker: convertSRGBToLinear, a dim room and ACES
+ * all pull toward the middle, and a picker-plausible red and orange arrived
+ * close enough to read as one face.
  */
 const FACE_COLOURS: Record<string, string> = {
   "1,0,0": "#ee1b2e", // R — red
@@ -80,13 +62,10 @@ interface Cubie {
 }
 
 /**
- * Turn a layer, moving both where each cubie is and which way it faces.
- *
- * This is why the cube is 26 oriented pieces rather than six grids of coloured
- * squares. A facelet model needs the adjacency cycles for all six faces written
- * out by hand, which is a well-known source of scrambles that look plausible and
- * are illegal. Rotating a position and a quaternion by the same 90° cannot
- * produce an unreachable state, because it is what the cube does.
+ * Turn a layer, moving both where each cubie is and which way it faces. Why the
+ * cube is 26 oriented pieces rather than six grids of squares: rotating a
+ * position and a quaternion together cannot produce an unreachable state, where
+ * hand-written facelet adjacency cycles very easily can.
  */
 function turn(cubies: Cubie[], axis: Vector3, layer: number, quarters: number) {
   const angle = (quarters * Math.PI) / 2;
@@ -106,11 +85,8 @@ const X = new Vector3(1, 0, 0);
 const Y = new Vector3(0, 1, 0);
 const Z = new Vector3(0, 0, 1);
 
-/**
- * Fixed, not random, for the same reason the plant's leaves are: a cube that
- * rearranges itself between visits is something nobody notices and everybody
- * feels. Eight quarter-turns, so no face is near solved.
- */
+/** Fixed, not random: a cube that rearranges itself between visits is something
+ *  nobody notices and everybody feels. */
 const SCRAMBLE: [Vector3, number, number][] = [
   [X, 1, 1],
   [Y, 1, -1],
@@ -123,11 +99,9 @@ const SCRAMBLE: [Vector3, number, number][] = [
 ];
 
 /**
- * Which colour each of a cubie's six faces shows, in world axes.
- *
- * Rotating a world direction back through the cubie's inverse rotation asks
- * "which face was this before it was turned", which is the question a colour
- * lookup needs answered. Faces that end up inside the cube get the black core.
+ * Which colour each of a cubie's six faces shows, in world axes. Rotating a
+ * world direction back through the inverse asks "which face was this before it
+ * was turned". Faces inside the cube get the black core.
  */
 function faceColours(c: Cubie): Map<string, string> {
   const inverse = new Quaternion().copy(c.quat).invert();
@@ -163,13 +137,8 @@ function smoothstep(edge0: number, edge1: number, x: number): number {
 const CORE_BLACK = "#0b0c0e";
 const CORE = new Color(CORE_BLACK);
 
-/**
- * How much light reaches a slot wall, relative to the facelet beside it.
- *
- * Baked into the vertex colour because the slot is 0.3 mm wide: nothing in the
- * lighting rig resolves a shadow at that scale and there is no AO pass, so
- * without this the walls render at full brightness and the grooves vanish.
- */
+/** Slot-wall brightness, baked in because nothing in the rig resolves a shadow
+ *  across 0.3 mm and there is no AO pass. Without it the grooves vanish. */
 const SHADOW = 0.46;
 
 const PITCH = CUBE.cubie + CUBE.gap;
@@ -177,46 +146,25 @@ const PITCH = CUBE.cubie + CUBE.gap;
 const SEAM = 0.0006;
 const PAD_HALF = CUBE.cubie / 2 - SEAM;
 /**
- * How square each corner of a pad is, indexed by how many of the two sides
- * meeting there lie on the outside of the cube. This is the shape of the whole
- * object, in three numbers.
+ * Superellipse exponent per corner, indexed by how many of the two sides meeting
+ * there lie on the outside of the cube. 2 is a circle, infinity a square. This
+ * is the shape of the whole object.
  *
- * A superellipse exponent is a rounded square as one value: 2 is a circle,
- * infinity a square. One exponent for a whole pad can never be right, because a
- * tile's outer side is also the cube's silhouette and wants to stay a straight
- * line, while the end pointing at the middle of the face wants to be a
- * semicircle. Round everything and the silhouette comes out chewed; square
- * everything and you have nine tiles that were never made for the disc between
- * them.
- *
- * Choosing per corner needs no cut, no second outline and no per-piece special
- * case: a corner piece keeps a hard corner at the cube's corner, an edge piece
- * presents a broad tongue at the centre, the centre is a disc, and where four
- * round ends meet they leave the open void a real face has there.
- *
- * Continuous by construction — a superellipse passes through exactly PAD_HALF
- * on both axes for any exponent, so quadrants built with different exponents
- * still meet. Only the tangent kinks, at four points that are straight runs.
+ * One exponent for a whole pad can never be right: a tile's outer side is the
+ * cube's silhouette and has to stay straight, while the end pointing at the
+ * middle of the face wants to be a semicircle. Per corner needs no cut and no
+ * per-piece special case, and stays continuous because a superellipse passes
+ * through exactly PAD_HALF on both axes for any exponent.
  */
 const SQUARENESS = [2.05, 5.0, 9.0];
-/**
- * The centre, which has no outward side. Just off a circle rather than exactly
- * one, so it is built by the same rule as everything else rather than being a
- * separate object dropped on top.
- */
+/** The centre has no outward side. Just off a circle, so it is built by the same
+ *  rule rather than being a separate object dropped on top. */
 const CENTRE_SQUARENESS = 2.05;
-/**
- * How far a pad's rim stands proud of the piece, and how much higher its middle
- * is than its rim. Below about 0.3 mm the lip stops casting anything the rig can
- * resolve and the pads read as painted on.
- */
+/** Below about 0.3 mm the lip casts nothing the rig can resolve and the pads
+ *  read as painted on. */
 const PAD_LIP = 0.00035;
 const PAD_CROWN = 0.0008;
-/**
- * Rings across a pad, biased toward the rim — the outer quarter of the radius is
- * where the pad turns down over the shoulder, and even spacing puts one ring
- * across all of that and eight across the nearly flat middle.
- */
+/** Biased toward the rim, where the pad turns down over the shoulder. */
 const PAD_RINGS = 9;
 const PAD_RING_BIAS = 1.7;
 const PAD_STEPS = 64;
@@ -224,12 +172,9 @@ const PAD_STEPS = 64;
 const BODY_DIM = 0.7;
 
 /**
- * The height of a piece's own surface at a point on its face: flat across the
- * middle, then a quarter-round of `bevel` toward each edge.
- *
- * Solved rather than sampled because the pads' rims have to land *on* this and
- * not above it — the difference between a facelet and a button is about a
- * millimetre of daylight.
+ * The height of a piece's own surface at a point on its face. Solved rather than
+ * guessed because the pads' rims have to land *on* it — the difference between a
+ * facelet and a button is about a millimetre of daylight.
  */
 function bodyHeight(u: number, v: number): number {
   const flat = CUBE.cubie / 2 - CUBE.bevel;
@@ -239,16 +184,13 @@ function bodyHeight(u: number, v: number): number {
 }
 
 /**
- * How far a pad's rim is from its own middle, in one direction.
+ * How far a pad's rim is from its own middle, in one direction. `cu`/`cv` are
+ * where the pad's centre falls on the face, and the shape is read from that
+ * alone, so the pattern survives a scramble.
  *
- * `cu`/`cv` are where the pad's centre falls on the cube's face, and the shape
- * is read from that alone — a pad in the `+u` column has its `+u` side on the
- * outside of the cube — so a pad never has to know which piece it belongs to.
- * Which is why the pattern survives a scramble.
- *
- * Used twice: to build the outline, and to decide where the piece underneath
- * stops being the pad. Both have to agree exactly, or a bright crescent appears
- * along one edge of every tile.
+ * Used both to build the outline and to decide where the piece underneath stops
+ * being the pad. The two must agree exactly or a bright crescent appears along
+ * one edge of every tile.
  */
 function padRadius(
   centre: boolean,
@@ -283,11 +225,9 @@ function padOutline(centre: boolean, cu: number, cv: number): number[][] {
 /**
  * One pad: an outline, crowned, with a short skirt down to the piece.
  *
- * Rings scaled toward the middle rather than an extrusion, whose cap would be
- * flat — and a flat cap is what stops a tile reading as moulded at desk size.
- * The profile is a spherical cap, leaving the rim vertically and flattening
- * toward the middle, which puts the highlight in a line around the pad's edge
- * rather than a blob in the centre of it.
+ * Rings rather than an extrusion, whose cap would be flat — and a flat cap is
+ * what stops a tile reading as moulded at desk size. The spherical profile puts
+ * the highlight in a line around the pad's edge rather than a blob in the middle.
  */
 function padGeometry(
   centre: boolean,
@@ -340,13 +280,10 @@ function padGeometry(
     colours.push(c.r, c.g, c.b);
   };
 
-  /*
-   * Two things flip the winding and they can cancel: taking the in-plane axes
-   * in ascending order gives a right-handed frame for X and Z but a left-handed
-   * one for Y — (x, z, y) is a swap, not a rotation — and a pad pointing down a
-   * negative axis flips again. Get it wrong and the normals face inward, which
-   * presents as a lighting bug because the silhouette is still correct.
-   */
+  // Two things flip the winding and they can cancel: (x, z, y) is a swap, not a
+  // rotation, so the in-plane axes are left-handed for Y; and a pad down a
+  // negative axis flips again. Wrong, the normals face inward — which presents
+  // as a lighting bug, because the silhouette stays correct.
   const flip = (axis === 1) !== (sign < 0);
   const tri = (a: number[], b: number[], d: number[], ca: Color, cb: Color) => {
     if (flip) {
@@ -388,15 +325,11 @@ function padGeometry(
 }
 
 /**
- * The whole cube as one geometry, coloured per vertex.
- *
- * Each cubie is one rounded box — not three coloured slabs, which meet at a
+ * Each cubie is one rounded box, not three coloured slabs — those meet at a
  * right angle where they wrap a corner and leave the silhouette square in the
- * eight places you actually look. Its vertices are painted by which way each
- * normal points: a normal on a flat face is exactly an axis and takes that
- * face's colour, and one on a chamfer is a blend whose dominant component
- * decides, so a chamfer between two facelets splits down the middle with colour
- * meeting colour and no black line.
+ * eight places you actually look. Vertices take the colour of whichever face
+ * their normal points most nearly toward, so a chamfer between two facelets
+ * splits down the middle with colour meeting colour and no black line.
  */
 function buildCube(): BufferGeometry {
   const cubies: Cubie[] = [];
@@ -419,14 +352,10 @@ function buildCube(): BufferGeometry {
   const shade = new Color();
 
   for (const c of cubies) {
-    /*
-     * Eighteen segments is far more than the shape needs and exactly what the
-     * paint needs. Eight was plenty for the chamfer, but the box now also
-     * carries where the pad ends as a vertex colour, and a vertex colour is only
-     * as sharp as the mesh under it: at eight the samples are 2.3 mm apart on an
-     * 18.6 mm face and every tile edge came out dithered. Eighteen puts them at
-     * 1 mm, under the seam's own width.
-     */
+    // Far more segments than the shape needs, because the box also carries where
+    // the pad ends as a vertex colour, and a vertex colour is only as sharp as
+    // the mesh under it. At eight the samples were 2.3 mm apart and every tile
+    // edge came out dithered; eighteen puts them under the seam's own width.
     const geo = new RoundedBoxGeometry(
       CUBE.cubie,
       CUBE.cubie,
@@ -459,20 +388,18 @@ function buildCube(): BufferGeometry {
       const turned = Math.min(1, Math.abs(n[next]) / Math.SQRT1_2);
 
       /*
-       * Three cases, written to agree at the joins: at 45° the shoulder has
-       * reached exactly `colour × SHADOW`, which is where the wall case starts.
-       * Get that wrong and there is a visible ring at 45° on every edge.
+       * Three cases that have to agree at the joins: at 45° the shoulder reaches
+       * exactly `colour × SHADOW`, which is where the wall case starts, or there
+       * is a visible ring at 45° on every edge.
        *
-       * Where the shoulder's fade *starts* is the difference between a speedcube
-       * and a stickered one. Coloured plastic wraps over the shoulder and down
-       * into the groove, so the colour has to hold across almost the whole turn
-       * and give up only at the very bottom, to its own colour in shadow rather
-       * than to black. Ramp from the moment the surface begins to turn and you
-       * have painted a border around a flat square.
+       * The shoulder's colour holds across almost the whole turn and gives up
+       * only at the very bottom, to its own colour in shadow rather than black.
+       * Ramping from the moment the surface starts to turn paints a border round
+       * a flat square, which is a sticker.
        */
       if (dominant !== CORE_BLACK) {
-        // Dimmed, because the facelet is the pad above this. What is left of
-        // the piece's face is the frame around it, sitting a little lower.
+        // Dimmed: the facelet is the pad above this, and what's left of the
+        // piece's face is the frame around it, sitting a little lower.
         colour.set(dominant).multiplyScalar(BODY_DIM);
         if (toward === CORE_BLACK) {
           shade.set(dominant).multiplyScalar(SHADOW * BODY_DIM);
@@ -481,14 +408,10 @@ function buildCube(): BufferGeometry {
 
         /*
          * Outside the pad the piece stops being a facelet and becomes a hole.
-         *
-         * How much box shows past the pad varies enormously, and that is the
-         * whole subtlety. Along the axes it is 0.6 mm of seam, which must stay
-         * coloured or every tile gets a border. At the diagonals it is up to
-         * 4.5 mm of open void, where a real cube shows its mechanism. Measuring
-         * the fade from the pad's own rim in that direction handles both: near
-         * the axes nothing ever reaches it, at the diagonals everything past it
-         * goes black.
+         * How much box shows past the pad varies from 0.6 mm of seam along the
+         * axes — which must stay coloured or every tile gets a border — to
+         * 4.5 mm of open void at the diagonals. Measuring from the pad's own rim
+         * handles both: near the axes nothing ever reaches the ramp.
          */
         const [across, down] = [0, 1, 2].filter((a) => a !== axis);
         const bu = points.getComponent(v, across);
@@ -524,9 +447,6 @@ function buildCube(): BufferGeometry {
     geo.translate(c.pos.x * PITCH, c.pos.y * PITCH, c.pos.z * PITCH);
     parts.push(geo.index ? geo.toNonIndexed() : geo);
 
-    // A pad on each face this piece shows. Its shape comes from where the piece
-    // sits on that face, not from what kind of piece it is, so a scramble
-    // reassembles the pattern without anything having to track it.
     for (let axis = 0; axis < 3; axis++) {
       const sign = c.pos.getComponent(axis);
       if (sign === 0) continue;
