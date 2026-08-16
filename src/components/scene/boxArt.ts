@@ -1,22 +1,26 @@
 /**
- * Printed artwork for the two board game boxes.
+ * Printed artwork for the Catan box.
  *
- * Drawn to canvas rather than shipped as image files. Two reasons: nothing here
- * needs to be photographic, and a procedural lid means the colours can be tuned
- * against the room's palette instead of fighting it.
+ * Drawn to canvas rather than shipped as an image file. Two reasons: nothing
+ * here needs to be photographic, and a procedural lid means the colours can be
+ * tuned against the room's palette instead of fighting it.
  *
- * The two lids are deliberately in different idioms, because their subjects
- * are. Catan's identity is the hex — it's on the board, the pieces and the logo
- * — and its boxes have always been warm illustrated island scenes under a heavy
- * wordmark banner. Chess packaging goes the other way entirely: the reference
- * designs are minimal and typographic, black foil on grey board, a severely
- * limited palette and notation used as ornament. One lid should look printed in
- * four colours and the other should look foil-blocked in one.
+ * Catan's identity is the hex — it's on the board, the pieces and the logo —
+ * and its boxes have always been warm illustrated island scenes under a heavy
+ * wordmark banner. So the lid is one: a 3-4-5-4-3 island, six terrains with
+ * their icons, number tokens with the red six and eight, roads and settlements
+ * laid over it.
  *
- * Both are built to read as a silhouette first. They sit on a shelf a metre and
- * a half from the camera where the lid is barely 80 pixels across, so each has
- * to survive being reduced to a field of colour and a bar of type. The detail
- * is for the moment someone pulls one down.
+ * There was a chess lid beside it in the opposite idiom — minimal, typographic,
+ * foil on grey board — and it was decent work that came out of the room the
+ * moment the chess set became a wooden folding board instead of a carton. Two
+ * printed cartons on a shelf are one object repeated; a carton and a wooden
+ * case are a shelf. See chessCase.ts.
+ *
+ * Built to read as a silhouette first. It sits a metre and a half from the
+ * camera where the lid is barely 80 pixels across, so it has to survive being
+ * reduced to a field of colour and a bar of type. The detail is for the moment
+ * someone pulls it down.
  */
 
 import { CanvasTexture, LinearFilter, SRGBColorSpace } from "three";
@@ -409,179 +413,6 @@ function catanLid(): CanvasTexture {
   return texture(canvas);
 }
 
-/* ==========================================================================
- * Chess — minimal, typographic, one colour and a foil
- * ======================================================================= */
-
-const FOIL = "#c9a54e";
-const CHESS_BG = "#111315";
-
-/**
- * A king, in profile.
- *
- * The most drawable of the six and the least ambiguous — nobody has ever
- * mistaken a cross on a stem for anything else. The knight is the more famous
- * silhouette and needs real draughtsmanship to avoid looking like a seahorse.
- *
- * Drawn as one half and mirrored, which is both less code and the only way to
- * guarantee it's actually symmetric.
- */
-function kingHalf(
-  ctx: CanvasRenderingContext2D,
-  cx: number,
-  cy: number,
-  h: number,
-) {
-  const w = h * 0.34;
-  ctx.beginPath();
-  ctx.moveTo(cx, cy - h * 0.5);
-  // Cross.
-  ctx.lineTo(cx + w * 0.16, cy - h * 0.5);
-  ctx.lineTo(cx + w * 0.16, cy - h * 0.43);
-  ctx.lineTo(cx + w * 0.42, cy - h * 0.43);
-  ctx.lineTo(cx + w * 0.42, cy - h * 0.35);
-  ctx.lineTo(cx + w * 0.16, cy - h * 0.35);
-  ctx.lineTo(cx + w * 0.16, cy - h * 0.28);
-  // Crown.
-  ctx.bezierCurveTo(
-    cx + w * 0.8,
-    cy - h * 0.27,
-    cx + w * 0.95,
-    cy - h * 0.13,
-    cx + w * 0.6,
-    cy - h * 0.05,
-  );
-  // Collar.
-  ctx.lineTo(cx + w * 0.72, cy + h * 0.01);
-  ctx.lineTo(cx + w * 0.48, cy + h * 0.06);
-  // Body, flaring to the foot.
-  ctx.bezierCurveTo(
-    cx + w * 0.4,
-    cy + h * 0.22,
-    cx + w * 0.6,
-    cy + h * 0.3,
-    cx + w * 0.66,
-    cy + h * 0.36,
-  );
-  ctx.lineTo(cx + w * 0.48, cy + h * 0.38);
-  ctx.bezierCurveTo(
-    cx + w * 0.72,
-    cy + h * 0.42,
-    cx + w * 1.0,
-    cy + h * 0.44,
-    cx + w * 1.06,
-    cy + h * 0.5,
-  );
-  ctx.lineTo(cx, cy + h * 0.5);
-  ctx.closePath();
-  ctx.fill();
-}
-
-function king(ctx: CanvasRenderingContext2D, cx: number, cy: number, h: number) {
-  kingHalf(ctx, cx, cy, h);
-  ctx.save();
-  ctx.translate(cx * 2, 0);
-  ctx.scale(-1, 1);
-  kingHalf(ctx, cx, cy, h);
-  ctx.restore();
-}
-
-function chessLid(): CanvasTexture {
-  const { canvas, ctx } = surface(LID, LID);
-  const rand = rng(1729);
-
-  ctx.fillStyle = CHESS_BG;
-  ctx.fillRect(0, 0, LID, LID);
-
-  // Board grain: greyboard has a visible tooth, and it's the only texture on an
-  // otherwise completely flat lid.
-  for (let i = 0; i < 5000; i++) {
-    ctx.fillStyle = `rgba(255,255,255,${rand() * 0.022})`;
-    ctx.fillRect(rand() * LID, rand() * LID, 2, 2);
-  }
-
-  /*
-   * The board, as a ghost.
-   *
-   * Eight by eight in a barely-there tint, with four squares picked out in foil
-   * — the last moves of a game. A fully drawn checkerboard would be the loudest
-   * thing on the lid and would fight the type; at this weight it's a watermark
-   * that only resolves when you're holding the box.
-   */
-  const size = LID * 0.62;
-  const cell = size / 8;
-  const ox = (LID - size) / 2;
-  const oy = LID * 0.11;
-
-  for (let row = 0; row < 8; row++) {
-    for (let col = 0; col < 8; col++) {
-      if ((row + col) % 2) continue;
-      ctx.fillStyle = "rgba(255,255,255,0.045)";
-      ctx.fillRect(ox + col * cell, oy + row * cell, cell, cell);
-    }
-  }
-
-  for (const [c, rw] of [
-    [4, 6],
-    [4, 4],
-    [2, 5],
-    [5, 2],
-  ] as const) {
-    ctx.fillStyle = "rgba(201,165,78,0.2)";
-    ctx.fillRect(ox + c * cell, oy + rw * cell, cell, cell);
-  }
-
-  ctx.strokeStyle = "rgba(201,165,78,0.3)";
-  ctx.lineWidth = LID * 0.0035;
-  ctx.strokeRect(ox, oy, size, size);
-
-  // The king, standing on the board.
-  ctx.fillStyle = "#eae6dd";
-  king(ctx, LID * 0.5, oy + size * 0.46, size * 0.74);
-
-  // Notation, which is the ornament the reference designs all reach for.
-  ctx.fillStyle = "rgba(201,165,78,0.55)";
-  ctx.font = `500 ${LID * 0.025}px ui-monospace, SFMono-Regular, monospace`;
-  ctx.textAlign = "left";
-  ctx.textBaseline = "middle";
-  ["1. e4 e5", "2. Nf3 Nc6", "3. Bb5 a6"].forEach((line, i) => {
-    ctx.fillText(line, ox, oy + size + LID * 0.05 + i * LID * 0.034);
-  });
-
-  // Wordmark. High-contrast serif, wide tracking, a foil rule above and below —
-  // the whole vocabulary of a black-and-gold box in three marks.
-  ctx.textAlign = "center";
-  ctx.fillStyle = "#f2efe8";
-  ctx.font = `400 ${LID * 0.112}px ui-serif, Georgia, "Times New Roman", serif`;
-  ctx.letterSpacing = `${LID * 0.05}px`;
-  ctx.fillText("CHESS", LID * 0.52, LID * 0.855);
-  ctx.letterSpacing = "0px";
-
-  ctx.strokeStyle = FOIL;
-  ctx.lineWidth = LID * 0.004;
-  ctx.beginPath();
-  ctx.moveTo(LID * 0.3, LID * 0.796);
-  ctx.lineTo(LID * 0.7, LID * 0.796);
-  ctx.moveTo(LID * 0.3, LID * 0.911);
-  ctx.lineTo(LID * 0.7, LID * 0.911);
-  ctx.stroke();
-
-  ctx.fillStyle = FOIL;
-  ctx.font = `500 ${LID * 0.027}px ui-sans-serif, system-ui, sans-serif`;
-  ctx.letterSpacing = `${LID * 0.02}px`;
-  ctx.fillText("ENGINE · PRIVATE REPO", LID * 0.5, LID * 0.948);
-  ctx.letterSpacing = "0px";
-
-  return texture(canvas);
-}
-
-/* ==========================================================================
- * Spines
- *
- * Stacked on a shelf, this is the only part of a board game box anybody ever
- * sees — so each one carries its lid's whole identity in 75 mm.
- * ======================================================================= */
-
 function catanSpine(): CanvasTexture {
   const { canvas, ctx } = surface(LID, SPINE_H);
 
@@ -624,39 +455,6 @@ function catanSpine(): CanvasTexture {
   return texture(canvas);
 }
 
-function chessSpine(): CanvasTexture {
-  const { canvas, ctx } = surface(LID, SPINE_H);
-
-  ctx.fillStyle = CHESS_BG;
-  ctx.fillRect(0, 0, LID, SPINE_H);
-
-  ctx.strokeStyle = FOIL;
-  ctx.lineWidth = SPINE_H * 0.03;
-  ctx.strokeRect(SPINE_H * 0.2, SPINE_H * 0.2, LID - SPINE_H * 0.4, SPINE_H * 0.6);
-
-  ctx.fillStyle = "#f2efe8";
-  ctx.textAlign = "left";
-  ctx.textBaseline = "middle";
-  ctx.font = `400 ${SPINE_H * 0.36}px ui-serif, Georgia, serif`;
-  ctx.letterSpacing = `${SPINE_H * 0.13}px`;
-  const chessEnd = SPINE_H * 0.75 + ctx.measureText("CHESS").width;
-  ctx.fillText("CHESS", SPINE_H * 0.75, SPINE_H * 0.53);
-  ctx.letterSpacing = "0px";
-
-  ctx.fillStyle = FOIL;
-  ctx.textAlign = "right";
-  ctx.font = `500 ${SPINE_H * 0.16}px ui-sans-serif, system-ui, sans-serif`;
-  ctx.letterSpacing = `${SPINE_H * 0.05}px`;
-  const chessCredit = "YASH DAGAR";
-  const chessRight = LID - SPINE_H * 0.6;
-  if (chessRight - ctx.measureText(chessCredit).width > chessEnd + SPINE_H * 0.4) {
-    ctx.fillText(chessCredit, chessRight, SPINE_H * 0.54);
-  }
-  ctx.letterSpacing = "0px";
-
-  return texture(canvas);
-}
-
 export interface BoxArt {
   lid: CanvasTexture;
   spine: CanvasTexture;
@@ -664,8 +462,4 @@ export interface BoxArt {
 
 export function catanArt(): BoxArt {
   return { lid: catanLid(), spine: catanSpine() };
-}
-
-export function chessArt(): BoxArt {
-  return { lid: chessLid(), spine: chessSpine() };
 }

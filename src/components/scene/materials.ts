@@ -425,3 +425,105 @@ export const CREMA: Mat = {
   roughness: 0.62,
   metalness: 0,
 };
+
+/**
+ * The chess case: rosewood, oiled rather than lacquered.
+ *
+ * Rougher than any of the plastics and rougher than the desk, because the desk
+ * is a finished worktop and this is a hand-oiled game board. The two woods in
+ * the room need to be different woods or the case reads as a piece of the
+ * shelf.
+ */
+export const BOARD_WOOD: Mat = {
+  // The body's own colour, seen only along the chamfers. The faces that carry
+  // the board and the parting line are mapped and override it with white.
+  color: "#43291b",
+  roughness: 0.58,
+  metalness: 0,
+};
+
+/**
+ * Brass, for the case's clasps and hinges.
+ *
+ * The only warm metal in the room — everything else that shines is anodised
+ * aluminium, which is cool and grey. That contrast is why four pieces of
+ * hardware five millimetres across are visible at all from two metres.
+ */
+export const BRASS: Mat = {
+  color: "#b98f4a",
+  roughness: 0.31,
+  metalness: 0.92,
+};
+
+/**
+ * Speedcube plastic: the black body every cubie is moulded from.
+ *
+ * Matte, and darker than anything else on the desk. Everything about how this
+ * object reads depends on the tiles standing out against the grid of plastic
+ * between them, so the plastic has to be genuinely dark — a mid grey here and
+ * the whole cube goes soft.
+ */
+export const CUBE_PLASTIC: Mat = {
+  // White, because the colour arrives per-vertex and gets multiplied by this.
+  color: "#ffffff",
+  roughness: 0.34,
+  metalness: 0.02,
+};
+
+
+/**
+ * Cable sheath: PVC.
+ *
+ * Glossier than anything else under the desk and far glossier than it looks
+ * like it should be. A cable's whole visual signature is the hard specular line
+ * running down one side of it — take that away and a 4 mm tube in a dark room
+ * is a black line, indistinguishable from a shadow. Colour arrives per cable,
+ * so this only carries the finish.
+ */
+export const CABLE: Mat = {
+  color: "#ffffff",
+  roughness: 0.29,
+  metalness: 0.05,
+};
+
+/** The velcro strap gathering the bundle. Fuzzy, so completely matte. */
+export const VELCRO: Mat = {
+  color: "#232629",
+  roughness: 0.98,
+  metalness: 0,
+};
+
+/**
+ * The floor planter: unglazed stoneware.
+ *
+ * Chalky and completely matte, which is the opposite of the mug two metres
+ * behind it — the two are both ceramic and they should not look like the same
+ * ceramic. It's also the palest large object in the room, so it has to be a
+ * warm off-white rather than a true one or it reads as plastic under the lamp.
+ */
+export const PLANTER_POT: Mat = {
+  color: "#b9ac9c",
+  roughness: 0.93,
+  metalness: 0,
+};
+
+/**
+ * Monstera leaf.
+ *
+ * White, because the colour and the veining arrive in the map. Waxier than the
+ * snake plant — a monstera leaf has a real sheen, and that sheen catching the
+ * window is most of what makes the foreground read as being nearer the light
+ * than the desk is.
+ */
+export const MONSTERA: Mat = {
+  color: "#ffffff",
+  roughness: 0.38,
+  metalness: 0,
+};
+
+/** The petiole: matte, and a shade yellower than the blade it carries. */
+export const PETIOLE: Mat = {
+  color: "#4c6b34",
+  roughness: 0.66,
+  metalness: 0,
+};

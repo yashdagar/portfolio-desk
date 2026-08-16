@@ -28,7 +28,8 @@ import {
 } from "@/lib/layout";
 import { useScene, type BoxId } from "@/lib/store";
 
-import { catanArt, chessArt, type BoxArt } from "./boxArt";
+import { catanArt, type BoxArt } from "./boxArt";
+import { chessBoardTexture, chessCaseSideTexture } from "./chessCase";
 import { matTexture } from "./matArt";
 import { roundedPanel, roundedPlate } from "./geometry";
 import { Headphones } from "./Headphones";
@@ -36,8 +37,11 @@ import { Keyboard } from "./Keyboard";
 import { Lamp } from "./Lamp";
 import * as M from "./materials";
 import { Mouse } from "./Mouse";
+import { Cables } from "./Cables";
+import { Cube } from "./Cube";
 import { Mug } from "./Mug";
 import { Plant } from "./Plant";
+import { Planter } from "./Planter";
 import { RainGlass } from "./RainGlass";
 import { Surface } from "./Surface";
 import { PANEL_ASPECT, PANELS, triptychPanels } from "./triptych";
@@ -715,6 +719,7 @@ function GameBox({
   x,
   upright,
   art,
+  wooden = false,
 }: {
   id: BoxId;
   x: number;
@@ -729,6 +734,16 @@ function GameBox({
    */
   upright: boolean;
   art: BoxArt;
+  /**
+   * A folding wooden case rather than a printed carton.
+   *
+   * Everything about how the object behaves is the same — it's picked up the
+   * same way and turns over to the same case study — so this is a skin, not a
+   * second component. What changes is what it's made of: crisp chamfered edges
+   * instead of a soft cardboard fillet, wood instead of coated board, and brass
+   * hardware, because a case that opens has to have something holding it shut.
+   */
+  wooden?: boolean;
 }) {
   const focusBox = useScene((s) => s.focusBox);
   const focus = useScene((s) => s.focus);
@@ -779,7 +794,28 @@ function GameBox({
     mesh.rotation.x = MathUtils.lerp(mesh.rotation.x, targetX, k);
   });
 
+  /*
+   * Cardboard takes a warm tint; wood does not.
+   *
+   * The tint exists to lift a printed box on hover and to knock the base card
+   * back to something off-white. Applied to a wood texture it multiplies a
+   * colour into a colour that's already there, and the case comes out muddy —
+   * so the wooden one stays at full white and lets its map do the work.
+   */
+  const body = wooden ? M.BOARD_WOOD : M.BOX_CARD;
+  /*
+   * Two tints, because the body and the printed faces want different things.
+   *
+   * The overlay planes carry a map and have to be left at white or the texture
+   * gets multiplied by a colour on its way to the screen. The body underneath
+   * carries no map at all — it's only ever seen at the chamfers, in the sliver
+   * the planes don't cover — so it needs its material's own colour. Setting
+   * both to white left a bright unpainted rim running round the wooden case,
+   * which is a very convincing impression of a box made of paper.
+   */
   const tint = hovered && !held ? "#ffffff" : "#dcd6cb";
+  const bodyTint = wooden ? body.color : tint;
+  const printTint = wooden ? "#ffffff" : tint;
 
   /*
    * A rounded body with the artwork applied on top of it.
@@ -826,9 +862,15 @@ function GameBox({
     <group ref={ref} position={shelved}>
       <RoundedBox
         args={[BOX.w, BOX.h, BOX.d]}
-        // A third of the box's own depth. Far more than a real one, and it's
-        // what turns the stack on the shelf from two cubes into two objects.
-        radius={0.022}
+        /*
+         * A third of the box's own depth on the carton, and a chamfer on the
+         * wood. Cardboard is soft because paper cannot fold around a sharp
+         * corner; a hardwood case is machined, and its edges are broken by a
+         * couple of millimetres and no more. Rounding them the same amount is
+         * how two objects made of different things end up looking made of the
+         * same thing.
+         */
+        radius={wooden ? 0.005 : 0.022}
         smoothness={6}
         castShadow
         receiveShadow
@@ -844,14 +886,24 @@ function GameBox({
         }}
         onPointerOut={() => setHovered(false)}
       >
-        <meshStandardMaterial {...M.BOX_CARD} color={tint} />
+        <meshStandardMaterial {...body} color={bodyTint} />
       </RoundedBox>
 
       {/* Lid. Inset so the fillet stays visible all the way round the print. */}
       <mesh position={[0, BOX.h / 2 + 0.0004, 0]} rotation={[-Math.PI / 2, 0, 0]}>
-        <planeGeometry args={[BOX.w - 0.014, BOX.d - 0.014]} />
-        <meshStandardMaterial {...M.BOX_CARD} color={tint} map={art.lid} />
+        <planeGeometry
+          args={
+            wooden
+              ? // A chamfer is 5 mm, not 14, so the wooden lid runs almost to
+                // the edge — the board's frame is meant to reach the corner.
+                [BOX.w - 0.006, BOX.d - 0.006]
+              : [BOX.w - 0.014, BOX.d - 0.014]
+          }
+        />
+        <meshStandardMaterial {...body} color={printTint} map={art.lid} />
       </mesh>
+
+      {wooden && <CaseHardware />}
 
       {/*
         Spines, on all four sides. Stacked on a shelf this is the only part of a
@@ -867,8 +919,14 @@ function GameBox({
           ]}
           rotation={f.rotation}
         >
-          <planeGeometry args={[f.w - 0.014, BOX.h - 0.008]} />
-          <meshStandardMaterial {...M.BOX_CARD} color={tint} map={art.spine} />
+          <planeGeometry
+            args={
+              wooden
+                ? [f.w - 0.006, BOX.h - 0.003]
+                : [f.w - 0.014, BOX.h - 0.008]
+            }
+          />
+          <meshStandardMaterial {...body} color={printTint} map={art.spine} />
         </mesh>
       ))}
 
@@ -895,8 +953,69 @@ function GameBox({
   );
 }
 
+/**
+ * Clasps and hinges, in brass.
+ *
+ * A case that opens needs something holding it shut, and this is the part that
+ * finishes the argument the parting line starts. Two hooked clasps on the front
+ * edge, two barrel hinges on the back, all of them the only warm metal anywhere
+ * in the room — which is also why they read at this distance when nothing else
+ * that small does.
+ */
+function CaseHardware() {
+  /** A whisker proud of the face, so each catches its own highlight. */
+  const out = BOX.w / 2 + 0.0015;
+
+  /*
+   * On the left and right faces, not the front and back.
+   *
+   * The case stands on its edge with the board facing the seat, so the only
+   * faces anyone can see are the four narrow ones around it. Hardware on the
+   * front and back would be on the two faces pointing at the wall and at the
+   * ceiling — correct for a box lying flat, invisible for one stood up.
+   */
+  return (
+    <group>
+      {[-0.075, 0.075].map((z) => (
+        <group key={z}>
+          {/* Clasps down one edge. The plate spans the parting line, which is
+              the whole point of a clasp. */}
+          <RoundedBox
+            args={[0.004, 0.03, 0.024]}
+            radius={0.0015}
+            smoothness={3}
+            position={[out, 0, z]}
+            castShadow
+          >
+            <meshStandardMaterial {...M.BRASS} />
+          </RoundedBox>
+          {/* The hook itself, standing off the plate. */}
+          <mesh position={[out + 0.004, -0.006, z]} castShadow>
+            <boxGeometry args={[0.005, 0.013, 0.011]} />
+            <meshStandardMaterial {...M.BRASS} />
+          </mesh>
+
+          {/* Hinge barrels down the other, lying along the parting line. */}
+          <mesh position={[-out, 0, z]} rotation={[Math.PI / 2, 0, 0]} castShadow>
+            <cylinderGeometry args={[0.0055, 0.0055, 0.042, 14]} />
+            <meshStandardMaterial {...M.BRASS} />
+          </mesh>
+        </group>
+      ))}
+    </group>
+  );
+}
+
 function Shelf() {
-  const art = useMemo(() => ({ catan: catanArt(), chess: chessArt() }), []);
+  const art = useMemo(
+    () => ({
+      catan: catanArt(),
+      // The chess set is a wooden case, so its "lid" is the playing surface and
+      // its "spine" is the side of the box with the parting line down it.
+      chess: { lid: chessBoardTexture(), spine: chessCaseSideTexture() },
+    }),
+    [],
+  );
   const grain = useMemo(() => shelfTexture(), []);
 
   useEffect(
@@ -943,7 +1062,7 @@ function Shelf() {
         one spine, which is the pair of things worth showing.
       */}
       <GameBox id="catan" x={SHELF.x - 0.23} upright art={art.catan} />
-      <GameBox id="chess" x={SHELF.x + 0.07} upright={false} art={art.chess} />
+      <GameBox id="chess" x={SHELF.x + 0.07} upright art={art.chess} wooden />
       <Plant />
     </group>
   );
@@ -1050,6 +1169,7 @@ function Clutter() {
         <Keyboard />
       </group>
       <Mouse top={top + MAT.thickness} />
+      <Cube top={top} />
 
       {/*
         Coaster. Cork, and the only warm-brown object on the desk that isn't the
@@ -1125,6 +1245,7 @@ export function Room({
       {/* Only mounted when it's actually raining in Gurugram. */}
       {isWet(weather) && <RainGlass storm={weather?.condition === "storm"} />}
       <Desk />
+      <Cables />
       {SCREENS.map((s) => (
         <Monitor key={s.id} placement={s} hero={hero} activity={activity} />
       ))}
@@ -1133,6 +1254,7 @@ export function Room({
       <WallClock />
       <Lamp day={day} />
       <Clutter />
+      <Planter />
       <HeldLight />
     </group>
   );

@@ -21,8 +21,15 @@
  * kilometres away: setbacks, parapets, roof masts, floor lines, and a couple of
  * tower cranes, because this is Gurugram and there is always a crane.
  *
- * Drawn in greyscale and multiplied by the daylight colour at render time, so
- * one texture covers dawn, noon and midnight instead of three.
+ * Drawn in colour and multiplied by the daylight colour at render time, so one
+ * texture still covers dawn, noon and midnight. It used to be greyscale, on the
+ * theory that the tint could supply everything — which works for a sky and
+ * fails for anything that isn't the same hue as the sky. One tint cannot make
+ * the trees green and the buildings grey at the same time; it can only make
+ * both of them whatever it is. Painting the colour in and letting the tint
+ * *modulate* it keeps the single-texture trick and gets a blue sky over green
+ * trees at noon, with everything going the same deep blue after dark, which is
+ * what actually happens to colour at night.
  */
 
 import { CanvasTexture, LinearFilter, SRGBColorSpace } from "three";
@@ -156,16 +163,45 @@ export function outsideTexture(): CanvasTexture {
   // Sky: brightest at the top, hazing out toward the horizon. Multiplied by the
   // daylight colour later, so this is purely the luminance ramp.
   const sky = ctx.createLinearGradient(0, 0, 0, HORIZON);
-  sky.addColorStop(0, "#ffffff");
-  sky.addColorStop(0.62, "#f2f4f6");
-  sky.addColorStop(1, "#d8dee2");
+  // Deepest overhead, washing out toward the horizon — which is what haze does
+  // to a sky, and the single cue that makes a flat gradient read as distance.
+  sky.addColorStop(0, "#a9cdec");
+  sky.addColorStop(0.55, "#d3e5f4");
+  sky.addColorStop(1, "#eceee8");
   ctx.fillStyle = sky;
   ctx.fillRect(0, 0, W, HORIZON);
 
+  /*
+   * A few flat-bottomed cumulus, high up.
+   *
+   * The top pane of the window is nothing but sky, and an unbroken gradient
+   * there reads as a lightbox rather than as weather. Deliberately soft and
+   * barely lighter than the sky behind them: clouds with defined edges pull the
+   * eye straight out of the room, which is the one thing the window must not
+   * do.
+   */
+  const clouds = rng(2207);
+  for (let i = 0; i < 7; i++) {
+    const cx = clouds() * W;
+    const cy = HORIZON * (0.08 + clouds() * 0.4);
+    const scale = 26 + clouds() * 44;
+    ctx.fillStyle = `rgba(255,255,255,${0.3 + clouds() * 0.35})`;
+    ctx.beginPath();
+    for (let j = 0; j < 5; j++) {
+      const r = scale * (0.5 + clouds() * 0.6);
+      const x = cx + (j - 2) * scale * 0.62;
+      const y = cy - clouds() * scale * 0.3;
+      ctx.moveTo(x + r, y);
+      ctx.arc(x, y, r, 0, Math.PI * 2);
+    }
+    ctx.fill();
+  }
+
   // Middle distance: a wash of ground, lower and duller than the sky.
   const ground = ctx.createLinearGradient(0, HORIZON, 0, H);
-  ground.addColorStop(0, "#bcc2c4");
-  ground.addColorStop(1, "#8f9698");
+  ground.addColorStop(0, "#b6bfbc");
+  ground.addColorStop(0.55, "#7f8f6e");
+  ground.addColorStop(1, "#55663f");
   ctx.fillStyle = ground;
   ctx.fillRect(0, HORIZON, W, H - HORIZON);
 
@@ -187,14 +223,14 @@ export function outsideTexture(): CanvasTexture {
     const layer = surface();
     const lc = layer.ctx;
 
-    lc.fillStyle = "#2c343a";
+    lc.fillStyle = "#5a6874";
     // The floor lines are glass catching the sky, so they're *lighter* than the
     // building — and barely. At this distance they should read as a texture on
     // the tower, never as individual windows.
     const glass = `rgba(255,255,255,${0.06 + i * 0.025})`;
 
     for (const t of rank.towers) {
-      lc.fillStyle = "#2c343a";
+      lc.fillStyle = "#5a6874";
       lc.fillRect(t.x, t.top, t.w, rank.base - t.top + 60);
 
       if (t.setback) {
@@ -229,7 +265,7 @@ export function outsideTexture(): CanvasTexture {
      * week. It is also, specifically and unavoidably, what Gurugram looks like.
      */
     if (i === 0) {
-      lc.fillStyle = "#2c343a";
+      lc.fillStyle = "#5a6874";
       for (const [cx, mastH, jib] of [
         [96, 132, 78],
         [372, 108, 62],
@@ -264,26 +300,40 @@ export function outsideTexture(): CanvasTexture {
    * fills as a union: the outline is still lumpy, the interior is one flat
    * tone, and the alpha applies to the whole mass once.
    */
-  const trees = rng(5501);
-  ctx.fillStyle = "rgba(46,54,48,0.34)";
-  ctx.beginPath();
-  for (let x = -10; x < W + 10; x += 9 + trees() * 12) {
-    const y = HORIZON + 96 + trees() * 10;
-    const r = 11 + trees() * 15;
-    // Move to where the arc actually begins. Without this, each arc is joined
-    // to the previous one by a straight line and the union grows a chord across
-    // every gap.
-    ctx.moveTo(x + r, y);
-    ctx.arc(x, y, r, 0, Math.PI * 2);
+  /*
+   * Two ranks of them, in two greens.
+   *
+   * One rank is a hedge; two at different heights and different greens is a
+   * park, and a park is what's actually across the road from an office tower in
+   * Gurugram. The far rank is hazier and bluer because that's what air does to
+   * green over a few hundred metres — the same trick the buildings use, applied
+   * to the one thing out there that isn't grey.
+   */
+  for (const [seed, y0, spread, radius, colour] of [
+    [5501, 74, 8, [9, 12], "rgba(104,126,84,0.5)"],
+    [7717, 100, 12, [13, 18], "rgba(58,80,48,0.62)"],
+  ] as [number, number, number, [number, number], string][]) {
+    const trees = rng(seed);
+    ctx.fillStyle = colour;
+    ctx.beginPath();
+    for (let x = -14; x < W + 14; x += 9 + trees() * 13) {
+      const y = HORIZON + y0 + trees() * spread;
+      const r = radius[0] + trees() * radius[1];
+      // Move to where the arc actually begins. Without this, each arc is joined
+      // to the previous one by a straight line and the union grows a chord
+      // across every gap.
+      ctx.moveTo(x + r, y);
+      ctx.arc(x, y, r, 0, Math.PI * 2);
+    }
+    ctx.fill();
   }
-  ctx.fill();
 
   // Haze band sitting across the base of the skyline, which is what stops the
   // buildings looking like they're standing in the room.
   const haze = ctx.createLinearGradient(0, HORIZON - 70, 0, HORIZON + 40);
-  haze.addColorStop(0, "rgba(255,255,255,0)");
-  haze.addColorStop(0.6, "rgba(255,255,255,0.55)");
-  haze.addColorStop(1, "rgba(255,255,255,0.15)");
+  haze.addColorStop(0, "rgba(236,240,236,0)");
+  haze.addColorStop(0.6, "rgba(236,240,236,0.5)");
+  haze.addColorStop(1, "rgba(236,240,236,0.14)");
   ctx.fillStyle = haze;
   ctx.fillRect(0, HORIZON - 70, W, 110);
 

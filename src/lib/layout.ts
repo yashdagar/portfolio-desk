@@ -522,3 +522,59 @@ export const TALL_SCREEN_DESIGN = {
 } as const;
 
 export const BOX_DESIGN = { w: 860, h: 860 } as const;
+
+/**
+ * The speedcube, on the right-hand end of the desk.
+ *
+ * 56 mm, which is the competition size — a Rubik's-brand cube is 57 and feels
+ * noticeably bigger in a photograph of a desk. The tile inset and the cubie
+ * bevel are the two numbers that matter: together they decide how much black
+ * plastic shows between the colours, and that grid of black is what stops the
+ * whole thing reading as a painted block.
+ */
+export const CUBE = {
+  /** One cubie's edge. Three of these plus two gaps make the 56 mm cube. */
+  cubie: 0.0182,
+  /** The hairline of shadow between two facelets. All the border there is. */
+  gap: 0.0009,
+  /**
+   * Chamfer on every cubie edge.
+   *
+   * Heavy — a fifth of the cubie — the way a cube built to be turned under load
+   * is. It's also most of what you see: it rounds the eight corners of the whole
+   * cube, and a speedcube with square corners looks like a stack of dice.
+   */
+  bevel: 0.0036,
+  /*
+   * Between the mat and the notebook, well forward, where a hand reaches
+   * without looking.
+   *
+   * It started at x = 0.98, which is on the desk and off the screen: the desk
+   * is 2.5 m wide and only about 1.9 m of it is ever inside the frame, so
+   * anything past roughly ±0.95 exists for the geometry and for nobody else.
+   */
+  x: 0.58,
+  z: 0.28,
+} as const;
+
+/**
+ * The floor planter, front left.
+ *
+ * Deliberately half out of frame. The room is full of desk-sized objects and
+ * had no foreground at all — nothing between the camera and the monitors to
+ * say how far away they are. A 1.4 m plant standing this close reads as being
+ * in the room with you, and the crop is what makes it read that way rather than
+ * as an object arranged for the shot.
+ *
+ * In front of the desk rather than beside it, because there is no beside: the
+ * desk is 2.5 m wide and the frame only shows about ±1.3 m at the wall, so
+ * every square metre of floor to the left of the desk is outside the picture.
+ * Forward of it, perspective does the work — the same plant is twice the size
+ * on screen and lands in the one part of the frame nothing else uses.
+ */
+export const PLANTER = {
+  x: -0.88,
+  z: 0.66,
+  /** Turned, so the leaves don't fan symmetrically about the camera axis. */
+  spin: 0.7,
+} as const;
