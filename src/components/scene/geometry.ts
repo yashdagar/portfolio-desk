@@ -77,6 +77,42 @@ export function roundedPanel(w: number, h: number, r: number): BufferGeometry {
 }
 
 /**
+ * A pillow: a rounded rectangle in XY, extruded along Z with a fat bevel on
+ * both faces.
+ *
+ * For soft moulded objects whose *face* wants to be nearly an oval while their
+ * edges stay soft — an ear cup being the case in point. `RoundedBox` can't do
+ * it, and the reason is the usual one: its radius is capped at half the
+ * smallest dimension, and on a 38 mm-deep cup that caps the corners of an
+ * 90 mm face at 19 mm. The result is unmistakably a box with its edges taken
+ * off, where the real object is closer to a stadium.
+ *
+ * Rounding the outline and bevelling the extrusion separates the two: the face
+ * can go all the way to a stadium while the depth keeps a soft, independent
+ * roll.
+ */
+export function roundedPillow(
+  w: number,
+  h: number,
+  d: number,
+  r: number,
+  bevel: number,
+): BufferGeometry {
+  const geo = new ExtrudeGeometry(roundedRectShape(w, h, r), {
+    depth: Math.max(0.0001, d - bevel * 2),
+    bevelEnabled: true,
+    bevelThickness: bevel,
+    bevelSize: bevel * 0.85,
+    bevelOffset: 0,
+    bevelSegments: 5,
+    curveSegments: 14,
+  });
+  geo.translate(0, 0, -d / 2 + bevel);
+  geo.computeVertexNormals();
+  return geo;
+}
+
+/**
  * A rounded rectangular frame — a slab with a rounded hole through it — lying
  * in the XZ plane with its underside at y = 0.
  *

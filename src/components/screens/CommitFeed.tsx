@@ -243,7 +243,7 @@ function Shell({ children }: { children: React.ReactNode }) {
       even near-black is the one thing a real monitor never shows, and the
       gradient costs nothing.
     */
-    <div className="flex h-full w-full flex-col overflow-hidden rounded-[18px] bg-screen bg-[radial-gradient(120%_80%_at_50%_0%,#151a1e_0%,transparent_70%)] px-4 py-4 font-sans text-[14px] leading-relaxed text-ink-dim">
+    <div className="flex h-full w-full flex-col overflow-hidden bg-screen bg-[radial-gradient(120%_80%_at_50%_0%,#151a1e_0%,transparent_70%)] px-4 py-4 font-sans text-[14px] leading-relaxed text-ink-dim">
       {children}
     </div>
   );

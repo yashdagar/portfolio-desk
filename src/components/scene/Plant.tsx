@@ -26,6 +26,11 @@ import * as M from "./materials";
 /** How many leaves, and how they're arranged around the pot. */
 const LEAVES = 9;
 
+function smoothstep(a: number, b: number, x: number) {
+  const t = Math.min(1, Math.max(0, (x - a) / (b - a)));
+  return t * t * (3 - 2 * t);
+}
+
 /**
  * One leaf: a tube swept along a gently leaning curve, flattened into a blade.
  *
@@ -65,7 +70,41 @@ function leafGeometry(i: number): BufferGeometry {
     new Vector3(dx * lean * 1.6, height, dz * lean * 1.6),
   ]);
 
-  const geo = new TubeGeometry(curve, 12, PLANT.leafWidth / 2, 6, false);
+  const TUBULAR = 22;
+  const RADIAL = 6;
+  const geo = new TubeGeometry(curve, TUBULAR, PLANT.leafWidth / 2, RADIAL, false);
+
+  /*
+   * Taper the blade to a point.
+   *
+   * A tube has one radius from end to end, so untapered every leaf finished in
+   * a blunt cylinder — which is the single wrongest thing about it, because a
+   * sansevieria leaf is a spear. It swells out of the soil, is widest around a
+   * third of the way up, and narrows to an actual point.
+   *
+   * Done by hand because TubeGeometry has no taper: for each ring of vertices,
+   * push them toward or away from the centreline at that position along the
+   * curve. The vertices come out in tubular-major order, so a vertex's index
+   * gives away which ring it belongs to.
+   */
+  const pos = geo.attributes.position;
+  const centre = new Vector3();
+  const v = new Vector3();
+
+  for (let i = 0; i < pos.count; i++) {
+    const ring = Math.floor(i / (RADIAL + 1));
+    const t = ring / TUBULAR;
+
+    // Swells fast out of the base, then falls away as a square root — which
+    // keeps the blade broad most of its length and only sharpens near the end.
+    const width = 0.03 + 1.15 * smoothstep(0, 0.16, t) * Math.pow(1 - t, 0.55);
+
+    curve.getPointAt(Math.min(1, t), centre);
+    v.set(pos.getX(i), pos.getY(i), pos.getZ(i)).sub(centre).multiplyScalar(width);
+    pos.setXYZ(i, centre.x + v.x, centre.y + v.y, centre.z + v.z);
+  }
+  pos.needsUpdate = true;
+
   /*
    * Flatten across the leaf's own axis.
    *
@@ -75,8 +114,9 @@ function leafGeometry(i: number): BufferGeometry {
    * crossed. Kept modest: at the old 3.4× the blades were four centimetres
    * across and looked like leather straps.
    */
-  const flat = 2.1;
+  const flat = 2.4;
   geo.scale(1 + Math.abs(dz) * flat, 1, 1 + Math.abs(dx) * flat);
+  geo.computeVertexNormals();
   return geo;
 }
 

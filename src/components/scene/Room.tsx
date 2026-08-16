@@ -21,6 +21,7 @@ import {
   MONITOR,
   SCREENS,
   SHELF,
+  TRIPTYCH,
   WALL,
   WINDOW,
   type ScreenId,
@@ -37,9 +38,10 @@ import * as M from "./materials";
 import { Mouse } from "./Mouse";
 import { Mug } from "./Mug";
 import { Plant } from "./Plant";
-import { contourPrint, porschePrint } from "./printArt";
+import { contourPrint } from "./printArt";
 import { RainGlass } from "./RainGlass";
 import { Surface } from "./Surface";
+import { PANEL_ASPECT, PANELS, triptychPanels } from "./triptych";
 import { WallClock } from "./WallClock";
 import { shelfTexture, woodTexture } from "./woodGrain";
 import { nightLightsTexture, outsideTexture } from "./windowView";
@@ -373,47 +375,131 @@ function Monitor({
         them in world space meant re-deriving the corner from the panel size and
         the toe-in by hand, and getting it wrong put them behind the screen.
 
-        On the left-hand monitor rather than the music one, which is the
-        obvious-looking choice and the wrong one: that panel is on its side and
-        only 336 mm wide, so an ear cup on its corner covers a quarter of the
-        screen. Here it takes an eighth, on the side where the feed has a margin
-        anyway — and it balances the window at the other end of the desk.
+        On the portrait monitor's right-hand edge, which took some finding. The
+        wide left-hand screen looked like the safer home and wasn't: a 74 mm ear
+        cup landed squarely on the commit feed's header and swallowed the word
+        "commits". Here the player keeps its artwork at eighty per cent of the
+        column, so the strip the cup covers is margin — and everything the cup
+        hangs past is empty wall between the desk and the window.
+
+        Tilted out a few degrees as well. A pair hooked over a corner hangs
+        askew; a pair hanging perfectly plumb has been placed by someone.
       */}
-      {placement.id === "commits" && (
+      {placement.id === "music" && (
         <group
           position={[
-            -panelW / 2 + 0.018,
+            panelW / 2 - 0.004,
             panelH / 2 + MONITOR.bezel + 0.008,
             0,
           ]}
+          rotation={[0, 0, 0.17]}
         >
           <Headphones />
         </group>
       )}
 
-      {/* Neck and foot. Aluminium, so they catch the lamp and read as hardware. */}
+      {placement.stand === "pole" ? (
+        <PoleStand panelH={panelH} lift={lift} />
+      ) : (
+        <>
+          {/* Neck and foot. Aluminium, so they catch the lamp and read as
+              hardware. */}
+          <RoundedBox
+            args={[0.046, lift + 0.02, 0.026]}
+            radius={0.011}
+            smoothness={5}
+            position={[0, -panelH / 2 - lift / 2, -0.026]}
+            castShadow
+          >
+            <meshStandardMaterial {...M.ALUMINIUM} />
+          </RoundedBox>
+          {/*
+            A properly rounded foot rather than a rounded box: at 13 mm thick,
+            RoundedBox can only put a 6 mm fillet on it and the corners in plan
+            — the ones you actually see from above — stay square.
+          */}
+          <mesh
+            geometry={foot}
+            position={[0, -panelH / 2 - lift, -0.026]}
+            castShadow
+            receiveShadow
+          >
+            <meshStandardMaterial {...M.ALUMINIUM} />
+          </mesh>
+        </>
+      )}
+    </group>
+  );
+}
+
+/**
+ * The stand a portrait monitor actually sits on.
+ *
+ * The shipped foot was wrong here and wrong in a way that's obvious once seen:
+ * a 60 cm panel stood on its side can't balance on a 21 cm plate, and the
+ * moulded stand it came with doesn't rotate anyway. Turning a monitor portrait
+ * means putting it on a pole — a weighted base, a tall steel column, and a VESA
+ * head clamped part way up that can be raised, tilted and spun through ninety
+ * degrees.
+ *
+ * The detail that makes it read is the column continuing past the top of the
+ * panel. Every one of these stands is built for a range of screens, so the pole
+ * is always longer than any single monitor needs and there's always a length of
+ * it standing proud above the screen.
+ */
+function PoleStand({ panelH, lift }: { panelH: number; lift: number }) {
+  /** The desk, in this monitor's own local frame. */
+  const deskY = -panelH / 2 - lift;
+  /** Behind the panel, where the column has room to run. */
+  const z = -0.062;
+
+  const top = panelH / 2 + 0.055;
+  const bottom = deskY + 0.014;
+  const poleH = top - bottom;
+
+  const base = useMemo(() => roundedPlate(0.22, 0.25, 0.045, 0.014), []);
+  useEffect(() => () => base.dispose(), [base]);
+
+  return (
+    <group>
+      {/* Weighted base. Deeper than it is wide, because all the leverage is
+          front to back. */}
+      <mesh geometry={base} position={[0, deskY, z + 0.03]} castShadow receiveShadow>
+        <meshStandardMaterial {...M.POWDER_COAT} />
+      </mesh>
+
+      {/* Column. */}
       <RoundedBox
-        args={[0.046, lift + 0.02, 0.026]}
-        radius={0.011}
+        args={[0.034, poleH, 0.034]}
+        radius={0.012}
         smoothness={5}
-        position={[0, -panelH / 2 - lift / 2, -0.026]}
+        position={[0, (top + bottom) / 2, z]}
         castShadow
       >
         <meshStandardMaterial {...M.ALUMINIUM} />
       </RoundedBox>
-      {/*
-        A properly rounded foot rather than a rounded box: at 13 mm thick,
-        RoundedBox can only put a 6 mm fillet on it and the corners in plan —
-        the ones you actually see from above — stay square.
-      */}
-      <mesh
-        geometry={foot}
-        position={[0, -panelH / 2 - lift, -0.026]}
+
+      {/* The clamp that rides the column. */}
+      <RoundedBox
+        args={[0.056, 0.075, 0.056]}
+        radius={0.016}
+        smoothness={5}
+        position={[0, 0, z]}
         castShadow
-        receiveShadow
+      >
+        <meshStandardMaterial {...M.POWDER_COAT} />
+      </RoundedBox>
+
+      {/* VESA arm, reaching forward to the back of the panel. */}
+      <RoundedBox
+        args={[0.05, 0.05, 0.058]}
+        radius={0.014}
+        smoothness={5}
+        position={[0, 0, z / 2 - 0.004]}
+        castShadow
       >
         <meshStandardMaterial {...M.ALUMINIUM} />
-      </mesh>
+      </RoundedBox>
     </group>
   );
 }
@@ -688,41 +774,79 @@ function Shelf() {
 }
 
 /**
- * Framed prints, on the left where the window used to be.
+ * A framed print, low on the left-hand wall.
  *
- * Two of them, different sizes, hung off-centre. A single centred print reads as
- * a placeholder; a pair with a deliberate offset reads as someone's wall.
+ * There were two here — a large one and a small one — until the large one grew
+ * into a triptych and moved to the wall that could actually hold it. What's
+ * left is a single small print sitting under the clock, which is a tidier group
+ * than two prints of different sizes stacked in a corner ever was.
  */
 function Prints() {
-  const art = useMemo(() => [porschePrint(), contourPrint()], []);
-  useEffect(() => () => art.forEach((t) => t.dispose()), [art]);
+  const art = useMemo(() => contourPrint(), []);
+  useEffect(() => () => art.dispose(), [art]);
+
+  const w = 0.24;
+  const h = 0.3;
 
   return (
-    <group>
-      {(
-        [
-          // Left of the shelf, stopping just short of it. Any higher and the
-          // top of the frame crops it, which reads as a mistake rather than as
-          // a composition running off the edge.
-          [-1.24, 1.42, 0.4, 0.54],
-          // Low, beside the desk rather than behind it, filling what was
-          // otherwise the emptiest corner of the frame.
-          [-1.26, 0.96, 0.24, 0.3],
-        ] as const
-      ).map(([x, y, w, h], i) => (
-        <group key={i} position={[x, y, WALL.z + 0.006]}>
-          <RoundedBox
-            args={[w, h, 0.014]}
-            radius={0.006}
-            smoothness={5}
-            castShadow
-            receiveShadow
-          >
-            <meshStandardMaterial {...M.POWDER_COAT} />
-          </RoundedBox>
-          <mesh position={[0, 0, 0.008]}>
-            <planeGeometry args={[w - 0.032, h - 0.032]} />
-            <meshStandardMaterial {...M.PAPER} color="#ffffff" map={art[i]} />
+    <group position={[-1.26, 0.95, WALL.z + 0.006]}>
+      <RoundedBox
+        args={[w, h, 0.014]}
+        radius={0.005}
+        smoothness={5}
+        castShadow
+        receiveShadow
+      >
+        <meshStandardMaterial {...M.POWDER_COAT} />
+      </RoundedBox>
+      <mesh position={[0, 0, 0.008]}>
+        <planeGeometry args={[w - 0.03, h - 0.03]} />
+        <meshStandardMaterial {...M.PAPER} color="#ffffff" map={art} />
+      </mesh>
+    </group>
+  );
+}
+
+/**
+ * The triptych.
+ *
+ * Three thin black frames in a row, each showing its own third of one wide
+ * artwork. The slicing is done with texture offsets rather than by drawing
+ * three pictures, so the car and the wordmark line up across the gaps exactly —
+ * by construction, not by hand.
+ */
+function Triptych() {
+  const panels = useMemo(() => triptychPanels(), []);
+  useEffect(() => () => panels.forEach((t) => t.dispose()), [panels]);
+
+  const pitch = TRIPTYCH.w + TRIPTYCH.gap;
+  const span = pitch * (PANELS - 1);
+
+  /*
+   * Height comes from the artwork, not from a hand-picked number.
+   *
+   * The picture is one wide canvas sliced into thirds, so each panel's art has
+   * a fixed aspect — pick the frame height independently and the car comes out
+   * stretched, which on a shape this recognisable is immediately obvious and
+   * impossible to un-see.
+   */
+  const artW = TRIPTYCH.w - TRIPTYCH.frame * 2;
+  const artH = artW / PANEL_ASPECT;
+  const frameH = artH + TRIPTYCH.frame * 2;
+
+  return (
+    <group position={[TRIPTYCH.x, TRIPTYCH.y, WALL.z + 0.006]}>
+      {panels.map((tex, i) => (
+        <group key={i} position={[i * pitch - span / 2, 0, 0]}>
+          {/* Frame: thin, black, square-cornered. Gallery frames have no
+              fillet, and adding one here would make them read as tablets. */}
+          <mesh castShadow receiveShadow>
+            <boxGeometry args={[TRIPTYCH.w, frameH, 0.016]} />
+            <meshStandardMaterial {...M.FRAME} />
+          </mesh>
+          <mesh position={[0, 0, 0.009]}>
+            <planeGeometry args={[artW, artH]} />
+            <meshStandardMaterial {...M.PAPER} color="#ffffff" map={tex} />
           </mesh>
         </group>
       ))}
@@ -864,6 +988,7 @@ export function Room({
       ))}
       <Shelf />
       <Prints />
+      <Triptych />
       <WallClock />
       <Lamp day={day} />
       <Clutter />

@@ -275,6 +275,20 @@ export const WINDOW_FRAME: Mat = {
   metalness: 0.1,
 };
 
+/**
+ * Gallery frame: painted black timber, flat and slightly satin.
+ *
+ * Deliberately not the powder coat the desk legs use. A frame is finished, not
+ * coated — it has a faint sheen along its edge that a matte texture kills, and
+ * that sheen is the only thing separating three black rectangles from three
+ * black holes in the wall.
+ */
+export const FRAME: Mat = {
+  color: "#121316",
+  roughness: 0.42,
+  metalness: 0.05,
+};
+
 /** A hardback notebook. Cloth over board. */
 export const NOTEBOOK: Mat = {
   color: "#2c3b45",

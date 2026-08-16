@@ -78,12 +78,14 @@ export const MONITOR = {
   /**
    * Bezel corner radius.
    *
-   * Several times what a real monitor has. A 3 mm corner at this viewing
-   * distance is sub-pixel, so the chassis renders with the perfect right angles
-   * of a primitive — which is precisely what makes a 3D scene look like a 3D
-   * scene. The DOM mounted on the panel is rounded to match.
+   * Bigger than a real monitor's 3 mm, which at this distance is sub-pixel and
+   * leaves the chassis with the perfect right angles of a primitive. But not
+   * *much* bigger — 20 mm on the portrait panel turned it into a phone, because
+   * a tall rectangle with generously rounded corners is a phone and nothing
+   * else. A monitor is a rounded chassis around a square-cornered panel, so the
+   * glass inside this ends up almost sharp, which is correct.
    */
-  corner: 0.02,
+  corner: 0.009,
   /** Bottom of the panel above the desk surface, i.e. the stand's height. */
   liftY: 0.115,
 } as const;
@@ -100,6 +102,16 @@ export interface ScreenPlacement {
   panelH: number;
   /** CSS pixel size the DOM mounted on it is authored at. */
   design: { w: number; h: number };
+  /**
+   * What holds it up.
+   *
+   * `foot` is the moulded stand a monitor ships with — a short neck on a flat
+   * plate. `pole` is what a screen actually sits on when it's been turned
+   * portrait: a tall column on a weighted base with a VESA head clamped part
+   * way up it, because a 60 cm panel on its side won't balance on a shipped
+   * foot and the foot can't rotate anyway.
+   */
+  stand: "foot" | "pole";
 }
 
 /**
@@ -158,12 +170,14 @@ export const SCREENS: ScreenPlacement[] = [
     id: "commits",
     position: [-PITCH, panelCentreY, -0.29 + TOE_Z],
     rotationY: TOE,
+    stand: "foot",
     ...LANDSCAPE,
   },
   {
     id: "about",
     position: [0, panelCentreY, -0.29],
     rotationY: 0,
+    stand: "foot",
     ...LANDSCAPE,
   },
   {
@@ -174,6 +188,7 @@ export const SCREENS: ScreenPlacement[] = [
       -0.29 + (PORTRAIT.panelW / 2) * Math.sin(TOE),
     ],
     rotationY: -TOE,
+    stand: "pole",
     ...PORTRAIT,
   },
 ];
@@ -275,13 +290,42 @@ export const PLANT = {
 } as const;
 
 /**
- * A wall clock, filling the bare stretch of plaster between the shelf and the
- * window — which was the emptiest square metre in the frame.
+ * The wall clock, on the left-hand wall above the desk.
+ *
+ * It started in the middle of the big empty stretch of plaster, which was the
+ * right instinct and the wrong spot — that stretch is the only wall in the room
+ * wide enough for a three-panel print, and a clock hung in the middle of it
+ * meant the triptych had nowhere to go. Over here it's the top of a small
+ * left-hand group with a framed print under it, and the biggest wall stays
+ * whole.
  */
 export const CLOCK = {
-  x: 0.26,
-  y: 1.7,
-  radius: 0.125,
+  x: -1.24,
+  y: 1.36,
+  radius: 0.115,
+} as const;
+
+/**
+ * A three-panel print, filling the widest free wall in the room.
+ *
+ * The gaps between the frames are physical rather than drawn, because the
+ * artwork is one picture sliced three ways — the car runs through the frames
+ * and the wordmark is cut mid-letter twice, which is the entire reason a
+ * triptych looks like a triptych and not like three posters hung near each
+ * other.
+ */
+export const TRIPTYCH = {
+  x: 0.3,
+  /*
+   * High enough to clear the portrait monitor, whose top edge is at 1.40. The
+   * frames sat lower and the right-hand one had its bottom corner cut off by a
+   * screen standing in front of it.
+   */
+  y: 1.63,
+  /** Per panel. The height is derived from the artwork's own aspect. */
+  w: 0.25,
+  gap: 0.016,
+  frame: 0.014,
 } as const;
 
 /** The desk mat. Big — it runs under the keyboard and the mouse both. */
@@ -359,9 +403,15 @@ export const MOUSE = {
  * amount of moving or rotating that monitor can separate them again.
  */
 export const HEADPHONES = {
-  cupW: 0.078,
-  cupH: 0.092,
-  cupD: 0.035,
+  cupW: 0.074,
+  cupH: 0.09,
+  cupD: 0.038,
+  /**
+   * Cup corner radius — nearly half its own width, which makes the face a
+   * stadium rather than a rounded rectangle. That silhouette is the whole
+   * reason these are recognisable from across the room.
+   */
+  cupR: 0.031,
 } as const;
 
 /*

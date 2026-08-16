@@ -6,6 +6,7 @@ import { CatmullRomCurve3, TubeGeometry, Vector3 } from "three";
 
 import { HEADPHONES as H } from "@/lib/layout";
 
+import { roundedPillow } from "./geometry";
 import * as M from "./materials";
 
 /**
@@ -56,12 +57,34 @@ export function Headphones() {
   const frame = useMemo(() => bandGeometry(SPAN, 0.0055, 0.026), []);
   const canopy = useMemo(() => bandGeometry(SPAN - 0.008, 0.0035, 0.034), []);
 
+  /*
+   * The cups are pillows, not rounded boxes.
+   *
+   * A rounded box caps its radius at half the smallest dimension, so on a 38 mm
+   * deep cup the corners of a 90 mm face can only be rounded by 19 mm — and the
+   * cup reads as a box with its edges knocked off. The real thing is much
+   * closer to a stadium: the face is nearly an oval and the depth rolls softly
+   * and separately. Extruding a heavily rounded outline with a fat bevel gets
+   * both, because the two radii stop being the same number.
+   */
+  const cup = useMemo(
+    () => roundedPillow(H.cupW, H.cupH, H.cupD, H.cupR, 0.009),
+    [],
+  );
+  const cushion = useMemo(
+    () =>
+      roundedPillow(H.cupW - 0.008, H.cupH - 0.008, 0.016, H.cupR - 0.004, 0.006),
+    [],
+  );
+
   useEffect(() => {
     return () => {
       frame.dispose();
       canopy.dispose();
+      cup.dispose();
+      cushion.dispose();
     };
-  }, [frame, canopy]);
+  }, [frame, canopy, cup, cushion]);
 
   return (
     <group>
@@ -104,30 +127,26 @@ export function Headphones() {
           </RoundedBox>
 
           {/* The cup itself. */}
-          <RoundedBox
-            args={[H.cupW, H.cupH, H.cupD]}
-            radius={0.016}
-            smoothness={6}
+          <mesh
+            geometry={cup}
             position={[0, -0.044 - H.cupH / 2, 0]}
             castShadow
             receiveShadow
           >
             <meshStandardMaterial {...M.EARCUP} />
-          </RoundedBox>
+          </mesh>
 
           {/*
             Ear cushion, on the face turned toward the panel. Memory foam under
             a knit — the softest material anywhere in the room, and it needs to
             read that way against the anodising it's attached to.
           */}
-          <RoundedBox
-            args={[H.cupW - 0.009, H.cupH - 0.009, 0.015]}
-            radius={0.007}
-            smoothness={5}
-            position={[0, -0.044 - H.cupH / 2, -s * (H.cupD / 2 + 0.005)]}
+          <mesh
+            geometry={cushion}
+            position={[0, -0.044 - H.cupH / 2, -s * (H.cupD / 2 + 0.002)]}
           >
             <meshStandardMaterial {...M.CUSHION} />
-          </RoundedBox>
+          </mesh>
         </group>
       ))}
     </group>

@@ -108,7 +108,7 @@ export function About({ initial }: { initial?: ActivityFeed | null }) {
      * claim on the left and the ways to act on it down the right, and both
      * columns reach the bottom of the screen.
      */
-    <div className="grid h-full w-full grid-cols-[1.45fr_1fr] gap-8 overflow-hidden rounded-[18px] bg-screen bg-[radial-gradient(110%_80%_at_35%_0%,#161c20_0%,transparent_68%)] px-9 py-8 font-sans text-ink-dim">
+    <div className="grid h-full w-full grid-cols-[1.45fr_1fr] gap-8 overflow-hidden bg-screen bg-[radial-gradient(110%_80%_at_35%_0%,#161c20_0%,transparent_68%)] px-9 py-8 font-sans text-ink-dim">
       <div className="flex flex-col">
         {/*
           The one place in the whole project where restraint beats decoration.

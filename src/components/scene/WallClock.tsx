@@ -59,80 +59,97 @@ export function WallClock() {
   });
 
   const r = CLOCK.radius;
+  /** Width of the black rim, as seen face on. */
+  const rim = 0.013;
+  const faceR = r - rim;
 
   return (
     <group position={[CLOCK.x, CLOCK.y, WALL.z + 0.005]}>
-      {/* Case, seen edge-on as a thin dark ring around the face. */}
+      {/*
+        A deep matte black case, and nothing on the dial at all.
+
+        No numerals and no tick marks — not even the four compass marks this had
+        before. A dial with four ticks looks like a dial that couldn't afford
+        twelve; a dial with none is a decision, and it's the whole reason this
+        style of clock reads as expensive. The only things on it are three hands
+        and the shadow they throw.
+      */}
       <mesh rotation={[Math.PI / 2, 0, 0]} castShadow receiveShadow>
-        <cylinderGeometry args={[r, r, 0.032, 48]} />
+        <cylinderGeometry args={[r, r, 0.046, 64]} />
         <meshStandardMaterial {...M.CLOCK_CASE} />
       </mesh>
 
-      {/* Face. */}
-      <mesh position={[0, 0, 0.0165]}>
-        <circleGeometry args={[r - 0.006, 48]} />
+      {/*
+        The dial, in *front* of the case.
+        
+        It used to sit at z = 0.016 while the case was a solid 46 mm cylinder
+        whose front face lands at 0.023 — so the white dial was seven
+        millimetres behind an opaque black disc and never rendered at all. From
+        the seat the clock was a black circle on a dark wall, which looked
+        deliberate enough that it took a screenshot to notice.
+      */}
+      <mesh position={[0, 0, 0.0235]}>
+        <circleGeometry args={[faceR, 64]} />
         <meshStandardMaterial {...M.CLOCK_FACE} />
       </mesh>
 
-      {/* Four ticks. Twelve is fussy at this size; four is a compass. */}
-      {[0, 1, 2, 3].map((i) => (
-        <group key={i} rotation={[0, 0, (i * Math.PI) / 2]}>
-          <mesh position={[0, r - 0.026, 0.018]}>
-            <boxGeometry args={[0.0055, 0.026, 0.001]} />
-            <meshStandardMaterial {...M.CLOCK_MARK} />
-          </mesh>
-        </group>
-      ))}
+      {/*
+        The rim, standing proud of the dial as a separate ring.
+        
+        This is what the recess was for: a lip that catches light on top and
+        drops a crescent of shadow across the face. A ring rather than a deeper
+        case, so the dial can stay in front where it's visible.
+      */}
+      <mesh position={[0, 0, 0.0295]}>
+        <ringGeometry args={[faceR - 0.001, r, 64]} />
+        <meshStandardMaterial {...M.CLOCK_CASE} />
+      </mesh>
 
-      <group ref={hour} position={[0, 0, 0.019]}>
+      {/* Hands. Thin, black, and tapered to nothing — needles, not batons. */}
+      <group ref={hour} position={[0, 0, 0.0252]}>
         <RoundedBox
-          args={[0.011, r * 0.56, 0.004]}
-          radius={0.0018}
+          args={[0.0062, faceR * 0.62, 0.0025]}
+          radius={0.001}
           smoothness={4}
-          position={[0, r * 0.22, 0]}
+          position={[0, faceR * 0.24, 0]}
         >
           <meshStandardMaterial {...M.CLOCK_MARK} />
         </RoundedBox>
       </group>
 
-      <group ref={minute} position={[0, 0, 0.0205]}>
+      <group ref={minute} position={[0, 0, 0.0266]}>
         <RoundedBox
-          args={[0.0075, r * 0.84, 0.004]}
-          radius={0.0015}
+          args={[0.005, faceR * 0.94, 0.0025]}
+          radius={0.0009}
           smoothness={4}
-          position={[0, r * 0.34, 0]}
+          position={[0, faceR * 0.4, 0]}
         >
           <meshStandardMaterial {...M.CLOCK_MARK} />
         </RoundedBox>
       </group>
 
       {/*
-        The second hand is the only accent-coloured object anywhere in the room
-        that isn't a screen. It gets to be, because it's the one thing moving.
+        The second hand used to be the room's accent teal — the only saturated
+        object here that wasn't a screen. It's black now, because on a dial this
+        bare a single coloured needle is the entire design and it turns a quiet
+        object into a loud one. It's still the one thing in the room that moves,
+        which was always the point; it just doesn't have to shout about it.
       */}
-      <group ref={second} position={[0, 0, 0.022]}>
-        <mesh position={[0, r * 0.34, 0]}>
-          <boxGeometry args={[0.0028, r * 0.92, 0.003]} />
-          <meshStandardMaterial
-            color={M.ACCENT_HEX}
-            roughness={0.4}
-            metalness={0}
-          />
+      <group ref={second} position={[0, 0, 0.0278]}>
+        <mesh position={[0, faceR * 0.42, 0]}>
+          <boxGeometry args={[0.0018, faceR * 1.06, 0.002]} />
+          <meshStandardMaterial {...M.CLOCK_MARK} />
         </mesh>
-        {/* Counterweight, so it pivots rather than pointing. */}
-        <mesh position={[0, -r * 0.14, 0]}>
-          <boxGeometry args={[0.0028, r * 0.2, 0.003]} />
-          <meshStandardMaterial
-            color={M.ACCENT_HEX}
-            roughness={0.4}
-            metalness={0}
-          />
+        {/* Counterweight, so it pivots rather than merely points. */}
+        <mesh position={[0, -faceR * 0.15, 0]}>
+          <boxGeometry args={[0.0018, faceR * 0.22, 0.002]} />
+          <meshStandardMaterial {...M.CLOCK_MARK} />
         </mesh>
       </group>
 
       {/* Centre cap, hiding where three hands meet. */}
-      <mesh position={[0, 0, 0.0235]} rotation={[Math.PI / 2, 0, 0]}>
-        <cylinderGeometry args={[0.0075, 0.0075, 0.004, 20]} />
+      <mesh position={[0, 0, 0.0292]} rotation={[Math.PI / 2, 0, 0]}>
+        <cylinderGeometry args={[0.005, 0.005, 0.004, 24]} />
         <meshStandardMaterial {...M.CLOCK_MARK} />
       </mesh>
     </group>

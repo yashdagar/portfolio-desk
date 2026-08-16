@@ -67,7 +67,7 @@ export function NowPlaying({
   }
 
   return (
-    <div className="flex h-full w-full flex-col overflow-hidden rounded-[18px] bg-[#000] font-sans text-[#b3b3b3] antialiased">
+    <div className="flex h-full w-full flex-col overflow-hidden bg-[#000] font-sans text-[#b3b3b3] antialiased">
       <div className="flex min-h-0 flex-1 gap-2 p-2">
         <Sidebar recent={track?.recent} />
         <Main track={track} />
@@ -91,7 +91,7 @@ function TallPlayer({
   const pct = track?.durationMs ? (position / track.durationMs) * 100 : 0;
 
   return (
-    <div className="flex h-full w-full flex-col overflow-hidden rounded-[18px] bg-gradient-to-b from-[#2f4f4a] via-[#141c1c] to-[#0a0a0a] px-7 pb-6 pt-7 font-sans text-[#b3b3b3] antialiased">
+    <div className="flex h-full w-full flex-col overflow-hidden bg-gradient-to-b from-[#2f4f4a] via-[#141c1c] to-[#0a0a0a] px-7 pb-6 pt-7 font-sans text-[#b3b3b3] antialiased">
       <header className="flex items-center justify-between">
         <span className="text-[11px] font-bold uppercase tracking-[0.16em] text-white">
           {track?.playing ? "Now playing" : "Last played"}
