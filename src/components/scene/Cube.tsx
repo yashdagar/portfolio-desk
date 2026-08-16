@@ -76,6 +76,33 @@ import * as M from "./materials";
  * come from paint. So each facelet is now its own moulded pad with the outline
  * it actually has, standing proud of a piece that shows around it.
  *
+ * The seventh version had one number where it needed three. Every pad was
+ * rounded by the same amount, and a single amount can only ever be wrong: round
+ * them enough and the *cube* stops being a cube, because a face's outer tiles
+ * are also its silhouette and a row of pebbles has a chewed edge. Keep the
+ * silhouette and every tile is a square with the corners knocked off. Look at
+ * a real face and it is plainly both at once — the cube's edges are straight
+ * lines, and the same tiles are semicircles on the ends that point at the
+ * middle. That isn't a compromise between the two, it's the actual rule: a
+ * tile's outer side *is* the cube's edge and has to stay one, and nothing else
+ * about the tile does. So `SQUARENESS` is chosen per corner from how many of
+ * its two sides face out of the cube — which is the entire shape of this
+ * object, and it needs no cut, no second outline and no per-piece special case.
+ * A corner piece keeps a hard corner at the cube's corner; an edge piece
+ * presents a broad tongue at the centre; the centre is a disc; and where four
+ * round ends meet they leave the open void a real face has there.
+ *
+ * The eighth version got that right and still rendered as nine rounded squares,
+ * because the shape being judged wasn't the pad. A piece is a square box and a
+ * pad is not square, so a strip of box showed past every edge of every pad —
+ * lit, coloured, and with the box's corner, not the pad's. It didn't matter how
+ * round the pad was; the eye measured the strip. The piece's face is now taken
+ * to the black core wherever the pad isn't, measured against `padRadius` so the
+ * two agree exactly. Along the axes nothing is ever far enough out for that to
+ * bite and the seam between two facelets stays coloured plastic, which is what
+ * paragraph three is about; at the diagonals it goes black, because that is a
+ * hole and you are looking into the mechanism.
+ *
  * All twenty-six merge into one geometry, so the whole cube is a single draw
  * call — cheaper than the version it replaces, and the corners are round.
  */
@@ -239,13 +266,14 @@ const SHADOW = 0.46;
  * ---------------------------------------------------------------------------
  *
  * A facelet is a moulded pad, and its outline is not a square. The centre one is
- * a disc; the four around it are cut back to an arc that follows the disc. The
- * version before this drew that as a texture, which is a picture of the right
- * thing on the wrong shape — a circle painted on a square tile reads as a decal,
- * because the silhouette, the rim highlight and the shadow in the seam all still
- * belong to the square. None of those come from paint. They come from an
- * outline, so the pads are built as geometry with the outline they actually
- * have.
+ * a disc, and the eight around it are shaped for it — each presenting a round
+ * end where it points at the middle of the face and a straight one where it
+ * forms the cube's own edge. An early version drew that as a texture, which is a
+ * picture of the right thing on the wrong shape — a circle painted on a square
+ * tile reads as a decal, because the silhouette, the rim highlight and the
+ * shadow in the seam all still belong to the square. None of those come from
+ * paint. They come from an outline, so the pads are built as geometry with the
+ * outline they actually have.
  *
  * The first attempt at that built them as flat lozenges standing on top of the
  * piece, and it was worse than the texture. A piece is a *rounded* box: its flat
@@ -261,33 +289,55 @@ const SHADOW = 0.46;
  * thing that version had right.
  */
 
+/** Centre-to-centre spacing of two pieces. */
+const PITCH = CUBE.cubie + CUBE.gap;
 /** Gap between a pad and the edge of the piece it's moulded into. */
-const SEAM = 0.00035;
+const SEAM = 0.0006;
 const PAD_HALF = CUBE.cubie / 2 - SEAM;
 /**
- * Superellipse exponent for the pads that aren't round.
+ * How square each corner of a pad is, indexed by how many of the two sides
+ * meeting there lie on the outside of the cube.
  *
- * A rounded square, expressed as one number instead of four arcs and four
- * lines: at 2 this is a circle, at infinity a square, and around 4.5 it's the
- * shape a moulded pad actually has. It also makes the arc below trivial to cut,
- * since every point of the outline is already computed from an angle.
+ * This is the whole shape of the cube, in three numbers.
+ *
+ * A superellipse exponent is a rounded square expressed as one value instead of
+ * four arcs and four lines: at 2 it's a circle, at infinity a square. Every
+ * version of this cube until now used one exponent for the whole pad, and one
+ * exponent cannot be right — a tile's outer side is also the cube's silhouette
+ * and wants to stay a straight line, while the side facing the middle of the
+ * face wants to be a semicircle. Pick either and half the cube is wrong: round
+ * everything and the silhouette comes out chewed, square everything and you
+ * have nine tiles that were never made for the disc in the middle of them.
+ *
+ * So the exponent is chosen per corner, from how many of the two sides meeting
+ * there face out of the cube. Nothing else is needed — no cut, no second
+ * outline, no per-piece special case. A corner piece keeps a hard corner where
+ * it forms the cube's own corner and turns into a semicircle where it points at
+ * the centre; an edge piece presents a broad tongue at the centre and straight
+ * shoulders at the cube's edge; the centre is a disc. Where four of them meet
+ * their round ends leave an open void, which is exactly what a real face does.
+ *
+ * Continuous by construction, with no blending needed: a superellipse passes
+ * through exactly PAD_HALF on both axes for *any* exponent, so quadrants built
+ * with different exponents still meet. Only the tangent kinks, at four points
+ * where the outline is a straight run anyway.
  */
-const PAD_SQUARENESS = 4.5;
-/** Radius of the round centre facelet. */
-const DISC_R = 0.0089;
+const SQUARENESS = [2.05, 5.0, 9.0];
 /**
- * Radius of the arc the four pieces around the centre are cut back to.
+ * And the centre, which has no outward side at all.
  *
- * The geometry here is tighter than it looks. The disc can be at most as wide
- * as its own piece, so the arc that clears it can only just reach into the
- * neighbours — this cuts a lens about 8 mm wide and 0.7 mm deep out of each,
- * and no bigger is available without the disc overhanging a piece it isn't
- * part of. Small, and it's the difference between four square tiles around a
- * circle and four tiles that were made for it.
+ * Just off a circle rather than exactly one — a 1% bulge at the diagonals,
+ * invisible as a shape, and enough that the centre is built by the same rule as
+ * everything around it rather than being a separate object dropped on top.
  */
-const ARC_R = 0.0104;
-/** How far a pad's rim stands proud of the piece's own surface. */
-const PAD_LIP = 0.00018;
+const CENTRE_SQUARENESS = 2.05;
+/**
+ * How far a pad's rim stands proud of the piece's own surface.
+ *
+ * 0.18 mm was below what the lighting resolves — no rig in this scene puts a
+ * highlight or a shadow on a step that small, so the pads read as painted on.
+ */
+const PAD_LIP = 0.00035;
 /** And how much higher its middle is than its rim. */
 const PAD_CROWN = 0.0008;
 /**
@@ -300,9 +350,15 @@ const PAD_CROWN = 0.0008;
  */
 const PAD_RINGS = 9;
 const PAD_RING_BIAS = 1.7;
-const PAD_STEPS = 40;
+/*
+ * Forty was enough for a near-square, where the outline barely curves. The
+ * scallop and the pebbled corners *are* the curvature, and they're the one
+ * thing the eye is now being pointed at, so forty facets across them shows as a
+ * chain of flats along exactly the wrong edge.
+ */
+const PAD_STEPS = 64;
 /** How dark the piece is where it shows around and between the pads. */
-const BODY_DIM = 0.62;
+const BODY_DIM = 0.7;
 
 /**
  * The height of a piece's own surface at a point on its face.
@@ -320,16 +376,38 @@ function bodyHeight(u: number, v: number): number {
 }
 
 /**
- * The outline of one pad, in the plane of the face it sits on.
+ * How far a pad's rim is from its own middle, in one direction.
  *
- * `cu`/`cv` are where the pad's own centre falls on the cube's face, which is
- * what lets the arc be cut without the pad knowing which piece it belongs to:
- * every point is tested against one circle centred on the *face*, and anything
- * inside it is pushed back out to the rim. The disc, the four bitten pads and
- * the four untouched corner pads all fall out of that single rule — which is
- * also why the pattern survives a scramble, since it never depended on which
- * piece was where.
+ * `cu`/`cv` are where the pad's centre falls on the cube's face, and that is
+ * the only thing the shape is read from — a pad in the `+u` column has its `+u`
+ * side on the outside of the cube, one in the middle column has neither, and
+ * counting the outward sides meeting at the corner this direction points into
+ * picks the exponent. So a pad never has to know which piece it belongs to,
+ * which is also why the pattern survives a scramble: it never depended on which
+ * piece was where, only on where the pad landed.
+ *
+ * Used twice — once to build the pad's outline, and once to decide where the
+ * piece underneath stops being the pad and starts being the hole between pads.
+ * Both have to agree exactly, or a bright crescent of plastic appears along one
+ * edge of every tile.
  */
+function padRadius(
+  centre: boolean,
+  cu: number,
+  cv: number,
+  cos: number,
+  sin: number,
+): number {
+  const n = centre
+    ? CENTRE_SQUARENESS
+    : SQUARENESS[
+        Number(cos >= 0 ? cu > 0 : cu < 0) + Number(sin >= 0 ? cv > 0 : cv < 0)
+      ];
+
+  return PAD_HALF / Math.pow(Math.abs(cos) ** n + Math.abs(sin) ** n, 1 / n);
+}
+
+/** The outline of one pad, in the plane of the face it sits on. */
 function padOutline(centre: boolean, cu: number, cv: number): number[][] {
   const points: number[][] = [];
 
@@ -337,33 +415,8 @@ function padOutline(centre: boolean, cu: number, cv: number): number[][] {
     const angle = (i / PAD_STEPS) * Math.PI * 2;
     const cos = Math.cos(angle);
     const sin = Math.sin(angle);
-
-    if (centre) {
-      points.push([DISC_R * cos, DISC_R * sin]);
-      continue;
-    }
-
-    const r =
-      PAD_HALF /
-      Math.pow(
-        Math.abs(cos) ** PAD_SQUARENESS + Math.abs(sin) ** PAD_SQUARENESS,
-        1 / PAD_SQUARENESS,
-      );
-
-    let u = r * cos;
-    let v = r * sin;
-
-    // Cut back to the arc wherever this pad would otherwise crowd the disc.
-    const fu = u + cu;
-    const fv = v + cv;
-    const away = Math.hypot(fu, fv);
-    if (away < ARC_R) {
-      const push = ARC_R / away;
-      u = fu * push - cu;
-      v = fv * push - cv;
-    }
-
-    points.push([u, v]);
+    const r = padRadius(centre, cu, cv, cos, sin);
+    points.push([r * cos, r * sin]);
   }
 
   return points;
@@ -515,23 +568,33 @@ function buildCube(): BufferGeometry {
     turn(cubies, axis, layer, quarters);
   }
 
-  const pitch = CUBE.cubie + CUBE.gap;
   const parts: BufferGeometry[] = [];
   const colour = new Color();
   /** Scratch, for the shadowed version of whichever facelet is in play. */
   const shade = new Color();
 
   for (const c of cubies) {
-    // Eight segments across the chamfer. At a 1.2 mm radius four was plenty and
-    // the difference was invisible; at 3.2 mm the shoulder is a third of the
-    // piece and every step in it shows as a facet, which breaks the highlight
-    // that runs along the edge into dashes. That highlight is most of what says
-    // "moulded" rather than "printed", so it has to be continuous.
+    /*
+     * Eighteen segments, which is far more than the shape needs and exactly
+     * what the *paint* needs.
+     *
+     * Eight was plenty for the chamfer: at a 1.2 mm radius four was invisible,
+     * and at 3.2 mm the shoulder is a third of the piece so every step in it
+     * shows as a facet and breaks the highlight along the edge into dashes.
+     * That highlight is most of what says "moulded" rather than "printed".
+     *
+     * But the box is now also carrying where the pad ends, as a vertex colour,
+     * and a vertex colour is only as sharp as the mesh under it. At eight
+     * segments the samples are 2.3 mm apart on an 18.6 mm face and the edge of
+     * every tile came out speckled — the boundary landing between vertices and
+     * getting interpolated into a dither. Eighteen puts them at 1 mm, which is
+     * under the seam's own width, and the edges come out clean.
+     */
     const geo = new RoundedBoxGeometry(
       CUBE.cubie,
       CUBE.cubie,
       CUBE.cubie,
-      8,
+      18,
       CUBE.bevel,
     );
 
@@ -628,23 +691,43 @@ function buildCube(): BufferGeometry {
         }
 
         /*
-         * Behind the disc.
+         * Outside the pad, the piece stops being a facelet and becomes a hole.
          *
-         * A centre piece is square and its facelet is round, so a frame the
-         * same width as everyone else's leaves four fat wedges of lit plastic
-         * at the diagonals — and a dim rounded square with a circle sitting on
-         * it is a decal again, whatever the circle is made of. On a real cube
-         * that corner is deep in shadow between the disc's cap and the pieces
-         * around it, so it goes to the core's black as it leaves the rim.
+         * A piece is a square box and its pad is not square, so a strip of the
+         * box shows past every edge of every pad — and that strip is what four
+         * versions of this cube were actually being judged on. It is bright, it
+         * is the piece's own colour, and it is square, so no matter how round
+         * the pad was the tile still read as a rounded square: the corner the
+         * eye measures belonged to the box, not the pad.
+         *
+         * How wide that strip is varies enormously, and that is the whole
+         * subtlety. Along the axes it is 0.6 mm of seam — the hairline between
+         * two facelets, which on a real stickerless cube is *coloured plastic*
+         * and must stay coloured, because painting it dark is what drew a
+         * border round every tile back in version three. At the diagonals it is
+         * up to 4.5 mm, an open void where four pieces don't quite meet, and on
+         * a real cube you are looking into the mechanism there.
+         *
+         * So the fade is measured from the pad's own rim in that direction —
+         * `padRadius`, the same function the outline is built from — and starts
+         * a seam's width out. Near the axes nothing ever gets that far and the
+         * seam keeps its colour; at the diagonals everything past it goes to
+         * black. One rule, and it replaces the special case the centre piece
+         * used to need.
          */
-        const centre = [0, 1, 2]
-          .filter((a) => a !== axis)
-          .every((a) => c.pos.getComponent(a) === 0);
-        if (centre) {
-          const [across, down] = [0, 1, 2].filter((a) => a !== axis);
-          const local = [points.getX(v), points.getY(v), points.getZ(v)];
-          const out = Math.hypot(local[across], local[down]);
-          colour.lerp(CORE, smoothstep(DISC_R, DISC_R + 0.0032, out));
+        const [across, down] = [0, 1, 2].filter((a) => a !== axis);
+        const bu = points.getComponent(v, across);
+        const bv = points.getComponent(v, down);
+        const out = Math.hypot(bu, bv);
+        if (out > 0) {
+          const rim = padRadius(
+            c.pos.getComponent(across) === 0 && c.pos.getComponent(down) === 0,
+            c.pos.getComponent(across) * PITCH,
+            c.pos.getComponent(down) * PITCH,
+            bu / out,
+            bv / out,
+          );
+          colour.lerp(CORE, smoothstep(rim + 0.0002, rim + 0.001, out));
         }
       } else if (toward !== CORE_BLACK) {
         /*
@@ -673,7 +756,7 @@ function buildCube(): BufferGeometry {
 
     geo.setAttribute("color", new BufferAttribute(colours, 3));
     geo.deleteAttribute("uv");
-    geo.translate(c.pos.x * pitch, c.pos.y * pitch, c.pos.z * pitch);
+    geo.translate(c.pos.x * PITCH, c.pos.y * PITCH, c.pos.z * PITCH);
     parts.push(geo.index ? geo.toNonIndexed() : geo);
 
     /*
@@ -695,14 +778,14 @@ function buildCube(): BufferGeometry {
       if (!hue || hue === CORE_BLACK) continue;
 
       const [across, down] = [0, 1, 2].filter((a) => a !== axis);
-      const cu = c.pos.getComponent(across) * pitch;
-      const cv = c.pos.getComponent(down) * pitch;
+      const cu = c.pos.getComponent(across) * PITCH;
+      const cv = c.pos.getComponent(down) * PITCH;
 
       colour.set(hue).convertSRGBToLinear();
       shade.set(hue).multiplyScalar(SHADOW * BODY_DIM).convertSRGBToLinear();
 
       const pad = padGeometry(cu === 0 && cv === 0, cu, cv, axis, sign, colour, shade);
-      pad.translate(c.pos.x * pitch, c.pos.y * pitch, c.pos.z * pitch);
+      pad.translate(c.pos.x * PITCH, c.pos.y * PITCH, c.pos.z * PITCH);
       parts.push(pad);
     }
   }
