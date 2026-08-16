@@ -474,8 +474,27 @@ export const CUBE_PLASTIC: Mat = {
    * what was happening here: the top face had a hotspot across it and the
    * tiles under it lost their colour.
    */
-  roughness: 0.46,
+  /*
+   * Pulled back down, and the reasoning above was measuring the wrong thing.
+   *
+   * It is true that a glossy face carries a blown highlight across two tiles at
+   * once, and 0.34 did that when the tiles were nearly flat — a flat face is a
+   * mirror pointed in one direction, so all of it lights up together. A tile
+   * with a 3.4 mm shoulder isn't flat: the highlight lands on the curve and
+   * runs *along* it, which is the single strongest cue that the thing is
+   * rounded at all. Take it away and geometry can't make up the difference,
+   * because at the size this is seen — about 60 px on a desk — the whole
+   * shoulder is three pixels wide and a shading gradient across three pixels is
+   * invisible. A specular streak on those same three pixels is not.
+   */
+  roughness: 0.36,
   metalness: 0,
+  /*
+   * The room's lightformers are what that streak is a reflection *of*, and this
+   * cube is small enough, and far enough from the lamp, that at 1 it picks up
+   * almost nothing from them.
+   */
+  envMapIntensity: 1.5,
 };
 
 

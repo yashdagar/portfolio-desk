@@ -702,9 +702,13 @@ export const CUBE = {
    * large in-plane radius with a small edge fillet — two numbers this geometry
    * only has one of.
    *
-   * 2.6 mm is that compromise, spent on the edge rather than the corner,
-   * because at the size this is actually seen — 64 px on the desk — the ratio
-   * of colour to shadow is legible and a corner radius is not.
+   * 3.4 mm is that compromise. It sits much closer to the reference than the
+   * 2.6 it replaced, and it only became affordable once the slot walls stopped
+   * being painted black: while they were, every extra millimetre of radius was
+   * spent widening a dark channel, so the tiles came apart. With the walls
+   * carrying the tile's own colour, the same millimetre is spent on curved,
+   * lit, coloured plastic instead — which is the thing that was wanted from it
+   * in the first place.
    *
    * The gap and the shading ramp in Cube.tsx are the other two thirds of this
    * decision and none of the three works alone. What you see between two tiles
@@ -713,7 +717,7 @@ export const CUBE = {
    * and the ramp decides how much of the curve stays the colour of the tile.
    * With the ramp gradual and the slot walls coloured, all of it reads as tile.
    */
-  bevel: 0.0026,
+  bevel: 0.0034,
   /*
    * Between the mat and the notebook, well forward, where a hand reaches
    * without looking.

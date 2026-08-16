@@ -58,6 +58,15 @@ import * as M from "./materials";
  * from every facelet. So the shoulder keeps its colour and the slot wall is the
  * same colour with no light on it, which is `SHADOW` below.
  *
+ * The fourth version was still being judged in the wrong place. Magnified, it
+ * was plainly round; on the desk it was a mosaic of flat squares — and the desk
+ * is where this object is, about 60 px across, with each tile ~18 px of which
+ * the entire rounded shoulder is three. Rounding three pixels does nothing for
+ * the other fifteen. What fixed it was `DOME` below, which crowns each facelet
+ * so the whole tile carries a gradient, plus enough gloss for the lamp to lay a
+ * specular streak along that crown. At this size the streak *is* the roundness;
+ * the geometry only decides where it falls.
+ *
  * All twenty-six merge into one geometry, so the whole cube is a single draw
  * call — cheaper than the version it replaces, and the corners are round.
  */
@@ -195,6 +204,53 @@ function faceColours(c: Cubie): Map<string, string> {
   return out;
 }
 
+/**
+ * How far each cubie is blended toward a sphere through its face centres.
+ *
+ * A facelet is not flat. Every version of this cube before now assumed it was,
+ * and that assumption survived four rounds of adjusting the radius because a
+ * flat tile with rounded edges genuinely does look round when you magnify it —
+ * the shoulder is right there, curving. It doesn't survive being looked at from
+ * across a desk, which is where this object actually lives: at about 60 px the
+ * whole shoulder is three pixels and the eleven pixels of tile between two
+ * shoulders are a single flat colour. Eighteen pixels of unshaded colour is a
+ * square, and no amount of rounding three of them fixes that.
+ *
+ * Real mouldings are pillowed, and the reason is manufacturing rather than
+ * design — a perfectly flat face sinks as the plastic cools, so it's tooled
+ * with a slight crown so it comes out flat-ish. Look at a photograph and you
+ * can see it: each tile carries its own soft gradient, brightest where it faces
+ * the light, and that gradient is what says "moulded" at any size at all.
+ */
+const DOME = 0.2;
+
+/**
+ * Bulge each face outward, by blending every vertex toward the sphere that
+ * passes through the face centres.
+ *
+ * The centre of a face already sits at that radius so it doesn't move; the
+ * further out toward an edge a vertex is, the further it has to come in, which
+ * leaves the face crowned. Normals are recomputed afterwards — they're the
+ * whole point, since they're what both the shading and the vertex colouring
+ * below read.
+ */
+function dome(geo: BufferGeometry) {
+  const half = CUBE.cubie / 2;
+  const position = geo.attributes.position;
+  const v = new Vector3();
+  const onSphere = new Vector3();
+
+  for (let i = 0; i < position.count; i++) {
+    v.fromBufferAttribute(position, i);
+    onSphere.copy(v).normalize().multiplyScalar(half);
+    v.lerp(onSphere, DOME);
+    position.setXYZ(i, v.x, v.y, v.z);
+  }
+
+  position.needsUpdate = true;
+  geo.computeVertexNormals();
+}
+
 function smoothstep(edge0: number, edge1: number, x: number): number {
   const t = Math.min(1, Math.max(0, (x - edge0) / (edge1 - edge0)));
   return t * t * (3 - 2 * t);
@@ -260,6 +316,8 @@ function buildCube(): BufferGeometry {
       8,
       CUBE.bevel,
     );
+
+    dome(geo);
 
     const normals = geo.attributes.normal;
     const colours = new Float32Array(normals.count * 3);
