@@ -466,8 +466,16 @@ export const BRASS: Mat = {
 export const CUBE_PLASTIC: Mat = {
   // White, because the colour arrives per-vertex and gets multiplied by this.
   color: "#ffffff",
-  roughness: 0.34,
-  metalness: 0.02,
+  /*
+   * Semi-matte, not glossy. Stickerless cubes are moulded in a frosted ABS with
+   * a very soft sheen — the giveaway is that you can read all nine tiles of a
+   * face at once under a single lamp, which you can't on a glossy surface
+   * because two of them are always carrying a blown highlight. At 0.34 that's
+   * what was happening here: the top face had a hotspot across it and the
+   * tiles under it lost their colour.
+   */
+  roughness: 0.46,
+  metalness: 0,
 };
 
 
@@ -526,4 +534,31 @@ export const PETIOLE: Mat = {
   color: "#4c6b34",
   roughness: 0.66,
   metalness: 0,
+};
+
+/**
+ * Unlined linen, in the curtain beside the window.
+ *
+ * White, because the weave and the colour both arrive in the map — and rough
+ * almost to the limit, since linen is the least specular thing in the room by
+ * some distance. Every other pale surface here is a glaze or a paint with a
+ * sheen on it; the point of this one is that it has none.
+ *
+ * It's also the only object standing directly in the window's light, which is
+ * what earns it a place at all. A curtain doesn't just occlude — unlined cloth
+ * lit from behind goes luminous at the edge, and that bright fringe against the
+ * cool daylight is the strongest piece of contrast the right-hand side of the
+ * frame has.
+ */
+export const LINEN: Mat = {
+  color: "#ffffff",
+  roughness: 0.96,
+  metalness: 0,
+};
+
+/** The curtain pole and its rings: dark oiled steel, not the desk's black. */
+export const CURTAIN_POLE: Mat = {
+  color: "#2c2622",
+  roughness: 0.44,
+  metalness: 0.72,
 };

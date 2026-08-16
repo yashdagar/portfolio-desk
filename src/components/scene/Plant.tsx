@@ -34,6 +34,29 @@ import * as M from "./materials";
 /** How many leaves, and how they're arranged around the pot. */
 const LEAVES = 9;
 
+/**
+ * How tall each blade is, as a fraction of the tallest.
+ *
+ * A sansevieria doesn't grow its leaves together. It throws them one at a time
+ * off a rhizome over months, so at any moment a pot holds one or two mature
+ * blades at full height, a middle group, and a couple of young ones barely out
+ * of the soil. The clump this replaces was generated from `(i * 7) % 5`, which
+ * spread the nine leaves over a range of 1.5× — mathematically varied and
+ * visually a hedge, because nine blades within half a step of each other read
+ * as one flat top edge however the individual heights differ.
+ *
+ * Written out rather than computed, because the shape of the list is the point.
+ * The leader stands a clear quarter above the next tallest, which is what makes
+ * it read as *the* tall one instead of as the top of a gradient, and the range
+ * runs almost 3:1 top to bottom so the silhouette has a real profile.
+ *
+ * The order is deliberately not sorted. These index into the fan around the
+ * pot, and a run of heights that climbs as it goes round makes a spiral
+ * staircase — the tall ones have to be scattered among the short ones the way
+ * a rhizome puts them.
+ */
+const HEIGHTS = [0.55, 0.8, 0.44, 1.0, 0.68, 0.36, 0.74, 0.6, 0.5];
+
 function smoothstep(a: number, b: number, x: number) {
   const t = Math.min(1, Math.max(0, (x - a) / (b - a)));
   return t * t * (3 - 2 * t);
@@ -136,7 +159,7 @@ function leafGeometry(i: number): BufferGeometry {
   // Two incommensurate turns, so the leaves fan out rather than sitting in a
   // ring at even intervals.
   const angle = t * Math.PI * 2 + Math.sin(i * 2.4) * 0.35;
-  const height = PLANT.leafHeight * (0.68 + (((i * 7) % 5) / 5) * 0.42);
+  const height = PLANT.leafHeight * HEIGHTS[i];
 
   /*
    * Lean, and very little of it.
@@ -147,8 +170,16 @@ function leafGeometry(i: number): BufferGeometry {
    * almost straight up and only the last few centimetres drift. That near-
    * vertical bundle is the entire silhouette, and it's the reason the plant
    * reads at a glance from across the room.
+   *
+   * Scaled by the leaf's own height, and by slightly more than proportionally.
+   * A fixed 30 mm of drift is barely a tilt on a 300 mm leader and a visible
+   * flop on a 110 mm youngster, which is backwards: a long blade carries its
+   * weight further from the base and arches, a short one is stiff and stands
+   * straight up. The exponent is what turns "same angle at every height" into
+   * "the tall ones bend".
    */
-  const lean = 0.014 + (((i * 3) % 4) / 4) * 0.032;
+  const grown = height / PLANT.leafHeight;
+  const lean = (0.014 + (((i * 3) % 4) / 4) * 0.032) * Math.pow(grown, 1.5);
 
   const dx = Math.cos(angle);
   const dz = Math.sin(angle);
@@ -164,7 +195,16 @@ function leafGeometry(i: number): BufferGeometry {
 
   const TUBULAR = 22;
   const RADIAL = 6;
-  const geo = new TubeGeometry(curve, TUBULAR, PLANT.leafWidth / 2, RADIAL, false);
+  /*
+   * Narrower when shorter, but not proportionally.
+   *
+   * A young sansevieria blade is a *narrow* spear that then broadens as it
+   * extends, so scaling the width by the full height ratio makes the short ones
+   * into threads and the leader into a paddle. Three quarters of a fixed width
+   * plus a quarter that grows is about what the plant does.
+   */
+  const blade = PLANT.leafWidth * (0.74 + 0.26 * grown);
+  const geo = new TubeGeometry(curve, TUBULAR, blade / 2, RADIAL, false);
 
   /*
    * Taper the blade to a point.

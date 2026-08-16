@@ -282,7 +282,10 @@ export async function fetchLeetCodeStats(
       },
       body: JSON.stringify({
         query: QUERY,
-        variables: { username: LEETCODE_USER, recent: 6 },
+        // Twelve rather than six: the centre panel grew to a 40" and the
+        // recently-solved list is the one column on it that can absorb the
+        // extra height with real information rather than with padding.
+        variables: { username: LEETCODE_USER, recent: 12 },
       }),
       next: { revalidate },
     });

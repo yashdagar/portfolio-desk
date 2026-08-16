@@ -59,13 +59,28 @@ import * as M from "./materials";
  * when a layer turns — which is what makes the scramble below produce a real
  * cube state instead of a randomly repainted one.
  */
+/*
+ * Brighter than the previous set, and the red/orange pair is the reason.
+ *
+ * Every one of these goes through convertSRGBToLinear, a dim room, and ACES
+ * tonemapping before it reaches the screen, and all three of those pull toward
+ * the middle. A #d92d20 red and a #f28c28 orange are a clear pair on a colour
+ * picker and arrived at the renderer close enough that the two faces read as
+ * one — which is the single worst thing that can happen to a cube, since
+ * telling red from orange at a glance is what the colour scheme is *for*.
+ *
+ * So the orange is pushed well up and warm rather than sitting between red and
+ * yellow, and the green and blue are lifted out of the near-black they were
+ * landing in. The white stays a touch off, because a pure #ffffff facelet next
+ * to the desk's brightest highlight blows out.
+ */
 const FACE_COLOURS: Record<string, string> = {
-  "1,0,0": "#d92d20", // R — red
-  "-1,0,0": "#f28c28", // L — orange
-  "0,1,0": "#f5f5f2", // U — white
-  "0,-1,0": "#f5d90a", // D — yellow
-  "0,0,1": "#12a150", // F — green
-  "0,0,-1": "#1f6fd4", // B — blue
+  "1,0,0": "#ee1b2e", // R — red
+  "-1,0,0": "#ff7a17", // L — orange
+  "0,1,0": "#f6f6f3", // U — white
+  "0,-1,0": "#ffd21e", // D — yellow
+  "0,0,1": "#00cf66", // F — green
+  "0,0,-1": "#1157cc", // B — blue
 };
 
 /** The six face normals, as a list. */
@@ -171,6 +186,8 @@ function faceColours(c: Cubie): Map<string, string> {
 
 /** The unpainted plastic, seen in the gaps between cubies. */
 const CORE_BLACK = "#0b0c0e";
+/** The same, kept as a Color so the chamfer can be mixed toward it per vertex. */
+const CORE = new Color(CORE_BLACK);
 
 /**
  * The whole cube as one geometry, coloured per vertex.
@@ -217,15 +234,45 @@ function buildCube(): BufferGeometry {
 
     for (let v = 0; v < normals.count; v++) {
       const n = [normals.getX(v), normals.getY(v), normals.getZ(v)];
-      // The dominant axis of the normal is the face this vertex belongs to.
-      let axis = 0;
-      for (let a = 1; a < 3; a++) {
-        if (Math.abs(n[a]) > Math.abs(n[axis])) axis = a;
-      }
-      const key = [0, 0, 0];
-      key[axis] = n[axis] > 0 ? 1 : -1;
+      // The dominant axis of the normal is the face this vertex belongs to,
+      // and the runner-up is whichever face the chamfer is heading toward.
+      const order = [0, 1, 2].sort((a, b) => Math.abs(n[b]) - Math.abs(n[a]));
+      const [axis, next] = order;
 
-      colour.set(faces.get(key.join(",")) ?? CORE_BLACK);
+      const faceAt = (a: number) => {
+        const key = [0, 0, 0];
+        key[a] = n[a] > 0 ? 1 : -1;
+        return faces.get(key.join(",")) ?? CORE_BLACK;
+      };
+
+      colour.set(faceAt(axis));
+
+      /*
+       * Where the chamfer runs into a gap, take the colour down with it.
+       *
+       * Every cubie is one rounded solid painted by whichever face each normal
+       * points most nearly toward, which splits each chamfer down the middle
+       * between its two neighbours. On the cube's *outer* edges that's exactly
+       * right — two facelets on the same piece meet colour to colour, with no
+       * black line, which is what a stickerless cube does.
+       *
+       * On the edges facing the gaps between pieces it was wrong, and visibly:
+       * the far half of the chamfer took the black core's colour but the near
+       * half stayed fully saturated, so looking into a groove showed the
+       * neighbouring facelet's colour instead of shadow. Reported as "the
+       * insides of the cube have the same colour as the adjacent side", which
+       * is precisely what it was.
+       *
+       * The fix is to ask what the chamfer is heading toward rather than to
+       * darken every chamfer: if the runner-up face is core plastic, fade to it
+       * across the chamfer; if it's another facelet, leave the colour alone.
+       */
+      if (faceAt(next) === CORE_BLACK) {
+        // 0 on the flat of the tile, 1 by the time the normal has tipped 45°.
+        const into = Math.min(1, Math.abs(n[next]) / Math.SQRT1_2);
+        colour.lerp(CORE, into * into);
+      }
+
       // Vertex colours are read in linear space; the hex strings are sRGB.
       colour.convertSRGBToLinear();
       colours[v * 3] = colour.r;

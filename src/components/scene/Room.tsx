@@ -39,6 +39,7 @@ import * as M from "./materials";
 import { Mouse } from "./Mouse";
 import { Cables } from "./Cables";
 import { Cube } from "./Cube";
+import { Curtain } from "./Curtain";
 import { Mug } from "./Mug";
 import { Plant } from "./Plant";
 import { Planter } from "./Planter";
@@ -407,7 +408,7 @@ function Monitor({
         Not variety for its own sake — it's what a desk assembled over time
         actually looks like, and each one is the answer to a different problem.
         The 27" keeps the neck and plate it shipped with. The ultrawide can't:
-        80 cm of panel on a single central neck visibly twists, so it gets a
+        94 cm of panel on a single central neck visibly twists, so it gets a
         flat blade on a long low foot. And the portrait screen can't use either,
         because a shipped foot won't rotate.
       */}
@@ -457,7 +458,10 @@ function Monitor({
  * screen on one wobbles every time you type. The answer both LG and Dell arrive
  * at is a flat vertical blade — deep front to back, wide side to side, so it's
  * stiff in torsion — standing on a bar long enough to plant its feet outside
- * the panel's centre of mass.
+ * the panel's centre of mass. At 40" the bar has to grow with the panel: a foot
+ * that spans a third of the screen is a stand, one that spans a fifth is a
+ * pedestal, and a pedestal under a metre of glass looks like it's about to go
+ * over.
  *
  * It's also the right-looking object here. The neck-and-plate stand next to it
  * is a small dark shape; this is a long horizontal line under a long horizontal
@@ -468,7 +472,7 @@ function Riser({ panelH, lift }: { panelH: number; lift: number }) {
   const deskY = -panelH / 2 - lift;
   const z = -0.03;
 
-  const bar = useMemo(() => roundedPlate(0.5, 0.13, 0.03, 0.013), []);
+  const bar = useMemo(() => roundedPlate(0.58, 0.14, 0.03, 0.013), []);
   useEffect(() => () => bar.dispose(), [bar]);
 
   return (
@@ -480,16 +484,16 @@ function Riser({ panelH, lift }: { panelH: number; lift: number }) {
       </mesh>
       {/* Feet, so the bar bridges rather than lies flat. The gap under it is
           the detail that says the thing is machined. */}
-      {[-0.21, 0.21].map((x) => (
+      {[-0.25, 0.25].map((x) => (
         <mesh key={x} position={[x, deskY + 0.002, z]}>
-          <boxGeometry args={[0.05, 0.004, 0.11]} />
+          <boxGeometry args={[0.05, 0.004, 0.12]} />
           <meshStandardMaterial {...M.POWDER_COAT} />
         </mesh>
       ))}
 
       {/* The blade. Wide across, thin front to back — the whole point. */}
       <RoundedBox
-        args={[0.078, lift + 0.02, 0.02]}
+        args={[0.086, lift + 0.02, 0.02]}
         radius={0.008}
         smoothness={5}
         position={[0, deskY + (lift + 0.02) / 2, z]}
@@ -1242,6 +1246,7 @@ export function Room({
       <Outside day={day} />
       <Walls />
       <WindowFrame />
+      <Curtain />
       {/* Only mounted when it's actually raining in Gurugram. */}
       {isWet(weather) && <RainGlass storm={weather?.condition === "storm"} />}
       <Desk />

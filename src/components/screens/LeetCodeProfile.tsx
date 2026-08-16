@@ -204,15 +204,19 @@ function SubmissionCalendar({ days }: { days: Record<string, number> }) {
           <span
             key={m.key}
             className="absolute font-mono text-[10px] text-ink-faint"
-            style={{ left: m.col * 14 }}
+            style={{ left: m.col * 16 }}
           >
             {m.label}
           </span>
         ))}
       </div>
+      {/* 13 px cells rather than 11, now that the panel is 40".
+          A year grid is 52 columns wide however big the cells are, so it can
+          only use extra height by growing — and a heatmap whose individual days
+          are legible is worth more than one with margin around it. */}
       <div
         className="grid w-fit grid-flow-col gap-[3px]"
-        style={{ gridTemplateRows: "repeat(7, 11px)" }}
+        style={{ gridTemplateRows: "repeat(7, 13px)" }}
         role="img"
         aria-label="Submissions over the last year"
       >
@@ -220,7 +224,7 @@ function SubmissionCalendar({ days }: { days: Record<string, number> }) {
           <span
             key={c.key}
             title={c.future ? undefined : `${c.count} on ${c.key}`}
-            className={`size-[11px] rounded-[3px] ${
+            className={`size-[13px] rounded-[3px] ${
               c.future ? "bg-transparent" : tone(c.count)
             }`}
           />
@@ -298,7 +302,15 @@ export function LeetCodeProfile({ stats }: { stats: LeetCodeStats }) {
               </div>
             </div>
 
-            <p className="mt-4 text-[13px] leading-relaxed">{PROFILE.bio[0]}</p>
+            {/* Both paragraphs. The second one was cut when this column had to
+                share 336 mm of panel with a chart and two lists; on a 40" it
+                fits, and it's the line that explains why the feed next door is
+                worth looking at. */}
+            {PROFILE.bio.map((line) => (
+              <p key={line} className="mt-4 text-[13px] leading-relaxed">
+                {line}
+              </p>
+            ))}
 
             <dl className="mt-4 space-y-1.5 font-mono text-[12px] text-ink-faint">
               {stats.rank !== null && (
@@ -385,7 +397,7 @@ export function LeetCodeProfile({ stats }: { stats: LeetCodeStats }) {
                   Badges
                 </p>
                 <ul className="mt-2 flex flex-wrap gap-1.5">
-                  {stats.badges.slice(0, 4).map((b) => (
+                  {stats.badges.slice(0, 6).map((b) => (
                     <li
                       key={b}
                       className="rounded-full bg-screen-raised px-2.5 py-1 font-mono text-[11px] text-ink-dim"
@@ -406,7 +418,7 @@ export function LeetCodeProfile({ stats }: { stats: LeetCodeStats }) {
                   Languages
                 </p>
                 <ul className="mt-2 space-y-1.5">
-                  {stats.languages.slice(0, 4).map((l) => (
+                  {stats.languages.slice(0, 6).map((l) => (
                     <li
                       key={l.name}
                       className="flex items-center gap-3 font-mono text-[12px]"
@@ -437,7 +449,7 @@ export function LeetCodeProfile({ stats }: { stats: LeetCodeStats }) {
                   Recently solved
                 </p>
                 <ul className="mt-2 space-y-[7px]">
-                  {stats.recent.slice(0, 5).map((p) => (
+                  {stats.recent.slice(0, 10).map((p) => (
                     <li key={p.slug} className="flex items-baseline gap-3">
                       <a
                         href={`https://leetcode.com/problems/${p.slug}/`}

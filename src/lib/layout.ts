@@ -17,8 +17,8 @@ export const DESK = {
   /**
    * Wide enough for three panels side by side.
    *
-   * The array is 1.80 m across now that the middle screen is an ultrawide, and
-   * it needs more than its own width: the lamp stands outboard of the left
+   * The array is 1.94 m across now that the middle screen is a 40" ultrawide,
+   * and it needs more than its own width: the lamp stands outboard of the left
    * monitor and there has to be desk to the right of the portrait one. At 2.2 m
    * the lamp's base finished 67 mm from the edge, which reads as a lamp about
    * to fall off.
@@ -77,21 +77,29 @@ export const WINDOW = {
 const PX_PER_M = 1840;
 
 /**
- * The middle screen: a 34" ultrawide.
+ * The middle screen: a 40" 5K2K ultrawide.
  *
- * Two thirds wider than the panels either side of it, and the same height, so
- * the three tops stay on one line. That last part is what stops the array
- * reading as a mistake — an ultrawide flanked by two shorter screens is a
- * setup, an ultrawide flanked by two screens at a different height is a pile of
- * monitors.
+ * It was a 34" — 797 × 334 mm, the same height as the panels either side of it
+ * and two thirds wider. That version was right about the width and wrong about
+ * everything the width implied: a screen can only be the centre of an array if
+ * it's *bigger*, and one that matches its neighbours' height exactly is merely
+ * longer. Three panels whose tops and bottoms all agree read as one continuous
+ * band of glass with two seams in it, which is a video wall, not a desk.
  *
- * It also earns its width by what's on it. The centre panel carries a profile
- * page — a column of identity beside a column of numbers — and at 598 mm those
- * two columns were fighting over the same forty characters.
+ * So it's the next real panel up rather than the same one stretched: 935 × 395
+ * mm, 5120 × 2160, which is what Dell and LG both ship at 40". Same 21:9
+ * proportion — that part isn't negotiable, since an ultrawide that isn't 2.37:1
+ * is an invented object and reads as one — but 58 mm taller and 135 mm wider,
+ * which is enough to break the band and make the middle of the desk the middle
+ * of the composition.
+ *
+ * It earns the size by what's on it. The centre panel carries a profile page —
+ * identity, a solved ring, languages, and a full year of submissions under all
+ * three — and the calendar at the bottom was the part paying for the height.
  */
 export const MAIN = {
-  panelW: 0.8,
-  panelH: 0.336,
+  panelW: 0.935,
+  panelH: 0.395,
 } as const;
 
 /** A 27" 16:9 panel with a thin bezel. */
@@ -205,9 +213,19 @@ const PORTRAIT = {
 
 const panelCentreY = DESK.surfaceY + MONITOR.liftY + MONITOR.panelH / 2;
 /**
- * The ultrawide sits on a wider, lower base, so its own lift differs — but its
- * panel centre has to land on the same line as the others, because they're all
- * the same height and the whole point is that the tops agree.
+ * The ultrawide is taller than its neighbours, so something has to give: either
+ * the tops line up and it hangs lower, or the bottoms line up and it towers, or
+ * the *centres* line up and it overhangs equally at both ends.
+ *
+ * Centres, and it's the only one of the three that looks deliberate. Aligned
+ * tops put the extra 58 mm below the panel, where it fouls the keyboard and
+ * makes the middle screen look like it's sagging. Aligned bottoms put all of it
+ * above, so the array steps up in the middle like a bar chart. Splitting it
+ * gives a symmetric 29 mm of overhang top and bottom, which is what reads as
+ * "the big one in the middle" rather than as three screens set at three heights.
+ *
+ * The lift falls out of that rather than being chosen: whatever puts this
+ * panel's centre on the same line as the other two.
  */
 const MAIN_LIFT = MONITOR.liftY + MONITOR.panelH / 2 - MAIN.panelH / 2;
 const mainCentreY = DESK.surfaceY + MAIN_LIFT + MAIN.panelH / 2;
@@ -357,11 +375,15 @@ export const PLANT = {
   potR: 0.05,
   potH: 0.072,
   /*
-   * Short for a sansevieria, on purpose. At a realistic 30 cm the blades ran
-   * straight out of the top of the frame, and a plant cropped by the edge of
-   * the shot reads as a mistake rather than as a composition.
+   * The tallest blade. Everything else is a fraction of it.
+   *
+   * This was capped at 200 mm because at a realistic 300 the blades ran out of
+   * the top of the frame — but that was measured when the shelf was at 1.56.
+   * It has since come down to 1.38 to keep a standing box in shot, which hands
+   * back the whole 180 mm, and the frame's top edge at this wall is y ≈ 1.93.
+   * A 300 mm leader finishes at 1.76, clear by 170 mm.
    */
-  leafHeight: 0.2,
+  leafHeight: 0.3,
   leafWidth: 0.011,
 } as const;
 
@@ -371,13 +393,23 @@ export const PLANT = {
  * It started in the middle of the big empty stretch of plaster, which was the
  * right instinct and the wrong spot — that stretch is the only wall in the room
  * wide enough for a three-panel print, and a clock hung in the middle of it
- * meant the triptych had nowhere to go. Over here it's the top of a small
- * left-hand group with a framed print under it, and the biggest wall stays
- * whole.
+ * meant the triptych had nowhere to go. Out here the biggest wall stays whole.
+ *
+ * The height is set by the monstera, not by the wall. That plant stands at
+ * z = 0.66, a metre nearer the camera than the plaster behind it, so it covers
+ * roughly twice its own width of wall — everything left of x = −0.87 and below
+ * y ≈ 1.75, which is exactly where a clock at 1.36 was sitting. Anything hung
+ * in that quadrant at eye level is going to be behind a leaf.
+ *
+ * Going up is the fix rather than going sideways, because sideways means into
+ * the triptych. 1.74 clears the tallest blade with 40 mm to spare and is where
+ * a wall clock actually hangs — nobody puts one at desk height. It also lands
+ * inside the print's vertical band, so the two read as one hanging line across
+ * the room rather than as two objects at two heights.
  */
 export const CLOCK = {
   x: -1.24,
-  y: 1.36,
+  y: 1.74,
   radius: 0.115,
 } as const;
 
@@ -391,7 +423,16 @@ export const CLOCK = {
  * other.
  */
 export const TRIPTYCH = {
-  x: 0.3,
+  /*
+   * Shifted 60 mm left to make room for the curtain.
+   *
+   * The stretch of wall between the print and the window was 77 mm, which was
+   * plenty when nothing hung in it and is not a gap at all once a panel of
+   * cloth 240 mm across is gathered against the jamb. Moving the print is the
+   * cheaper concession: it has bare wall to its left and the curtain has a
+   * fixed jamb to sit against.
+   */
+  x: 0.24,
   /*
    * High enough to clear the portrait monitor, whose top edge is at 1.40. The
    * frames sat lower and the right-hand one had its bottom corner cut off by a
@@ -402,6 +443,53 @@ export const TRIPTYCH = {
   w: 0.25,
   gap: 0.016,
   frame: 0.014,
+} as const;
+
+/**
+ * The curtain, gathered against the window's left jamb.
+ *
+ * Every number here is set by something it has to miss, which is what happens
+ * when an object is added to a corner three other objects already occupy.
+ *
+ * **x** is a compromise between the print and the portrait monitor. Further
+ * left and the panel laps over the triptych's frame; further right and it eats
+ * the window it's supposed to dress. At 0.86 the hem runs 0.74 → 0.98, which
+ * covers 170 mm of an 860 mm opening — about a fifth, which is what a curtain
+ * pushed to one side actually covers.
+ *
+ * **hemY** is the desk. The desk's back edge is 60 mm off the wall and its
+ * surface is at 0.74, so the panel hangs in that slot and stops just above the
+ * walnut. Sill length rather than floor length, and it's the honest choice
+ * rather than the convenient one: this window's sill is at desk height, and
+ * curtains at a sill-height window are cut to the sill.
+ *
+ * **standoff** has 4 mm of clearance behind and lands 20 mm proud of the desk's
+ * back edge in front — which costs nothing, because the hem stops above the
+ * surface and there's no geometry down where the two would meet.
+ */
+export const CURTAIN = {
+  x: 0.86,
+  hemY: 0.755,
+  height: 1.3,
+  /** Gathered at the rings, open at the hem. */
+  topHalfW: 0.062,
+  hemHalfW: 0.09,
+  topDepth: 0.022,
+  hemDepth: 0.028,
+  /** Clear of the plaster, in the gap behind the desk. */
+  standoff: 0.042,
+  /** How far the pole runs past each jamb. */
+  overhang: 0.12,
+  /**
+   * Above the window's head, and above the top of the frame.
+   *
+   * Hanging a pole higher than the opening is what every fitted curtain does —
+   * it's how you stop the fabric cutting into the daylight — and here it also
+   * means the pole and the gather are cropped out of the resting shot. The
+   * curtain enters the frame already falling, with no visible top, which is how
+   * one is always seen from a chair.
+   */
+  poleY: 2.08,
 } as const;
 
 /** The desk mat. Big — it runs under the keyboard and the mouse both. */
@@ -534,17 +622,32 @@ export const BOX_DESIGN = { w: 860, h: 860 } as const;
  */
 export const CUBE = {
   /** One cubie's edge. Three of these plus two gaps make the 56 mm cube. */
-  cubie: 0.0182,
+  cubie: 0.0185,
   /** The hairline of shadow between two facelets. All the border there is. */
-  gap: 0.0009,
+  gap: 0.00045,
   /**
    * Chamfer on every cubie edge.
    *
-   * Heavy — a fifth of the cubie — the way a cube built to be turned under load
-   * is. It's also most of what you see: it rounds the eight corners of the whole
-   * cube, and a speedcube with square corners looks like a stack of dice.
+   * This was 3.6 mm — a fifth of the cubie — on the theory that a cube built to
+   * be turned under load is heavily chamfered and that the chamfer is what
+   * rounds the eight corners of the whole cube. Both halves of that are true and
+   * the number was still wrong, because of what it does to the *face*.
+   *
+   * A rounded box loses its flat top for one radius on every side, so a 3.6 mm
+   * chamfer left an 11 mm square of flat colour on an 18.2 mm cubie with an
+   * 8.1 mm channel of shadow around it — a groove three quarters as wide as the
+   * tile it separates. Rendered, that isn't a speedcube at all: it's twenty-six
+   * rounded blocks sitting near each other, which is exactly what it looked
+   * like. Hold a real one and the tiles very nearly touch; the dark between them
+   * is a line you can barely get a fingernail into.
+   *
+   * At 1.2 mm the flat tile is 16.1 mm and the channel is 2.85 mm, so the face
+   * reads as nine squares of colour rather than as nine objects. The eight
+   * corners of the cube give up some roundness for it — but a 1.2 mm radius on
+   * a 56 mm cube seen from 1.4 m is about a pixel and a half of silhouette, and
+   * the grooves were about eight.
    */
-  bevel: 0.0036,
+  bevel: 0.0012,
   /*
    * Between the mat and the notebook, well forward, where a hand reaches
    * without looking.
