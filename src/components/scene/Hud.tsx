@@ -4,7 +4,14 @@ import { useEffect, useState } from "react";
 
 import { isPinned, sceneNow } from "@/lib/clock";
 import { daylight } from "@/lib/daylight";
+import type { ScreenId } from "@/lib/layout";
 import { useScene } from "@/lib/store";
+
+const SCREEN_LABELS: { id: ScreenId; label: string }[] = [
+  { id: "commits", label: "Go to the commit feed" },
+  { id: "about", label: "Go to about and contact" },
+  { id: "music", label: "Go to now playing" },
+];
 
 /**
  * The only chrome over the room.
@@ -27,6 +34,7 @@ export function Hud() {
   const focus = useScene((s) => s.focus);
   const hasInteracted = useScene((s) => s.hasInteracted);
   const clearFocus = useScene((s) => s.clearFocus);
+  const focusScreen = useScene((s) => s.focusScreen);
   const setForceFlat = useScene((s) => s.setForceFlat);
 
   const [clock, setClock] = useState<{ label: string; night: boolean } | null>(
@@ -48,6 +56,41 @@ export function Hud() {
 
   return (
     <>
+      {/*
+        First focusable thing on the page.
+        A keyboard user landing in a 3D room needs the way out before they need
+        anything else — and the flat page is the fully accessible version of
+        everything here.
+      */}
+      <button
+        type="button"
+        onClick={() => setForceFlat(true)}
+        className="sr-only z-50 focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:rounded-sm focus:bg-accent focus:px-4 focus:py-2 focus:font-mono focus:text-[13px] focus:text-graphite"
+      >
+        Skip the room, read this as a page
+      </button>
+
+      {/*
+        Keyboard access to the screens themselves. Visually hidden until
+        focused, because the room already says "click a screen" to anyone using
+        a mouse and a row of buttons over the render would be clutter.
+      */}
+      <nav
+        aria-label="Screens"
+        className="fixed left-4 top-16 z-50 flex flex-col gap-2"
+      >
+        {SCREEN_LABELS.map(({ id, label }) => (
+          <button
+            key={id}
+            type="button"
+            onClick={() => focusScreen(id)}
+            className="sr-only focus:not-sr-only focus:rounded-sm focus:bg-screen-raised focus:px-4 focus:py-2 focus:font-mono focus:text-[13px] focus:text-ink"
+          >
+            {label}
+          </button>
+        ))}
+      </nav>
+
       <div className="pointer-events-none fixed inset-x-0 bottom-0 z-50 flex items-end justify-between gap-6 p-5 sm:p-7">
         <p className="font-mono text-[12px] leading-relaxed text-ink-faint">
           {clock && (

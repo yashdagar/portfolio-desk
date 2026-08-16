@@ -72,6 +72,16 @@ export function Surface({
           with `h-full` collapses to nothing and renders as a speck.
         */}
         <div
+          /*
+           * Unfocused surfaces are inert.
+           *
+           * Without this, tabbing from the top of the page walks straight into
+           * every link on every screen — a hundred and twenty commit links
+           * before you reach the contact details — while the camera is still
+           * sitting back and none of them are legible. Inert keeps tab order
+           * matching what's actually being read.
+           */
+          inert={!focused}
           style={{
             width: designW,
             height: designH,
