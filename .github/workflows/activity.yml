@@ -1,0 +1,67 @@
+name: Refresh activity feed
+
+# The collector needs tokens that can read private repos. Running it here rather
+# than at request time means those tokens live in Actions secrets and are never
+# present in the deployed app, which is public. Only redacted output is
+# committed.
+
+on:
+  schedule:
+    # Every 20 minutes. GitHub's scheduler is best-effort and drifts under load,
+    # so treat this as "roughly every half hour".
+    - cron: "*/20 * * * *"
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "scripts/collect-activity.ts"
+      - "src/lib/activity.ts"
+      - ".github/workflows/activity.yml"
+
+concurrency:
+  group: activity
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      # The redaction rules are the reason this job is safe to run at all, so a
+      # regression in them must stop the run before anything is written.
+      - name: Verify redaction rules
+        run: npx tsx --test src/lib/activity.test.ts
+
+      - name: Collect
+        env:
+          GITHUB_TOKEN: ${{ secrets.PERSONAL_GITHUB_TOKEN }}
+          WORK_GITHUB_TOKEN: ${{ secrets.WORK_GITHUB_TOKEN }}
+        run: npx tsx scripts/collect-activity.ts
+
+      # Belt and braces over the in-process guard: grep the file that is about
+      # to be committed for anything that should never have reached it.
+      - name: Audit output
+        run: npx tsx scripts/audit-activity.ts
+
+      - name: Commit if changed
+        run: |
+          if git diff --quiet public/data/activity.json; then
+            echo "no change"
+            exit 0
+          fi
+          git config user.name "activity-bot"
+          git config user.email "activity-bot@users.noreply.github.com"
+          git add public/data/activity.json
+          git commit -m "chore(data): refresh activity feed [skip ci]"
+          git push
