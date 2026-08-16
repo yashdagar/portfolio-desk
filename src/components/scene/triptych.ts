@@ -1,18 +1,8 @@
 /**
- * The Porsche triptych: one photograph, three frames.
- *
- * The picture used to be drawn here — a 911 built out of bezier curves, which
- * was a decent silhouette and unmistakably an illustration. It's a real
- * photograph now: a 991 Carrera on a white cyclorama, shot side-on and cropped
- * to a wide band.
- *
- * The photograph earns the triptych in a way the drawing couldn't. What makes
- * three frames a triptych rather than three pictures is the subject running
- * *through* the gaps, and a real car has continuous detail — a shut line, a
- * tyre wall, a reflection running along a flank — crossing every cut. Sliced by
- * texture offsets off a single canvas, the alignment is exact by construction:
- * the rear bumper lands in the left frame, the wheel and ducktail in the
- * middle, the door and roofline in the right.
+ * One photograph, three frames. What makes three frames a triptych rather than
+ * three pictures is the subject running *through* the gaps, so it's sliced by
+ * texture offsets off a single canvas and the alignment is exact by
+ * construction.
  *
  * Source: "White porsche 911 on white background" by Idzard Schiphof, via
  * Unsplash, used under the Unsplash License. See public/art/CREDITS.md.
@@ -20,7 +10,6 @@
 
 import { CanvasTexture, LinearFilter, SRGBColorSpace } from "three";
 
-/** Three panels wide. The gaps between frames are physical, not in the art. */
 export const PANELS = 3;
 
 /** Matches the asset exactly, so the photograph is never resampled twice. */
@@ -31,30 +20,13 @@ const SRC = "/art/porsche-911.jpg";
 
 const INK = "#15161a";
 
-/**
- * One panel's aspect. The frames are sized from this rather than the other way
- * round, so the car is never stretched however the physical panels are tuned.
- */
+/** The frames are sized from this, so the car is never stretched. */
 export const PANEL_ASPECT = W / PANELS / H;
 
-/**
- * Everything drawn on top of the photograph.
- *
- * Two marks and no more. A caption, because a print of a car with no caption is
- * a screenshot; and a vignette, because the studio background is very nearly
- * paper white and against a dark wall an unmodified frame of it reads as a lit
- * panel rather than as paper.
- */
+/** A caption and a vignette, and no more. */
 function overlay(ctx: CanvasRenderingContext2D) {
-  /*
-   * Caption, in the empty floor at bottom left.
-   *
-   * That corner is the one part of the frame with nothing in it — the car
-   * starts about a fifth of the way across — so it's where a printer would set
-   * the type, and it keeps the caption inside the left panel instead of
-   * straddling a gap. Small, wide-tracked, and the same near-black as the
-   * tyres, so it belongs to the picture rather than sitting on it.
-   */
+  // Bottom left, the one part of the frame with nothing in it — which also
+  // keeps the caption inside the left panel rather than straddling a gap.
   const size = H * 0.032;
   ctx.fillStyle = INK;
   ctx.textAlign = "left";
@@ -64,14 +36,8 @@ function overlay(ctx: CanvasRenderingContext2D) {
   ctx.fillText("911 CARRERA", W * 0.045, H * 0.935);
   ctx.letterSpacing = "0px";
 
-  /*
-   * Vignette, from the corners in.
-   *
-   * Weak enough that it never reads as an effect. All it has to do is stop the
-   * outermost few centimetres of each panel being the same value as the
-   * highlight on the car, which is what flattens a white-on-white photograph
-   * when it's small in frame.
-   */
+  // Weak enough never to read as an effect: it only has to stop the corners
+  // matching the highlight on the car, which flattens white-on-white.
   const vign = ctx.createRadialGradient(
     W / 2,
     H / 2,
@@ -87,13 +53,9 @@ function overlay(ctx: CanvasRenderingContext2D) {
 }
 
 /**
- * One canvas holding the whole artwork, sliced into panels at render time.
- *
- * The photograph arrives asynchronously, so the canvas is drawn twice: once
- * immediately with the paper and the caption, and again when the image lands.
- * The alternative — making this async and awaiting it in the component — would
- * leave three black rectangles hanging on the wall for however long the decode
- * takes, which is the one thing worse than a plain paper panel.
+ * Drawn twice, because the photograph arrives asynchronously: once with the
+ * paper and caption, again when the image lands. Awaiting it instead leaves
+ * three black rectangles on the wall for the length of the decode.
  */
 function triptychCanvas(onReady: () => void): HTMLCanvasElement {
   const canvas = document.createElement("canvas");
@@ -121,9 +83,7 @@ export function triptychPanels(): CanvasTexture[] {
   const textures: CanvasTexture[] = [];
 
   const canvas = triptychCanvas(() => {
-    // The three textures share one canvas, so all three have to be told the
-    // pixels moved — a CanvasTexture caches its upload and will happily keep
-    // showing the blank paper otherwise.
+    // All three share one canvas, and a CanvasTexture caches its upload.
     for (const t of textures) t.needsUpdate = true;
   });
 

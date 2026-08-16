@@ -10,17 +10,10 @@ import { useLampLevel, useScene } from "@/lib/store";
 import * as M from "./materials";
 
 /**
- * The desk lamp, in the Dyson idiom.
- *
- * The shape is the argument: a weighted cylindrical base, one slim vertical
- * stem, a horizontal arm cantilevered off it, and a long thin bar of light at
- * the end. There is no shade, because there's no bulb — the emitter is a strip
- * on the underside of the bar, which is why the whole thing can be that thin.
- *
- * It also solves a problem the old cone lamp had. A cone shade surrounds its
- * own light source, so a double-sided cone three centimetres from a point light
- * shadow-maps onto itself and sprays acne across the wall. A downward-facing
- * strip has nothing between it and the desk.
+ * A weighted base, a slim stem, a cantilevered arm and a bar of light. No shade,
+ * because there's no bulb — the emitter is a strip on the underside of the bar,
+ * which also means nothing sits between it and the desk to shadow-map onto
+ * itself the way a cone shade does.
  */
 export function Lamp({ day }: { day: Daylight }) {
   const stemTop = LAMP.poleHeight;
@@ -28,26 +21,13 @@ export function Lamp({ day }: { day: Daylight }) {
   const cycleLamp = useScene((s) => s.cycleLamp);
   const [hovered, setHovered] = useState(false);
 
-  /**
-   * How bright the strip reads, independent of how much light it throws.
-   *
-   * It has to follow the dimmer as well as the time of day, and it is the only
-   * feedback the interaction has. Clicking the lamp changes a spotlight the
-   * visitor cannot see the source of — if the strip didn't dim with it, turning
-   * the lamp off would look like the room breaking rather than like a switch.
-   */
+  /** The only feedback the click has: without the strip dimming too, turning
+   *  the lamp off looks like the room breaking rather than a switch. */
   const glow = Math.min(1, (day.lampIntensity * level) / 2.4);
 
-  /*
-   * The cursor.
-   *
-   * The room has no affordances — nothing here is underlined or outlined, which
-   * is the point — so the pointer is the whole of the invitation. Set on the
-   * body rather than on the canvas because the canvas is the full viewport and
-   * a style left on it survives the component; the cleanup here runs on unmount
-   * as well as on pointer-out, so a lamp that disappears while hovered doesn't
-   * leave the page stuck in a pointer.
-   */
+  // On the body rather than the canvas, and cleaned up on unmount as well as
+  // pointer-out, so a lamp that disappears while hovered doesn't leave the page
+  // stuck in a pointer.
   useEffect(() => {
     if (!hovered) return;
     document.body.style.cursor = "pointer";
@@ -58,24 +38,13 @@ export function Lamp({ day }: { day: Daylight }) {
 
   return (
     /*
-      Half a millimetre clear of the desk, not sitting exactly on it.
+      Half a millimetre clear of the desk: coplanar with DESK.surfaceY the depth
+      buffer can't order the two, and desk grain punches through the foot. Every
+      object standing on this desk needs the same clearance.
 
-      The base's underside used to land at precisely DESK.surfaceY, which is
-      also where the desk's top face is — two coplanar surfaces, and the
-      depth buffer has no way to choose between them. The result was a disc of
-      desk grain punching through the lamp's foot and flickering as the camera
-      drifted, which reads as the lamp sinking into the desk. Every object that
-      stands on this desk needs the same clearance.
-    */
-    /*
-      The whole lamp is the switch.
-
-      Not just the dial, even though the dial is modelled and is the obvious
-      target. It's 8 mm across on an object a metre and a half from the camera —
-      about four pixels — so making it the only hit area would be a control
-      nobody could find and half the people who found it couldn't hit. The dial
-      is the *affordance*; the group is the button. Clicking any part of a desk
-      lamp to turn it on is also, separately, how touch lamps work.
+      The whole lamp is the switch, not just the dial — that is 8 mm across on an
+      object a metre and a half away, about four pixels. The dial is the
+      affordance; the group is the button.
     */
     <group
       position={[LAMP.x, DESK.surfaceY + 0.0005, LAMP.z]}

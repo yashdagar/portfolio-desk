@@ -17,15 +17,11 @@ export interface Capabilities {
 }
 
 /**
- * Decide how much of the 3D to serve.
+ * Deliberately conservative: a scene that stutters communicates worse than a
+ * page, so anything suggesting the device won't manage it drops a tier.
  *
- * Deliberately conservative. The site's job is to communicate, and a scene that
- * stutters or never loads communicates worse than a page — so anything that
- * suggests the device or the visitor won't enjoy it drops a tier rather than
- * gambling.
- *
- * Runs only on the client: none of these signals exist during SSR, and guessing
- * during render produces a hydration mismatch on top of a wrong answer.
+ * Client-only — none of these signals exist during SSR, and guessing produces a
+ * hydration mismatch on top of a wrong answer.
  */
 export function useCapabilities(): Capabilities {
   const [caps, setCaps] = useState<Capabilities>({ mode: "flat", ready: false });
@@ -38,24 +34,18 @@ export function useCapabilities(): Capabilities {
 }
 
 function decide(): Mode {
-  // Someone who asked the OS for less motion should not be handed a room that
-  // drifts, damps and blooms.
+  // Someone who asked for less motion shouldn't get a room that drifts and blooms.
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return "flat";
 
   if (!hasWebGL()) return "flat";
 
-  // Very low core counts are the best cheap proxy for a device that will render
-  // this at single-digit frame rates.
+  // The best cheap proxy for single-digit frame rates.
   const cores = navigator.hardwareConcurrency;
   if (typeof cores === "number" && cores > 0 && cores <= 2) return "flat";
 
-  /*
-   * A coarse pointer means there's no hover and no mouse-look, which are the
-   * two things the seated camera is built around. Rather than invent a touch
-   * control scheme that nobody asked for, phones get the room as a hero image
-   * and the content as ordinary scrollable DOM — which is what a phone is good
-   * at, and what a recruiter on a train actually wants.
-   */
+  // No hover and no mouse-look, which the seated camera is built around. Rather
+  // than invent a touch scheme, phones get the room as a hero image and the
+  // content as ordinary scrollable DOM.
   const coarse = window.matchMedia("(pointer: coarse)").matches;
   const narrow = window.matchMedia("(max-width: 900px)").matches;
   if (coarse || narrow) return "hero";

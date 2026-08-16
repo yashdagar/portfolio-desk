@@ -10,34 +10,22 @@ import { roundedPillow } from "./geometry";
 import * as M from "./materials";
 
 /**
- * Over-ear headphones, hung on the corner of a monitor.
+ * The band is a swept tube, not a scaled torus. three composes a mesh's matrix
+ * as scale-rotation-translation, so a mesh scale happens in the geometry's own
+ * axes before any rotation reaches it — and on a torus stood up by a quarter
+ * turn, the local X meant to widen the strap is the axis the arch spans. It
+ * stretched the arch instead.
  *
- * Draped rather than placed. Sitting on top of a monitor they'd read as a
- * product shot; hooked over the outer top corner with the cups hanging either
- * side of the panel is where they actually end up, and the asymmetry it puts
- * into the right-hand third of the frame is worth more than the object itself.
- *
- * The band is a swept tube, not a scaled torus. The torus version looked like a
- * bent coat hanger for a reason worth writing down: three composes a mesh's
- * matrix as scale, then rotation, then translation, so a scale applied to a
- * mesh happens in the geometry's *own* axes before any rotation reaches it. The
- * band was a torus lying in XY, turned a quarter turn about Y to stand it up in
- * ZY — which means the local X being scaled to widen the strap was, after the
- * rotation, the axis the arch spans. It wasn't widening the band. It was
- * stretching the arch to twice the distance between the cups.
- *
- * Sweeping a tube along an explicit curve and scaling the *geometry* sidesteps
- * the whole problem: the curve lives in ZY, so scaling X can only ever fatten
- * the cross-section.
+ * Sweeping along an explicit curve in ZY and scaling the *geometry* sidesteps
+ * it: X can only ever fatten the cross-section.
  */
 
 /** Half the gap between the cups, i.e. the arch's radius. */
 const SPAN = 0.042;
 
 function bandGeometry(radius: number, tube: number, width: number) {
-  // A semicircle in the ZY plane, from the back cup up over the top and down to
-  // the front one. Sampled rather than parametric so the ends can be pulled in
-  // slightly — a real band narrows where it meets the arms.
+  // Sampled rather than parametric so the ends can be pinched: a real band
+  // narrows where it meets the arms.
   const points: Vector3[] = [];
   const STEPS = 24;
   for (let i = 0; i <= STEPS; i++) {
@@ -57,16 +45,9 @@ export function Headphones() {
   const frame = useMemo(() => bandGeometry(SPAN, 0.0055, 0.026), []);
   const canopy = useMemo(() => bandGeometry(SPAN - 0.008, 0.0035, 0.034), []);
 
-  /*
-   * The cups are pillows, not rounded boxes.
-   *
-   * A rounded box caps its radius at half the smallest dimension, so on a 38 mm
-   * deep cup the corners of a 90 mm face can only be rounded by 19 mm — and the
-   * cup reads as a box with its edges knocked off. The real thing is much
-   * closer to a stadium: the face is nearly an oval and the depth rolls softly
-   * and separately. Extruding a heavily rounded outline with a fat bevel gets
-   * both, because the two radii stop being the same number.
-   */
+  // Pillows, not rounded boxes: a rounded box caps its radius at half the
+  // smallest dimension, so a 38 mm-deep cup can only round its 90 mm face by
+  // 19 mm and reads as a box with its edges knocked off.
   const cup = useMemo(
     () => roundedPillow(H.cupW, H.cupH, H.cupD, H.cupR, 0.009),
     [],

@@ -6,32 +6,19 @@ import { LatheGeometry, Vector2 } from "three";
 import * as M from "./materials";
 
 /**
- * The mug: clear glass, with the coffee visible inside it.
+ * Clear glass, so the coffee becomes the object: from a seated camera an opaque
+ * cup shows a white cylinder with a small dark ellipse on top.
  *
- * It was opaque ceramic, and opaque ceramic is the wrong object for this shot.
- * From a seated camera you look down into a mug at a shallow angle, so a solid
- * cup shows you a white cylinder with a small dark ellipse balanced on top —
- * the coffee is the least visible part of a thing whose entire purpose is to
- * contain coffee. In glass the drink becomes the object: a dark column with a
- * pale head, read through the wall, with the desk grain refracting around it.
- *
- * Three lathes stacked inside one another — glass, coffee, crema — rather than
- * one clever mesh. Each is a revolved profile, which is how every one of these
- * is actually made, and it means the coffee has a real surface at a real height
- * instead of a disc floating at a guessed one.
- *
- * Proportions stay deliberately stout: 111 mm across the belly against 102 mm
- * tall. A correctly proportioned mug looks thin in a room where everything
- * around it is large.
+ * Three stacked lathes — glass, coffee, crema — so the coffee has a real surface
+ * at a real height rather than a disc floating at a guessed one. Deliberately
+ * stout, because a correctly proportioned mug looks thin next to everything else
+ * in this room.
  */
 
 /**
- * The glass, in the XY plane and revolved about Y. X is radius, Y is height.
- *
- * Up the outside, over the rim, back down the inside to the floor. A single
- * closed profile like this gives a real wall thickness — about 3 mm, which is
- * what a tumbler-style mug has — and wall thickness is the whole difference
- * between glass and cling film once transmission is switched on.
+ * Revolved about Y; X is radius. Up the outside, over the rim, back down the
+ * inside — a closed profile, which gives a real 3 mm wall. Thickness is the
+ * difference between glass and cling film once transmission is on.
  */
 const GLASS: [number, number][] = [
   [0.0, 0.0],
@@ -56,11 +43,9 @@ const CREMA_Y = 0.0695;
 const SURFACE_Y = 0.0785;
 
 /**
- * The coffee, sitting a hair inside the glass so the two never intersect.
- *
- * The gap matters more than it sounds. Coincident surfaces between a
- * transmissive material and an opaque one behind it don't merely z-fight, they
- * z-fight *through* the refraction — which reads as the coffee boiling.
+ * A hair inside the glass. Coincident surfaces between a transmissive material
+ * and an opaque one behind it z-fight *through* the refraction, which reads as
+ * the coffee boiling.
  */
 const COFFEE: [number, number][] = [
   [0.0, 0.0104],

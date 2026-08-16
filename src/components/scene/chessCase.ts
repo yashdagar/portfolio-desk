@@ -1,25 +1,13 @@
 /**
- * The chess set: a folding wooden board, shut.
- *
- * It was a printed cardboard box in the same idiom as the Catan one, and two
- * printed boxes side by side on a shelf is one object repeated. A chess set
- * isn't sold as a box anyway — the board *is* the box. It folds shut on its
- * hinge, the pieces live in the hollow, and the outside is the playing surface.
- * One wooden object next to one printed one gives the shelf two materials, and
- * it gives the chess project something the printed version never had: you can
- * tell what it is without reading it.
- *
- * The squares go on the *outside*, which is not artistic licence — a chess box
- * board is exactly that, and it's the only version that reads as chess from
- * across the room. A folding case with a plain lid is a wooden tray.
+ * A folding wooden board, shut: the board *is* the box, the pieces live in the
+ * hollow, and the squares go on the outside — which is what a real chess case
+ * does and the only version that reads as chess from across the room.
  */
 
 import { CanvasTexture, LinearFilter, SRGBColorSpace } from "three";
 
-/** Maple and walnut, which is what these are actually made of. */
 const LIGHT = "#c8a878";
 const DARK = "#513425";
-/** The frame around the squares, a shade off the dark ones. */
 const FRAME = "#3f2719";
 
 function surface(w: number, h: number) {
@@ -37,7 +25,7 @@ function texture(canvas: HTMLCanvasElement): CanvasTexture {
   return tex;
 }
 
-/** Deterministic, so the board is the same board every reload. */
+/** Deterministic, so it's the same board every reload. */
 function rng(seed: number) {
   let s = seed;
   return () => {
@@ -47,13 +35,9 @@ function rng(seed: number) {
 }
 
 /**
- * Grain, drawn over whatever is already there.
- *
- * The one detail that separates wood from brown plastic, and it has to run in a
- * *direction*: real grain is parallel lines with occasional figure, and a
- * random speckle reads as noise on a surface rather than as the surface. Drawn
- * over the squares rather than under them, because on an inlaid board the grain
- * is in the veneer itself and crosses the joints.
+ * Grain has to run in a *direction* — a random speckle reads as noise on a
+ * surface rather than as the surface. Drawn over the squares rather than under,
+ * because on an inlaid board the grain is in the veneer and crosses the joints.
  */
 function grain(
   ctx: CanvasRenderingContext2D,
@@ -84,12 +68,8 @@ function grain(
 }
 
 /**
- * The playing surface: eight by eight, in a frame.
- *
- * Board convention is load-bearing enough to be worth getting right — a light
- * square goes in the near-right corner, which is the one thing every chess
- * player checks without meaning to. `(file + rank) % 2` with the origin at the
- * top left gives exactly that.
+ * A light square goes in the near-right corner, which every chess player checks
+ * without meaning to. `(file + rank) % 2` from the top left gives that.
  */
 export function chessBoardTexture(): CanvasTexture {
   const S = 1024;
@@ -99,14 +79,12 @@ export function chessBoardTexture(): CanvasTexture {
   ctx.fillRect(0, 0, S, S);
   grain(ctx, S, S, 3301, 0.09);
 
-  /** The frame's width. Wide enough to carry the algebraic labels a real one has. */
+  /** Wide enough to carry the algebraic labels. */
   const inset = S * 0.105;
   const play = S - inset * 2;
   const cell = play / 8;
 
-  // A hairline stringing inlay between the frame and the squares — two strips
-  // of pale veneer, which is how these are actually edged and the detail that
-  // makes the frame look joined rather than painted on.
+  // Stringing inlay, which makes the frame look joined rather than painted on.
   ctx.strokeStyle = "rgba(226,204,168,0.55)";
   ctx.lineWidth = 3;
   ctx.strokeRect(inset - 9, inset - 9, play + 18, play + 18);
@@ -121,16 +99,10 @@ export function chessBoardTexture(): CanvasTexture {
     }
   }
 
-  // Grain again, at half strength, running across the squares.
   grain(ctx, S, S, 8821, 0.05);
 
-  /*
-   * Algebraic notation around the frame, in a light stamped ink.
-   *
-   * Small enough to be texture rather than text at any distance the room ever
-   * shows this at — but it's there, and it's the difference between a
-   * chequered pattern and a chess board.
-   */
+  // Texture rather than text at this distance, but it's the difference between
+  // a chequered pattern and a chess board.
   ctx.fillStyle = "rgba(226,204,168,0.5)";
   ctx.font = `600 ${cell * 0.3}px ui-sans-serif, system-ui, sans-serif`;
   ctx.textAlign = "center";
@@ -145,7 +117,6 @@ export function chessBoardTexture(): CanvasTexture {
     ctx.fillText(rank, S - inset / 2, at);
   }
 
-  // Wear at the corners, where a case gets picked up.
   const wear = ctx.createRadialGradient(S / 2, S / 2, S * 0.28, S / 2, S / 2, S * 0.75);
   wear.addColorStop(0, "rgba(0,0,0,0)");
   wear.addColorStop(1, "rgba(20,10,4,0.3)");
@@ -156,13 +127,8 @@ export function chessBoardTexture(): CanvasTexture {
 }
 
 /**
- * The sides of the closed case.
- *
- * One texture for all four, and the whole job is the seam. A folding board shut
- * is two halves face to face, so there's a parting line running right around it
- * at exactly half its height — and that line is the entire reason the object
- * reads as *closed* rather than as a solid plank. Without it this is a block of
- * wood; with it, it's a box that opens.
+ * One texture for all four sides, and the whole job is the parting line at half
+ * height. Without it this is a block of wood; with it, a box that opens.
  */
 export function chessCaseSideTexture(): CanvasTexture {
   const W = 1024;
@@ -173,14 +139,13 @@ export function chessCaseSideTexture(): CanvasTexture {
   ctx.fillRect(0, 0, W, H);
   grain(ctx, W, H, 5507, 0.08);
 
-  // The parting line: a dark groove with a lit lip on the lower half, because
-  // light coming from above catches the top edge of the bottom shell.
+  // A dark groove with a lit lip below it, where light from above catches the
+  // top edge of the bottom shell.
   ctx.fillStyle = "rgba(12,6,2,0.92)";
   ctx.fillRect(0, H / 2 - 5, W, 9);
   ctx.fillStyle = "rgba(240,216,182,0.4)";
   ctx.fillRect(0, H / 2 + 4, W, 4);
 
-  // Chamfers top and bottom, catching a line of light along the whole length.
   ctx.fillStyle = "rgba(240,214,178,0.16)";
   ctx.fillRect(0, 0, W, 7);
   ctx.fillStyle = "rgba(16,9,4,0.3)";

@@ -1,17 +1,12 @@
 import type { Daylight } from "./daylight";
 
 /**
- * Real weather in Gurugram, applied to the room's light.
+ * Real weather in Gurugram, applied to the room's light: cloud kills the hard
+ * sun patch and lifts the soft fill, rain puts streaks on the glass, haze eats
+ * the skyline.
  *
- * The window was already the only part of the scene connected to the outside
- * world, and it was connected to a clock rather than to a sky — so a monsoon
- * afternoon rendered exactly like a clear one. This closes that: cloud cover
- * kills the hard sun patch and lifts the soft fill, rain puts streaks on the
- * glass, and haze eats the skyline.
- *
- * All of it is a *modifier*. The daylight model stands alone and the room lights
- * itself correctly with no weather at all, because a decorative API that can
- * fail must never be load-bearing.
+ * All of it is a *modifier* — the daylight model stands alone, because a
+ * decorative API that can fail must never be load-bearing.
  */
 
 export const GURUGRAM = { lat: 28.4595, lon: 77.0266 } as const;
@@ -34,13 +29,7 @@ export interface Weather {
   label: string;
 }
 
-/**
- * WMO code to something the renderer can act on.
- *
- * Deliberately coarse. There are ninety-nine of these codes and the room can
- * express about five states, so the map collapses hard — "slight drizzle" and
- * "heavy rain" both mean water on the glass.
- */
+/** Deliberately coarse: ninety-nine codes collapse into about five states. */
 function classify(code: number): Condition {
   if (code >= 95) return "storm";
   if (code >= 80) return "rain";
@@ -105,21 +94,17 @@ function mixHex(a: string, b: string, t: number): string {
 const OVERCAST = "#9aa6b0";
 
 /**
- * Apply weather to the daylight model.
- *
- * The important term is `sunIntensity`. It's the only shadow-caster outdoors,
- * so it alone owns whether there's a hard-edged window patch on the desk — and
- * the single most recognisable thing about an overcast day is that the patch is
- * gone. Cloud therefore hits it far harder than it hits anything else, and some
- * of what it takes is handed to the shadowless fill, because an overcast sky is
- * genuinely a brighter *diffuse* source than a clear one.
+ * `sunIntensity` is the term that matters: it's the only outdoor shadow-caster,
+ * so it alone owns whether there's a hard-edged patch on the desk, and its
+ * absence is the most recognisable thing about an overcast day. Some of what
+ * cloud takes is handed to the fill, an overcast sky being a brighter diffuse
+ * source than a clear one.
  */
 export function withWeather(day: Daylight, w: Weather | null): Daylight {
   if (!w) return day;
 
   const wet = isWet(w);
-  // Rain and fog are opaque regardless of what the cloud-cover number claims;
-  // it reports the fraction of sky covered, not how thick the cover is.
+  // Cloud cover reports the fraction of sky covered, not how thick it is.
   const cover = Math.min(
     1,
     Math.max(w.cloud, wet ? 0.95 : w.condition === "fog" ? 0.8 : 0),
@@ -127,14 +112,11 @@ export function withWeather(day: Daylight, w: Weather | null): Daylight {
 
   return {
     ...day,
-    // Direct sun collapses under cloud. Never quite to zero: even under thick
-    // overcast there's a bright patch where the sun is, and killing it entirely
-    // flattens the room the same way the old flat ambient did.
+    // Never quite to zero: even under thick overcast there's a bright patch
+    // where the sun is, and killing it entirely flattens the room.
     sunIntensity: day.sunIntensity * (1 - cover * 0.92),
-    // Some of it comes back as soft light from the whole sky.
     skyIntensity: day.skyIntensity * (1 + cover * 0.45),
     windowIntensity: day.windowIntensity * (1 - cover * 0.25),
-    // Colour collapses toward flat grey-blue, and further under rain.
     windowColor: mixHex(day.windowColor, OVERCAST, cover * 0.7),
     sunColor: mixHex(day.sunColor, OVERCAST, cover * 0.5),
     bounceColor: mixHex(day.bounceColor, OVERCAST, cover * 0.4),
