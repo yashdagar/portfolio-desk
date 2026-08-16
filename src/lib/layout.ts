@@ -646,14 +646,22 @@ export const CUBE = {
   /**
    * The hairline of shadow between two facelets. All the border there is.
    *
-   * Driven almost to nothing so the chamfer below can be generous. What made
-   * the first version read as a stack of dice was not the rounding on its own —
-   * it was rounding *plus* a flat-bottomed canyon between every pair of tiles.
-   * Take the floor of the canyon away and two rounded edges meet in a crisp V,
-   * which is a groove; leave it in and they face each other across a gap, which
-   * is a gap.
+   * Small so the chamfer below can be generous without opening a canyon: what
+   * made the earliest version read as a stack of dice was rounding *plus* a
+   * flat-bottomed gap between every pair of tiles. Two rounded shoulders
+   * meeting over a narrow slot is a groove; the same shoulders facing each
+   * other across a floor is a gap.
+   *
+   * Not zero, though, which is where it had been driven. At 0.2 mm the two
+   * shoulders met in a mathematical V with nothing at the bottom of it, and a
+   * V has no shadow in it — the dark line you see on a real cube is a slot with
+   * depth, and it needs a floor far enough down that no light reaches it.
+   *
+   * 0.3 mm is about a sixtieth of the pitch, which is what a photograph shows:
+   * the tiles very nearly touch, and the dark between them is a line, not a
+   * channel.
    */
-  gap: 0.0002,
+  gap: 0.0003,
   /**
    * Chamfer on every cubie edge.
    *
@@ -675,15 +683,37 @@ export const CUBE = {
    * facelet is visibly pillowed — you can see the light turn over its edge
    * before it reaches the groove.
    *
-   * 2.2 mm is where both hold, and it only works because the gap above went to
-   * 0.2 mm at the same time. The two numbers are one decision: what you see
-   * between two tiles is 2·bevel + gap wide, and it's the *gap* that decides
-   * whether that space reads as a shadow line or as a canyon with two blocks
-   * either side of it. Rounder edges over a near-zero floor give a deep V that
-   * catches a highlight along its length — which is the thing a photograph of a
-   * speedcube always shows and neither previous version had.
+   * 2.2 mm held both of those and still rendered as a stickered cube, because
+   * the radius was never the whole problem. Look at the piece rather than the
+   * cube: a 3.2 mm shoulder on an 18.6 mm cubie leaves a 12.2 mm flat, which is
+   * about what a real one measures — the moulded shoulder is a third of the
+   * piece, not a chamfer knocked off its edge. At 2.2 the flat was 14.2 mm and
+   * the turn happened too fast to see, so nine tiles read as nine flat squares
+   * with lines between them, which is a printed grid.
+   *
+   * Going the other way doesn't work either, and it's worth writing down why,
+   * because a photograph makes 3.8 mm look right. A uniform fillet rounds the
+   * tile's corners *in plane* as well as turning its edges, and on a real cube
+   * those corners are very round — the centre facelets are nearly discs. But
+   * the two can't be set separately here: a radius big enough to round the
+   * corners like that turns 2·bevel + gap into 8 mm of a 18.9 mm pitch, so 42%
+   * of the face is shoulder and the tiles come apart into separate blocks. The
+   * reference has round corners *and* tiles that nearly touch, which needs a
+   * large in-plane radius with a small edge fillet — two numbers this geometry
+   * only has one of.
+   *
+   * 2.6 mm is that compromise, spent on the edge rather than the corner,
+   * because at the size this is actually seen — 64 px on the desk — the ratio
+   * of colour to shadow is legible and a corner radius is not.
+   *
+   * The gap and the shading ramp in Cube.tsx are the other two thirds of this
+   * decision and none of the three works alone. What you see between two tiles
+   * is 2·bevel + gap across: the bevel decides how much of that is curving
+   * plastic, the gap decides whether the bottom of it is a shadow or a floor,
+   * and the ramp decides how much of the curve stays the colour of the tile.
+   * With the ramp gradual and the slot walls coloured, all of it reads as tile.
    */
-  bevel: 0.0022,
+  bevel: 0.0026,
   /*
    * Between the mat and the notebook, well forward, where a hand reaches
    * without looking.

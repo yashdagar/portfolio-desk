@@ -47,6 +47,17 @@ import * as M from "./materials";
  * ends up split down the middle, colour meeting colour, which is exactly what
  * the moulding does.
  *
+ * The third version had the geometry right and the paint wrong, which took a
+ * photograph of a real cube to see. Every chamfer facing a gap was faded to the
+ * black core, so each tile ended up as a field of colour with a dark border
+ * drawn around it — which is a *sticker*, the exact thing two paragraphs above
+ * say this cube doesn't have. Look at a stickerless cube and the gaps on the
+ * white face are white and the gaps on the green face are green: the shell of
+ * each piece is coloured plastic all the way over the shoulder and down into
+ * the slot, and the only truly black part is the deep interior, turned away
+ * from every facelet. So the shoulder keeps its colour and the slot wall is the
+ * same colour with no light on it, which is `SHADOW` below.
+ *
  * All twenty-six merge into one geometry, so the whole cube is a single draw
  * call — cheaper than the version it replaces, and the corners are round.
  */
@@ -184,10 +195,25 @@ function faceColours(c: Cubie): Map<string, string> {
   return out;
 }
 
+function smoothstep(edge0: number, edge1: number, x: number): number {
+  const t = Math.min(1, Math.max(0, (x - edge0) / (edge1 - edge0)));
+  return t * t * (3 - 2 * t);
+}
+
 /** The unpainted plastic, seen in the gaps between cubies. */
 const CORE_BLACK = "#0b0c0e";
 /** The same, kept as a Color so the chamfer can be mixed toward it per vertex. */
 const CORE = new Color(CORE_BLACK);
+
+/**
+ * How much light reaches the wall of a slot, relative to the facelet beside it.
+ *
+ * Baked into the vertex colour rather than left to the renderer because the
+ * slot is 0.3 mm wide: nothing in the lighting rig resolves a shadow at that
+ * scale, and there's no ambient occlusion pass to do it either. Without this
+ * the walls render at full brightness and the grooves disappear entirely.
+ */
+const SHADOW = 0.46;
 
 /**
  * The whole cube as one geometry, coloured per vertex.
@@ -218,17 +244,20 @@ function buildCube(): BufferGeometry {
   const pitch = CUBE.cubie + CUBE.gap;
   const parts: BufferGeometry[] = [];
   const colour = new Color();
+  /** Scratch, for the shadowed version of whichever facelet is in play. */
+  const shade = new Color();
 
   for (const c of cubies) {
-    // Six segments across the chamfer rather than four. At a 1.2 mm radius the
-    // difference was invisible; at 2.2 mm four steps show as facets along every
-    // edge, and an edge that catches a highlight has to be smooth or the
-    // highlight breaks into dashes.
+    // Eight segments across the chamfer. At a 1.2 mm radius four was plenty and
+    // the difference was invisible; at 3.2 mm the shoulder is a third of the
+    // piece and every step in it shows as a facet, which breaks the highlight
+    // that runs along the edge into dashes. That highlight is most of what says
+    // "moulded" rather than "printed", so it has to be continuous.
     const geo = new RoundedBoxGeometry(
       CUBE.cubie,
       CUBE.cubie,
       CUBE.cubie,
-      6,
+      8,
       CUBE.bevel,
     );
 
@@ -249,7 +278,13 @@ function buildCube(): BufferGeometry {
         return faces.get(key.join(",")) ?? CORE_BLACK;
       };
 
-      colour.set(faceAt(axis));
+      const dominant = faceAt(axis);
+      const toward = faceAt(next);
+      /*
+       * How far round the shoulder this vertex is: 1 where the surface has
+       * turned 45° from the dominant face, 0 on the flat.
+       */
+      const turned = Math.min(1, Math.abs(n[next]) / Math.SQRT1_2);
 
       /*
        * Where the chamfer runs into a gap, take the colour down with it.
@@ -270,11 +305,53 @@ function buildCube(): BufferGeometry {
        * The fix is to ask what the chamfer is heading toward rather than to
        * darken every chamfer: if the runner-up face is core plastic, fade to it
        * across the chamfer; if it's another facelet, leave the colour alone.
+       *
+       * Where the fade *starts* is the whole difference between a speedcube and
+       * a stickered one, and every version of this until now started it far too
+       * early. Look at a photograph of a stickerless cube and the gaps on the
+       * white face are *white*: the plastic is coloured all the way through the
+       * piece's outer shell, so the colour wraps over the shoulder and carries
+       * on down into the groove, and the only genuinely dark part is the thin
+       * line at the very bottom where two pieces almost touch. Ramp from the
+       * moment the surface begins to turn and you have painted a black border
+       * around a flat square, which is a sticker — precisely the thing this
+       * cube isn't.
+       *
+       * So the colour holds across almost the whole turn and gives up only in
+       * the last of it — and it gives up to its own colour in shadow, not to
+       * black. Smoothstep rather than a power curve because both ends have to
+       * be soft: a hard start puts a visible ring around every tile, and a hard
+       * finish puts a drawn line in the bottom of every groove.
+       *
+       * The three cases below are one continuous surface, and they're written
+       * so they agree at the joins. At 45° the shoulder has reached exactly
+       * `colour × SHADOW`, which is where the wall case starts; the wall then
+       * runs down to the core's black as it turns away from its facelet. Get
+       * that wrong and there's a visible ring at 45° on every edge of every
+       * piece.
        */
-      if (faceAt(next) === CORE_BLACK) {
-        // 0 on the flat of the tile, 1 by the time the normal has tipped 45°.
-        const into = Math.min(1, Math.abs(n[next]) / Math.SQRT1_2);
-        colour.lerp(CORE, into * into);
+      if (dominant !== CORE_BLACK) {
+        colour.set(dominant);
+        if (toward === CORE_BLACK) {
+          shade.set(dominant).multiplyScalar(SHADOW);
+          colour.lerp(shade, smoothstep(0.08, 1, turned));
+        }
+      } else if (toward !== CORE_BLACK) {
+        /*
+         * A wall of the slot between two pieces.
+         *
+         * This is the part that was black, and painting it black is what kept
+         * the cube looking stickered: it drew a channel round every tile. The
+         * shell of a moulded piece is coloured, so the wall beside a white
+         * facelet is white plastic with no light on it — which is why the gaps
+         * on the white face of a real cube are white and the gaps on the green
+         * face are green. Only the deep interior, turned right away from any
+         * facelet, is actually the black core.
+         */
+        shade.set(toward).multiplyScalar(SHADOW);
+        colour.copy(CORE).lerp(shade, turned);
+      } else {
+        colour.set(CORE_BLACK);
       }
 
       // Vertex colours are read in linear space; the hex strings are sRGB.
