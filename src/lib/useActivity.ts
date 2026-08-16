@@ -4,15 +4,8 @@ import { useEffect, useRef, useState } from "react";
 
 import type { ActivityFeed, Commit } from "./activity";
 
-/**
- * How often the client asks for the feed again.
- *
- * Two minutes against a URL the route caches for five, so most of these are
- * served out of the browser's own memory cache and never touch the network.
- * That's the point: polling faster than the cache doesn't fetch anything new, it
- * just guarantees we pick up the fresh copy within a couple of minutes of the
- * cache expiring rather than waiting out another whole window.
- */
+/** Two minutes against a five-minute route cache, so most polls never touch the
+ *  network and the fresh copy is picked up soon after the cache expires. */
 const POLL_MS = 120_000;
 
 /** Refetch on returning to the tab only if the last one is older than this. */
@@ -22,14 +15,9 @@ const STALE_MS = 60_000;
 const SHARE_MS = 5_000;
 
 /**
- * One request, however many components ask for it.
- *
- * Two things make the naive version fire more than once: the flat page mounts
- * this hook twice (the feed and the commit count under the about text), and
- * React's development mode runs every effect twice on top of that. All of them
- * land in the same tick, so all of them miss the HTTP cache and four identical
- * GETs go out. Sharing the promise for a few seconds collapses that to one
- * without any of the callers having to know about each other.
+ * One request, however many components ask. The flat page mounts this hook twice
+ * and React dev mode doubles every effect, so four identical GETs go out in the
+ * same tick and all of them miss the HTTP cache.
  */
 let inFlight: { at: number; promise: Promise<ActivityFeed> } | null = null;
 
@@ -41,8 +29,8 @@ function fetchFeed(): Promise<ActivityFeed> {
     r.ok ? r.json() : Promise.reject(new Error(String(r.status))),
   );
   inFlight = { at: now, promise };
-  // A rejected promise must not be handed to the next caller — and a bare
-  // `.catch` here also keeps the shared failure from surfacing as unhandled.
+  // A rejected promise must not be handed to the next caller, and the bare
+  // catch also stops the shared failure surfacing as unhandled.
   promise.catch(() => {
     if (inFlight?.promise === promise) inFlight = null;
   });
@@ -50,34 +38,19 @@ function fetchFeed(): Promise<ActivityFeed> {
 }
 
 /**
- * Load the commit feed, and keep loading it.
+ * From `/api/activity`, not `/data/activity.json`: the static file is baked into
+ * the deployment, so polling it refetches exactly the bytes already given.
  *
- * From `/api/activity` rather than from `/data/activity.json`, and the
- * difference is the whole point of the polling below. The static file is baked
- * into the deployment, so a tab left open overnight refetched exactly the bytes
- * it was already given; the route reads the file the collector actually commits
- * every twenty minutes, so leaving the page open now does what it looks like it
- * does.
- *
- * `fresh` carries the ids that arrived after the first render, which is what
- * lets the feed animate a new commit in without animating all hundred and forty
- * on first paint.
+ * `fresh` carries ids that arrived after the first render, so a new commit can
+ * animate in without animating all hundred and forty on first paint.
  */
 export function useActivity(initial: ActivityFeed | null = null) {
-  // Seeded from the server so the first paint already has the real commits, not
-  // a spinner.
   const [feed, setFeed] = useState<ActivityFeed | null>(initial);
   const [failed, setFailed] = useState(false);
   const [fresh, setFresh] = useState<ReadonlySet<string>>(EMPTY);
 
-  /*
-   * Every id we've already shown.
-   *
-   * Seeded lazily from whatever the first render had, so the commits that were
-   * server-rendered count as seen and don't animate. Null means "nothing shown
-   * yet" — distinct from an empty set, which would make the first fetch's
-   * hundred and forty commits all read as new arrivals.
-   */
+  // Null means "nothing shown yet", distinct from an empty set — which would
+  // make the first fetch's hundred and forty commits all read as new.
   const seen = useRef<Set<string> | null>(
     initial ? new Set(initial.commits.map((c) => c.id)) : null,
   );
@@ -95,7 +68,6 @@ export function useActivity(initial: ActivityFeed | null = null) {
           seen.current = new Set(data.commits.map((c) => c.id));
           setFeed(data);
           setFailed(false);
-          // First feed of the session: everything in it is history, not news.
           if (before) {
             const arrived = data.commits
               .map((c) => c.id)
@@ -104,8 +76,7 @@ export function useActivity(initial: ActivityFeed | null = null) {
           }
         })
         .catch(() => {
-          // A failed poll is not a failed screen — the commits already on it are
-          // still true. Only the very first load is allowed to show the error.
+          // A failed poll is not a failed screen: only the first load errors.
           if (alive && !seen.current) setFailed(true);
         });
     };
@@ -115,7 +86,6 @@ export function useActivity(initial: ActivityFeed | null = null) {
       if (!document.hidden) load();
     }, POLL_MS);
 
-    // A backgrounded tab stops polling, so catch it up when it comes forward.
     const onVisible = () => {
       if (!document.hidden && Date.now() - lastFetch.current > STALE_MS) load();
     };
@@ -142,13 +112,7 @@ export interface CommitGroup {
   commits: Commit[];
 }
 
-/**
- * Collapse consecutive commits from the same repo on the same day.
- *
- * Without this the feed opens with fifteen visually identical rows — one
- * afternoon of work on one repo — which reads as noise rather than as intensity.
- * Grouping keeps the chronology honest while letting a burst look like a burst.
- */
+/** Collapse consecutive commits from the same repo on the same day. */
 export function groupCommits(commits: Commit[]): CommitGroup[] {
   const groups: CommitGroup[] = [];
 
@@ -185,15 +149,9 @@ export type LogLine =
   | { type: "commit"; key: string; commit: Commit; repo?: string };
 
 /**
- * Flatten the feed into terminal output.
- *
- * The list stays linear — one commit, one line, newest first, exactly what
- * `git log --oneline` prints. What grouping is still doing here is deciding
- * what *not* to print: the repo column repeats only when it changes, the way a
- * column of identical strings would be pruned by hand, and a date comment goes
- * in wherever the day turns over. Both come out of the same runs `groupCommits`
- * already finds, so a burst of fifteen commits on one repo still reads as one
- * block without any of them being hidden inside a fold.
+ * Flatten the feed into terminal output: one commit, one line, newest first.
+ * Grouping only decides what *not* to print — the repo column repeats when it
+ * changes, and a date comment goes in wherever the day turns over.
  */
 export function toLogLines(commits: Commit[]): LogLine[] {
   const lines: LogLine[] = [];
@@ -203,8 +161,7 @@ export function toLogLines(commits: Commit[]): LogLine[] {
   for (const group of groupCommits(commits)) {
     if (group.day !== currentDay) {
       currentDay = group.day;
-      // Deliberately counts the day, not the group: a day split across three
-      // repos should say six, not 3 + 2 + 1.
+      // The day, not the group: three repos in a day should say six, not 3+2+1.
       const count = commits.filter((c) => c.at.startsWith(group.day)).length;
       lines.push({ type: "day", key: `day-${group.day}`, day: group.day, count });
       // A date line breaks the column, so the repo name has to reappear under it

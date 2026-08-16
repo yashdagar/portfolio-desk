@@ -6,14 +6,10 @@ import {
 } from "three";
 
 /**
- * Shared geometry helpers.
- *
- * Both of these exist because drei's `RoundedBox` can't do them. Its radius is
- * capped at half the *smallest* dimension, which is fine for a cube and useless
- * for anything flat — a 4 mm thick desk mat can only be rounded by 2 mm, so its
- * corners stay effectively square no matter what you ask for. Extruding a
- * rounded outline rounds the corners in plan, which is the axis that actually
- * shows.
+ * Shared geometry helpers, all of which exist because drei's `RoundedBox` caps
+ * its radius at half the *smallest* dimension. On a 4 mm desk mat that is 2 mm,
+ * so the corners stay square. Extruding a rounded outline rounds them in plan,
+ * which is the axis that shows.
  */
 
 /** A rounded rectangle centred on the origin, in the XY plane. */
@@ -34,13 +30,7 @@ export function roundedRectShape(w: number, d: number, r: number): Shape {
   return s;
 }
 
-/**
- * A rounded rectangle standing up in the XY plane, extruded toward the viewer.
- *
- * For things that hang on a wall or face the seat — picture frames, the panel
- * behind a screen. Same reason as `roundedPlate`: the axis that needs rounding
- * is the flat one, which is exactly the one `RoundedBox` refuses to round.
- */
+/** A rounded rectangle standing in XY, extruded toward the viewer. */
 export function roundedSlab(
   w: number,
   h: number,
@@ -58,12 +48,9 @@ export function roundedSlab(
 }
 
 /**
- * A flat rounded rectangle with no thickness, facing +Z.
- *
- * ShapeGeometry writes each vertex's raw x/y as its UV rather than normalising
- * to 0..1, so a shape a few centimetres across comes out with UVs in the range
- * 0.0–0.03 and any texture applied to it renders as a single stretched pixel.
- * Rewriting them is not optional.
+ * A flat rounded rectangle facing +Z. ShapeGeometry writes each vertex's raw
+ * x/y as its UV rather than normalising, so a shape a few centimetres across
+ * renders any texture as one stretched pixel until they're rewritten.
  */
 export function roundedPanel(w: number, h: number, r: number): BufferGeometry {
   const geo = new ShapeGeometry(roundedRectShape(w, h, r), 8);
@@ -77,19 +64,9 @@ export function roundedPanel(w: number, h: number, r: number): BufferGeometry {
 }
 
 /**
- * A pillow: a rounded rectangle in XY, extruded along Z with a fat bevel on
- * both faces.
- *
- * For soft moulded objects whose *face* wants to be nearly an oval while their
- * edges stay soft — an ear cup being the case in point. `RoundedBox` can't do
- * it, and the reason is the usual one: its radius is capped at half the
- * smallest dimension, and on a 38 mm-deep cup that caps the corners of an
- * 90 mm face at 19 mm. The result is unmistakably a box with its edges taken
- * off, where the real object is closer to a stadium.
- *
- * Rounding the outline and bevelling the extrusion separates the two: the face
- * can go all the way to a stadium while the depth keeps a soft, independent
- * roll.
+ * For objects whose *face* wants to be nearly a stadium while their edges stay
+ * soft — an ear cup being the case in point. Rounding the outline and bevelling
+ * the extrusion separates the two.
  */
 export function roundedPillow(
   w: number,
@@ -113,14 +90,9 @@ export function roundedPillow(
 }
 
 /**
- * A rounded rectangular frame — a slab with a rounded hole through it — lying
- * in the XZ plane with its underside at y = 0.
- *
- * The hole is what makes it useful. Extruding a shape with a hole gives you the
- * inner walls for free, which is the difference between a keyboard whose keys
- * sit down inside a tray and one whose keys are balanced on top of a closed
- * box. Building the same thing from four separate rails works, but leaves four
- * mitre joints at the corners that catch the light wrong.
+ * A slab with a rounded hole through it, lying in XZ with its underside at
+ * y = 0. Extruding a shape with a hole gives the inner walls for free, where
+ * four separate rails leave four mitre joints that catch the light wrong.
  */
 export function roundedFrame(
   outerW: number,
@@ -137,9 +109,7 @@ export function roundedFrame(
   const geo = new ExtrudeGeometry(shape, {
     depth: height,
     bevelEnabled: true,
-    // A small bevel on the top lip. On a case edge this is the chamfer that
-    // catches a line of light all the way round, and it's most of why an
-    // aluminium tray reads as machined rather than as a hole cut in a slab.
+    // The chamfer that catches a line of light all the way round the lip.
     bevelThickness: 0.0009,
     bevelSize: 0.0009,
     bevelOffset: 0,

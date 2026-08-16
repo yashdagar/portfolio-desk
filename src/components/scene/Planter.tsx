@@ -20,30 +20,14 @@ import { PLANTER } from "@/lib/layout";
 import * as M from "./materials";
 
 /**
- * A monstera in a floor planter, at the front left.
+ * A monstera in a floor planter, at the front left: the room's only foreground,
+ * and the only thing giving the middle distance a sense of distance.
  *
- * The room had a scale problem. Everything in it was desk-sized — the tallest
- * object was a 60 cm monitor and the largest was a flat desktop — so the frame
- * had no foreground, no object near the camera, and nothing to give the middle
- * distance a sense of how far away it was. A 1.4 m plant standing between the
- * viewer and the desk fixes all three at once, and it's what's actually in the
- * corner of every room like this.
- *
- * It's deliberately cropped by the left edge. An object that runs out of frame
- * reads as being in the room with you rather than arranged for you, which is
- * the difference between a photograph of a desk and a product shot of one —
- * and the composition notes have wanted foreground occlusion from the start.
- *
- * Monstera specifically, and not for fashion. The room's one other plant is a
- * sansevieria, which is stiff, vertical and architectural; a second plant in
- * that idiom would read as the same asset twice. A monstera is the opposite in
- * every way — broad, drooping, asymmetric, and full of holes — and those holes
- * are the reason it works at this size. A big leaf is a big flat silhouette,
- * which is exactly what you don't want between the camera and the subject; a
- * fenestrated one lets the desk through.
+ * The fenestrations are why it works at this size. A big leaf is a big flat
+ * silhouette, which is what you don't want between the camera and the subject;
+ * a holed one lets the desk through.
  */
 
-/** How many leaves. Enough to overlap, few enough that each one reads. */
 const LEAVES = 8;
 
 function smoothstep(a: number, b: number, x: number) {
@@ -61,26 +45,19 @@ function rng(seed: number) {
 }
 
 /**
- * The leaf outline, as a half-width along the midrib.
+ * The blade as one function: how wide is the leaf at each point down its length.
+ * An envelope gives the ovate shape and four notches cut it almost to nothing at
+ * the sinuses, so sweeping up one side and back down the other produces the
+ * fenestrations for free.
  *
- * This is the whole trick. Rather than drawing a monstera leaf — a shape with
- * about thirty control points and no obvious way to vary it — the blade is
- * defined as one function: how wide is the leaf at each point down its length.
- * An envelope gives the overall ovate shape, and four notches cut that envelope
- * almost to nothing at the points where the sinuses are. Sweep the function up
- * one side and back down the other and the fenestrations fall out for free.
- *
- * `notchDepth` varies per leaf, so a young leaf near the pot can be almost
- * entire while the big ones are cut nearly to the midrib — which is what a real
- * plant looks like, and what stops eight leaves reading as eight stamps.
+ * `notchDepth` varies per leaf, so a young leaf can be nearly entire while the
+ * big ones are cut to the midrib.
  */
 function halfWidth(t: number, notchDepth: number): number {
-  // Widest a little under halfway, tapering to a point at the tip.
   const envelope = Math.sin(Math.PI * Math.pow(t, 0.62)) * 0.54;
 
   let cut = 1;
   for (const at of [0.2, 0.38, 0.57, 0.77]) {
-    // A narrow notch: full depth at its centre, gone within a few percent.
     const d = Math.abs(t - at);
     cut = Math.min(cut, 1 - notchDepth * (1 - smoothstep(0, 0.045, d)));
   }
@@ -89,12 +66,9 @@ function halfWidth(t: number, notchDepth: number): number {
 }
 
 /**
- * One leaf, as a flat shape, then cupped and drooped.
- *
  * ShapeGeometry writes each vertex's raw x/y as its UV, so a shape 0.3 across
- * comes out with UVs in the range 0–0.3 and the texture renders as one
- * stretched pixel. Rewriting them from the blade's own bounds is not optional —
- * and it's also what puts the midrib at u = 0.5, which the texture relies on.
+ * comes out with UVs in 0–0.3 and the texture renders as one stretched pixel.
+ * Rewriting them is also what puts the midrib at u = 0.5.
  */
 function leafGeometry(length: number, notchDepth: number): BufferGeometry {
   const shape = new Shape();
@@ -123,15 +97,8 @@ function leafGeometry(length: number, notchDepth: number): BufferGeometry {
 
     uv.setXY(i, x / (halfSpan * 2) + 0.5, t);
 
-    /*
-     * Cup across, droop along.
-     *
-     * A monstera leaf is never flat: it folds up slightly either side of the
-     * midrib and the whole blade bends over under its own weight toward the
-     * tip. Both are needed. The cup is what makes the leaf catch light in two
-     * tones instead of one, and the droop is what stops eight leaves looking
-     * like eight cardboard cutouts standing to attention.
-     */
+    // The cup makes the leaf catch light in two tones instead of one; the droop
+    // stops eight leaves standing to attention like cutouts.
     const cup = Math.pow(Math.abs(x) / halfSpan, 1.7) * length * 0.1;
     const droop = -Math.pow(t, 2.1) * length * 0.34;
     pos.setXYZ(i, x, y, cup + droop);
@@ -144,12 +111,8 @@ function leafGeometry(length: number, notchDepth: number): BufferGeometry {
 }
 
 /**
- * The leaf's surface: a midrib, lateral veins running out to each lobe, and a
- * gradient from a dark base to a lighter tip.
- *
- * The veins are doing the same job the plant's holes do — breaking up a large
- * flat area. A 30 cm leaf of one green in the near foreground is the single
- * biggest block of flat colour the frame could contain.
+ * The veins do the same job as the holes: a 30 cm leaf of one green in the near
+ * foreground is the biggest block of flat colour the frame could contain.
  */
 function leafTexture(): CanvasTexture {
   const W = 512;
@@ -166,7 +129,6 @@ function leafTexture(): CanvasTexture {
   ctx.fillStyle = base;
   ctx.fillRect(0, 0, W, H);
 
-  // Lateral veins, angled toward the tip the way they run to each lobe.
   ctx.strokeStyle = "rgba(150,190,128,0.24)";
   ctx.lineWidth = 3;
   for (let i = 1; i < 22; i++) {
@@ -185,7 +147,6 @@ function leafTexture(): CanvasTexture {
     }
   }
 
-  // Midrib: a pale raised rib with a shadow on one side.
   ctx.strokeStyle = "rgba(30,52,26,0.55)";
   ctx.lineWidth = 9;
   ctx.beginPath();
@@ -234,20 +195,14 @@ export function Planter() {
   );
   const skin = useMemo(() => leafTexture(), []);
 
-  /**
-   * Leaves and their stems, generated together.
-   *
-   * The petiole has to actually reach the leaf, so both come out of the same
-   * loop from the same angle and length — the alternative is two lists that
-   * agree until one of them is edited.
-   */
+  /** Together, because the petiole has to reach the leaf — two lists would
+   *  agree until one of them was edited. */
   const foliage = useMemo(() => {
     const rand = rng(20260816);
 
     return Array.from({ length: LEAVES }, (_, i) => {
       const t = i / (LEAVES - 1);
-      // Fanned around, but weighted toward the camera-facing side: a plant in a
-      // corner grows toward the light in the room, not into the wall.
+      // Weighted toward the camera: a plant in a corner grows into the room.
       const angle = -1.1 + t * 4.4 + (rand() - 0.5) * 0.5;
       /** How far out the leaf hangs, and how high the stem carries it. */
       const reach = 0.16 + rand() * 0.16 + t * 0.06;
@@ -257,13 +212,8 @@ export function Planter() {
       const dx = Math.cos(angle);
       const dz = Math.sin(angle);
 
-      /*
-       * The petiole: up out of the pot, then out and over.
-       *
-       * It leaves the soil almost vertically and only turns near the top, which
-       * is what a real one does and what gives the plant its vase shape. A stem
-       * that heads for its leaf in a straight line makes a starburst.
-       */
+      // Almost vertical out of the soil, turning only near the top, which is
+      // what gives the plant its vase shape. Straight lines make a starburst.
       const stem = new CatmullRomCurve3([
         new Vector3(dx * 0.03, 0.0, dz * 0.03),
         new Vector3(dx * 0.05, height * 0.42, dz * 0.05),
@@ -323,12 +273,7 @@ export function Planter() {
               castShadow
               receiveShadow
             >
-              {/*
-                Double-sided, because half of these leaves show their backs.
-                The lighting handles the rest: a monstera's underside is a paler,
-                flatter green, and a normal pointing away from every light in
-                the room lands there on its own.
-              */}
+              {/* Half of these show their backs. */}
               <meshStandardMaterial {...M.MONSTERA} map={skin} side={2} />
             </mesh>
           </group>

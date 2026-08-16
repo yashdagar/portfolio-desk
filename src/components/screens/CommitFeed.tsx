@@ -12,23 +12,12 @@ import {
 /**
  * The commit feed, as a terminal running `git log --oneline`.
  *
- * The format is the argument. A commit list rendered as cards is a design
- * choice about someone else's data; a commit list rendered as `git log` output
- * is the thing itself, in the format every reader of this screen already knows
- * how to parse — and the one format nobody can accuse of being arranged
- * flatteringly. Density comes free with it: one commit is one line, and a
- * hundred and forty lines is the whole point of the screen.
+ * Linear, and deliberately not `--graph`: the collector reads GitHub's events
+ * API, which gives no parent shas, so any branch topology drawn here would be
+ * invented.
  *
- * Linear, and deliberately not `--graph`. The collector reads GitHub's events
- * API, which gives no parent shas at all, so any branch topology drawn here
- * would be invented. The one thing a terminal must never do is print something
- * that isn't true.
- *
- * Three tiers still render differently. Public and personal commits show their
- * message; work commits show a type label and a blackout, because the message
- * never left the Action that collected it. In a log the contrast is sharper
- * than it was in cards — a redacted line sits in the same column as the ones
- * you can read.
+ * Public and personal commits show their message; work commits show a type
+ * label and a blackout, because the message never left the Action.
  */
 
 const KIND_COLOR: Record<CommitKind, string> = {
@@ -45,34 +34,21 @@ const KIND_COLOR: Record<CommitKind, string> = {
   other: "text-ink-faint",
 };
 
-/** Where the prompt claims to be. All nine repos really do live under it. */
 const CWD = "~/dev";
 const COMMAND = "git log --oneline --since=1.year";
 
 /*
- * Column widths.
- *
- * Fixed rather than derived, because the columns have to line up down the whole
- * log and every row is its own element — a row needs its own background to
- * highlight on hover, which rules out `display: contents` and therefore rules
- * out one shared grid. The message takes whatever is left; at the 1100px this
- * panel is authored at that's about 95 characters, and the longest real message
- * in the feed is 76.
+ * Fixed rather than derived: rows need their own background to highlight on
+ * hover, which rules out `display: contents` and so rules out one shared grid.
  */
 const SHA = "w-[66px]";
 const REPO = "w-[152px]";
 const AGE = "w-[46px]";
 
 /*
- * The message.
- *
- * Below 720px the columns stop being affordable — the flat page gives the
- * message about 50 characters and a phone gives it 24, which truncates every
- * line to "Night lights, a d…" and makes the log unreadable at exactly the
- * width where it's most likely to be read by someone who isn't going to lean
- * in. So the row reflows: sha, repo and age stay on the first line, the message
- * wraps in full underneath. A narrow terminal wraps long lines rather than
- * truncating them, so this is also the more faithful behaviour of the two.
+ * Below 720px the columns leave the message 24 characters, so the row reflows
+ * and the message wraps in full underneath. A narrow terminal wraps rather than
+ * truncating anyway.
  */
 const BODY =
   "min-w-0 flex-1 @max-[720px]:order-last @max-[720px]:w-full @max-[720px]:flex-none";
@@ -97,17 +73,11 @@ function Badge({
 }
 
 /**
- * Only rendered for work commits.
+ * Work commits only: elsewhere the kind is sniffed from a message that is
+ * already visible, and most would read "other".
  *
- * The kind is sniffed from the message, so where the message is visible the tag
- * restates it — and since most of Yash's messages are prose rather than
- * conventional commits, ~80% would read "other" and indent every line behind an
- * empty column. On a work commit it's the entire content, so it stays.
- *
- * Fixed width, wide enough for "refactor". Sized to its text it would push the
- * blackout that follows it a different distance on every row, and a redaction
- * column that starts in a different place each time reads as damage rather than
- * as policy.
+ * Fixed width, or the blackout starts in a different place on every row — which
+ * reads as damage rather than as policy.
  */
 function KindTag({ kind }: { kind: CommitKind }) {
   return (
@@ -132,12 +102,6 @@ function Row({
 
   const inner = (
     <>
-      {/*
-        Seven characters, because that's what git abbreviates to and the eye
-        reads the column as shas rather than as ids. Accent-coloured for the
-        same reason git colours it: it's the only part of the line that is
-        machine output rather than something a person wrote.
-      */}
       <span className={`${SHA} shrink-0 text-accent`}>
         {commit.id.slice(0, 7)}
       </span>
@@ -145,13 +109,8 @@ function Row({
       {work ? (
         <span className={`${BODY} flex items-center gap-2`}>
           <KindTag kind={commit.kind} />
-          {/*
-            A blackout of fixed width, identical on every work commit — a
-            length-proportional redaction would leak how long the subject was.
-            Fully rounded on purpose: a sharp-cornered bar reads as a loading
-            skeleton, which tells exactly the wrong story. A capsule reads as
-            something deliberately withheld.
-          */}
+          {/* Fixed width: a length-proportional redaction leaks how long the
+              subject was. Rounded, or it reads as a loading skeleton. */}
           <span
             aria-label="redacted"
             className="h-[9px] w-[260px] max-w-full rounded-full bg-redact"
@@ -166,29 +125,17 @@ function Row({
       )}
 
       {/*
-        The repo column prints only when it changes. A column of nine identical
-        strings is what you'd delete by hand; leaving the gap is what makes a
-        run of commits on one repo read as one session.
-
-        Once the row has reflowed there's no column to keep, so it stops being a
-        fixed width and just sits in the gap the sha and the age leave on the
-        first line — where it's the only thing that says which project you're
-        looking at. Container queries, not media queries: in the room this DOM
-        is mounted at a fixed 1100px on a plane and has no relationship to the
-        browser viewport at all.
+        Prints only when it changes, so a run of commits on one repo reads as one
+        session. Container queries, not media: mounted in the room this DOM sits
+        on a plane at a fixed width and the viewport tells it nothing.
       */}
       <span
         className={`${REPO} shrink-0 truncate text-ink-faint @max-[720px]:w-auto`}
       >
         {repo?.replace(/^yashdagar\//, "")}
       </span>
-      {/*
-        The server renders "35m" and the client, a moment later, renders "36m".
-        React treats that as a hydration mismatch and throws the whole subtree
-        away to re-render it — for a number that is *supposed* to disagree,
-        since it's the time since something happened. This is the case the
-        escape hatch exists for.
-      */}
+      {/* Server renders "35m", client renders "36m" a moment later. The number
+          is supposed to disagree. */}
       <span
         suppressHydrationWarning
         className={`${AGE} shrink-0 text-right text-ink-faint tabular-nums @max-[720px]:ml-auto`}
@@ -221,12 +168,9 @@ function Row({
 }
 
 /**
- * A date, printed as a comment wherever the day turns over.
- *
- * `git log --oneline` has no such line, and the log is poorer for it — the age
- * column tells you a commit was 43 days ago, which nobody can convert into a
- * date or into "that was a Sunday". This is the one addition to the format,
- * and it's marked as a comment so it's visibly annotation rather than output.
+ * The one addition to `git log --oneline`'s format, marked as a comment so it is
+ * visibly annotation rather than output. The age column can't tell you a commit
+ * was on a Sunday.
  */
 function DayLine({ day, count }: { day: string; count: number }) {
   const date = new Date(day + "T00:00:00Z");
@@ -250,11 +194,8 @@ function DayLine({ day, count }: { day: string; count: number }) {
 }
 
 /**
- * The prompt, with the path in accent the way a real one has it.
- *
- * Inline flow rather than a flex row, so that a command too long for the panel
- * wraps to the left margin the way a wrapped shell line does. As a flex row the
- * continuation hung under the command instead, which reads as a layout bug.
+ * Inline flow rather than a flex row, so a command too long for the panel wraps
+ * to the left margin the way a shell line does.
  */
 function Prompt({ command }: { command?: string }) {
   return (
@@ -283,11 +224,8 @@ export function CommitFeed({ initial }: { initial?: ActivityFeed | null }) {
         <div className="flex-1 py-3">
           <Prompt command={COMMAND} />
           {failed ? (
-            /*
-              git's own wording. A terminal that reports a failure in a product
-              voice — "something went wrong, please try again" — stops being a
-              terminal at exactly the moment it matters.
-            */
+            // git's own wording: a terminal that fails in a product voice stops
+            // being a terminal at the moment it matters.
             <p className="mt-2 px-2 text-del">
               fatal: could not read the feed. It is refreshed by a scheduled
               job — try again shortly.
@@ -334,12 +272,6 @@ export function CommitFeed({ initial }: { initial?: ActivityFeed | null }) {
             only. The messages never leave the job that collects them.
           </p>
         )}
-        {/*
-          The live line. The prompt is back and waiting, which is what a shell
-          looks like after a command finishes — and it's the honest place to put
-          the freshness stamp, right next to the cursor that will print the next
-          commit when the collector finds one.
-        */}
         <div className="flex items-center">
           <Prompt />
           <span
@@ -355,16 +287,10 @@ export function CommitFeed({ initial }: { initial?: ActivityFeed | null }) {
 }
 
 /**
- * Window chrome.
- *
- * Present for one reason: from the rest pose this panel is 600px across and
- * nobody is reading a word of it, so the screen has to say what it is through
- * shape alone — and a title bar with three dots over a field of monospace is
- * the most instantly legible shape in computing.
- *
- * The dots are neutral rather than red/amber/green. Three saturated hues for
- * pure decoration would break the one-accent rule that the whole room's colour
- * is built on, and an unfocused terminal greys them out anyway.
+ * From the rest pose this panel is 600px across and unreadable, so it has to say
+ * what it is through shape alone. The dots are neutral: three saturated hues
+ * would break the room's one-accent rule, and an unfocused terminal greys them
+ * out anyway.
  */
 function TitleBar({ totals }: { totals?: ActivityFeed["totals"] }) {
   return (
@@ -374,11 +300,8 @@ function TitleBar({ totals }: { totals?: ActivityFeed["totals"] }) {
           <span key={i} className="size-[9px] rounded-full bg-screen-hi" />
         ))}
       </span>
-      {/*
-        Sight-unseen on a phone: the two totals are worth more than the hostname
-        and there isn't room for both, so the title goes to the screen reader
-        only rather than truncating to "y…".
-      */}
+      {/* On a phone the totals are worth more than the hostname, so this goes
+          screen-reader-only rather than truncating to "y…". */}
       <h2 className="truncate text-ink-dim @max-[560px]:sr-only">
         yash@desk: <span className="text-ink-faint">{CWD}</span>
       </h2>
@@ -397,16 +320,10 @@ function TitleBar({ totals }: { totals?: ActivityFeed["totals"] }) {
 function Shell({ children }: { children: React.ReactNode }) {
   return (
     /*
-      Mono throughout, at 13px. This is the one screen where the type is the
-      format rather than a choice about it: a proportional font would break the
-      columns, and columns are what make a log scannable.
-
-      `@container` so the row layout can respond to the panel instead of the
-      viewport. Mounted in the room, this DOM sits on a plane at a fixed design
-      width and the browser viewport tells it nothing.
-
-      The bed keeps its very slight lift toward the top. A 16:9 field of
-      perfectly even near-black is the one thing a real monitor never shows.
+      `@container` so the rows respond to the panel: mounted in the room this DOM
+      sits on a plane at a fixed design width and the viewport tells it nothing.
+      The slight lift toward the top is there because a field of perfectly even
+      near-black is the one thing a real monitor never shows.
     */
     <div className="@container flex h-full w-full flex-col overflow-hidden bg-screen bg-[radial-gradient(120%_80%_at_50%_0%,#151a1e_0%,transparent_70%)] px-4 py-4 font-mono text-[13px] leading-[1.65] text-ink-dim">
       {children}

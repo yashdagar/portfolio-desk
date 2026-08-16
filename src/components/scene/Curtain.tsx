@@ -17,47 +17,23 @@ import * as M from "./materials";
 /**
  * The curtain, drawn back to the left of the window.
  *
- * The window was a hole in a wall. Everything about it was built — a real
- * opening with a reveal, a frame, a sill, glass with rain on it, a skyline
- * behind — and none of that reads as a *window in a room*, because a room
- * treats its windows. Bare glass in bare plaster is an office. One panel of
- * cloth gathered against the jamb is the single cheapest thing that says
- * somebody lives here.
- *
- * Left side only, and that isn't a corner cut. The window is at x = 1.24 and
- * the frame runs out at roughly 1.58, so the right-hand half of the opening is
- * already outside the shot — a matching panel over there would be geometry
- * nobody ever sees. The pole spans the whole window regardless, since a pole
- * that stops where the frame stops is the kind of detail that's invisible until
- * the camera moves and then obviously wrong.
- *
- * Drawn open rather than closed, for the obvious reason: the window is the
- * room's cool fill light and the only view out, and covering it to prove a
- * curtain exists would trade the best thing in the frame for a rectangle of
- * cloth.
+ * Left side only: the right-hand half of the opening is already outside the
+ * shot, so a matching panel would be geometry nobody sees. The pole spans the
+ * whole window regardless, because leaning in moves the camera.
  */
 
-/** Folds around the panel. Six is a gathered curtain; three is a shower curtain. */
+/** Six is a gathered curtain; three is a shower curtain. */
 const FOLDS = 6;
-/** Rings and vertical divisions. Enough that the folds stay smooth in silhouette. */
 const SEGMENTS = 64;
 const RINGS = 28;
 
 /**
- * The panel: a corrugated column, not a wavy plane.
+ * A corrugated column, not a wavy plane: a displaced plane has no thickness, so
+ * its silhouette against the bright window is a hard edge with nothing behind it.
  *
- * The obvious build is a subdivided plane pushed back and forth in z, and it
- * fails from exactly one angle — this one. A displaced plane has no thickness,
- * so its silhouette against the bright window is a hard edge with nothing
- * behind it, and the fabric reads as a painted flat. A gathered curtain is
- * genuinely a closed tube of cloth squashed against the wall, so it's built as
- * one: every horizontal slice is a closed loop, flattened front to back and
- * pinched into folds around its perimeter.
- *
- * Written out as vertices rather than assembled from primitives because the two
- * things that make it look like cloth are both functions of height — the folds
- * open out toward the hem, and the whole column widens as it falls away from
- * the gather at the pole. Neither is available on a lathe or an extrusion.
+ * Written out as vertices because the two things that make it read as cloth are
+ * both functions of height — the folds open toward the hem and the column widens
+ * as it falls — and neither is available on a lathe or an extrusion.
  */
 function panelGeometry(): BufferGeometry {
   const positions = new Float32Array((RINGS + 1) * (SEGMENTS + 1) * 3);
@@ -68,14 +44,7 @@ function panelGeometry(): BufferGeometry {
     /** 0 at the hem, 1 at the pole. */
     const v = r / RINGS;
 
-    /*
-     * Gathered at the top, open at the bottom.
-     *
-     * The rings hold the fabric to a fixed span at the pole and gravity does
-     * the rest, so a hanging panel is always narrower where it's held than
-     * where it isn't. Getting this backwards — or leaving it constant — is what
-     * makes a curtain look like a plank.
-     */
+    // Narrower where it's held than where it isn't. Constant is a plank.
     const half = CURTAIN.hemHalfW + (CURTAIN.topHalfW - CURTAIN.hemHalfW) * v;
     const depth = CURTAIN.hemDepth + (CURTAIN.topDepth - CURTAIN.hemDepth) * v;
     /** Folds are pinched at the rings and swing wider as they fall. */
@@ -84,18 +53,9 @@ function panelGeometry(): BufferGeometry {
     for (let s = 0; s <= SEGMENTS; s++) {
       const around = (s / SEGMENTS) * Math.PI * 2;
       /*
-       * Two harmonics, and the second one is doing the important half.
-       *
-       * A single cosine gives folds of identical depth at identical spacing,
-       * which is a radiator rather than a curtain — cloth gathers unevenly
-       * because each ring takes a different amount of it. Adding a half-scale
-       * wave at an offset makes every second fold shallower and shifts the
-       * creases off the even spacing, and the whole thing stops reading as
-       * fluting.
-       *
-       * Both terms drift with height as well, so the creases wander down the
-       * drop instead of running dead vertical. Real cloth hangs off a ring at
-       * one point and spreads below it.
+       * Two harmonics: a single cosine gives folds of identical depth at
+       * identical spacing, which is a radiator. Both terms drift with height as
+       * well, so the creases wander rather than running dead vertical.
        */
       const wave =
         1 +
@@ -132,14 +92,8 @@ function panelGeometry(): BufferGeometry {
 }
 
 /**
- * Linen: a weave, some slubs, and a wash of shade down the drop.
- *
- * The weave is the smaller half of the job. What actually separates cloth from
- * a smooth solid at this distance is the *slubs* — linen thread is spun
- * unevenly, so a real panel is crossed by short thick fibres that catch light
- * individually, and a perfectly regular grid reads as a printed pattern. The
- * gradient does the other half: the top of a curtain sits in the shadow of its
- * own gather and the hem picks up bounce off the desk.
+ * The slubs matter more than the weave: linen thread is spun unevenly, and a
+ * perfectly regular grid reads as a printed pattern.
  */
 function linenTexture(): CanvasTexture {
   const S = 256;
@@ -148,22 +102,18 @@ function linenTexture(): CanvasTexture {
   canvas.height = S;
   const ctx = canvas.getContext("2d")!;
 
-  // Warm oatmeal. Not white — a white curtain next to an off-white wall is two
-  // versions of the same non-colour, and neither reads as a material.
+  // Not white: next to an off-white wall that is two versions of the same
+  // non-colour, and neither reads as a material.
   ctx.fillStyle = "#d8cdb9";
   ctx.fillRect(0, 0, S, S);
 
-  // The weave. Warp and weft at one pixel, which at this texel density is about
-  // the right thread count and disappears into a tone rather than a pattern.
+  // One pixel, so the weave disappears into a tone rather than a pattern.
   ctx.fillStyle = "rgba(255,250,240,0.42)";
   for (let x = 0; x < S; x += 3) ctx.fillRect(x, 0, 1, S);
   ctx.fillStyle = "rgba(120,106,86,0.3)";
   for (let y = 0; y < S; y += 3) ctx.fillRect(0, y, S, 1);
 
-  /*
-   * Slubs, seeded so the cloth is the same cloth every reload — the same reason
-   * the plant's leaves and the cube's scramble are fixed.
-   */
+  // Seeded, so the cloth is the same cloth every reload.
   let seed = 90210;
   const rand = () => {
     seed = (seed * 1664525 + 1013904223) % 4294967296;
@@ -172,12 +122,8 @@ function linenTexture(): CanvasTexture {
   for (let i = 0; i < 260; i++) {
     const horizontal = rand() > 0.5;
     const len = 3 + rand() * 11;
-    /*
-     * Faint. This texture tiles thirty-odd times across the panel, so anything
-     * with real contrast in it stops being a fibre and becomes a *motif* — the
-     * eye finds the repeat instantly once a mark is dark enough to recognise,
-     * and a curtain with a recognisable repeat is a printed one.
-     */
+    // Faint: this tiles thirty-odd times, and the eye finds the repeat the
+    // moment a mark is dark enough to recognise.
     ctx.fillStyle =
       rand() > 0.5 ? "rgba(255,252,244,0.26)" : "rgba(112,98,78,0.17)";
     ctx.fillRect(
@@ -188,21 +134,13 @@ function linenTexture(): CanvasTexture {
     );
   }
 
-  /*
-   * No shading baked in, which is the whole point of this note.
-   *
-   * The first version put a top-to-bottom gradient in here to darken the
-   * gather and lighten the hem. It tiles six times down the drop, so what it
-   * actually produced was six evenly spaced dark bands — the curtain came out
-   * looking like a fluted concrete column. Anything that varies over the length
-   * of the *object* cannot live in a texture that repeats along it; the
-   * lighting already does this job, and does it from the right direction.
-   */
+  // Deliberately no shading baked in: anything that varies over the length of
+  // the object cannot live in a texture that repeats along it. A top-to-bottom
+  // gradient here came out as six evenly spaced bands.
   const tex = new CanvasTexture(canvas);
   tex.colorSpace = SRGBColorSpace;
   tex.wrapS = RepeatWrapping;
   tex.wrapT = RepeatWrapping;
-  // Fine enough that the weave stays a tone rather than a pattern.
   tex.repeat.set(3, 11);
   tex.anisotropy = 8;
   tex.minFilter = LinearFilter;
@@ -228,8 +166,6 @@ export function Curtain() {
 
   return (
     <group position={[0, 0, WALL.z + CURTAIN.standoff]}>
-      {/* The pole. Above the frame's top edge, so it's cropped out of the rest
-          pose — but it exists, because leaning in moves the camera. */}
       <mesh
         position={[(poleLeft + poleRight) / 2, CURTAIN.poleY, 0]}
         rotation={[0, 0, Math.PI / 2]}
@@ -245,13 +181,8 @@ export function Curtain() {
         </mesh>
       ))}
 
-      {/*
-        Rings, bunched where the panel is gathered.
-
-        Spread across the panel's *top* width rather than the pole's length,
-        which is the whole difference between a curtain drawn back and one left
-        half-shut — an open curtain's rings pile up against the end stop.
-      */}
+      {/* Spread across the panel's top width, not the pole's length: an open
+          curtain's rings pile up against the end stop. */}
       {Array.from({ length: 7 }, (_, i) => (
         <mesh
           key={i}
@@ -268,14 +199,7 @@ export function Curtain() {
         </mesh>
       ))}
 
-      {/*
-        The panel itself.
-
-        Double-sided, and not for the usual reason. It's a closed column, so
-        every back face is behind a front face — except at the hem, where you
-        look up into the open bottom of it from a seated eye below the window
-        sill. Single-sided leaves a hole there.
-      */}
+      {/* Double-sided only for the hem, which a seated eye looks up into. */}
       <mesh
         geometry={panel}
         position={[CURTAIN.x, CURTAIN.hemY, 0]}

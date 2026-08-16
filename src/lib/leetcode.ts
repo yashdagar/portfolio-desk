@@ -1,38 +1,17 @@
 /**
- * The LeetCode profile.
- *
- * The third live source in the room, and the one that says something the other
- * two can't. The commit feed shows what gets shipped and Spotify shows what's
- * playing while it gets shipped; neither is evidence of the thing a technical
- * screen actually asks about. A thousand accepted solutions with the hard count
- * broken out is — and like the commit feed, it isn't a claim anyone gets to
- * edit.
- *
- * Read from LeetCode's own GraphQL endpoint. It's undocumented but public and
- * unauthenticated: it's what leetcode.com's profile page calls, so it needs no
- * key and no account, which puts it in the same bracket as the weather rather
- * than the same bracket as Spotify.
- *
- * Everything the real profile page shows is pulled, because the centre monitor
- * *is* the profile page now — avatar, badges, the language split, the last few
- * accepted submissions. A screen that claims to be a profile and shows four
- * numbers is a stat card wearing a profile's name.
+ * The LeetCode profile, from LeetCode's own GraphQL endpoint — undocumented but
+ * public and unauthenticated, so no key and no account.
  */
 
-/** The account. Public, so this is not a secret and belongs in the source. */
+/** Public, so this is not a secret and belongs in the source. */
 export const LEETCODE_USER = "yash_says_hi";
 export const LEETCODE_URL = `https://leetcode.com/u/${LEETCODE_USER}/`;
 
 export type Difficulty = "Easy" | "Medium" | "Hard";
 
 /**
- * LeetCode's own three colours: teal, amber, red.
- *
- * Borrowed rather than restyled into the room's palette, and deliberately. The
- * room has exactly one accent and everything obeys it — but these three are the
- * only reason a difficulty breakdown reads at a glance instead of being three
- * identical bars with different numbers, and anyone who has used the site knows
- * what amber means without reading the label.
+ * LeetCode's own three, borrowed rather than restyled into the room's palette:
+ * anyone who has used the site knows what amber means without reading a label.
  */
 export const DIFFICULTY_TONE: Record<Difficulty, string> = {
   Easy: "#37bfa5",
@@ -71,13 +50,8 @@ export interface LeetCodeStats {
   /** Consecutive days with a submission, and days active in the last year. */
   streak: number;
   activeDays: number;
-  /**
-   * Submissions per day over the last year, keyed by UTC "YYYY-MM-DD".
-   *
-   * LeetCode ships this as a JSON *string* of unix-second keys, which is not a
-   * shape any component should have to know about — it gets parsed once, here,
-   * into something a calendar can index directly.
-   */
+  /** Keyed by UTC "YYYY-MM-DD". LeetCode ships a JSON *string* of unix-second
+   *  keys, parsed once here into something a calendar can index. */
   calendar: Record<string, number>;
 }
 
@@ -154,14 +128,8 @@ interface Payload {
 
 const DIFFICULTIES: Difficulty[] = ["Easy", "Medium", "Hard"];
 
-/**
- * Unpack the submission calendar.
- *
- * Arrives as a JSON string whose keys are unix seconds at UTC midnight. Parsed
- * inside a try because it's a string from an undocumented endpoint: the day it
- * stops being valid JSON, the calendar should quietly disappear rather than
- * take the whole profile down with it.
- */
+/** Parsed inside a try: the day this undocumented string stops being valid
+ *  JSON, the calendar should disappear rather than take the profile with it. */
 function readCalendar(raw: string | null | undefined): Record<string, number> {
   if (!raw) return {};
   try {
@@ -183,11 +151,9 @@ function handle(url: string): string {
 }
 
 /**
- * Turn the GraphQL response into the shape the screens want.
- *
- * Exported and pure so it can be tested against a captured payload — this is
- * an undocumented endpoint, and the failure mode worth catching is not a
- * network error but a field quietly changing shape underneath us.
+ * Exported and pure so it can be tested against a captured payload: on an
+ * undocumented endpoint the failure worth catching is a field quietly changing
+ * shape, not a network error.
  */
 export function readLeetCodeStats(json: unknown): LeetCodeStats | null {
   const payload = json as Payload;
@@ -205,13 +171,8 @@ export function readLeetCodeStats(json: unknown): LeetCodeStats | null {
     solved[d] = { count: accepted.get(d) ?? 0, total: existing.get(d) ?? 0 };
   }
 
-  /*
-   * "All" rather than the sum of the three.
-   *
-   * They agree today. They won't the day LeetCode adds a fourth tier, and a
-   * headline number that silently stops matching the rows under it is worse
-   * than one that's occasionally a few off.
-   */
+  // "All" rather than the sum of three, which stops agreeing the day LeetCode
+  // adds a fourth tier.
   const total = accepted.get("All") ?? 0;
   if (total === 0) return null;
 
@@ -235,13 +196,7 @@ export function readLeetCodeStats(json: unknown): LeetCodeStats | null {
     badges: (user.badges ?? [])
       .map((b) => b.displayName)
       .filter((n): n is string => !!n),
-    /*
-     * Sorted and trimmed here rather than in the component.
-     *
-     * LeetCode returns every language ever used, in no useful order and
-     * including the three-problem experiments. The screen wants the ones that
-     * say something, and "most-solved first" is the only ordering that does.
-     */
+    // LeetCode returns every language ever used, in no useful order.
     languages: (user.languageProblemCount ?? [])
       .map((l) => ({ name: l.languageName ?? "", solved: l.problemsSolved ?? 0 }))
       .filter((l) => l.name && l.solved > 0)
@@ -263,11 +218,9 @@ export function readLeetCodeStats(json: unknown): LeetCodeStats | null {
 }
 
 /**
- * Fetch the profile. Returns null on anything at all going wrong.
- *
- * Same contract as the weather: this decorates a screen that is complete
- * without it, so its failure mode is "the panel isn't there", never a broken
- * render or a 500 on the page that carries the contact details.
+ * Returns null on anything going wrong. This decorates a screen that is complete
+ * without it, so failure means "the panel isn't there" — never a 500 on the page
+ * carrying the contact details.
  */
 export async function fetchLeetCodeStats(
   revalidate = 3600,
@@ -282,9 +235,6 @@ export async function fetchLeetCodeStats(
       },
       body: JSON.stringify({
         query: QUERY,
-        // Twelve rather than six: the centre panel grew to a 40" and the
-        // recently-solved list is the one column on it that can absorb the
-        // extra height with real information rather than with padding.
         variables: { username: LEETCODE_USER, recent: 12 },
       }),
       next: { revalidate },

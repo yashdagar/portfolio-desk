@@ -4,32 +4,15 @@ import { Html } from "@react-three/drei";
 import type { ReactNode } from "react";
 
 /**
- * Mount real DOM onto a plane in the scene.
- *
- * This is the load-bearing trick of the whole project. The screens are not
- * textures — they're React components rendered as HTML and transformed into 3D,
- * so the commit feed is selectable text with working links that a screen reader
- * can walk and a crawler can index, while still being physically mounted on a
- * monitor in a room.
- *
- * Pointer events are off unless the surface is focused. Otherwise the DOM would
- * swallow the click meant for the mesh behind it, and there'd be no way to
- * focus a screen by clicking it — you'd be clicking the webpage stuck to it.
+ * Mount real DOM onto a plane: the screens are React components transformed
+ * into 3D, so the commit feed is selectable text with working links a screen
+ * reader can walk, while physically mounted on a monitor.
  */
 
 /**
- * CSS pixels per world unit in drei's `transform` mode.
- *
- * Not 1:1, which is the obvious guess and wrong by this whole factor. drei
- * derives it from `distanceFactor`, which defaults to 10:
- *
- *   ratio = (distanceFactor || 10) / 400   // = 0.025
- *   worldWidth = element.clientWidth * ratio * groupScale
- *
- * so a div of N pixels spans N/40 world units at scale 1 — confirmed by both
- * the occlusion-mesh sizing and the inner CSS matrix, which is built with
- * `1 / ((distanceFactor || 10) / 400)` = 40. Getting this wrong renders every
- * screen either as a few-pixel speck or as text sprawling across the room.
+ * CSS pixels per world unit in drei's `transform` mode. Not 1:1 — drei derives
+ * it from `distanceFactor` (default 10) as `(distanceFactor || 10) / 400`, so a
+ * div of N pixels spans N/40 world units at scale 1.
  */
 const PX_PER_WORLD_UNIT = 40;
 export function Surface({
@@ -45,14 +28,8 @@ export function Surface({
   designH: number;
   worldW: number;
   focused: boolean;
-  /**
-   * Corner radius of the thing this is mounted on, in design pixels.
-   *
-   * Belongs here rather than on each screen component. The mount is what knows
-   * it's stuck to a rounded object, and leaving it to the children means every
-   * new surface starts life with square corners overhanging a filleted bezel
-   * until someone notices.
-   */
+  /** Corner radius of the thing this is mounted on, in design pixels. Here
+   *  rather than on each screen, which would start life square-cornered. */
   radiusPx?: number;
   children: ReactNode;
 } & React.ComponentProps<"group">) {
@@ -61,50 +38,26 @@ export function Surface({
       <Html
         transform
         /*
-          drei's own two wrapper divs, not just ours.
-
-          Setting pointer-events on the div below only made *our* element inert;
-          the transform wrappers drei puts around it stayed hit-testable, so a
-          click over an unfocused screen still landed on a div rather than
-          falling through to the canvas. That div is a plain axis-aligned box
-          around the projected panel, and R3F measures a click from whatever
-          element it landed on — so every click anywhere near a monitor was
-          being measured from the wrong origin and raycast into the wrong part
-          of the room. Clicking a screen did nothing, or focused a different
-          one. See the `eventPrefix` note on the canvas for the other half.
+          drei's own wrapper divs, not just ours: setting pointer-events on the
+          div below leaves the transform wrappers hit-testable, so a click over
+          an unfocused screen lands on a div and R3F measures it from that div's
+          corner. See the `eventPrefix` note on the canvas for the other half.
         */
         pointerEvents={focused ? "auto" : "none"}
-        // Depth-buffer occlusion rather than raycast: a held box passes in
-        // front of the monitors, and raycast occlusion of a full-screen DOM
-        // node costs a ray per frame per surface.
+        // Depth-buffer rather than raycast, which costs a ray per frame each.
         occlude="blending"
-        /*
-          drei defaults this to [16777271, 0] and its wrapper spans the whole
-          viewport, so at the default any UI over the canvas is buried under a
-          transparent div seven million layers up. Capped low enough for normal
-          page chrome to sit above it, and still wide enough for drei to depth
-          sort the handful of surfaces in the scene against each other.
-        */
+        // drei defaults to [16777271, 0] over a viewport-spanning wrapper, which
+        // buries all page chrome under a transparent div seven million layers up.
         zIndexRange={[40, 0]}
         scale={(worldW * PX_PER_WORLD_UNIT) / designW}
         // Slightly forward of the plane it sits on, or it z-fights with it.
         position={[0, 0, 0.001]}
       >
-        {/*
-          The size lives on a wrapper we own rather than on Html's `style`.
-          Passing it to Html leaves the child sizing itself, so a screen built
-          with `h-full` collapses to nothing and renders as a speck.
-        */}
+        {/* Size on a wrapper we own: passed to Html the child sizes itself, and
+            a screen built with `h-full` collapses to a speck. */}
         <div
-          /*
-           * Unfocused surfaces are inert.
-           *
-           * Without this, tabbing from the top of the page walks straight into
-           * every link on every screen — a hundred and twenty commit links
-           * before you reach the contact details — while the camera is still
-           * sitting back and none of them are legible. Inert keeps tab order
-           * matching what's actually being read.
-           */
+          // Or tabbing walks into a hundred and twenty commit links before
+          // reaching the contact details, none of them legible from rest.
           inert={!focused}
           style={{
             width: designW,

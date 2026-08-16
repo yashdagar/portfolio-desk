@@ -18,23 +18,10 @@ import * as M from "./materials";
 /**
  * A 65% keyboard, built from the keycap pitch outward.
  *
- * The previous version was a rounded black slab, which is what a keyboard looks
- * like from ten metres away and nothing like one from the seat. Keys are the
- * detail people check, because everyone has spent thousands of hours looking at
- * a keyboard and knows exactly how big a key is and how the light sits on its
- * edge.
- *
- * Two things carry it:
- *
- * - **Bevels.** Each cap is an extruded rounded rectangle with a real bevel, so
- *   the top edge catches a thin highlight from the lamp. That highlight is the
- *   entire difference between a grid of caps and a grid of boxes; a chamfer of
- *   under a millimetre does more here than any texture would.
- * - **Legends.** One canvas texture covering the whole key field, floated a
- *   fraction above the caps. Printing them per-cap would mean an atlas and
- *   custom UVs on instanced geometry; one aligned plane gets the same result
- *   for one extra draw call, and the legends land in exactly the right place
- *   because both the caps and the canvas are laid out from the same table.
+ * Legends are one canvas covering the whole key field, floated above the caps.
+ * Per-cap printing would need an atlas and custom UVs on instanced geometry;
+ * one aligned plane costs a draw call and lands correctly because the caps and
+ * the canvas are laid out from the same table.
  */
 
 interface Key {
@@ -48,11 +35,8 @@ interface Key {
   accent?: boolean;
 }
 
-/**
- * Rows are 16 units wide each. That constraint is what makes a keyboard layout
- * look right — real boards are built on it, and a row that's a quarter unit out
- * reads as wrong without the viewer being able to say why.
- */
+/** Every row is exactly 16 units wide. A row a quarter unit out reads as wrong
+ *  without the viewer being able to say why. */
 const ROWS: Key[][] = [
   [
     { label: "`", shift: "~" },
@@ -169,22 +153,13 @@ const PLACED: Placed[] = ROWS.flatMap((row, r) => {
 /** Distinct cap widths, so each gets geometry with an undistorted bevel. */
 const WIDTHS = [...new Set(PLACED.map((k) => k.units))].sort((a, b) => a - b);
 
-/**
- * Keycap edge bevel.
- *
- * The single most valuable 1.6 mm in the scene. It's what catches a thin
- * highlight off the lamp along the top edge of every cap, and that highlight is
- * the entire difference between a keyboard and a grid of little boxes.
- */
+/** Catches the highlight along each cap's top edge, which is the difference
+ *  between a keyboard and a grid of little boxes. */
 const BEVEL = 0.0016;
 
 /**
- * One keycap.
- *
- * Built per width rather than scaling a single cap, because a non-uniform scale
- * stretches the fillet and the bevel with it — a spacebar would end up with
- * corners six times rounder than a letter key, which is exactly the kind of
- * thing that reads as "3D scene" rather than as "keyboard".
+ * Per width rather than scaling one cap: a non-uniform scale stretches the
+ * fillet with it, and the spacebar ends up six times rounder than a letter key.
  */
 function capGeometry(units: number): BufferGeometry {
   const w = units * KEYBOARD.unit - KEYBOARD.gap;
@@ -206,13 +181,7 @@ function capGeometry(units: number): BufferGeometry {
   return geo;
 }
 
-/**
- * Every legend on one canvas, laid out from the same table as the caps.
- *
- * Drawn at roughly 6700 px per metre, which is about 128 px across a single
- * keycap — enough that the legends are still crisp when the camera leans in and
- * a key is a couple of centimetres on screen.
- */
+/** About 128 px across a keycap, so legends stay crisp when the camera leans in. */
 function legendTexture(): CanvasTexture {
   const W = 2048;
   const H = Math.round(W * (FIELD_D / FIELD_W));
@@ -231,13 +200,9 @@ function legendTexture(): CanvasTexture {
     const cy = key.v * H;
     const wide = key.units > 1.5;
 
-    // Dark legends: the caps are white now, and the two accent caps are a
-    // light blue that a pale legend would vanish into just as fast.
     ctx.fillStyle = key.accent ? "#1c3a49" : "#3a3e42";
 
     if (key.shift) {
-      // Two-line legend: shifted symbol above, base below. This is the detail
-      // that stops the number row reading as a row of single characters.
       ctx.font = `600 ${pxPerUnit * 0.3}px ui-sans-serif, system-ui, sans-serif`;
       ctx.fillText(key.shift, cx, cy - pxPerUnit * 0.17);
       ctx.fillText(key.label, cx, cy + pxPerUnit * 0.17);
@@ -245,8 +210,6 @@ function legendTexture(): CanvasTexture {
     }
 
     if (wide || key.label.length > 1) {
-      // Word legends sit small and left-ish on real caps; centred reads cleaner
-      // at this size and keeps the canvas layout trivially correct.
       ctx.font = `500 ${pxPerUnit * 0.26}px ui-sans-serif, system-ui, sans-serif`;
     } else {
       ctx.font = `600 ${pxPerUnit * 0.38}px ui-sans-serif, system-ui, sans-serif`;
@@ -293,18 +256,10 @@ export function Keyboard() {
     [caseW, caseD],
   );
   /*
-   * The underside, deliberately a whisker smaller than the tray above it.
-   *
-   * At the same footprint the two shapes share their outer walls exactly, from
-   * the desk up to the plate — two coincident surfaces the depth buffer has no
-   * way to order, so the case edges broke into a flickering band of light that
-   * crawled as the camera drifted. It read as a light leaking out of the
-   * keyboard, which is a strange enough thing to see that it got reported as
-   * one.
-   *
-   * Undersized by a millimetre in plan and a fraction of one in height, so it
-   * closes the tray without ever touching it: the walls hide behind the tray's
-   * walls, and the top face stops just short of the plate.
+   * Deliberately a whisker smaller than the tray. At the same footprint the two
+   * share their outer walls exactly, and the depth buffer has no way to order
+   * two coincident surfaces — the case edges broke into a flickering band that
+   * read as light leaking out of the keyboard.
    */
   const base = useMemo(
     () =>
@@ -331,19 +286,11 @@ export function Keyboard() {
       rotation={[-KEYBOARD.tilt, 0, 0]}
     >
       {/*
-        The tray.
-
-        The case used to be a closed slab with the caps standing on its lid,
-        which is a low-profile island design and not what this board is meant to
-        be — a keyboard reads as a keyboard partly because its keys sit *down
-        inside* something, with a rim of case rising past them on all four
-        sides. That rim is also what casts the small shadow along the bottom
-        edge of the outer row, which is a detail the eye checks without knowing
-        it.
+        A tray rather than a slab, because a keyboard reads as one partly through
+        its keys sitting down inside something with a rim rising past them.
 
         One extruded frame rather than four rails: extruding a shape with a hole
-        in it produces the inner walls for free, and skips the four mitred
-        corners that a rail-built case leaves catching the light wrong.
+        in it gives the inner walls for free and skips four mitred corners.
       */}
       <mesh geometry={tray} castShadow receiveShadow>
         <meshStandardMaterial {...M.KEYBOARD_CASE} />
@@ -354,10 +301,7 @@ export function Keyboard() {
         <meshStandardMaterial {...M.KEYBOARD_CASE} />
       </mesh>
 
-      {/*
-        Plate: mid grey, well below the rim. It's the only thing separating one
-        white cap from the next, so it has to be dark enough to draw the grid.
-      */}
+      {/* The only thing separating one white cap from the next. */}
       <mesh position={[0, KEYBOARD.plateY, 0]} rotation={[-Math.PI / 2, 0, 0]}>
         <planeGeometry args={[FIELD_W + 0.004, FIELD_D + 0.004]} />
         <meshStandardMaterial {...M.KEYBOARD_PLATE} />
@@ -385,13 +329,9 @@ export function Keyboard() {
         );
       })}
 
-      {/*
-        The legends, floating a fifth of a millimetre above the caps.
-
-        Coplanar with the cap tops it z-fights; any further and the print
-        detaches visibly at this viewing angle. depthWrite off so the plane
-        doesn't occlude the caps it sits on where it's transparent.
-      */}
+      {/* A fifth of a millimetre above the caps: coplanar it z-fights, further
+          and the print visibly detaches. depthWrite off, or the transparent
+          parts of the plane occlude the caps under them. */}
       <mesh
         position={[0, KEYBOARD.plateY + KEYBOARD.capHeight + 0.0002, 0]}
         rotation={[-Math.PI / 2, 0, 0]}
