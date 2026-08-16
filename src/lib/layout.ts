@@ -64,6 +64,15 @@ export const MONITOR = {
   panelH: 0.336,
   bezel: 0.007,
   depth: 0.018,
+  /**
+   * Bezel corner radius.
+   *
+   * Several times what a real monitor has. A 3 mm corner at this viewing
+   * distance is sub-pixel, so the chassis renders with the perfect right angles
+   * of a primitive — which is precisely what makes a 3D scene look like a 3D
+   * scene. The DOM mounted on the panel is rounded to match.
+   */
+  corner: 0.017,
   /** Bottom of the panel above the desk surface, i.e. the stand's height. */
   liftY: 0.115,
 } as const;
@@ -208,7 +217,15 @@ export const MOUSE = {
 
 /** Headphones, hung over the outer top corner of the right-hand monitor. */
 export const HEADPHONES = {
-  x: PITCH + MONITOR.panelW / 2 - 0.055,
+  /*
+   * Right at the outer corner, not inboard of it.
+   *
+   * Hung further in they look better in the establishing shot and then eat the
+   * top-right eighth of the player when you lean into that screen — and the
+   * screen is the content. Out here the cup hangs mostly past the panel edge
+   * and only clips the corner of the header gradient.
+   */
+  x: PITCH + MONITOR.panelW / 2 - 0.012,
   /** The headband rests on the top edge of the panel. */
   y: DESK.surfaceY + MONITOR.liftY + MONITOR.panelH + 0.012,
   z: -0.29,

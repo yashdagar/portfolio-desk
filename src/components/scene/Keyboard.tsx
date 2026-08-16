@@ -1,6 +1,6 @@
 "use client";
 
-import { Instance, Instances } from "@react-three/drei";
+import { Instance, Instances, RoundedBox } from "@react-three/drei";
 import { useEffect, useMemo } from "react";
 import {
   CanvasTexture,
@@ -169,7 +169,14 @@ const PLACED: Placed[] = ROWS.flatMap((row, r) => {
 /** Distinct cap widths, so each gets geometry with an undistorted bevel. */
 const WIDTHS = [...new Set(PLACED.map((k) => k.units))].sort((a, b) => a - b);
 
-const BEVEL = 0.0011;
+/**
+ * Keycap edge bevel.
+ *
+ * The single most valuable 1.6 mm in the scene. It's what catches a thin
+ * highlight off the lamp along the top edge of every cap, and that highlight is
+ * the entire difference between a keyboard and a grid of little boxes.
+ */
+const BEVEL = 0.0016;
 
 /**
  * One keycap.
@@ -182,7 +189,7 @@ const BEVEL = 0.0011;
 function capGeometry(units: number): BufferGeometry {
   const w = units * KEYBOARD.unit - KEYBOARD.gap;
   const d = KEYBOARD.unit - KEYBOARD.gap;
-  const geo = new ExtrudeGeometry(roundedRectShape(w, d, 0.0016), {
+  const geo = new ExtrudeGeometry(roundedRectShape(w, d, 0.0034), {
     depth: KEYBOARD.capHeight - BEVEL * 2,
     bevelEnabled: true,
     bevelThickness: BEVEL,
@@ -277,10 +284,19 @@ export function Keyboard() {
       rotation={[-KEYBOARD.tilt, 0, 0]}
     >
       {/* Case. Anodised aluminium, so the lamp draws a line down its long edge. */}
-      <mesh position={[0, KEYBOARD.caseHeight / 2, 0]} castShadow receiveShadow>
-        <boxGeometry args={[caseW, KEYBOARD.caseHeight, caseD]} />
+      <RoundedBox
+        args={[caseW, KEYBOARD.caseHeight, caseD]}
+        // Half the case height, i.e. the edge is a full half-round. Every
+        // premium board on the market has a chamfer or a radius there precisely
+        // because it's the edge your wrists rest against.
+        radius={KEYBOARD.caseHeight / 2 - 0.001}
+        smoothness={6}
+        position={[0, KEYBOARD.caseHeight / 2, 0]}
+        castShadow
+        receiveShadow
+      >
         <meshStandardMaterial {...M.KEYBOARD_CASE} />
-      </mesh>
+      </RoundedBox>
 
       {/*
         Plate: a hair darker and inset, so the caps read as sitting *in* the case

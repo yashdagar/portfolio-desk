@@ -1,4 +1,9 @@
-import { ExtrudeGeometry, Shape, type BufferGeometry } from "three";
+import {
+  ExtrudeGeometry,
+  Shape,
+  ShapeGeometry,
+  type BufferGeometry,
+} from "three";
 
 /**
  * Shared geometry helpers.
@@ -27,6 +32,48 @@ export function roundedRectShape(w: number, d: number, r: number): Shape {
   s.lineTo(x, y + radius);
   s.quadraticCurveTo(x, y, x + radius, y);
   return s;
+}
+
+/**
+ * A rounded rectangle standing up in the XY plane, extruded toward the viewer.
+ *
+ * For things that hang on a wall or face the seat — picture frames, the panel
+ * behind a screen. Same reason as `roundedPlate`: the axis that needs rounding
+ * is the flat one, which is exactly the one `RoundedBox` refuses to round.
+ */
+export function roundedSlab(
+  w: number,
+  h: number,
+  r: number,
+  depth: number,
+): BufferGeometry {
+  const geo = new ExtrudeGeometry(roundedRectShape(w, h, r), {
+    depth,
+    bevelEnabled: false,
+    curveSegments: 8,
+  });
+  geo.translate(0, 0, -depth / 2);
+  geo.computeVertexNormals();
+  return geo;
+}
+
+/**
+ * A flat rounded rectangle with no thickness, facing +Z.
+ *
+ * ShapeGeometry writes each vertex's raw x/y as its UV rather than normalising
+ * to 0..1, so a shape a few centimetres across comes out with UVs in the range
+ * 0.0–0.03 and any texture applied to it renders as a single stretched pixel.
+ * Rewriting them is not optional.
+ */
+export function roundedPanel(w: number, h: number, r: number): BufferGeometry {
+  const geo = new ShapeGeometry(roundedRectShape(w, h, r), 8);
+  const pos = geo.attributes.position;
+  const uv = geo.attributes.uv;
+  for (let i = 0; i < pos.count; i++) {
+    uv.setXY(i, pos.getX(i) / w + 0.5, pos.getY(i) / h + 0.5);
+  }
+  uv.needsUpdate = true;
+  return geo;
 }
 
 /**

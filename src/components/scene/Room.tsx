@@ -3,7 +3,7 @@
 import { RoundedBox, useCursor } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { MathUtils, Vector3, type Mesh } from "three";
+import { MathUtils, Vector3, type Group } from "three";
 
 import { About } from "@/components/screens/About";
 import { BoxBack } from "@/components/screens/BoxBack";
@@ -28,7 +28,7 @@ import {
 import { useScene, type BoxId } from "@/lib/store";
 
 import { catanArt, chessArt, type BoxArt } from "./boxArt";
-import { roundedPlate } from "./geometry";
+import { roundedPanel, roundedPlate } from "./geometry";
 import { Headphones } from "./Headphones";
 import { Keyboard } from "./Keyboard";
 import { Lamp } from "./Lamp";
@@ -42,13 +42,16 @@ import { nightLightsTexture, outsideTexture } from "./windowView";
 function Desk() {
   const midZ = DESK.frontZ - DESK.depth / 2;
   const legInset = 0.08;
+  const legH = DESK.surfaceY - DESK.thickness;
 
   return (
     <group>
       <RoundedBox
         args={[DESK.width, DESK.thickness, DESK.depth]}
-        radius={0.006}
-        smoothness={3}
+        // Capped by half the thickness, which on a 32 mm top is 16 mm — so this
+        // is a full bullnose, the roundest a slab this thin can be.
+        radius={DESK.thickness / 2 - 0.001}
+        smoothness={6}
         position={[0, DESK.surfaceY - DESK.thickness / 2, midZ]}
         castShadow
         receiveShadow
@@ -62,14 +65,16 @@ function Desk() {
         [-DESK.width / 2 + legInset, DESK.frontZ - DESK.depth + legInset],
         [DESK.width / 2 - legInset, DESK.frontZ - DESK.depth + legInset],
       ].map(([x, z], i) => (
-        <mesh
+        <RoundedBox
           key={i}
-          position={[x, (DESK.surfaceY - DESK.thickness) / 2, z]}
+          args={[0.05, legH, 0.05]}
+          radius={0.018}
+          smoothness={5}
+          position={[x, legH / 2, z]}
           castShadow
         >
-          <boxGeometry args={[0.048, DESK.surfaceY - DESK.thickness, 0.048]} />
           <meshStandardMaterial {...M.POWDER_COAT} />
-        </mesh>
+        </RoundedBox>
       ))}
     </group>
   );
@@ -225,14 +230,16 @@ function WindowFrame() {
       </mesh>
 
       {/* Sill, projecting into the room. */}
-      <mesh
+      <RoundedBox
+        args={[WINDOW.w + 0.1, 0.032, WINDOW.reveal + 0.08]}
+        radius={0.014}
+        smoothness={5}
         position={[0, -WINDOW.h / 2 - 0.024, WINDOW.reveal / 2 + 0.035]}
         castShadow
         receiveShadow
       >
-        <boxGeometry args={[WINDOW.w + 0.1, 0.03, WINDOW.reveal + 0.08]} />
         <meshStandardMaterial {...M.PLASTER} />
-      </mesh>
+      </RoundedBox>
     </group>
   );
 }
@@ -268,18 +275,39 @@ function Monitor({
   const outerW = MONITOR.panelW + MONITOR.bezel * 2;
   const outerH = MONITOR.panelH + MONITOR.bezel * 2;
 
+  // The glass is inset by the bezel, so its corner has to be tighter by the
+  // same amount or the black panel cuts across the chassis fillet.
+  const glass = useMemo(
+    () =>
+      roundedPanel(
+        MONITOR.panelW,
+        MONITOR.panelH,
+        MONITOR.corner - MONITOR.bezel,
+      ),
+    [],
+  );
+  const foot = useMemo(() => roundedPlate(0.22, 0.15, 0.045, 0.014), []);
+
+  useEffect(() => {
+    return () => {
+      glass.dispose();
+      foot.dispose();
+    };
+  }, [glass, foot]);
+
   return (
     <group position={placement.position} rotation={[0, placement.rotationY, 0]}>
       <RoundedBox
         args={[outerW, outerH, MONITOR.depth]}
-        radius={0.003}
-        smoothness={3}
+        radius={MONITOR.corner}
+        smoothness={6}
         castShadow
       >
         <meshStandardMaterial {...M.SOFT_PLASTIC} />
       </RoundedBox>
 
       <mesh
+        geometry={glass}
         position={[0, 0, MONITOR.depth / 2 + 0.0005]}
         onClick={(e) => {
           e.stopPropagation();
@@ -291,7 +319,6 @@ function Monitor({
         }}
         onPointerOut={() => setHovered(false)}
       >
-        <planeGeometry args={[MONITOR.panelW, MONITOR.panelH]} />
         <meshStandardMaterial
           {...M.SCREEN_GLASS}
           emissiveIntensity={hovered ? 2.2 : 1}
@@ -317,23 +344,28 @@ function Monitor({
       )}
 
       {/* Neck and foot. Aluminium, so they catch the lamp and read as hardware. */}
-      <mesh
+      <RoundedBox
+        args={[0.046, MONITOR.liftY + 0.02, 0.026]}
+        radius={0.011}
+        smoothness={5}
         position={[0, -MONITOR.panelH / 2 - MONITOR.liftY / 2, -0.026]}
         castShadow
       >
-        <boxGeometry args={[0.044, MONITOR.liftY + 0.02, 0.024]} />
         <meshStandardMaterial {...M.ALUMINIUM} />
-      </mesh>
-      <RoundedBox
-        args={[0.21, 0.013, 0.14]}
-        radius={0.005}
-        smoothness={3}
-        position={[0, -MONITOR.panelH / 2 - MONITOR.liftY + 0.006, -0.026]}
+      </RoundedBox>
+      {/*
+        A properly rounded foot rather than a rounded box: at 13 mm thick,
+        RoundedBox can only put a 6 mm fillet on it and the corners in plan —
+        the ones you actually see from above — stay square.
+      */}
+      <mesh
+        geometry={foot}
+        position={[0, -MONITOR.panelH / 2 - MONITOR.liftY, -0.026]}
         castShadow
         receiveShadow
       >
         <meshStandardMaterial {...M.ALUMINIUM} />
-      </RoundedBox>
+      </mesh>
     </group>
   );
 }
@@ -381,7 +413,7 @@ function GameBox({
   const focus = useScene((s) => s.focus);
   const [hovered, setHovered] = useState(false);
   useCursor(hovered);
-  const ref = useRef<Mesh>(null);
+  const ref = useRef<Group>(null);
 
   const held = focus.kind === "box" && focus.id === id;
 
@@ -415,44 +447,97 @@ function GameBox({
     mesh.rotation.x = MathUtils.lerp(mesh.rotation.x, targetX, k);
   });
 
-  /*
-   * Six materials, one per face.
-   *
-   * A box geometry's groups run +X, −X, +Y, −Y, +Z, −Z, so the lid art goes on
-   * index 2 and the four sides get the spine. Printing the lid on every face
-   * would put a full-size hex island on a 75 mm edge, and printing nothing on
-   * the sides is worse — stacked on a shelf, the spine is the only part of a
-   * board game box you ever actually see.
-   */
   const tint = hovered && !held ? "#ffffff" : "#dcd6cb";
 
+  /*
+   * A rounded body with the artwork applied on top of it.
+   *
+   * It used to be a box geometry with six materials, one per face, which is the
+   * tidy way to print a cube and gives you a cube — six flat faces meeting at
+   * perfect right angles, the most primitive-looking object in the room. A
+   * rounded box can't do per-face materials, because it's one extruded shell
+   * with no face groups, so the print becomes separate panels floating a
+   * fraction proud of each side.
+   *
+   * That turns out to be closer to how a real box is made anyway: the board is
+   * one object and the printed wrap is another, and the reason a game box has
+   * soft edges at all is that paper can't fold around a sharp one.
+   */
+  const spineFaces: {
+    key: string;
+    position: [number, number, number];
+    rotation: [number, number, number];
+    w: number;
+  }[] = [
+    { key: "front", position: [0, 0, BOX.d / 2], rotation: [0, 0, 0], w: BOX.w },
+    {
+      key: "back",
+      position: [0, 0, -BOX.d / 2],
+      rotation: [0, Math.PI, 0],
+      w: BOX.w,
+    },
+    {
+      key: "right",
+      position: [BOX.w / 2, 0, 0],
+      rotation: [0, Math.PI / 2, 0],
+      w: BOX.d,
+    },
+    {
+      key: "left",
+      position: [-BOX.w / 2, 0, 0],
+      rotation: [0, -Math.PI / 2, 0],
+      w: BOX.d,
+    },
+  ];
+
   return (
-    <mesh
-      ref={ref}
-      position={shelved}
-      castShadow
-      receiveShadow
-      // A held box must not intercept the click that puts it back.
-      raycast={held ? () => null : undefined}
-      onClick={(e) => {
-        e.stopPropagation();
-        focusBox(id);
-      }}
-      onPointerOver={(e) => {
-        e.stopPropagation();
-        setHovered(true);
-      }}
-      onPointerOut={() => setHovered(false)}
-    >
-      <boxGeometry args={[BOX.w, BOX.h, BOX.d]} />
-      {[0, 1, 2, 3, 4, 5].map((face) => (
-        <meshStandardMaterial
-          key={face}
-          attach={`material-${face}`}
-          {...M.BOX_CARD}
-          color={face === 3 ? M.BOX_CARD.color : tint}
-          map={face === 2 ? art.lid : face === 3 ? undefined : art.spine}
-        />
+    <group ref={ref} position={shelved}>
+      <RoundedBox
+        args={[BOX.w, BOX.h, BOX.d]}
+        // A third of the box's own depth. Far more than a real one, and it's
+        // what turns the stack on the shelf from two cubes into two objects.
+        radius={0.022}
+        smoothness={6}
+        castShadow
+        receiveShadow
+        // A held box must not intercept the click that puts it back.
+        raycast={held ? () => null : undefined}
+        onClick={(e) => {
+          e.stopPropagation();
+          focusBox(id);
+        }}
+        onPointerOver={(e) => {
+          e.stopPropagation();
+          setHovered(true);
+        }}
+        onPointerOut={() => setHovered(false)}
+      >
+        <meshStandardMaterial {...M.BOX_CARD} color={tint} />
+      </RoundedBox>
+
+      {/* Lid. Inset so the fillet stays visible all the way round the print. */}
+      <mesh position={[0, BOX.h / 2 + 0.0004, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+        <planeGeometry args={[BOX.w - 0.03, BOX.d - 0.03]} />
+        <meshStandardMaterial {...M.BOX_CARD} color={tint} map={art.lid} />
+      </mesh>
+
+      {/*
+        Spines, on all four sides. Stacked on a shelf this is the only part of a
+        board game box anybody ever sees.
+      */}
+      {spineFaces.map((f) => (
+        <mesh
+          key={f.key}
+          position={[
+            f.position[0] * 1.004,
+            f.position[1],
+            f.position[2] * 1.004,
+          ]}
+          rotation={f.rotation}
+        >
+          <planeGeometry args={[f.w - 0.03, BOX.h - 0.012]} />
+          <meshStandardMaterial {...M.BOX_CARD} color={tint} map={art.spine} />
+        </mesh>
       ))}
 
       {held && (
@@ -462,15 +547,15 @@ function GameBox({
           // Inset from the lid. Printed exactly edge to edge the surface covers
           // the whole face and the thing reads as a floating card; leaving a
           // sliver of box visible is what makes it read as an object with depth.
-          worldW={BOX.w * 0.94}
+          worldW={BOX.w * 0.9}
           focused
-          position={[0, BOX.h / 2 + 0.001, 0]}
+          position={[0, BOX.h / 2 + 0.002, 0]}
           rotation={[-Math.PI / 2, 0, 0]}
         >
           <BoxBack id={id} />
         </Surface>
       )}
-    </mesh>
+    </group>
   );
 }
 
@@ -491,8 +576,10 @@ function Shelf() {
     <group>
       <RoundedBox
         args={[SHELF.width, SHELF.thickness, SHELF.depth]}
-        radius={0.005}
-        smoothness={3}
+        // Full bullnose, same reasoning as the desk: a shelf this thin can't be
+        // rounder than half its thickness, so take all of it.
+        radius={SHELF.thickness / 2 - 0.001}
+        smoothness={6}
         position={[SHELF.x, SHELF.y, SHELF.z]}
         castShadow
         receiveShadow
@@ -501,14 +588,16 @@ function Shelf() {
       </RoundedBox>
       {/* Brackets, so the shelf isn't floating. */}
       {[-SHELF.width / 2 + 0.09, SHELF.width / 2 - 0.09].map((dx, i) => (
-        <mesh
+        <RoundedBox
           key={i}
+          args={[0.016, 0.085, 0.095]}
+          radius={0.007}
+          smoothness={4}
           position={[SHELF.x + dx, SHELF.y - 0.048, SHELF.z - SHELF.depth / 4]}
           castShadow
         >
-          <boxGeometry args={[0.014, 0.085, 0.095]} />
           <meshStandardMaterial {...M.POWDER_COAT} />
-        </mesh>
+        </RoundedBox>
       ))}
       <GameBox id="catan" index={0} art={art.catan} />
       <GameBox id="chess" index={1} art={art.chess} />
@@ -540,12 +629,17 @@ function Prints() {
         ] as const
       ).map(([x, y, w, h], i) => (
         <group key={i} position={[x, y, WALL.z + 0.006]}>
-          <mesh castShadow receiveShadow>
-            <boxGeometry args={[w, h, 0.012]} />
+          <RoundedBox
+            args={[w, h, 0.014]}
+            radius={0.006}
+            smoothness={5}
+            castShadow
+            receiveShadow
+          >
             <meshStandardMaterial {...M.POWDER_COAT} />
-          </mesh>
-          <mesh position={[0, 0, 0.007]}>
-            <planeGeometry args={[w - 0.03, h - 0.03]} />
+          </RoundedBox>
+          <mesh position={[0, 0, 0.008]}>
+            <planeGeometry args={[w - 0.032, h - 0.032]} />
             <meshStandardMaterial {...M.PAPER} color="#ffffff" map={art[i]} />
           </mesh>
         </group>
@@ -616,9 +710,9 @@ function Clutter() {
       */}
       <group position={[0.74, top, 0.19]} rotation={[0, -0.22, 0]}>
         <RoundedBox
-          args={[0.15, 0.012, 0.21]}
-          radius={0.004}
-          smoothness={3}
+          args={[0.15, 0.014, 0.21]}
+          radius={0.006}
+          smoothness={5}
           position={[0, 0.006, 0]}
           castShadow
           receiveShadow
