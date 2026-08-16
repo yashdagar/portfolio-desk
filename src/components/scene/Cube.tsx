@@ -545,6 +545,7 @@ function buildCube(): BufferGeometry {
      */
 
     const normals = geo.attributes.normal;
+    const points = geo.attributes.position;
     const colours = new Float32Array(normals.count * 3);
     const faces = faceColours(c);
 
@@ -624,6 +625,26 @@ function buildCube(): BufferGeometry {
         if (toward === CORE_BLACK) {
           shade.set(dominant).multiplyScalar(SHADOW * BODY_DIM);
           colour.lerp(shade, smoothstep(0.08, 1, turned));
+        }
+
+        /*
+         * Behind the disc.
+         *
+         * A centre piece is square and its facelet is round, so a frame the
+         * same width as everyone else's leaves four fat wedges of lit plastic
+         * at the diagonals — and a dim rounded square with a circle sitting on
+         * it is a decal again, whatever the circle is made of. On a real cube
+         * that corner is deep in shadow between the disc's cap and the pieces
+         * around it, so it goes to the core's black as it leaves the rim.
+         */
+        const centre = [0, 1, 2]
+          .filter((a) => a !== axis)
+          .every((a) => c.pos.getComponent(a) === 0);
+        if (centre) {
+          const [across, down] = [0, 1, 2].filter((a) => a !== axis);
+          const local = [points.getX(v), points.getY(v), points.getZ(v)];
+          const out = Math.hypot(local[across], local[down]);
+          colour.lerp(CORE, smoothstep(DISC_R, DISC_R + 0.0032, out));
         }
       } else if (toward !== CORE_BLACK) {
         /*
