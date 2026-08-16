@@ -13,10 +13,12 @@ import { useEffect, useState } from "react";
 
 import { ACESFilmicToneMapping, Object3D } from "three";
 
+import type { ActivityFeed } from "@/lib/activity";
 import { daylight, type Daylight } from "@/lib/daylight";
 import { CAMERA, DESK, LAMP, SCREENS, WALL, WINDOW } from "@/lib/layout";
 
 import { CameraRig } from "./CameraRig";
+import { HeroCamera } from "./HeroCamera";
 import { Room } from "./Room";
 
 /**
@@ -168,14 +170,22 @@ function useDaylight(): Daylight {
   return day;
 }
 
-export function Scene() {
+export function Scene({
+  hero = false,
+  activity = null,
+}: {
+  hero?: boolean;
+  activity?: ActivityFeed | null;
+} = {}) {
   const day = useDaylight();
 
   return (
     <Canvas
-      className="h-dvh w-full"
-      shadows
-      dpr={[1, 2]}
+      className={hero ? "h-full w-full" : "h-dvh w-full"}
+      shadows={!hero}
+      // Hero mode runs on phones, where a second device-pixel of resolution and
+      // a shadow map cost far more than they show at that size.
+      dpr={hero ? [1, 1.5] : [1, 2]}
       gl={{
         antialias: true,
         toneMapping: ACESFilmicToneMapping,
@@ -190,8 +200,8 @@ export function Scene() {
 
       <Reflections day={day} />
       <Lighting day={day} />
-      <Room day={day} />
-      <CameraRig />
+      <Room day={day} hero={hero} activity={activity} />
+      {hero ? <HeroCamera /> : <CameraRig />}
 
       <EffectComposer>
         {/*

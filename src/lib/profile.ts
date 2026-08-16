@@ -27,7 +27,9 @@ export const PROFILE = {
    */
   bio: [
     "I build things that have to be correct: rules engines, parsers, board logic. Rust, TypeScript, Dart, a bit of C when the problem deserves it.",
-    "The monitor to your left is a live feed of what I actually pushed. It isn't a summary, and I don't get to edit it.",
+    // Deliberately not "the monitor to your left" — the same bio is served to
+    // the flat page, where there is no monitor and no left.
+    "The commit feed is live. It's what I actually pushed, not a summary, and I don't get to edit it.",
   ],
   githubSince: 2020,
 } as const;

@@ -1,6 +1,6 @@
 "use client";
 
-import type { Commit, CommitKind } from "@/lib/activity";
+import type { ActivityFeed, Commit, CommitKind } from "@/lib/activity";
 import { groupCommits, relativeTime, useActivity } from "@/lib/useActivity";
 
 /**
@@ -127,8 +127,8 @@ function GroupHeading({
   );
 }
 
-export function CommitFeed() {
-  const { feed, failed } = useActivity();
+export function CommitFeed({ initial }: { initial?: ActivityFeed | null }) {
+  const { feed, failed } = useActivity(initial ?? null);
 
   if (failed) {
     return (

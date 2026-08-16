@@ -9,6 +9,7 @@ import { About } from "@/components/screens/About";
 import { BoxBack } from "@/components/screens/BoxBack";
 import { CommitFeed } from "@/components/screens/CommitFeed";
 import { NowPlaying } from "@/components/screens/NowPlaying";
+import type { ActivityFeed } from "@/lib/activity";
 import type { Daylight } from "@/lib/daylight";
 import {
   BOX,
@@ -117,20 +118,33 @@ function Walls({ day }: { day: Daylight }) {
   );
 }
 
-const SCREEN_CONTENT: Record<ScreenId, () => React.ReactElement> = {
-  commits: CommitFeed,
-  about: About,
-  music: NowPlaying,
-};
+function ScreenContent({
+  id,
+  activity,
+}: {
+  id: ScreenId;
+  activity: ActivityFeed | null;
+}) {
+  if (id === "commits") return <CommitFeed initial={activity} />;
+  if (id === "about") return <About initial={activity} />;
+  return <NowPlaying />;
+}
 
-function Monitor({ placement }: { placement: (typeof SCREENS)[number] }) {
+function Monitor({
+  placement,
+  hero,
+  activity,
+}: {
+  placement: (typeof SCREENS)[number];
+  hero: boolean;
+  activity: ActivityFeed | null;
+}) {
   const focusScreen = useScene((s) => s.focusScreen);
   const focus = useScene((s) => s.focus);
   const [hovered, setHovered] = useState(false);
   useCursor(hovered);
 
   const focused = focus.kind === "screen" && focus.id === placement.id;
-  const Content = SCREEN_CONTENT[placement.id];
 
   const outerW = MONITOR.panelW + MONITOR.bezel * 2;
   const outerH = MONITOR.panelH + MONITOR.bezel * 2;
@@ -165,15 +179,23 @@ function Monitor({ placement }: { placement: (typeof SCREENS)[number] }) {
         />
       </mesh>
 
-      <Surface
-        designW={SCREEN_DESIGN.w}
-        designH={SCREEN_DESIGN.h}
-        worldW={MONITOR.panelW}
-        focused={focused}
-        position={[0, 0, MONITOR.depth / 2 + 0.001]}
-      >
-        <Content />
-      </Surface>
+      {/*
+        Not mounted in hero mode. Three full React trees transformed into CSS 3D
+        is the single most expensive thing in the scene, and on a phone the
+        panels are a few hundred pixels wide — the text would be unreadable at
+        that size anyway, and the same content sits in the DOM below.
+      */}
+      {!hero && (
+        <Surface
+          designW={SCREEN_DESIGN.w}
+          designH={SCREEN_DESIGN.h}
+          worldW={MONITOR.panelW}
+          focused={focused}
+          position={[0, 0, MONITOR.depth / 2 + 0.001]}
+        >
+          <ScreenContent id={placement.id} activity={activity} />
+        </Surface>
+      )}
 
       {/* Neck and foot. Aluminium, so they catch the lamp and read as hardware. */}
       <mesh position={[0, -MONITOR.panelH / 2 - MONITOR.liftY / 2, -0.025]} castShadow>
@@ -463,7 +485,15 @@ function Clutter() {
   );
 }
 
-export function Room({ day }: { day: Daylight }) {
+export function Room({
+  day,
+  hero = false,
+  activity = null,
+}: {
+  day: Daylight;
+  hero?: boolean;
+  activity?: ActivityFeed | null;
+}) {
   const clearFocus = useScene((s) => s.clearFocus);
 
   return (
@@ -476,7 +506,7 @@ export function Room({ day }: { day: Daylight }) {
       <Walls day={day} />
       <Desk />
       {SCREENS.map((s) => (
-        <Monitor key={s.id} placement={s} />
+        <Monitor key={s.id} placement={s} hero={hero} activity={activity} />
       ))}
       <Shelf />
       <Poster />

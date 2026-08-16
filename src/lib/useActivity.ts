@@ -12,8 +12,11 @@ import type { ActivityFeed, Commit } from "./activity";
  * public. That makes the feed a CDN asset, which is also why it can be fetched
  * without a loading spinner mattering much.
  */
-export function useActivity() {
-  const [feed, setFeed] = useState<ActivityFeed | null>(null);
+export function useActivity(initial: ActivityFeed | null = null) {
+  // Seeded from the server so the first paint already has the real commits, not
+  // a spinner. The refetch below still runs, so a tab left open overnight picks
+  // up whatever the scheduled job wrote in the meantime.
+  const [feed, setFeed] = useState<ActivityFeed | null>(initial);
   const [failed, setFailed] = useState(false);
 
   useEffect(() => {
@@ -21,11 +24,11 @@ export function useActivity() {
     fetch("/data/activity.json")
       .then((r) => (r.ok ? r.json() : Promise.reject(new Error(String(r.status)))))
       .then((data: ActivityFeed) => alive && setFeed(data))
-      .catch(() => alive && setFailed(true));
+      .catch(() => alive && !initial && setFailed(true));
     return () => {
       alive = false;
     };
-  }, []);
+  }, [initial]);
 
   return { feed, failed };
 }

@@ -1,5 +1,6 @@
 "use client";
 
+import type { ActivityFeed } from "@/lib/activity";
 import { PROFILE } from "@/lib/profile";
 import { useActivity } from "@/lib/useActivity";
 
@@ -9,8 +10,8 @@ import { useActivity } from "@/lib/useActivity";
  * No projects — the shelf holds those. This screen's whole job is name, claim,
  * and contact, in that order, readable in about eight seconds.
  */
-export function About() {
-  const { feed } = useActivity();
+export function About({ initial }: { initial?: ActivityFeed | null }) {
+  const { feed } = useActivity(initial ?? null);
 
   const contacts = [
     ...PROFILE.links,
