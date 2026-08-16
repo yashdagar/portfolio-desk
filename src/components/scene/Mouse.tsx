@@ -1,7 +1,12 @@
 "use client";
 
 import { useEffect, useMemo } from "react";
-import { CanvasTexture, LinearFilter, SRGBColorSpace } from "three";
+import {
+  CanvasTexture,
+  LinearFilter,
+  SphereGeometry,
+  SRGBColorSpace,
+} from "three";
 
 import { MOUSE } from "@/lib/layout";
 
@@ -49,29 +54,69 @@ function shellTexture(): CanvasTexture {
   ctx.fillStyle = "#ffffff";
   ctx.fillRect(0, 0, W, H);
 
-  // Flanks, at ±X. Slightly darker: a rubberised grip panel, which is a
-  // material change with no shape change — most of what makes a moulded
-  // product look moulded.
-  ctx.fillStyle = "#c8c8c8";
-  ctx.fillRect(0, H * 0.45, W * 0.05, H * 0.55);
-  ctx.fillRect(W * 0.45, H * 0.45, W * 0.1, H * 0.55);
-  ctx.fillRect(W * 0.95, H * 0.45, W * 0.05, H * 0.55);
+  /*
+   * Grip panels on the flanks, and only just.
+   *
+   * These were solid grey blocks covering half the height of the shell. From
+   * the seat you look at this mouse almost end-on, so those two blocks landed
+   * on the left and right of the silhouette and turned it into a shaded onion —
+   * the exact opposite of the "moulded from several parts" read they were
+   * supposed to give. Barely-there is the right amount here.
+   */
+  ctx.fillStyle = "rgba(176,171,164,0.35)";
+  ctx.fillRect(0, H * 0.62, W * 0.035, H * 0.38);
+  ctx.fillRect(W * 0.465, H * 0.62, W * 0.07, H * 0.38);
+  ctx.fillRect(W * 0.965, H * 0.62, W * 0.035, H * 0.38);
 
-  ctx.strokeStyle = "#2a2a2a";
-  ctx.lineWidth = W * 0.004;
+  /*
+   * The seams, drawn as a dark line with a light one beside it.
+   *
+   * On the old dark shell a single dark line was plenty. On a white one it
+   * vanished: a 2-pixel grey line on a bright diffuse surface is gone the
+   * moment any light falls on it. A real panel gap on a white product doesn't
+   * read as a dark line either — it reads as a dark line with a lit edge above
+   * it, because the lip on the far side catches light the recess doesn't. Two
+   * strokes, and the gap has depth.
+   */
+  const seam = (
+    x0: number,
+    y0: number,
+    x1: number,
+    y1: number,
+    nx: number,
+    ny: number,
+  ) => {
+    ctx.lineCap = "round";
+    ctx.strokeStyle = "rgba(255,255,255,0.9)";
+    ctx.lineWidth = W * 0.005;
+    ctx.beginPath();
+    ctx.moveTo(x0 + nx, y0 + ny);
+    ctx.lineTo(x1 + nx, y1 + ny);
+    ctx.stroke();
+
+    ctx.strokeStyle = "#3f3c38";
+    ctx.lineWidth = W * 0.0055;
+    ctx.beginPath();
+    ctx.moveTo(x0, y0);
+    ctx.lineTo(x1, y1);
+    ctx.stroke();
+  };
 
   // Split between the two buttons, running from the top of the dome forward.
-  ctx.beginPath();
-  ctx.moveTo(NOSE_U * W, 0);
-  ctx.lineTo(NOSE_U * W, BUTTON_V * H);
-  ctx.stroke();
+  seam(NOSE_U * W, 0, NOSE_U * W, BUTTON_V * H, W * 0.006, 0);
 
   // The line across, separating both buttons from the palm rest. Only across
   // the front half of the shell, which is where the buttons are.
-  ctx.beginPath();
-  ctx.moveTo(W * 0.5, BUTTON_V * H);
-  ctx.lineTo(W, BUTTON_V * H);
-  ctx.stroke();
+  seam(W * 0.5, BUTTON_V * H, W, BUTTON_V * H, 0, H * 0.012);
+
+  // A whisper of contact shading right at the bottom edge, and nothing higher.
+  // Painted shading up the sides fights the actual lighting and wins, which is
+  // how a white object ends up looking like it's made of two different whites.
+  const shade = ctx.createLinearGradient(0, H * 0.86, 0, H);
+  shade.addColorStop(0, "rgba(255,255,255,0)");
+  shade.addColorStop(1, "rgba(130,126,120,0.3)");
+  ctx.fillStyle = shade;
+  ctx.fillRect(0, H * 0.86, W, H * 0.14);
 
   const tex = new CanvasTexture(canvas);
   tex.colorSpace = SRGBColorSpace;
@@ -80,9 +125,62 @@ function shellTexture(): CanvasTexture {
   return tex;
 }
 
+function smoothstep(a: number, b: number, x: number) {
+  const t = Math.min(1, Math.max(0, (x - a) / (b - a)));
+  return t * t * (3 - 2 * t);
+}
+
+/**
+ * The shell, sculpted out of a hemisphere.
+ *
+ * A plain scaled half-sphere is symmetric front to back, so its crown lands
+ * exactly in the middle — and a mouse whose highest point is halfway along
+ * reads as an egg. Every real one peaks under the heel of your palm, about two
+ * thirds of the way back, and falls to a low narrow nose so the buttons sit
+ * under your fingertips rather than on a ridge.
+ *
+ * Two profile curves applied per vertex: one for height, one for width. Cheaper
+ * and more controllable than modelling it, and the UVs survive untouched, which
+ * matters because the button seams are drawn in texture space.
+ */
+function shellGeometry(): SphereGeometry {
+  const geo = new SphereGeometry(1, 48, 26, 0, Math.PI * 2, 0, Math.PI / 2);
+  const pos = geo.attributes.position;
+
+  for (let i = 0; i < pos.count; i++) {
+    const x = pos.getX(i);
+    const y = pos.getY(i);
+    const z = pos.getZ(i);
+    // 0 at the nose (−Z, pointing away from the seat), 1 at the tail.
+    const t = (z + 1) / 2;
+
+    // Rises quickly out of the nose, crowns around two thirds back, then eases
+    // down over the tail.
+    const height =
+      0.5 + 0.5 * smoothstep(0, 0.66, t) - 0.16 * smoothstep(0.78, 1, t);
+    // Narrow at the nose, widest at the waist where your thumb and ring finger
+    // sit, tucked back in at the tail.
+    const width =
+      0.66 + 0.34 * smoothstep(0, 0.42, t) - 0.14 * smoothstep(0.68, 1, t);
+
+    pos.setXYZ(i, x * width, y * height, z);
+  }
+
+  pos.needsUpdate = true;
+  geo.computeVertexNormals();
+  return geo;
+}
+
 export function Mouse({ top }: { top: number }) {
   const shell = useMemo(() => shellTexture(), []);
-  useEffect(() => () => shell.dispose(), [shell]);
+  const body = useMemo(() => shellGeometry(), []);
+
+  useEffect(() => {
+    return () => {
+      shell.dispose();
+      body.dispose();
+    };
+  }, [shell, body]);
 
   return (
     <group position={[MOUSE.x, top, MOUSE.z]}>
@@ -91,29 +189,57 @@ export function Mouse({ top }: { top: number }) {
         colour, so the seams darken the shell rather than replacing its
         material — the whole thing stays one piece of plastic.
       */}
-      <mesh scale={[MOUSE.w / 2, MOUSE.h, MOUSE.d / 2]} castShadow receiveShadow>
-        <sphereGeometry args={[1, 48, 24, 0, Math.PI * 2, 0, Math.PI / 2]} />
+      <mesh
+        geometry={body}
+        scale={[MOUSE.w / 2, MOUSE.h, MOUSE.d / 2]}
+        castShadow
+        receiveShadow
+      >
         <meshStandardMaterial {...M.MOUSE_SHELL} map={shell} />
       </mesh>
 
-      {/* A thin base disc, so the shell doesn't read as hollow from the side. */}
-      <mesh position={[0, 0.0015, 0]} scale={[MOUSE.w / 2, 1, MOUSE.d / 2]}>
-        <cylinderGeometry args={[0.995, 0.995, 0.003, 40]} />
-        <meshStandardMaterial {...M.SOFT_PLASTIC} />
+      {/*
+        Base. Darker than the shell and slightly inset, so the mouse reads as
+        two mouldings clipped together rather than as one solid lump — and so
+        there's a dark line at the bottom separating it from the mat it's
+        sitting on.
+      */}
+      <mesh position={[0, 0.002, 0]} scale={[MOUSE.w / 2, 1, MOUSE.d / 2]}>
+        <cylinderGeometry args={[0.9, 0.9, 0.004, 44]} />
+        <meshStandardMaterial {...M.GRIP} />
       </mesh>
 
       {/*
-        Scroll wheel, sitting proud in the split between the buttons.
-        Positioned where the dome is still about nine tenths of full height, so
-        it clears the shell by a couple of millimetres the way a real one does.
+        The wheel sits in a slot, not on the surface.
+
+        A cylinder resting on the dome reads as a bead stuck to the mouse. The
+        recess under it — a dark box sunk into the shell, only its opening
+        showing — is what makes the wheel look like it goes somewhere, and it's
+        the detail the eye uses to find the front of the object.
       */}
+      <mesh position={[0, MOUSE.h * 0.83, -MOUSE.d * 0.19]}>
+        <boxGeometry args={[0.0095, 0.008, 0.017]} />
+        <meshStandardMaterial {...M.PANEL_GAP} />
+      </mesh>
       <mesh
-        position={[0, MOUSE.h * 0.9, -MOUSE.d * 0.19]}
+        position={[0, MOUSE.h * 0.87, -MOUSE.d * 0.19]}
         rotation={[0, 0, Math.PI / 2]}
       >
-        <cylinderGeometry args={[0.0058, 0.0058, 0.0052, 20]} />
+        <cylinderGeometry args={[0.0062, 0.0062, 0.0055, 24]} />
         <meshStandardMaterial {...M.WHEEL} />
       </mesh>
+      {/* Knurling: three rings, which at this size is all that's needed to say
+          the wheel is grippy rather than smooth. */}
+      {[-0.0018, 0, 0.0018].map((dx) => (
+        <mesh
+          key={dx}
+          position={[dx, MOUSE.h * 0.87, -MOUSE.d * 0.19]}
+          rotation={[0, 0, Math.PI / 2]}
+        >
+          <cylinderGeometry args={[0.0064, 0.0064, 0.0006, 24]} />
+          <meshStandardMaterial {...M.PANEL_GAP} />
+        </mesh>
+      ))}
 
       {/* Status light on the tail — the one saturated pixel on the object. */}
       <mesh position={[0, MOUSE.h * 0.5, MOUSE.d * 0.36]}>

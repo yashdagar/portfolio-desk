@@ -32,7 +32,23 @@ import { formatDuration, livePosition, useSpotify } from "@/lib/useSpotify";
 
 const GREEN = "#1db954";
 
-export function NowPlaying() {
+export function NowPlaying({
+  variant = "wide",
+}: {
+  /**
+   * Which shape of screen this is mounted on.
+   *
+   * `wide` is the desktop client — sidebar, main pane, transport bar across the
+   * bottom. `tall` is the portrait monitor, and it isn't a squeezed version of
+   * the same thing: a 618-pixel column can't hold a 236-pixel sidebar and a
+   * four-column track list, and pretending otherwise gives you a desktop app
+   * with everything truncated. It gets the layout a player actually uses in
+   * portrait — art, title, transport, queue, stacked — which is a better fit for
+   * the data anyway, because a music client is fundamentally a list and a list
+   * wants height.
+   */
+  variant?: "wide" | "tall";
+} = {}) {
   const { track, measuredAt } = useSpotify();
   const [, tick] = useState(0);
 
@@ -46,6 +62,10 @@ export function NowPlaying() {
 
   const position = track ? livePosition(track, measuredAt.current) : 0;
 
+  if (variant === "tall") {
+    return <TallPlayer track={track} position={position} />;
+  }
+
   return (
     <div className="flex h-full w-full flex-col overflow-hidden rounded-[18px] bg-[#000] font-sans text-[#b3b3b3] antialiased">
       <div className="flex min-h-0 flex-1 gap-2 p-2">
@@ -53,6 +73,133 @@ export function NowPlaying() {
         <Main track={track} />
       </div>
       <Transport track={track} position={position} />
+    </div>
+  );
+}
+
+/* -------------------------------------------------------------------------
+ * Portrait
+ * ---------------------------------------------------------------------- */
+
+function TallPlayer({
+  track,
+  position,
+}: {
+  track: Playing | null;
+  position: number;
+}) {
+  const pct = track?.durationMs ? (position / track.durationMs) * 100 : 0;
+
+  return (
+    <div className="flex h-full w-full flex-col overflow-hidden rounded-[18px] bg-gradient-to-b from-[#2f4f4a] via-[#141c1c] to-[#0a0a0a] px-7 pb-6 pt-7 font-sans text-[#b3b3b3] antialiased">
+      <header className="flex items-center justify-between">
+        <span className="text-[11px] font-bold uppercase tracking-[0.16em] text-white">
+          {track?.playing ? "Now playing" : "Last played"}
+        </span>
+        <Bars playing={!!track?.playing} />
+      </header>
+
+      {!track?.title ? (
+        <div className="flex flex-1 flex-col items-center justify-center gap-4">
+          <span className="size-[180px] rounded-2xl bg-[#1c1c1c]" />
+          <p className="text-[15px] text-[#6a6a6a]">
+            {track ? "Nothing playing" : "Connecting…"}
+          </p>
+        </div>
+      ) : (
+        <>
+          {/*
+            Art at full column width. On the wide layout it's a 148px thumbnail
+            beside a headline; here it's the subject, which is what a portrait
+            column is for.
+          */}
+          <a
+            href={track.url}
+            target="_blank"
+            rel="noreferrer"
+            className="mt-5 block focus-visible:outline-none"
+          >
+            <Art
+              src={track.albumArt}
+              size={510}
+              radius="rounded-2xl"
+              shadow
+              fluid
+            />
+          </a>
+
+          <h2 className="mt-6 text-[31px] font-black leading-[1.08] tracking-tight text-white">
+            {track.title}
+          </h2>
+          <p className="mt-2 truncate text-[18px]">{track.artist}</p>
+
+          <div className="mt-5">
+            <span className="block h-[5px] w-full overflow-hidden rounded-full bg-[#4d4d4d]">
+              <span
+                className="block h-full rounded-full bg-white transition-[width] duration-500 ease-linear"
+                style={{ width: `${Math.min(100, pct)}%` }}
+              />
+            </span>
+            <div className="mt-2.5 flex justify-between text-[12px] tabular-nums">
+              <span>{track.durationMs ? formatDuration(position) : "0:00"}</span>
+              <span>
+                {track.durationMs ? formatDuration(track.durationMs) : "0:00"}
+              </span>
+            </div>
+          </div>
+
+          {/* Chrome, and hidden from assistive tech: none of it does anything. */}
+          <div
+            aria-hidden
+            className="mt-5 flex items-center justify-between px-1 text-white"
+          >
+            <ShuffleIcon />
+            <PrevIcon />
+            <span className="flex size-[62px] items-center justify-center rounded-full bg-white text-black">
+              {track.playing ? <PauseIcon size={24} /> : <PlayIcon size={24} />}
+            </span>
+            <NextIcon />
+            <RepeatIcon />
+          </div>
+        </>
+      )}
+
+      {track?.recent?.length ? (
+        <section className="mt-6 flex min-h-0 flex-1 flex-col">
+          <h3 className="mb-2 text-[12px] font-bold uppercase tracking-[0.14em] text-[#8a8a8a]">
+            Recently played
+          </h3>
+          <ol className="min-h-0 flex-1 overflow-y-auto">
+            {track.recent.map((t, i) => (
+              <li key={`${t.title}-${i}`}>
+                <a
+                  href={t.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex items-center gap-3.5 rounded-lg px-2 py-2 transition-colors hover:bg-[#ffffff12] focus-visible:bg-[#ffffff12] focus-visible:outline-none"
+                >
+                  <Art src={t.albumArt} size={46} radius="rounded-md" />
+                  <span className="min-w-0 flex-1">
+                    <span className="block truncate text-[15px] text-white">
+                      {t.title}
+                    </span>
+                    <span className="block truncate text-[13px]">
+                      {t.artist}
+                    </span>
+                  </span>
+                  <span className="shrink-0 text-[12px] tabular-nums">
+                    {t.durationMs ? formatDuration(t.durationMs) : ""}
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ol>
+        </section>
+      ) : null}
+
+      <p className="mt-4 shrink-0 text-[11px] text-[#6a6a6a]">
+        Live from Spotify
+      </p>
     </div>
   );
 }
@@ -416,23 +563,22 @@ function Art({
   size,
   radius,
   shadow,
+  fluid,
 }: {
   src?: string;
   size: number;
   radius: string;
   shadow?: boolean;
+  /** Fill the column and stay square, rather than sitting at a fixed size. */
+  fluid?: boolean;
 }) {
   const className = `${radius} shrink-0 object-cover ${
-    shadow ? "shadow-[0_4px_24px_rgba(0,0,0,0.6)]" : ""
-  }`;
+    shadow ? "shadow-[0_10px_40px_rgba(0,0,0,0.65)]" : ""
+  } ${fluid ? "mx-auto block aspect-square w-[80%]" : ""}`;
+  const box = fluid ? undefined : { width: size, height: size };
 
   if (!src) {
-    return (
-      <span
-        className={`${className} block bg-[#282828]`}
-        style={{ width: size, height: size }}
-      />
-    );
+    return <span className={`${className} block bg-[#282828]`} style={box} />;
   }
 
   return (
@@ -445,7 +591,7 @@ function Art({
       width={size}
       height={size}
       className={className}
-      style={{ width: size, height: size }}
+      style={box}
     />
   );
 }

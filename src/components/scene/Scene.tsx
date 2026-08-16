@@ -16,6 +16,8 @@ import { ACESFilmicToneMapping, Object3D } from "three";
 import type { ActivityFeed } from "@/lib/activity";
 import { isPinned, sceneNow } from "@/lib/clock";
 import { daylight, type Daylight } from "@/lib/daylight";
+import { useWeather } from "@/lib/useWeather";
+import { withWeather } from "@/lib/weather";
 import { CAMERA, DESK, LAMP_EMITTER, SCREENS, WALL, WINDOW } from "@/lib/layout";
 
 import { CameraRig } from "./CameraRig";
@@ -240,7 +242,18 @@ export function Scene({
   hero?: boolean;
   activity?: ActivityFeed | null;
 } = {}) {
-  const day = useDaylight();
+  const clock = useDaylight();
+  const weather = useWeather();
+
+  /*
+   * Weather is a modifier on the clock, never a replacement for it.
+   *
+   * The room has to light itself whether or not anything can tell it what the
+   * sky is doing, so `withWeather` is a pure function that returns its input
+   * unchanged when there's nothing to apply. A failed lookup is a clear day,
+   * not a dark room.
+   */
+  const day = withWeather(clock, weather);
 
   return (
     <Canvas
@@ -270,7 +283,7 @@ export function Scene({
 
       <Reflections day={day} />
       <Lighting day={day} />
-      <Room day={day} hero={hero} activity={activity} />
+      <Room day={day} hero={hero} activity={activity} weather={weather} />
       {hero ? <HeroCamera /> : <CameraRig />}
 
       <EffectComposer>

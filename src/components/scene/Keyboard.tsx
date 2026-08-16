@@ -1,6 +1,6 @@
 "use client";
 
-import { Instance, Instances, RoundedBox } from "@react-three/drei";
+import { Instance, Instances } from "@react-three/drei";
 import { useEffect, useMemo } from "react";
 import {
   CanvasTexture,
@@ -12,7 +12,7 @@ import {
 
 import { KEYBOARD } from "@/lib/layout";
 
-import { roundedRectShape } from "./geometry";
+import { roundedFrame, roundedPlate, roundedRectShape } from "./geometry";
 import * as M from "./materials";
 
 /**
@@ -44,7 +44,7 @@ interface Key {
   shift?: string;
   /** Width in units. Defaults to 1. */
   w?: number;
-  /** Accent-coloured cap. */
+  /** Picked out in powder blue: space and enter only. */
   accent?: boolean;
 }
 
@@ -117,20 +117,20 @@ const ROWS: Key[][] = [
     { label: ".", shift: ">" },
     { label: "/", shift: "?" },
     { label: "shift", w: 1.75 },
-    { label: "↑", accent: true },
+    { label: "↑" },
     { label: "end" },
   ],
   [
     { label: "ctrl", w: 1.25 },
     { label: "opt", w: 1.25 },
     { label: "cmd", w: 1.25 },
-    { label: "", w: 6.25 },
+    { label: "", w: 6.25, accent: true },
     { label: "cmd" },
     { label: "opt" },
     { label: "fn" },
-    { label: "←", accent: true },
-    { label: "↓", accent: true },
-    { label: "→", accent: true },
+    { label: "←" },
+    { label: "↓" },
+    { label: "→" },
   ],
 ];
 
@@ -231,7 +231,9 @@ function legendTexture(): CanvasTexture {
     const cy = key.v * H;
     const wide = key.units > 1.5;
 
-    ctx.fillStyle = key.accent ? "#0b1416" : "#cfd6d8";
+    // Dark legends: the caps are white now, and the two accent caps are a
+    // light blue that a pale legend would vanish into just as fast.
+    ctx.fillStyle = key.accent ? "#1c3a49" : "#3a3e42";
 
     if (key.shift) {
       // Two-line legend: shifted symbol above, base below. This is the detail
@@ -277,34 +279,67 @@ export function Keyboard() {
   const caseW = FIELD_W + KEYBOARD.border * 2;
   const caseD = FIELD_D + KEYBOARD.border * 2;
 
+  const tray = useMemo(
+    () =>
+      roundedFrame(
+        caseW,
+        caseD,
+        0.006,
+        FIELD_W + 0.004,
+        FIELD_D + 0.004,
+        0.003,
+        KEYBOARD.caseHeight,
+      ),
+    [caseW, caseD],
+  );
+  const base = useMemo(
+    () => roundedPlate(caseW, caseD, 0.006, KEYBOARD.plateY),
+    [caseW, caseD],
+  );
+
+  useEffect(() => {
+    return () => {
+      tray.dispose();
+      base.dispose();
+    };
+  }, [tray, base]);
+
   return (
     <group
       position={[KEYBOARD.x, 0, KEYBOARD.z]}
       // Tilted back, the way every board with feet under its top edge sits.
       rotation={[-KEYBOARD.tilt, 0, 0]}
     >
-      {/* Case. Anodised aluminium, so the lamp draws a line down its long edge. */}
-      <RoundedBox
-        args={[caseW, KEYBOARD.caseHeight, caseD]}
-        // Half the case height, i.e. the edge is a full half-round. Every
-        // premium board on the market has a chamfer or a radius there precisely
-        // because it's the edge your wrists rest against.
-        radius={KEYBOARD.caseHeight / 2 - 0.001}
-        smoothness={6}
-        position={[0, KEYBOARD.caseHeight / 2, 0]}
-        castShadow
-        receiveShadow
-      >
+      {/*
+        The tray.
+
+        The case used to be a closed slab with the caps standing on its lid,
+        which is a low-profile island design and not what this board is meant to
+        be — a keyboard reads as a keyboard partly because its keys sit *down
+        inside* something, with a rim of case rising past them on all four
+        sides. That rim is also what casts the small shadow along the bottom
+        edge of the outer row, which is a detail the eye checks without knowing
+        it.
+
+        One extruded frame rather than four rails: extruding a shape with a hole
+        in it produces the inner walls for free, and skips the four mitred
+        corners that a rail-built case leaves catching the light wrong.
+      */}
+      <mesh geometry={tray} castShadow receiveShadow>
         <meshStandardMaterial {...M.KEYBOARD_CASE} />
-      </RoundedBox>
+      </mesh>
+
+      {/* The underside, closing the tray off. */}
+      <mesh geometry={base} castShadow receiveShadow>
+        <meshStandardMaterial {...M.KEYBOARD_CASE} />
+      </mesh>
 
       {/*
-        Plate: a hair darker and inset, so the caps read as sitting *in* the case
-        rather than balanced on top of it. The dark rim around a key field is a
-        surprisingly large part of why a keyboard looks like one.
+        Plate: mid grey, well below the rim. It's the only thing separating one
+        white cap from the next, so it has to be dark enough to draw the grid.
       */}
-      <mesh position={[0, KEYBOARD.caseHeight - 0.0005, 0]} rotation={[-Math.PI / 2, 0, 0]}>
-        <planeGeometry args={[FIELD_W + 0.003, FIELD_D + 0.003]} />
+      <mesh position={[0, KEYBOARD.plateY, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+        <planeGeometry args={[FIELD_W + 0.004, FIELD_D + 0.004]} />
         <meshStandardMaterial {...M.KEYBOARD_PLATE} />
       </mesh>
 
@@ -322,8 +357,8 @@ export function Keyboard() {
             {keys.map((k, i) => (
               <Instance
                 key={i}
-                position={[k.x, KEYBOARD.caseHeight, k.z]}
-                color={k.accent ? M.ACCENT_HEX : M.KEYCAP.color}
+                position={[k.x, KEYBOARD.plateY, k.z]}
+                color={k.accent ? M.KEY_ACCENT : M.KEYCAP.color}
               />
             ))}
           </Instances>
@@ -338,7 +373,7 @@ export function Keyboard() {
         doesn't occlude the caps it sits on where it's transparent.
       */}
       <mesh
-        position={[0, KEYBOARD.caseHeight + KEYBOARD.capHeight + 0.0002, 0]}
+        position={[0, KEYBOARD.plateY + KEYBOARD.capHeight + 0.0002, 0]}
         rotation={[-Math.PI / 2, 0, 0]}
       >
         <planeGeometry args={[FIELD_W, FIELD_D]} />
@@ -347,7 +382,7 @@ export function Keyboard() {
 
       {/* Rear feet, so the tilt has something holding it up. */}
       {[-caseW / 2 + 0.02, caseW / 2 - 0.02].map((x) => (
-        <mesh key={x} position={[x, 0.002, -caseD / 2 + 0.012]}>
+        <mesh key={x} position={[x, -0.002, -caseD / 2 + 0.012]}>
           <cylinderGeometry args={[0.005, 0.005, 0.004, 10]} />
           <meshStandardMaterial {...M.POWDER_COAT} />
         </mesh>

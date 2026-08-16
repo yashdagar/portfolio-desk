@@ -130,18 +130,24 @@ export const ACCENT_HEX = "#4ecdc4";
  * desk reading as a single injection-moulded lump.
  * ----------------------------------------------------------------------- */
 
-/** Anodised aluminium keyboard case. */
+/** Silver-anodised keyboard case. */
 export const KEYBOARD_CASE: Mat = {
-  color: "#2b2f33",
-  roughness: 0.42,
-  metalness: 0.7,
+  color: "#dedcd8",
+  roughness: 0.4,
+  metalness: 0.55,
 };
 
-/** The plate under the caps. Nearly black, and it should stay in shadow. */
+/**
+ * The plate under the caps.
+ *
+ * Mid grey, not white. On a white board the plate is the only thing separating
+ * one cap from the next — a white plate under white caps turns the key field
+ * into a single pale slab with faint scratches on it.
+ */
 export const KEYBOARD_PLATE: Mat = {
-  color: "#0c0e10",
-  roughness: 0.85,
-  metalness: 0.1,
+  color: "#8e908d",
+  roughness: 0.7,
+  metalness: 0.15,
 };
 
 /**
@@ -153,21 +159,39 @@ export const KEYBOARD_PLATE: Mat = {
  * specular and the whole board goes back to looking like a grid of boxes.
  */
 export const KEYCAP: Mat = {
-  color: "#26292d",
-  roughness: 0.66,
-  metalness: 0.04,
+  color: "#efedea",
+  roughness: 0.62,
+  metalness: 0.03,
 };
 
-/** Mouse shell: soft-touch, faintly warmer than the keycaps. */
+/**
+ * Space and enter.
+ *
+ * A powder blue rather than the room's teal. The teal accent belongs to the
+ * screens and the second hand; borrowing it here would tie the keyboard to the
+ * UI, and the keyboard is furniture. Two keys picked out on an otherwise white
+ * board is the oldest trick in keycap design and it works because those two are
+ * the ones your hands find without looking.
+ */
+export const KEY_ACCENT = "#9ed2ea";
+
+/**
+ * Mouse shell.
+ *
+ * A shade darker and warmer than the keycaps. Matching them exactly is the
+ * thing that makes a desk set look like a render: two objects moulded in
+ * different factories from different plastics never land on the same white, and
+ * the eye knows it.
+ */
 export const MOUSE_SHELL: Mat = {
-  color: "#1c1e21",
-  roughness: 0.74,
-  metalness: 0.03,
+  color: "#e2dfd9",
+  roughness: 0.68,
+  metalness: 0.04,
 };
 
 /** Rubberised side grips. Matte enough to read as a different part. */
 export const GRIP: Mat = {
-  color: "#101214",
+  color: "#b8b4ad",
   roughness: 0.95,
   metalness: 0,
 };
@@ -181,9 +205,16 @@ export const PANEL_GAP: Mat = {
 
 /** Scroll wheel — grippy rubber over a metal core. */
 export const WHEEL: Mat = {
-  color: "#15181a",
-  roughness: 0.88,
-  metalness: 0.2,
+  color: "#3a3d40",
+  roughness: 0.72,
+  metalness: 0.35,
+};
+
+/** Cork coaster. Fibrous, completely matte, and the warmest thing on the desk. */
+export const CORK: Mat = {
+  color: "#a1794c",
+  roughness: 0.96,
+  metalness: 0,
 };
 
 /** The lamp's body: a hard matte white-grey, the way the real ones are. */
@@ -248,5 +279,68 @@ export const WINDOW_FRAME: Mat = {
 export const NOTEBOOK: Mat = {
   color: "#2c3b45",
   roughness: 0.88,
+  metalness: 0,
+};
+
+/* --------------------------------------------------------------------------
+ * The clock and the plant
+ * ----------------------------------------------------------------------- */
+
+/** Matte black clock case — a thin dark ring seen edge-on. */
+export const CLOCK_CASE: Mat = {
+  color: "#1a1c1e",
+  roughness: 0.6,
+  metalness: 0.2,
+};
+
+/**
+ * The dial.
+ *
+ * The brightest surface anywhere in the room that isn't emitting, which is why
+ * a 26 cm disc reads clearly from two metres away against warm plaster.
+ */
+export const CLOCK_FACE: Mat = {
+  color: "#f2efe9",
+  roughness: 0.8,
+  metalness: 0,
+};
+
+/** Hands and ticks. */
+export const CLOCK_MARK: Mat = {
+  color: "#16181a",
+  roughness: 0.55,
+  metalness: 0.1,
+};
+
+/** Unglazed terracotta-grey pot. Porous, so very rough. */
+export const POT: Mat = {
+  color: "#8a7f74",
+  roughness: 0.94,
+  metalness: 0,
+};
+
+/** Potting compost. Dark and completely matte. */
+export const SOIL: Mat = {
+  color: "#241d18",
+  roughness: 1,
+  metalness: 0,
+};
+
+/**
+ * Sansevieria leaf.
+ *
+ * Waxier than any other non-metal in the room — a snake plant leaf has a real
+ * sheen, and it's what stops the clump reading as felt.
+ */
+export const LEAF: Mat = {
+  color: "#3f6141",
+  roughness: 0.45,
+  metalness: 0,
+};
+
+/** The paler banding on some blades. */
+export const LEAF_PALE: Mat = {
+  color: "#6f8a4e",
+  roughness: 0.48,
   metalness: 0,
 };

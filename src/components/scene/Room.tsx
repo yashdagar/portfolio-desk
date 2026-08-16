@@ -11,6 +11,7 @@ import { CommitFeed } from "@/components/screens/CommitFeed";
 import { NowPlaying } from "@/components/screens/NowPlaying";
 import type { ActivityFeed } from "@/lib/activity";
 import type { Daylight } from "@/lib/daylight";
+import { isWet, type Weather } from "@/lib/weather";
 import {
   BOX,
   BOX_DESIGN,
@@ -19,7 +20,6 @@ import {
   MAT,
   MONITOR,
   SCREENS,
-  SCREEN_DESIGN,
   SHELF,
   WALL,
   WINDOW,
@@ -28,6 +28,7 @@ import {
 import { useScene, type BoxId } from "@/lib/store";
 
 import { catanArt, chessArt, type BoxArt } from "./boxArt";
+import { matTexture } from "./matArt";
 import { roundedPanel, roundedPlate } from "./geometry";
 import { Headphones } from "./Headphones";
 import { Keyboard } from "./Keyboard";
@@ -35,14 +36,27 @@ import { Lamp } from "./Lamp";
 import * as M from "./materials";
 import { Mouse } from "./Mouse";
 import { Mug } from "./Mug";
-import { arcPrint, contourPrint } from "./printArt";
+import { Plant } from "./Plant";
+import { contourPrint, porschePrint } from "./printArt";
+import { RainGlass } from "./RainGlass";
 import { Surface } from "./Surface";
+import { WallClock } from "./WallClock";
+import { shelfTexture, woodTexture } from "./woodGrain";
 import { nightLightsTexture, outsideTexture } from "./windowView";
 
 function Desk() {
   const midZ = DESK.frontZ - DESK.depth / 2;
   const legInset = 0.08;
   const legH = DESK.surfaceY - DESK.thickness;
+
+  /*
+   * The desk is the largest object in the frame by a wide margin, and it was a
+   * flat brown. Two square metres of unbroken tone reads as plastic however
+   * good the lighting is — this is the one surface in the room where a texture
+   * is not optional.
+   */
+  const grain = useMemo(() => woodTexture(), []);
+  useEffect(() => () => grain.dispose(), [grain]);
 
   return (
     <group>
@@ -56,7 +70,9 @@ function Desk() {
         castShadow
         receiveShadow
       >
-        <meshStandardMaterial {...M.WALNUT} />
+        {/* White base colour: the map already carries the walnut, and tinting
+            it again would darken the whole top by the same amount twice. */}
+        <meshStandardMaterial {...M.WALNUT} color="#ffffff" map={grain} />
       </RoundedBox>
 
       {[
@@ -253,7 +269,8 @@ function ScreenContent({
 }) {
   if (id === "commits") return <CommitFeed initial={activity} />;
   if (id === "about") return <About initial={activity} />;
-  return <NowPlaying />;
+  // The music screen is the portrait one, so it gets the portrait client.
+  return <NowPlaying variant="tall" />;
 }
 
 function Monitor({
@@ -272,19 +289,22 @@ function Monitor({
 
   const focused = focus.kind === "screen" && focus.id === placement.id;
 
-  const outerW = MONITOR.panelW + MONITOR.bezel * 2;
-  const outerH = MONITOR.panelH + MONITOR.bezel * 2;
+  const { panelW, panelH, design } = placement;
+  const outerW = panelW + MONITOR.bezel * 2;
+  const outerH = panelH + MONITOR.bezel * 2;
+  /** Distance from the panel's bottom edge down to the desk. */
+  const lift = placement.position[1] - DESK.surfaceY - panelH / 2;
 
   // The glass is inset by the bezel, so its corner has to be tighter by the
   // same amount or the black panel cuts across the chassis fillet.
   const glass = useMemo(
     () =>
       roundedPanel(
-        MONITOR.panelW,
-        MONITOR.panelH,
+        panelW,
+        panelH,
         MONITOR.corner - MONITOR.bezel,
       ),
-    [],
+    [panelW, panelH],
   );
   const foot = useMemo(() => roundedPlate(0.22, 0.15, 0.045, 0.014), []);
 
@@ -333,22 +353,50 @@ function Monitor({
       */}
       {!hero && (
         <Surface
-          designW={SCREEN_DESIGN.w}
-          designH={SCREEN_DESIGN.h}
-          worldW={MONITOR.panelW}
+          designW={design.w}
+          designH={design.h}
+          worldW={panelW}
           focused={focused}
+          // The glass's own corner, converted to design pixels, so the DOM is
+          // clipped to exactly the shape it's sitting on.
+          radiusPx={
+            ((MONITOR.corner - MONITOR.bezel) * design.w) / panelW
+          }
           position={[0, 0, MONITOR.depth / 2 + 0.001]}
         >
           <ScreenContent id={placement.id} activity={activity} />
         </Surface>
       )}
 
+      {/*
+        Hung on this monitor's own outer corner, in its local frame. Placing
+        them in world space meant re-deriving the corner from the panel size and
+        the toe-in by hand, and getting it wrong put them behind the screen.
+
+        On the left-hand monitor rather than the music one, which is the
+        obvious-looking choice and the wrong one: that panel is on its side and
+        only 336 mm wide, so an ear cup on its corner covers a quarter of the
+        screen. Here it takes an eighth, on the side where the feed has a margin
+        anyway — and it balances the window at the other end of the desk.
+      */}
+      {placement.id === "commits" && (
+        <group
+          position={[
+            -panelW / 2 + 0.018,
+            panelH / 2 + MONITOR.bezel + 0.008,
+            0,
+          ]}
+        >
+          <Headphones />
+        </group>
+      )}
+
       {/* Neck and foot. Aluminium, so they catch the lamp and read as hardware. */}
       <RoundedBox
-        args={[0.046, MONITOR.liftY + 0.02, 0.026]}
+        args={[0.046, lift + 0.02, 0.026]}
         radius={0.011}
         smoothness={5}
-        position={[0, -MONITOR.panelH / 2 - MONITOR.liftY / 2, -0.026]}
+        position={[0, -panelH / 2 - lift / 2, -0.026]}
         castShadow
       >
         <meshStandardMaterial {...M.ALUMINIUM} />
@@ -360,7 +408,7 @@ function Monitor({
       */}
       <mesh
         geometry={foot}
-        position={[0, -MONITOR.panelH / 2 - MONITOR.liftY, -0.026]}
+        position={[0, -panelH / 2 - lift, -0.026]}
         castShadow
         receiveShadow
       >
@@ -402,11 +450,22 @@ function HeldLight() {
 
 function GameBox({
   id,
-  index,
+  x,
+  upright,
   art,
 }: {
   id: BoxId;
-  index: number;
+  x: number;
+  /**
+   * Stood on its edge, leaning back against the wall, lid facing the seat.
+   *
+   * The lids carry the real artwork and, laid flat on a shelf above eye level,
+   * not one pixel of either was ever visible — the camera sits at 1.3 m and the
+   * shelf is above it, so a flat box shows you its spine and its underside and
+   * nothing else. Standing one up is also just what people do with the box
+   * they're proud of.
+   */
+  upright: boolean;
   art: BoxArt;
 }) {
   const focusBox = useScene((s) => s.focusBox);
@@ -417,15 +476,24 @@ function GameBox({
 
   const held = focus.kind === "box" && focus.id === id;
 
+  /*
+   * Upright, the box's local Z becomes its height and its local Y becomes its
+   * depth — so it stands 295 mm tall and only 75 mm thick, and it needs to sit
+   * back against the wall rather than centred on the shelf.
+   */
   const shelved = useMemo(
     () =>
       new Vector3(
-        SHELF.x,
-        SHELF.y + SHELF.thickness / 2 + BOX.h / 2 + index * BOX.h,
-        SHELF.z,
+        x,
+        SHELF.y + SHELF.thickness / 2 + (upright ? BOX.d / 2 : BOX.h / 2),
+        upright ? SHELF.z - SHELF.depth / 2 + BOX.h : SHELF.z,
       ),
-    [index],
+    [x, upright],
   );
+
+  // Leaning back a few degrees, because nothing stands perfectly plumb on a
+  // shelf and a box that does reads as glued there.
+  const restRotationX = upright ? Math.PI / 2 - 0.07 : 0;
 
   useFrame((_, rawDelta) => {
     const mesh = ref.current;
@@ -435,15 +503,17 @@ function GameBox({
 
     mesh.position.lerp(held ? HELD : shelved, k);
 
-    // Flat on the shelf the lid points at the ceiling; held, it should point at
-    // the viewer, which is a quarter turn about X.
-    //
-    // Positive, not negative: rotating by -PI/2 maps +Y to -Z and turns the lid
-    // *away* from the camera. With a plain material both faces look identical
-    // so the greybox couldn't show it; the back cover appearing blank is what
-    // finally did. The 0.14 tips the top edge back so it isn't a flat rectangle
-    // pasted on the frame.
-    const targetX = held ? Math.PI / 2 - 0.14 : 0;
+    /*
+     * Held, the box turns its *back* to you — which is where the case study is
+     * printed, and which is the −Y face.
+     *
+     * A rotation of −90° about X maps −Y onto +Z, i.e. straight at the camera;
+     * +90° would present the lid instead. The 0.14 tips the top edge back so it
+     * isn't a flat rectangle pasted on the frame. For the box that already
+     * stands upright this reads as a full flip, which is exactly what turning a
+     * box over looks like.
+     */
+    const targetX = held ? -Math.PI / 2 + 0.14 : restRotationX;
     mesh.rotation.x = MathUtils.lerp(mesh.rotation.x, targetX, k);
   });
 
@@ -517,7 +587,7 @@ function GameBox({
 
       {/* Lid. Inset so the fillet stays visible all the way round the print. */}
       <mesh position={[0, BOX.h / 2 + 0.0004, 0]} rotation={[-Math.PI / 2, 0, 0]}>
-        <planeGeometry args={[BOX.w - 0.03, BOX.d - 0.03]} />
+        <planeGeometry args={[BOX.w - 0.014, BOX.d - 0.014]} />
         <meshStandardMaterial {...M.BOX_CARD} color={tint} map={art.lid} />
       </mesh>
 
@@ -535,7 +605,7 @@ function GameBox({
           ]}
           rotation={f.rotation}
         >
-          <planeGeometry args={[f.w - 0.03, BOX.h - 0.012]} />
+          <planeGeometry args={[f.w - 0.014, BOX.h - 0.008]} />
           <meshStandardMaterial {...M.BOX_CARD} color={tint} map={art.spine} />
         </mesh>
       ))}
@@ -549,8 +619,12 @@ function GameBox({
           // sliver of box visible is what makes it read as an object with depth.
           worldW={BOX.w * 0.9}
           focused
-          position={[0, BOX.h / 2 + 0.002, 0]}
-          rotation={[-Math.PI / 2, 0, 0]}
+          radiusPx={(0.016 * BOX_DESIGN.w) / (BOX.w * 0.9)}
+          // The back of the box, not the lid. The lid has artwork printed on it
+          // now, and mounting the case study on top of that would cover the one
+          // face worth looking at.
+          position={[0, -BOX.h / 2 - 0.002, 0]}
+          rotation={[Math.PI / 2, 0, 0]}
         >
           <BoxBack id={id} />
         </Surface>
@@ -561,6 +635,7 @@ function GameBox({
 
 function Shelf() {
   const art = useMemo(() => ({ catan: catanArt(), chess: chessArt() }), []);
+  const grain = useMemo(() => shelfTexture(), []);
 
   useEffect(
     () => () => {
@@ -568,8 +643,9 @@ function Shelf() {
         a.lid.dispose();
         a.spine.dispose();
       });
+      grain.dispose();
     },
-    [art],
+    [art, grain],
   );
 
   return (
@@ -584,7 +660,7 @@ function Shelf() {
         castShadow
         receiveShadow
       >
-        <meshStandardMaterial {...M.SHELF_WOOD} />
+        <meshStandardMaterial {...M.SHELF_WOOD} color="#ffffff" map={grain} />
       </RoundedBox>
       {/* Brackets, so the shelf isn't floating. */}
       {[-SHELF.width / 2 + 0.09, SHELF.width / 2 - 0.09].map((dx, i) => (
@@ -599,8 +675,14 @@ function Shelf() {
           <meshStandardMaterial {...M.POWDER_COAT} />
         </RoundedBox>
       ))}
-      <GameBox id="catan" index={0} art={art.catan} />
-      <GameBox id="chess" index={1} art={art.chess} />
+      {/*
+        One up, one flat. Two boxes stacked was a block; a box stood against the
+        wall with another lying beside it is a shelf — and it shows one lid and
+        one spine, which is the pair of things worth showing.
+      */}
+      <GameBox id="catan" x={SHELF.x - 0.23} upright art={art.catan} />
+      <GameBox id="chess" x={SHELF.x + 0.07} upright={false} art={art.chess} />
+      <Plant />
     </group>
   );
 }
@@ -612,7 +694,7 @@ function Shelf() {
  * a placeholder; a pair with a deliberate offset reads as someone's wall.
  */
 function Prints() {
-  const art = useMemo(() => [arcPrint(), contourPrint()], []);
+  const art = useMemo(() => [porschePrint(), contourPrint()], []);
   useEffect(() => () => art.forEach((t) => t.dispose()), [art]);
 
   return (
@@ -668,12 +750,15 @@ function DeskMat() {
     [],
   );
 
+  const print = useMemo(() => matTexture(), []);
+
   useEffect(
     () => () => {
       top.dispose();
       edge.dispose();
+      print.dispose();
     },
-    [top, edge],
+    [top, edge, print],
   );
 
   return (
@@ -683,7 +768,7 @@ function DeskMat() {
         <meshStandardMaterial {...M.MAT_EDGE} />
       </mesh>
       <mesh geometry={top} position={[0, 0.0002, 0]} receiveShadow>
-        <meshStandardMaterial {...M.FABRIC} />
+        <meshStandardMaterial {...M.FABRIC} color="#ffffff" map={print} />
       </mesh>
     </group>
   );
@@ -700,7 +785,19 @@ function Clutter() {
       </group>
       <Mouse top={top + MAT.thickness} />
 
-      <Mug position={[-0.66, top, 0.2]} />
+      {/*
+        Coaster. Cork, and the only warm-brown object on the desk that isn't the
+        desk — which is exactly why it works: a white mug standing directly on
+        an oiled walnut top is a ring waiting to happen, and everyone who owns
+        a wooden desk knows it.
+      */}
+      <group position={[-0.66, top, 0.2]}>
+        <mesh position={[0, 0.0025, 0]} castShadow receiveShadow>
+          <cylinderGeometry args={[0.058, 0.056, 0.005, 40]} />
+          <meshStandardMaterial {...M.CORK} />
+        </mesh>
+        <Mug position={[0, 0.005, 0]} />
+      </group>
 
       {/*
         A notebook and a pen, at the right-hand edge. Not decoration: the right
@@ -736,10 +833,12 @@ export function Room({
   day,
   hero = false,
   activity = null,
+  weather = null,
 }: {
   day: Daylight;
   hero?: boolean;
   activity?: ActivityFeed | null;
+  weather?: Weather | null;
 }) {
   const clearFocus = useScene((s) => s.clearFocus);
 
@@ -757,13 +856,15 @@ export function Room({
       <Outside day={day} />
       <Walls />
       <WindowFrame />
+      {/* Only mounted when it's actually raining in Gurugram. */}
+      {isWet(weather) && <RainGlass storm={weather?.condition === "storm"} />}
       <Desk />
       {SCREENS.map((s) => (
         <Monitor key={s.id} placement={s} hero={hero} activity={activity} />
       ))}
-      <Headphones />
       <Shelf />
       <Prints />
+      <WallClock />
       <Lamp day={day} />
       <Clutter />
       <HeldLight />

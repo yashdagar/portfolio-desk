@@ -90,8 +90,20 @@ export function Lamp({ day }: { day: Daylight }) {
         <meshStandardMaterial {...M.ALUMINIUM} />
       </mesh>
 
-      {/* The head: a long, thin bar, hung under the end of the arm. */}
-      <group position={[LAMP.reach, stemTop - 0.03, 0]}>
+      {/*
+        The head: a long, thin bar, hung under the end of the arm.
+
+        Deliberately off level. The head is the one part of this lamp that
+        articulates, so a perfectly horizontal one says nobody has ever touched
+        it — and a task light that has never been adjusted is not a task light,
+        it's a prop. A few degrees of droop at the far end and a slight turn
+        toward the desk is what someone reaching over to aim it actually leaves
+        behind.
+      */}
+      <group
+        position={[LAMP.reach, stemTop - 0.03, 0]}
+        rotation={[0, 0.07, -0.1]}
+      >
         <RoundedBox
           args={[LAMP.barLength, 0.019, 0.03]}
           radius={0.008}

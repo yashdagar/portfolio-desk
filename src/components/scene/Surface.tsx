@@ -37,6 +37,7 @@ export function Surface({
   designH,
   worldW,
   focused,
+  radiusPx = 0,
   children,
   ...group
 }: {
@@ -44,6 +45,15 @@ export function Surface({
   designH: number;
   worldW: number;
   focused: boolean;
+  /**
+   * Corner radius of the thing this is mounted on, in design pixels.
+   *
+   * Belongs here rather than on each screen component. The mount is what knows
+   * it's stuck to a rounded object, and leaving it to the children means every
+   * new surface starts life with square corners overhanging a filleted bezel
+   * until someone notices.
+   */
+  radiusPx?: number;
   children: ReactNode;
 } & React.ComponentProps<"group">) {
   return (
@@ -85,6 +95,8 @@ export function Surface({
           style={{
             width: designW,
             height: designH,
+            borderRadius: radiusPx,
+            overflow: "hidden",
             pointerEvents: focused ? "auto" : "none",
             userSelect: focused ? "auto" : "none",
           }}

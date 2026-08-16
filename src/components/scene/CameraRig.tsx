@@ -4,7 +4,7 @@ import { useFrame, useThree } from "@react-three/fiber";
 import { useEffect, useMemo } from "react";
 import { MathUtils, Vector3 } from "three";
 
-import { CAMERA, MONITOR, SCREENS } from "@/lib/layout";
+import { CAMERA, SCREENS } from "@/lib/layout";
 import { useScene } from "@/lib/store";
 
 /** Frame-rate independent approach: converges at the same rate at 30 and 144fps. */
@@ -66,8 +66,11 @@ export function CameraRig() {
       // height is the binding constraint at this viewport aspect.
       const vFov = MathUtils.degToRad(CAMERA.fov);
       const aspect = size.width / size.height;
-      const forHeight = MONITOR.panelH / 2 / Math.tan(vFov / 2);
-      const forWidth = MONITOR.panelW / 2 / Math.tan(vFov / 2) / aspect;
+      // Per-panel, not per-room: one of these screens is on its side, and
+      // solving the fit against the landscape dimensions would park the camera
+      // far too close to a 60 cm-tall portrait panel.
+      const forHeight = screen.panelH / 2 / Math.tan(vFov / 2);
+      const forWidth = screen.panelW / 2 / Math.tan(vFov / 2) / aspect;
       const dist = Math.max(forHeight, forWidth) * 1.12;
 
       // Out along the panel's normal, which is where a reader would sit.

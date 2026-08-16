@@ -77,6 +77,46 @@ export function roundedPanel(w: number, h: number, r: number): BufferGeometry {
 }
 
 /**
+ * A rounded rectangular frame — a slab with a rounded hole through it — lying
+ * in the XZ plane with its underside at y = 0.
+ *
+ * The hole is what makes it useful. Extruding a shape with a hole gives you the
+ * inner walls for free, which is the difference between a keyboard whose keys
+ * sit down inside a tray and one whose keys are balanced on top of a closed
+ * box. Building the same thing from four separate rails works, but leaves four
+ * mitre joints at the corners that catch the light wrong.
+ */
+export function roundedFrame(
+  outerW: number,
+  outerD: number,
+  outerR: number,
+  innerW: number,
+  innerD: number,
+  innerR: number,
+  height: number,
+): BufferGeometry {
+  const shape = roundedRectShape(outerW, outerD, outerR);
+  shape.holes.push(roundedRectShape(innerW, innerD, innerR));
+
+  const geo = new ExtrudeGeometry(shape, {
+    depth: height,
+    bevelEnabled: true,
+    // A small bevel on the top lip. On a case edge this is the chamfer that
+    // catches a line of light all the way round, and it's most of why an
+    // aluminium tray reads as machined rather than as a hole cut in a slab.
+    bevelThickness: 0.0009,
+    bevelSize: 0.0009,
+    bevelOffset: 0,
+    bevelSegments: 2,
+    curveSegments: 6,
+  });
+  geo.rotateX(-Math.PI / 2);
+  geo.translate(0, 0.0009, 0);
+  geo.computeVertexNormals();
+  return geo;
+}
+
+/**
  * A flat slab with rounded corners in plan, lying in the XZ plane with its
  * underside at y = 0.
  */
@@ -94,6 +134,23 @@ export function roundedPlate(
   // Extrusion runs along +Z; a slab on a desk needs it along +Y. The quarter
   // turn maps +Z onto +Y directly, so the slab already sits on the origin.
   geo.rotateX(-Math.PI / 2);
+
+  /*
+   * Rewrite the UVs from the plan.
+   *
+   * ExtrudeGeometry's default UV generator writes raw world x/y onto the caps,
+   * so a slab a metre across comes out with UVs running 0 to 1.06 while the
+   * side walls get something else entirely. Anything printed on it lands
+   * scaled, offset and discontinuous. Projecting straight down from above is
+   * both correct for a flat object and trivially predictable.
+   */
+  const pos = geo.attributes.position;
+  const uv = geo.attributes.uv;
+  for (let i = 0; i < pos.count; i++) {
+    uv.setXY(i, pos.getX(i) / w + 0.5, pos.getZ(i) / d + 0.5);
+  }
+  uv.needsUpdate = true;
+
   geo.computeVertexNormals();
   return geo;
 }

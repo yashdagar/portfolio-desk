@@ -6,6 +6,7 @@ import { isPinned, sceneNow } from "@/lib/clock";
 import { daylight } from "@/lib/daylight";
 import type { ScreenId } from "@/lib/layout";
 import { useScene } from "@/lib/store";
+import { useWeather } from "@/lib/useWeather";
 
 const SCREEN_LABELS: { id: ScreenId; label: string }[] = [
   { id: "commits", label: "Go to the commit feed" },
@@ -37,6 +38,7 @@ export function Hud() {
   const focusScreen = useScene((s) => s.focusScreen);
   const setForceFlat = useScene((s) => s.setForceFlat);
 
+  const weather = useWeather();
   const [clock, setClock] = useState<{ label: string; night: boolean } | null>(
     null,
   );
@@ -96,6 +98,15 @@ export function Hud() {
           {clock && (
             <span className="text-ink-dim tabular-nums">
               {clock.label} Gurugram
+              {/*
+                The weather is already doing its work in the window — the sun
+                and the sky fill are driven by it — but a render can't tell you
+                whether the flat grey light is a choice or the actual sky. Four
+                words say it's the actual sky.
+              */}
+              {weather && (
+                <span className="text-ink-faint"> · {weather.label}</span>
+              )}
               {clock.night && (
                 <span className="text-ink-faint"> · he&apos;s probably asleep</span>
               )}

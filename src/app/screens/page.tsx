@@ -2,7 +2,11 @@ import { About } from "@/components/screens/About";
 import { BoxBack } from "@/components/screens/BoxBack";
 import { CommitFeed } from "@/components/screens/CommitFeed";
 import { NowPlaying } from "@/components/screens/NowPlaying";
-import { BOX_DESIGN, SCREEN_DESIGN } from "@/lib/layout";
+import {
+  BOX_DESIGN,
+  SCREEN_DESIGN,
+  TALL_SCREEN_DESIGN,
+} from "@/lib/layout";
 
 /**
  * Every mounted surface, flat, at its true design size.
@@ -48,7 +52,15 @@ export default function ScreensPreview() {
       <Frame label="centre · about" w={SCREEN_DESIGN.w} h={SCREEN_DESIGN.h}>
         <About />
       </Frame>
-      <Frame label="right · music" w={SCREEN_DESIGN.w} h={SCREEN_DESIGN.h}>
+      <Frame
+        label="right · music (portrait, as mounted)"
+        w={TALL_SCREEN_DESIGN.w}
+        h={TALL_SCREEN_DESIGN.h}
+      >
+        <NowPlaying variant="tall" />
+      </Frame>
+      {/* The wide layout still ships — it's what the flat page renders. */}
+      <Frame label="music · wide" w={SCREEN_DESIGN.w} h={SCREEN_DESIGN.h}>
         <NowPlaying />
       </Frame>
       <Frame label="box · catan" w={BOX_DESIGN.w} h={BOX_DESIGN.h}>

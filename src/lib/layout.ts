@@ -58,6 +58,17 @@ export const WINDOW = {
   reveal: 0.11,
 } as const;
 
+/**
+ * CSS pixels per metre for anything mounted on a panel.
+ *
+ * One density for every surface, so a 13px label is the same physical size on
+ * the portrait screen as on the landscape ones. Chosen so a focused 27" panel
+ * lands near 1:1 on a typical laptop — render much smaller and the text is soft
+ * when leaned in, much larger and every font size has to be inflated to stay
+ * legible from the rest pose.
+ */
+const PX_PER_M = 1840;
+
 /** A 27" 16:9 panel with a thin bezel. */
 export const MONITOR = {
   panelW: 0.598,
@@ -72,12 +83,10 @@ export const MONITOR = {
    * of a primitive — which is precisely what makes a 3D scene look like a 3D
    * scene. The DOM mounted on the panel is rounded to match.
    */
-  corner: 0.017,
+  corner: 0.02,
   /** Bottom of the panel above the desk surface, i.e. the stand's height. */
   liftY: 0.115,
 } as const;
-
-const panelCentreY = DESK.surfaceY + MONITOR.liftY + MONITOR.panelH / 2;
 
 export type ScreenId = "commits" | "about" | "music";
 
@@ -86,25 +95,87 @@ export interface ScreenPlacement {
   position: [number, number, number];
   /** Y rotation in radians. Kept in the type so the rig stays general. */
   rotationY: number;
+  /** Panel size in metres. Not shared: one of these is on its side. */
+  panelW: number;
+  panelH: number;
+  /** CSS pixel size the DOM mounted on it is authored at. */
+  design: { w: number; h: number };
 }
 
 /**
- * Three monitors in a straight line, all facing the viewer.
+ * Three monitors, the outer two toed in, and the right-hand one on its side.
  *
- * They used to be toed in by 24° each, which is how a real three-monitor array
- * is set up and which put the two outer screens at an angle steep enough that
- * their text sheared. Since those screens are real DOM and the point of the
- * whole build is that they're readable, geometry loses to legibility: flat.
+ * **The angle** has been to both extremes. At 24° — which is how a real
+ * three-monitor array is actually set up — the two outer screens were angled
+ * steeply enough that their text sheared, and those screens are real DOM whose
+ * legibility is the entire point of the build. Dead flat fixed that and looked
+ * like a shop display: nobody arranges three monitors in a perfectly straight
+ * line. 9° is where both hold. Focusing solves the camera against the panel's
+ * own normal anyway, so leaning in is square to the glass at any angle.
  *
- * Spacing is the outer width of a monitor plus a 20 mm gap, so the bezels nearly
- * touch the way a real array does.
+ * **The portrait screen** is the same 27" panel rotated a quarter turn, because
+ * that's what a vertical monitor is — you buy one monitor and turn it. It earns
+ * its place: a music client is a list, and a list wants height. It also breaks
+ * up a row of three identical rectangles, which was the most render-like thing
+ * left about the desk.
  */
-const PITCH = MONITOR.panelW + MONITOR.bezel * 2 + 0.02;
+const TOE = 0.16;
+const PITCH = MONITOR.panelW + MONITOR.bezel * 2 + 0.014;
+const TOE_Z = (MONITOR.panelW / 2) * Math.sin(TOE);
+
+const LANDSCAPE = {
+  panelW: MONITOR.panelW,
+  panelH: MONITOR.panelH,
+  design: {
+    w: Math.round(MONITOR.panelW * PX_PER_M),
+    h: Math.round(MONITOR.panelH * PX_PER_M),
+  },
+} as const;
+
+const PORTRAIT = {
+  panelW: MONITOR.panelH,
+  panelH: MONITOR.panelW,
+  design: {
+    w: Math.round(MONITOR.panelH * PX_PER_M),
+    h: Math.round(MONITOR.panelW * PX_PER_M),
+  },
+} as const;
+
+const panelCentreY = DESK.surfaceY + MONITOR.liftY + MONITOR.panelH / 2;
+/**
+ * A portrait panel is 60 cm tall, so its stand has to be shorter or the thing
+ * ends up towering over the array — and over the top of the frame.
+ */
+const TALL_LIFT = 0.062;
+const tallCentreY = DESK.surfaceY + TALL_LIFT + PORTRAIT.panelH / 2;
+
+/** Half the centre monitor plus half the portrait one, plus a bezel gap. */
+const MUSIC_X =
+  MONITOR.panelW / 2 + PORTRAIT.panelW / 2 + MONITOR.bezel * 2 + 0.014;
 
 export const SCREENS: ScreenPlacement[] = [
-  { id: "commits", position: [-PITCH, panelCentreY, -0.29], rotationY: 0 },
-  { id: "about", position: [0, panelCentreY, -0.29], rotationY: 0 },
-  { id: "music", position: [PITCH, panelCentreY, -0.29], rotationY: 0 },
+  {
+    id: "commits",
+    position: [-PITCH, panelCentreY, -0.29 + TOE_Z],
+    rotationY: TOE,
+    ...LANDSCAPE,
+  },
+  {
+    id: "about",
+    position: [0, panelCentreY, -0.29],
+    rotationY: 0,
+    ...LANDSCAPE,
+  },
+  {
+    id: "music",
+    position: [
+      MUSIC_X,
+      tallCentreY,
+      -0.29 + (PORTRAIT.panelW / 2) * Math.sin(TOE),
+    ],
+    rotationY: -TOE,
+    ...PORTRAIT,
+  },
 ];
 
 export const CAMERA = {
@@ -158,7 +229,14 @@ export const LAMP_EMITTER: [number, number, number] = [
 
 /** The shelf on the wall, holding the board game boxes. */
 export const SHELF = {
-  y: 1.56,
+  /*
+   * Low enough that a box standing on it stays inside the frame.
+   *
+   * It was at 1.56 when both boxes lay flat and only their spines showed. One
+   * of them stands up now, which is 295 mm rather than 75 mm, and at the old
+   * height its lid ran off the top of the shot.
+   */
+  y: 1.38,
   /** Offset from the wall plane. */
   z: WALL.z + 0.13,
   width: 0.82,
@@ -175,12 +253,44 @@ export const BOX = {
   d: 0.295,
 } as const;
 
+/**
+ * A snake plant, at the far end of the shelf from the boxes.
+ *
+ * The only object in the room that isn't a manufactured rectangle, which is
+ * exactly what it's for.
+ */
+export const PLANT = {
+  x: SHELF.x + SHELF.width / 2 - 0.11,
+  y: SHELF.y + SHELF.thickness / 2,
+  z: SHELF.z + 0.01,
+  potR: 0.05,
+  potH: 0.072,
+  /*
+   * Short for a sansevieria, on purpose. At a realistic 30 cm the blades ran
+   * straight out of the top of the frame, and a plant cropped by the edge of
+   * the shot reads as a mistake rather than as a composition.
+   */
+  leafHeight: 0.2,
+  leafWidth: 0.011,
+} as const;
+
+/**
+ * A wall clock, filling the bare stretch of plaster between the shelf and the
+ * window — which was the emptiest square metre in the frame.
+ */
+export const CLOCK = {
+  x: 0.26,
+  y: 1.7,
+  radius: 0.125,
+} as const;
+
 /** The desk mat. Big — it runs under the keyboard and the mouse both. */
 export const MAT = {
-  w: 1.06,
+  w: 0.95,
   d: 0.46,
   thickness: 0.004,
-  x: 0.02,
+  /** Centred on the keyboard-and-mouse pair, not on the desk. */
+  x: -0.05,
   z: 0.13,
 } as const;
 
@@ -196,42 +306,62 @@ export const KEYBOARD = {
   unit: 0.019,
   /** Gap between adjacent caps, so each cap is unit - gap wide. */
   gap: 0.0035,
-  capHeight: 0.0105,
+  capHeight: 0.0115,
   /** Chassis border around the key field. */
-  border: 0.009,
+  border: 0.0105,
+  /**
+   * Top of the case rim.
+   *
+   * Sits 5 mm above the plate the caps stand on, so roughly half of each cap is
+   * down inside the tray. That relationship — rim above plate — is what makes a
+   * keyboard read as a keyboard rather than as caps balanced on a closed box.
+   */
   caseHeight: 0.017,
+  /** Where the keycaps' feet land, recessed inside the case. */
+  plateY: 0.012,
   /** Front-to-back tilt, in radians. Every real board has some. */
   tilt: 0.045,
-  x: -0.09,
+  x: -0.12,
   z: 0.17,
 } as const;
 
 /** Mouse, to the right of the keyboard on the same mat. */
 export const MOUSE = {
-  w: 0.064,
-  d: 0.115,
-  h: 0.038,
-  x: 0.39,
-  z: 0.15,
+  w: 0.067,
+  d: 0.125,
+  /*
+   * Low. From the seat you see this thing almost end-on, so its length is
+   * foreshortened into nearly nothing and the height is the only dimension
+   * reading at full value — at a true 38 mm the silhouette came out round.
+   */
+  h: 0.031,
+  /*
+   * A hand's width right of the board, which is where a mouse actually lives.
+   * It used to sit 29 cm away — far enough that the two objects read as
+   * unrelated props placed on the same surface rather than as one workstation.
+   */
+  x: 0.14,
+  z: 0.145,
 } as const;
 
-/** Headphones, hung over the outer top corner of the right-hand monitor. */
+/**
+ * Headphones, hung over the outer top corner of the right-hand monitor.
+ *
+ * Only the cup dimensions live here. The hang point does not, and that's the
+ * fix for a real bug: it used to be a world position derived by hand from the
+ * monitor's pitch, its panel width and its toe-in angle, and the moment the
+ * monitors were toed in the trigonometry stopped agreeing with the monitor's
+ * actual transform. The headphones ended up nine centimetres behind the panel,
+ * with both cups hidden behind the screen and only the band showing — which
+ * read as a hook screwed to the top of the monitor.
+ *
+ * They're parented to the monitor now. Its own matrix does the work, and no
+ * amount of moving or rotating that monitor can separate them again.
+ */
 export const HEADPHONES = {
-  /*
-   * Right at the outer corner, not inboard of it.
-   *
-   * Hung further in they look better in the establishing shot and then eat the
-   * top-right eighth of the player when you lean into that screen — and the
-   * screen is the content. Out here the cup hangs mostly past the panel edge
-   * and only clips the corner of the header gradient.
-   */
-  x: PITCH + MONITOR.panelW / 2 - 0.012,
-  /** The headband rests on the top edge of the panel. */
-  y: DESK.surfaceY + MONITOR.liftY + MONITOR.panelH + 0.012,
-  z: -0.29,
-  cupW: 0.077,
-  cupH: 0.094,
-  cupD: 0.034,
+  cupW: 0.078,
+  cupH: 0.092,
+  cupD: 0.035,
 } as const;
 
 /*
@@ -243,8 +373,21 @@ export const HEADPHONES = {
  * is soft when leaned in, much larger and every font size has to be inflated to
  * stay legible from the rest pose.
  */
+/**
+ * The landscape design size, for the two 16:9 screens and the flat page.
+ *
+ * Derived from the panel rather than hardcoded, so it can't drift away from the
+ * portrait screen's density — a 13px label has to be the same physical size on
+ * all three or the room looks like it has three different DPIs on one desk.
+ */
 export const SCREEN_DESIGN = {
-  w: 1100,
-  h: Math.round(1100 * (MONITOR.panelH / MONITOR.panelW)),
+  w: Math.round(MONITOR.panelW * PX_PER_M),
+  h: Math.round(MONITOR.panelH * PX_PER_M),
 } as const;
+/** The portrait screen's design size. Same panel, quarter turn. */
+export const TALL_SCREEN_DESIGN = {
+  w: Math.round(MONITOR.panelH * PX_PER_M),
+  h: Math.round(MONITOR.panelW * PX_PER_M),
+} as const;
+
 export const BOX_DESIGN = { w: 860, h: 860 } as const;
