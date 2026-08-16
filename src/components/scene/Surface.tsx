@@ -60,6 +60,20 @@ export function Surface({
     <group {...group}>
       <Html
         transform
+        /*
+          drei's own two wrapper divs, not just ours.
+
+          Setting pointer-events on the div below only made *our* element inert;
+          the transform wrappers drei puts around it stayed hit-testable, so a
+          click over an unfocused screen still landed on a div rather than
+          falling through to the canvas. That div is a plain axis-aligned box
+          around the projected panel, and R3F measures a click from whatever
+          element it landed on — so every click anywhere near a monitor was
+          being measured from the wrong origin and raycast into the wrong part
+          of the room. Clicking a screen did nothing, or focused a different
+          one. See the `eventPrefix` note on the canvas for the other half.
+        */
+        pointerEvents={focused ? "auto" : "none"}
         // Depth-buffer occlusion rather than raycast: a held box passes in
         // front of the monitors, and raycast occlusion of a full-screen DOM
         // node costs a ray per frame per surface.

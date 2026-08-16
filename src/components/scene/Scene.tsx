@@ -399,6 +399,24 @@ export function Scene({
         toneMappingExposure: 0.92,
       }}
       camera={{ position: CAMERA.eye, fov: CAMERA.fov, near: 0.05, far: 30 }}
+      /*
+        Measure clicks from the viewport, not from whatever they landed on.
+
+        R3F defaults to `offsetX/offsetY`, which the DOM reports relative to the
+        *target* element. That's the container div for most of the frame and is
+        fine — but the screens mount real DOM through drei's `<Html>`, and a
+        click that lands on one of its wrappers arrives measured from the corner
+        of that wrapper instead. On the left monitor that's an error of ~90px
+        across and ~375px down, which is most of the way to another screen: the
+        ray goes off into the room, hits the invisible click-away plane behind
+        everything, and the monitor you clicked never focuses.
+
+        `client` is safe here because this canvas is the viewport. In hero mode
+        it sits partway down a scrolling page, where clientY would be offset by
+        however far down it is — that path mounts no `<Html>` and takes no
+        clicks at all, so it keeps the default.
+      */
+      eventPrefix={hero ? undefined : "client"}
     >
       <color attach="background" args={["#08090b"]} />
 
