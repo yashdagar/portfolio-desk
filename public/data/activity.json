@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-16T21:35:00.805Z",
+  "generatedAt": "2026-08-16T21:50:42.510Z",
   "commits": [
     {
       "id": "7c4a51e09a49",
@@ -1480,20 +1480,10 @@
       "url": "https://github.com/yashdagar/awsugdehradun/commit/2b5a0e515d5b0a1d33a5a6745ffde592c3776c22",
       "language": "TypeScript",
       "at": "2025-08-19T08:09:29Z"
-    },
-    {
-      "id": "b5b5f528c1c6",
-      "visibility": "personal",
-      "kind": "feat",
-      "message": "Add Ledger system, fixes #2",
-      "repo": "yashdagar/order_karo_partners",
-      "url": "https://github.com/yashdagar/order_karo_partners/commit/b5b5f528c1c6f993568b97482df054ecd95f7bcc",
-      "language": "Dart",
-      "at": "2025-08-16T21:39:51Z"
     }
   ],
   "totals": {
-    "year": 149,
+    "year": 148,
     "streak": 1
   }
 }
