@@ -358,3 +358,49 @@ export const LEAF_PALE: Mat = {
   roughness: 0.48,
   metalness: 0,
 };
+
+type PhysicalMat = ThreeElements["meshPhysicalMaterial"];
+
+/**
+ * Borosilicate, for the mug.
+ *
+ * The only transmissive material in the room, and the reason it earns the cost:
+ * a clear cup turns the coffee into a *shape* rather than a disc — you see the
+ * column of it through the wall, the meniscus where it meets the glass, and the
+ * handle refracting the desk behind it. None of that is available to a ceramic
+ * mug, which from a seated camera is a white cylinder with a dark lid.
+ *
+ * `thickness` is the important number. It's how far light is assumed to travel
+ * inside the solid, and at 0 the material renders as a soap bubble — perfectly
+ * clear, weightless, and completely unconvincing. 3 mm is roughly the wall of a
+ * real double-glazed cup, and it's what gives the rim and the handle their
+ * density.
+ */
+export const GLASS: PhysicalMat = {
+  color: "#ffffff",
+  transmission: 1,
+  thickness: 0.003,
+  roughness: 0.06,
+  ior: 1.52,
+  metalness: 0,
+  // Slightly reflective at grazing angles, which is where a glass edge picks up
+  // the window and stops the silhouette dissolving into the desk behind it.
+  clearcoat: 0.4,
+  clearcoatRoughness: 0.1,
+  transparent: true,
+  opacity: 1,
+};
+
+/**
+ * The crema: the pale head that sits on top of the coffee.
+ *
+ * Not decoration. In a clear cup the coffee is a dark column, and a dark column
+ * against a dark desk has no top — the eye can't find the surface. The crema is
+ * the horizontal line that says "this is where the liquid stops", and it's the
+ * single detail that makes the cup read as full rather than as tinted glass.
+ */
+export const CREMA: Mat = {
+  color: "#c8a173",
+  roughness: 0.62,
+  metalness: 0,
+};

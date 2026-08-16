@@ -1,7 +1,9 @@
 import type { ActivityFeed } from "@/lib/activity";
+import type { LeetCodeStats } from "@/lib/leetcode";
 import { BOXES, PROFILE } from "@/lib/profile";
 
 import { CommitFeed } from "./screens/CommitFeed";
+import { LeetCodePanel } from "./screens/LeetCode";
 import { NowPlaying } from "./screens/NowPlaying";
 
 /**
@@ -16,7 +18,21 @@ import { NowPlaying } from "./screens/NowPlaying";
  * Rendered on the server, so the text is in the HTML source and indexable
  * regardless of which mode a visitor ends up in.
  */
-export function Flat({ feed }: { feed: ActivityFeed | null }) {
+export function Flat({
+  feed,
+  leetcode,
+}: {
+  feed: ActivityFeed | null;
+  /**
+   * Passed in from the server rather than fetched on the client, because this
+   * component *is* the HTML source — it's what a crawler and a reader with
+   * JavaScript off get. The copy of this panel on the 3D centre monitor fetches
+   * its own, since threading a second prop through five layers of scene graph
+   * to reach a card in a sidebar is a worse trade than one extra request in the
+   * mode that is already running a WebGL renderer.
+   */
+  leetcode: LeetCodeStats | null;
+}) {
   return (
     <div className="mx-auto w-full max-w-3xl px-6 py-16 sm:px-8">
       <header>
@@ -61,6 +77,20 @@ export function Flat({ feed }: { feed: ActivityFeed | null }) {
           ))}
         </ul>
       </header>
+
+      {leetcode && (
+        <Section title="LeetCode">
+          {/*
+            Capped, and left-aligned rather than stretched.
+
+            The panel is designed for a sidebar on a 27" monitor; run out to the
+            full width of a reading column it becomes a bar chart with 500 px of
+            empty track, which reads as a dashboard widget rather than as a
+            statement about someone.
+          */}
+          <LeetCodePanel stats={leetcode} className="max-w-sm" />
+        </Section>
+      )}
 
       <Section title="On the shelf">
         <div className="grid gap-5 sm:grid-cols-2">

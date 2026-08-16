@@ -1,8 +1,12 @@
 "use client";
 
 import type { ActivityFeed, Commit } from "@/lib/activity";
+import type { LeetCodeStats } from "@/lib/leetcode";
 import { PROFILE } from "@/lib/profile";
 import { useActivity } from "@/lib/useActivity";
+import { useLeetCode } from "@/lib/useLeetCode";
+
+import { LeetCodePanel } from "./LeetCode";
 
 const WEEKS = 18;
 
@@ -91,8 +95,15 @@ function ContributionGrid({ commits }: { commits: Commit[] }) {
  * No projects — the shelf holds those. This screen's whole job is name, claim,
  * and contact, in that order, readable in about eight seconds.
  */
-export function About({ initial }: { initial?: ActivityFeed | null }) {
+export function About({
+  initial,
+  leetcode,
+}: {
+  initial?: ActivityFeed | null;
+  leetcode?: LeetCodeStats | null;
+}) {
   const { feed } = useActivity(initial ?? null);
+  const stats = useLeetCode(leetcode ?? null);
 
   const contacts = [
     ...PROFILE.links,
@@ -152,6 +163,19 @@ export function About({ initial }: { initial?: ActivityFeed | null }) {
         someone to make contact.
       */}
       <ul className="flex flex-col justify-center gap-2.5">
+        {/*
+          LeetCode sits at the top of this column, above the contacts.
+
+          It's evidence, and the contacts are actions — so it goes first, in the
+          order someone actually reads: what has he done, then how do I reach
+          him. It's also the only card here with a number on it, which gives the
+          column something to start with other than four identical rectangles.
+        */}
+        {stats && (
+          <li>
+            <LeetCodePanel stats={stats} className="mb-1.5" />
+          </li>
+        )}
         {contacts.map((link) => (
           <li key={link.label}>
             <a

@@ -38,7 +38,6 @@ import * as M from "./materials";
 import { Mouse } from "./Mouse";
 import { Mug } from "./Mug";
 import { Plant } from "./Plant";
-import { contourPrint } from "./printArt";
 import { RainGlass } from "./RainGlass";
 import { Surface } from "./Surface";
 import { PANEL_ASPECT, PANELS, triptychPanels } from "./triptych";
@@ -398,8 +397,8 @@ function Monitor({
         </group>
       )}
 
-      {placement.stand === "pole" ? (
-        <PoleStand panelH={panelH} lift={lift} />
+      {placement.stand === "arm" ? (
+        <MonitorArm panelH={panelH} lift={lift} />
       ) : (
         <>
           {/* Neck and foot. Aluminium, so they catch the lamp and read as
@@ -433,72 +432,130 @@ function Monitor({
 }
 
 /**
- * The stand a portrait monitor actually sits on.
+ * The mount a portrait monitor actually hangs off.
  *
- * The shipped foot was wrong here and wrong in a way that's obvious once seen:
- * a 60 cm panel stood on its side can't balance on a 21 cm plate, and the
- * moulded stand it came with doesn't rotate anyway. Turning a monitor portrait
- * means putting it on a pole — a weighted base, a tall steel column, and a VESA
- * head clamped part way up that can be raised, tilted and spun through ninety
- * degrees.
+ * Two wrong answers preceded this one. The shipped foot was wrong because a
+ * 60 cm panel stood on its side can't balance on a 21 cm plate, and because the
+ * moulded stand doesn't rotate anyway. A weighted pole was closer but still
+ * wrong: freestanding poles are display-stand furniture, and nobody with a
+ * portrait screen on a desk this size uses one — they clamp an arm to the back
+ * edge, which is what every reference photograph of this setup shows.
  *
- * The detail that makes it read is the column continuing past the top of the
- * panel. Every one of these stands is built for a range of screens, so the pole
- * is always longer than any single monitor needs and there's always a length of
- * it standing proud above the screen.
+ * The arm is also the better-looking answer, and for a reason that isn't about
+ * accuracy. A base occupies the one part of the desk directly under the screen;
+ * an arm hands that back. The desk runs unbroken beneath the panel, and the
+ * screen reads as floating over it rather than standing on it.
+ *
+ * Built in the monitor's own frame, so it inherits the toe-in for free — a
+ * clamp squared to the world on a panel turned nine degrees is the kind of
+ * thing you can't see until you can't stop seeing it.
  */
-function PoleStand({ panelH, lift }: { panelH: number; lift: number }) {
-  /** The desk, in this monitor's own local frame. */
+function MonitorArm({ panelH, lift }: { panelH: number; lift: number }) {
+  /** The desk surface, in this monitor's local frame. */
   const deskY = -panelH / 2 - lift;
-  /** Behind the panel, where the column has room to run. */
-  const z = -0.062;
+  /**
+   * The desk's back edge, likewise local.
+   *
+   * The panel stands 117 mm forward of it; at nine degrees of toe that's
+   * essentially the same distance measured along the monitor's own axis, so
+   * the small angular correction is inside the width of the clamp itself.
+   */
+  const edgeZ = -0.118;
 
-  const top = panelH / 2 + 0.055;
-  const bottom = deskY + 0.014;
-  const poleH = top - bottom;
-
-  const base = useMemo(() => roundedPlate(0.22, 0.25, 0.045, 0.014), []);
-  useEffect(() => () => base.dispose(), [base]);
+  /** Top of the post: level with the middle of the panel, where the boom runs. */
+  const postTop = 0.03;
+  const postH = postTop - (deskY + 0.012);
 
   return (
     <group>
-      {/* Weighted base. Deeper than it is wide, because all the leverage is
-          front to back. */}
-      <mesh geometry={base} position={[0, deskY, z + 0.03]} castShadow receiveShadow>
+      {/*
+        The clamp: a C around the back edge of the desk.
+
+        Three parts, because a C-clamp is three parts — a pad on top, a spine
+        dropping behind the edge, and a screw plate underneath pulling up. Built
+        as one block it reads as a lump; built as three it reads as something
+        tightened onto the desk, and the gap between the top pad and the bottom
+        plate is where the desk actually is.
+      */}
+      <RoundedBox
+        args={[0.072, 0.014, 0.076]}
+        radius={0.005}
+        smoothness={4}
+        position={[0, deskY + 0.007, edgeZ + 0.03]}
+        castShadow
+        receiveShadow
+      >
         <meshStandardMaterial {...M.POWDER_COAT} />
+      </RoundedBox>
+      <RoundedBox
+        args={[0.05, 0.086, 0.02]}
+        radius={0.006}
+        smoothness={4}
+        position={[0, deskY - 0.026, edgeZ - 0.012]}
+        castShadow
+      >
+        <meshStandardMaterial {...M.POWDER_COAT} />
+      </RoundedBox>
+      <RoundedBox
+        args={[0.058, 0.013, 0.05]}
+        radius={0.005}
+        smoothness={4}
+        position={[0, deskY - 0.062, edgeZ + 0.016]}
+        castShadow
+      >
+        <meshStandardMaterial {...M.POWDER_COAT} />
+      </RoundedBox>
+      {/* The screw that does the tightening, standing proud underneath. */}
+      <mesh position={[0, deskY - 0.073, edgeZ + 0.016]} castShadow>
+        <cylinderGeometry args={[0.007, 0.007, 0.012, 16]} />
+        <meshStandardMaterial {...M.ALUMINIUM} />
       </mesh>
 
-      {/* Column. */}
+      {/* The post, rising out of the clamp. */}
       <RoundedBox
-        args={[0.034, poleH, 0.034]}
+        args={[0.034, postH, 0.034]}
         radius={0.012}
         smoothness={5}
-        position={[0, (top + bottom) / 2, z]}
+        position={[0, deskY + 0.012 + postH / 2, edgeZ + 0.03]}
         castShadow
       >
         <meshStandardMaterial {...M.ALUMINIUM} />
       </RoundedBox>
 
-      {/* The clamp that rides the column. */}
+      {/*
+        The boom, running forward from the post to the back of the panel.
+
+        Squared off rather than round: an extruded aluminium arm has a flat top
+        that carries a hard line of light along its whole length, and that line
+        is most of what tells you the thing is metal at this distance.
+      */}
       <RoundedBox
-        args={[0.056, 0.075, 0.056]}
-        radius={0.016}
+        args={[0.03, 0.03, 0.15]}
+        radius={0.01}
         smoothness={5}
-        position={[0, 0, z]}
+        position={[0, postTop, edgeZ + 0.088]}
+        castShadow
+      >
+        <meshStandardMaterial {...M.ALUMINIUM} />
+      </RoundedBox>
+
+      {/* Tilt knuckle, and the VESA plate bolted to the panel. */}
+      <mesh
+        position={[0, postTop, -0.03]}
+        rotation={[0, 0, Math.PI / 2]}
+        castShadow
+      >
+        <cylinderGeometry args={[0.019, 0.019, 0.036, 20]} />
+        <meshStandardMaterial {...M.POWDER_COAT} />
+      </mesh>
+      <RoundedBox
+        args={[0.076, 0.076, 0.016]}
+        radius={0.006}
+        smoothness={4}
+        position={[0, postTop, -0.016]}
         castShadow
       >
         <meshStandardMaterial {...M.POWDER_COAT} />
-      </RoundedBox>
-
-      {/* VESA arm, reaching forward to the back of the panel. */}
-      <RoundedBox
-        args={[0.05, 0.05, 0.058]}
-        radius={0.014}
-        smoothness={5}
-        position={[0, 0, z / 2 - 0.004]}
-        castShadow
-      >
-        <meshStandardMaterial {...M.ALUMINIUM} />
       </RoundedBox>
     </group>
   );
@@ -774,46 +831,12 @@ function Shelf() {
 }
 
 /**
- * A framed print, low on the left-hand wall.
- *
- * There were two here — a large one and a small one — until the large one grew
- * into a triptych and moved to the wall that could actually hold it. What's
- * left is a single small print sitting under the clock, which is a tidier group
- * than two prints of different sizes stacked in a corner ever was.
- */
-function Prints() {
-  const art = useMemo(() => contourPrint(), []);
-  useEffect(() => () => art.dispose(), [art]);
-
-  const w = 0.24;
-  const h = 0.3;
-
-  return (
-    <group position={[-1.26, 0.95, WALL.z + 0.006]}>
-      <RoundedBox
-        args={[w, h, 0.014]}
-        radius={0.005}
-        smoothness={5}
-        castShadow
-        receiveShadow
-      >
-        <meshStandardMaterial {...M.POWDER_COAT} />
-      </RoundedBox>
-      <mesh position={[0, 0, 0.008]}>
-        <planeGeometry args={[w - 0.03, h - 0.03]} />
-        <meshStandardMaterial {...M.PAPER} color="#ffffff" map={art} />
-      </mesh>
-    </group>
-  );
-}
-
-/**
  * The triptych.
  *
  * Three thin black frames in a row, each showing its own third of one wide
- * artwork. The slicing is done with texture offsets rather than by drawing
- * three pictures, so the car and the wordmark line up across the gaps exactly —
- * by construction, not by hand.
+ * photograph. The slicing is done with texture offsets rather than by cutting
+ * three images, so the car lines up across the gaps exactly — by construction,
+ * not by hand.
  */
 function Triptych() {
   const panels = useMemo(() => triptychPanels(), []);
@@ -987,7 +1010,6 @@ export function Room({
         <Monitor key={s.id} placement={s} hero={hero} activity={activity} />
       ))}
       <Shelf />
-      <Prints />
       <Triptych />
       <WallClock />
       <Lamp day={day} />

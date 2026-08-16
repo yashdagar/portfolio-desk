@@ -1,7 +1,15 @@
 "use client";
 
 import { useEffect, useMemo } from "react";
-import { CatmullRomCurve3, TubeGeometry, Vector3, type BufferGeometry } from "three";
+import {
+  CanvasTexture,
+  CatmullRomCurve3,
+  LinearFilter,
+  SRGBColorSpace,
+  TubeGeometry,
+  Vector3,
+  type BufferGeometry,
+} from "three";
 
 import { PLANT } from "@/lib/layout";
 
@@ -29,6 +37,90 @@ const LEAVES = 9;
 function smoothstep(a: number, b: number, x: number) {
   const t = Math.min(1, Math.max(0, (x - a) / (b - a)));
   return t * t * (3 - 2 * t);
+}
+
+/**
+ * The banding, which is most of what makes this plant this plant.
+ *
+ * A sansevieria's leaf is not a green blade — it's a dark green blade crossed
+ * by irregular pale zigzag bands, and that pattern is the reason the thing is
+ * called a snake plant. Left flat, nine identical green spears read as a
+ * plastic pot plant however carefully they're shaped, because a real leaf is
+ * never one colour anywhere along its length.
+ *
+ * TubeGeometry lays u along the length of the tube and v around it, so a band
+ * across the leaf is a stripe of constant u — a vertical line in this canvas,
+ * running the full height. That's the whole reason the pattern can be painted
+ * rather than modelled.
+ *
+ * Seeded arithmetic rather than randomness, so every reload draws the same
+ * plant. A pot that silently reshuffles between visits is the kind of thing
+ * nobody notices consciously and everybody feels.
+ */
+function leafTexture(): CanvasTexture {
+  const W = 512;
+  const H = 128;
+  const canvas = document.createElement("canvas");
+  canvas.width = W;
+  canvas.height = H;
+  const ctx = canvas.getContext("2d")!;
+
+  ctx.fillStyle = "#375438";
+  ctx.fillRect(0, 0, W, H);
+
+  /*
+   * The bands. Each is a chevron rather than a straight stripe: the pale
+   * marking on a real leaf sweeps toward the tip in the middle of the blade and
+   * lags at the margins, so a band drawn as a rectangle looks printed and one
+   * drawn as a shallow V looks grown.
+   */
+  for (let i = 0; i < 34; i++) {
+    const t = i / 34;
+    // Two incommensurate turns, so the spacing never falls into a rhythm.
+    const x = t * W + Math.sin(i * 2.7) * 5;
+    const width = 5 + ((i * 5) % 7) + Math.sin(i * 1.3) * 3;
+    const sweep = 16 + ((i * 3) % 9);
+
+    // Bands crowd together and fade out toward the tip, which is where the
+    // blade's colour goes flat on a real plant.
+    ctx.globalAlpha = 0.5 - 0.28 * t + Math.sin(i * 0.9) * 0.09;
+    ctx.fillStyle = "#9fb277";
+    ctx.beginPath();
+    ctx.moveTo(x, 0);
+    ctx.lineTo(x + sweep, H / 2);
+    ctx.lineTo(x, H);
+    ctx.lineTo(x + width, H);
+    ctx.lineTo(x + width + sweep, H / 2);
+    ctx.lineTo(x + width, 0);
+    ctx.closePath();
+    ctx.fill();
+  }
+  ctx.globalAlpha = 1;
+
+  /*
+   * The margin. Sansevieria trifasciata 'Laurentii' — the one everybody owns —
+   * has a yellow edge running the length of every leaf, and it's the single
+   * detail that identifies the plant from across a room. v = 0 and v = 1 are
+   * opposite sides of the tube, which after flattening are the two edges of the
+   * blade, so the stripe goes at the top and bottom of the canvas.
+   */
+  ctx.fillStyle = "#b9ad52";
+  ctx.fillRect(0, 0, W, H * 0.055);
+  ctx.fillRect(0, H * 0.945, W, H * 0.055);
+
+  // The base of every blade is paler and less marked, where it comes out of
+  // the soil still half-furled.
+  const foot = ctx.createLinearGradient(0, 0, W * 0.12, 0);
+  foot.addColorStop(0, "rgba(150,163,110,0.55)");
+  foot.addColorStop(1, "rgba(150,163,110,0)");
+  ctx.fillStyle = foot;
+  ctx.fillRect(0, 0, W * 0.12, H);
+
+  const tex = new CanvasTexture(canvas);
+  tex.colorSpace = SRGBColorSpace;
+  tex.anisotropy = 8;
+  tex.minFilter = LinearFilter;
+  return tex;
 }
 
 /**
@@ -125,8 +217,10 @@ export function Plant() {
     () => Array.from({ length: LEAVES }, (_, i) => leafGeometry(i)),
     [],
   );
+  const skin = useMemo(() => leafTexture(), []);
 
   useEffect(() => () => leaves.forEach((g) => g.dispose()), [leaves]);
+  useEffect(() => () => skin.dispose(), [skin]);
 
   return (
     <group position={[PLANT.x, PLANT.y, PLANT.z]}>
@@ -152,13 +246,18 @@ export function Plant() {
         {leaves.map((geo, i) => (
           <mesh key={i} geometry={geo} castShadow receiveShadow>
             {/*
-              Alternating tones. Real sansevieria leaves are banded and every
-              blade catches the light differently; two greens is the cheapest
-              version of that and it's enough to stop the clump reading as one
-              solid mass.
+              One banded texture, tinted slightly differently per blade.
+
+              The tints are near-white on purpose: the map carries the colour
+              now, so a saturated base would be multiplied into a green that's
+              already there and drag the whole clump toward black. All the tint
+              has to do is stop nine blades cut from one texture reading as nine
+              copies of the same blade.
             */}
             <meshStandardMaterial
-              {...(i % 3 === 0 ? M.LEAF_PALE : M.LEAF)}
+              {...M.LEAF}
+              color={i % 3 === 0 ? "#e4eed6" : "#ffffff"}
+              map={skin}
             />
           </mesh>
         ))}

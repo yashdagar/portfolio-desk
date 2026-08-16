@@ -26,7 +26,17 @@ export function Lamp({ day }: { day: Daylight }) {
   const glow = Math.min(1, day.lampIntensity / 2.4);
 
   return (
-    <group position={[LAMP.x, DESK.surfaceY, LAMP.z]}>
+    /*
+      Half a millimetre clear of the desk, not sitting exactly on it.
+
+      The base's underside used to land at precisely DESK.surfaceY, which is
+      also where the desk's top face is — two coplanar surfaces, and the
+      depth buffer has no way to choose between them. The result was a disc of
+      desk grain punching through the lamp's foot and flickering as the camera
+      drifted, which reads as the lamp sinking into the desk. Every object that
+      stands on this desk needs the same clearance.
+    */
+    <group position={[LAMP.x, DESK.surfaceY + 0.0005, LAMP.z]}>
       {/*
         Base. Wide and low — it has to counterweight a 40cm cantilever, and it
         looks like it does.

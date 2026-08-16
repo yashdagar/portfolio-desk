@@ -292,8 +292,28 @@ export function Keyboard() {
       ),
     [caseW, caseD],
   );
+  /*
+   * The underside, deliberately a whisker smaller than the tray above it.
+   *
+   * At the same footprint the two shapes share their outer walls exactly, from
+   * the desk up to the plate — two coincident surfaces the depth buffer has no
+   * way to order, so the case edges broke into a flickering band of light that
+   * crawled as the camera drifted. It read as a light leaking out of the
+   * keyboard, which is a strange enough thing to see that it got reported as
+   * one.
+   *
+   * Undersized by a millimetre in plan and a fraction of one in height, so it
+   * closes the tray without ever touching it: the walls hide behind the tray's
+   * walls, and the top face stops just short of the plate.
+   */
   const base = useMemo(
-    () => roundedPlate(caseW, caseD, 0.006, KEYBOARD.plateY),
+    () =>
+      roundedPlate(
+        caseW - 0.001,
+        caseD - 0.001,
+        0.0055,
+        KEYBOARD.plateY - 0.0004,
+      ),
     [caseW, caseD],
   );
 

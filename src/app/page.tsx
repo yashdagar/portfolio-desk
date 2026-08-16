@@ -1,5 +1,6 @@
 import { Flat } from "@/components/Flat";
 import { readActivity } from "@/lib/activity.server";
+import { fetchLeetCodeStats } from "@/lib/leetcode";
 import { SceneMount } from "@/components/scene/SceneMount";
 
 /**
@@ -9,12 +10,18 @@ import { SceneMount } from "@/components/scene/SceneMount";
  * the capability check decides whether to put a room in front of it.
  */
 export default async function Home() {
-  const activity = await readActivity();
+  // Concurrently: one reads a committed JSON file, the other calls out to
+  // LeetCode. Awaited in sequence they'd add the whole round trip to the time
+  // to first byte for no reason at all.
+  const [activity, leetcode] = await Promise.all([
+    readActivity(),
+    fetchLeetCodeStats(),
+  ]);
 
   return (
     <main className="min-h-dvh w-full">
       <SceneMount activity={activity}>
-        <Flat feed={activity} />
+        <Flat feed={activity} leetcode={leetcode} />
       </SceneMount>
     </main>
   );

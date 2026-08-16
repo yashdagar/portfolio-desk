@@ -106,12 +106,12 @@ export interface ScreenPlacement {
    * What holds it up.
    *
    * `foot` is the moulded stand a monitor ships with — a short neck on a flat
-   * plate. `pole` is what a screen actually sits on when it's been turned
-   * portrait: a tall column on a weighted base with a VESA head clamped part
-   * way up it, because a 60 cm panel on its side won't balance on a shipped
-   * foot and the foot can't rotate anyway.
+   * plate. `arm` is what a screen hangs off once it's been turned portrait: a
+   * clamp on the back edge of the desk, a post, and a boom out to the VESA
+   * plate. A 60 cm panel on its side won't balance on a shipped foot, the foot
+   * can't rotate anyway, and an arm hands back the desk space underneath.
    */
-  stand: "foot" | "pole";
+  stand: "foot" | "arm";
 }
 
 /**
@@ -188,7 +188,7 @@ export const SCREENS: ScreenPlacement[] = [
       -0.29 + (PORTRAIT.panelW / 2) * Math.sin(TOE),
     ],
     rotationY: -TOE,
-    stand: "pole",
+    stand: "arm",
     ...PORTRAIT,
   },
 ];
@@ -227,8 +227,28 @@ export const CAMERA = {
  */
 export const LAMP = {
   x: -0.98,
-  z: -0.24,
-  poleHeight: 0.66,
+  /*
+   * Forward of the back edge, with desk visible behind it.
+   *
+   * At −0.24 the 188 mm base finished 46 mm from the back of the desk, and 46
+   * mm of walnut seen at this angle is about four pixels — so the base's far
+   * rim and the desk's back edge landed on the same line and the lamp read as
+   * standing in a hole. Foreshortening is the whole problem: a flat disc lying
+   * on a surface you're looking almost along has almost no height on screen,
+   * and the only thing telling you it's on the desk rather than through it is
+   * the strip of desk behind it.
+   */
+  z: -0.18,
+  /*
+   * Short enough to pass under the shelf.
+   *
+   * At 660 mm the arm swung out at exactly shelf height and the head ended up
+   * tucked into the underside of it, throwing a hard pool of light onto the
+   * wall and lighting the shelf's belly instead of the desk. The gap between
+   * the top of the monitors (1.14 m) and the underside of the shelf (1.37 m) is
+   * the only place this arm can live.
+   */
+  poleHeight: 0.52,
   /** How far the arm reaches in from the pole, toward +X. */
   reach: 0.4,
   /** Length of the light bar hanging off the end of the arm. */

@@ -6,92 +6,134 @@ import { LatheGeometry, Vector2 } from "three";
 import * as M from "./materials";
 
 /**
- * The mug. Fat, and actually hollow.
+ * The mug: clear glass, with the coffee visible inside it.
  *
- * The old one was a plain capped cylinder with a half torus stuck to its side,
- * and the torus was rotated a quarter turn about X — which lays the handle flat,
- * horizontal, like a saucer welded to the wall of the cup. It read as a
- * mistake because it was one.
+ * It was opaque ceramic, and opaque ceramic is the wrong object for this shot.
+ * From a seated camera you look down into a mug at a shallow angle, so a solid
+ * cup shows you a white cylinder with a small dark ellipse balanced on top —
+ * the coffee is the least visible part of a thing whose entire purpose is to
+ * contain coffee. In glass the drink becomes the object: a dark column with a
+ * pale head, read through the wall, with the desk grain refracting around it.
  *
- * This is a lathe instead. The profile climbs the outside, turns over the rim
- * and comes back down the inside to the floor of the cup, so a single mesh gives
- * a real wall thickness, a real rim, and a cavity to put coffee in. Anything
- * short of that shows: the inside of a mug is visible from a seated camera
- * looking down at a desk, and a flat disc where the coffee should be is the
- * first thing the eye finds.
+ * Three lathes stacked inside one another — glass, coffee, crema — rather than
+ * one clever mesh. Each is a revolved profile, which is how every one of these
+ * is actually made, and it means the coffee has a real surface at a real height
+ * instead of a disc floating at a guessed one.
  *
- * Proportions are deliberately stout — 112 mm across the belly against 98 mm
- * tall. A correctly proportioned mug looks thin in a room this size, because
- * everything around it (a 27" panel, a 2.2 m desk) is large.
+ * Proportions stay deliberately stout: 111 mm across the belly against 102 mm
+ * tall. A correctly proportioned mug looks thin in a room where everything
+ * around it is large.
  */
 
 /**
- * Profile in the XY plane, revolved about Y. X is the radius, Y is the height.
+ * The glass, in the XY plane and revolved about Y. X is radius, Y is height.
  *
- * Up the outside, over the rim, down the inside. The small steps at the foot and
- * the lip are fillets — a mug with a perfectly square base looks like a tube,
- * and ceramic is never that sharp anyway.
+ * Up the outside, over the rim, back down the inside to the floor. A single
+ * closed profile like this gives a real wall thickness — about 3 mm, which is
+ * what a tumbler-style mug has — and wall thickness is the whole difference
+ * between glass and cling film once transmission is switched on.
  */
-const PROFILE: [number, number][] = [
+const GLASS: [number, number][] = [
   [0.0, 0.0],
-  [0.041, 0.0],
-  [0.05, 0.007],
-  [0.054, 0.026],
-  [0.056, 0.058],
-  [0.054, 0.09],
-  [0.053, 0.098], // outer lip
-  [0.0485, 0.1005], // over the rim
-  [0.045, 0.098], // inner lip
-  [0.0455, 0.06],
-  [0.044, 0.024],
-  [0.036, 0.013],
-  [0.0, 0.012], // floor of the cavity
+  [0.039, 0.0],
+  [0.047, 0.006],
+  [0.0525, 0.024],
+  [0.0555, 0.056],
+  [0.0545, 0.09],
+  [0.0535, 0.1],
+  [0.0505, 0.1025], // over the rim
+  [0.0475, 0.1],
+  [0.0485, 0.086],
+  [0.0475, 0.05],
+  [0.0455, 0.022],
+  [0.038, 0.011],
+  [0.0, 0.0098], // floor of the cavity
+];
+
+/** Where the coffee stops and the crema starts. */
+const CREMA_Y = 0.0695;
+/** Where the crema stops. Roughly a centimetre below the rim. */
+const SURFACE_Y = 0.0785;
+
+/**
+ * The coffee, sitting a hair inside the glass so the two never intersect.
+ *
+ * The gap matters more than it sounds. Coincident surfaces between a
+ * transmissive material and an opaque one behind it don't merely z-fight, they
+ * z-fight *through* the refraction — which reads as the coffee boiling.
+ */
+const COFFEE: [number, number][] = [
+  [0.0, 0.0104],
+  [0.035, 0.0114],
+  [0.0428, 0.0205],
+  [0.0448, 0.05],
+  [0.0462, CREMA_Y],
+];
+
+/** The head, and the flat top that tells you where the liquid stops. */
+const CREMA: [number, number][] = [
+  [0.0462, CREMA_Y],
+  [0.0468, SURFACE_Y],
+  [0.0, SURFACE_Y],
 ];
 
 export function Mug({ position }: { position: [number, number, number] }) {
-  const geometry = useMemo(
-    () =>
-      new LatheGeometry(
-        PROFILE.map(([x, y]) => new Vector2(x, y)),
-        48,
-      ),
+  const glass = useMemo(
+    () => new LatheGeometry(GLASS.map(([x, y]) => new Vector2(x, y)), 56),
+    [],
+  );
+  const coffee = useMemo(
+    () => new LatheGeometry(COFFEE.map(([x, y]) => new Vector2(x, y)), 48),
+    [],
+  );
+  const crema = useMemo(
+    () => new LatheGeometry(CREMA.map(([x, y]) => new Vector2(x, y)), 48),
     [],
   );
 
-  useEffect(() => () => geometry.dispose(), [geometry]);
+  useEffect(
+    () => () => {
+      glass.dispose();
+      coffee.dispose();
+      crema.dispose();
+    },
+    [glass, coffee, crema],
+  );
 
   return (
     <group position={position}>
-      <mesh geometry={geometry} castShadow receiveShadow>
-        <meshStandardMaterial {...M.CERAMIC} />
+      {/*
+        The coffee goes down first so it's behind the glass in the transmission
+        pass. Not shadow-casting: a transmissive cup that throws an opaque black
+        shadow of its contents is the fastest way to make glass look like paint.
+      */}
+      <mesh geometry={coffee}>
+        <meshStandardMaterial {...M.COFFEE} />
+      </mesh>
+      <mesh geometry={crema}>
+        <meshStandardMaterial {...M.CREMA} />
+      </mesh>
+
+      <mesh geometry={glass} castShadow>
+        <meshPhysicalMaterial {...M.GLASS} />
       </mesh>
 
       {/*
-        Handle, in the XY plane where a handle actually lives — the ring stands
-        up beside the cup rather than lying flat around it. Thick tube, to match
-        a mug this heavy; a delicate handle on a fat body looks broken off.
+        Handle. Glass too, and the one part of this object that shows what
+        transmission is for — a solid loop of it standing away from the cup,
+        with the desk visible through the gap and bent by the bar.
+
+        A partial torus always starts its arc at +X and sweeps toward +Y, so a
+        half torus is the *top* half. Rolling it back a quarter turn is what
+        puts the opening against the cup and the bulge out to the side.
       */}
       <mesh
-        position={[0.05, 0.052, 0]}
-        // A partial torus always starts its arc at +X and sweeps toward +Y, so a
-        // half torus is the *top* half. Rolling it back a quarter turn is what
-        // puts the opening against the cup and the bulge out to the side.
+        position={[0.052, 0.05, 0]}
         rotation={[0, 0, -Math.PI / 2]}
         castShadow
-        receiveShadow
       >
-        <torusGeometry args={[0.031, 0.0105, 14, 28, Math.PI]} />
-        <meshStandardMaterial {...M.CERAMIC} />
-      </mesh>
-
-      {/*
-        Coffee. Sits a centimetre below the rim, dark and glossy so it catches
-        the lamp as a small bright ellipse — which is what tells you at a glance
-        that the cup isn't empty.
-      */}
-      <mesh position={[0, 0.082, 0]} rotation={[-Math.PI / 2, 0, 0]}>
-        <circleGeometry args={[0.0435, 40]} />
-        <meshStandardMaterial {...M.COFFEE} />
+        <torusGeometry args={[0.032, 0.0088, 18, 32, Math.PI]} />
+        <meshPhysicalMaterial {...M.GLASS} />
       </mesh>
     </group>
   );
