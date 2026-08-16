@@ -76,22 +76,51 @@ Everything that changes state moves, and nothing moves linearly.
 
 ### Left — commit feed
 
-The one screen where density is the point, so softening has to be careful:
-rounding every row into a card would waste half the panel.
+**A terminal running `git log --oneline`.** The exception to the "round and
+friendly" direction above, and the reason for the exception is that this screen
+isn't showing you a designed view of commit data — it's showing you the data in
+the format it natively has. Cards were a design decision about someone else's
+output; a log is the output. It also happens to be the one format a reader can't
+suspect of having been arranged flatteringly, which matters more here than on
+any other surface.
 
-- Header becomes a row of **pill badges** — `123 this year`, `1d streak`,
-  `updated 4m ago` — filled at level 1, `--r-full`. That's the part that reads
-  from the rest pose.
-- Repo group headings become a **chip** (repo name, accent, `--r-xs`) with the
-  date trailing, and the hairline rule under them goes away. The chip is enough
-  separation; the rule was doing the same job twice.
-- Rows get `--r-sm` and a level-2 fill on hover, inset 8px so the highlight is
-  clearly a row and not a full-bleed band.
-- Redaction blocks become `--r-full` capsules rather than 1px-rounded bars. A
-  capsule reads as *deliberately withheld*; a sharp bar reads as a loading
-  skeleton, which is the wrong story entirely.
-- The footer note about work commits sits in a level-1 card at `--r-md`, so the
-  explanation is visibly an aside and not another commit.
+The container still softens. What doesn't is the content: mono throughout, one
+commit per line, columns rather than cards.
+
+- **Window chrome** at level 1, `--r-md`: three neutral dots and `yash@desk:
+  ~/dev`. This is what carries from the rest pose — from two metres a title bar
+  over a field of monospace is legible as *a terminal* when no word on it is.
+  The dots stay neutral rather than red/amber/green; three saturated hues for
+  decoration would break the one-accent rule the room's colour rests on.
+- The two totals stay as **pill badges** (`--r-full`, level 1) in the title bar.
+  `updated 4m ago` moves to the bottom line, next to the cursor — the freshness
+  stamp belongs with the thing that's waiting for the next commit.
+- **Rows**: 7-char sha in accent (git colours it for the same reason — it's the
+  only part of the line that's machine output), message, repo, age. `--r-sm`
+  with a level-2 fill on hover, inset 8px.
+- The **repo column prints only when it changes**, and a `# Sun 16 Aug · 6
+  commits` comment goes in wherever the day turns over. That's all that survives
+  of grouping: nothing is folded away, the log stays linear, and a burst on one
+  repo still reads as one session.
+- **Linear, never `--graph`.** The collector reads the events API, which carries
+  no parent shas, so any topology drawn here would be invented.
+- **Redaction blocks** stay `--r-full` capsules at a fixed width — *deliberately
+  withheld*, not a loading skeleton, and a length-proportional bar would leak how
+  long the subject was. The kind tag before it is fixed-width too, or the
+  blackout starts in a different place on every row and reads as damage rather
+  than as policy.
+- The work-commit note becomes a `#` **comment line** above the prompt rather
+  than a card. In a terminal a dim comment is already visibly an aside.
+- **Below 720px the row reflows**: sha, repo and age on the first line, the
+  message wrapped in full underneath. Columns at that width give the message
+  ~50 characters and truncate every line to nothing. A narrow terminal wraps
+  rather than truncates, so the reflow is the more faithful behaviour as well as
+  the readable one. Container query, not media query — mounted in the room this
+  DOM sits on a plane at a fixed 1100px and the viewport tells it nothing.
+- **The live tail.** The client re-polls every two minutes and a commit that
+  lands mid-session prints itself at the top with the 320ms fade-and-rise from
+  §4. Only ids that weren't in the previous poll animate, so the hundred and
+  forty already on screen stay still on first paint.
 
 ### Centre — about
 
