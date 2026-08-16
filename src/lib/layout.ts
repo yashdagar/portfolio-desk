@@ -683,32 +683,24 @@ export const CUBE = {
    * facelet is visibly pillowed — you can see the light turn over its edge
    * before it reaches the groove.
    *
-   * 2.2 mm held both of those and still rendered as a stickered cube, because
-   * the radius was never the whole problem. Look at the piece rather than the
-   * cube: a 3.2 mm shoulder on an 18.6 mm cubie leaves a 12.2 mm flat, which is
-   * about what a real one measures — the moulded shoulder is a third of the
-   * piece, not a chamfer knocked off its edge. At 2.2 the flat was 14.2 mm and
-   * the turn happened too fast to see, so nine tiles read as nine flat squares
-   * with lines between them, which is a printed grid.
+   * It went as far as 3.8 mm from there, chasing the near-disc centre facelets a
+   * real cube has, and that failed for a reason worth keeping: a uniform fillet
+   * rounds the tile's corners *in plane* as well as turning its edges, so the
+   * radius that rounds the corners also eats the face. At 3.8 the shoulder plus
+   * gap is 8 mm of an 18.9 mm pitch — 42% of the face — and the tiles come
+   * apart into separate blocks. A real cube has round corners *and* tiles that
+   * nearly touch, which needs a large in-plane radius with a small edge fillet.
+   * That's two numbers, and this geometry has one.
    *
-   * Going the other way doesn't work either, and it's worth writing down why,
-   * because a photograph makes 3.8 mm look right. A uniform fillet rounds the
-   * tile's corners *in plane* as well as turning its edges, and on a real cube
-   * those corners are very round — the centre facelets are nearly discs. But
-   * the two can't be set separately here: a radius big enough to round the
-   * corners like that turns 2·bevel + gap into 8 mm of a 18.9 mm pitch, so 42%
-   * of the face is shoulder and the tiles come apart into separate blocks. The
-   * reference has round corners *and* tiles that nearly touch, which needs a
-   * large in-plane radius with a small edge fillet — two numbers this geometry
-   * only has one of.
-   *
-   * 3.4 mm is that compromise. It sits much closer to the reference than the
-   * 2.6 it replaced, and it only became affordable once the slot walls stopped
-   * being painted black: while they were, every extra millimetre of radius was
-   * spent widening a dark channel, so the tiles came apart. With the walls
-   * carrying the tile's own colour, the same millimetre is spent on curved,
-   * lit, coloured plastic instead — which is the thing that was wanted from it
-   * in the first place.
+   * So it comes back to 2.2, and what settles it is that the bevel is no longer
+   * the thing carrying the roundness. `DOME` in Cube.tsx crowns each facelet, so
+   * the tile has a gradient across all of it rather than only at its edge, and
+   * the fillet is free to be small. Small is what the rest of the design needs:
+   * every millimetre of shoulder is a millimetre off the *flat* pad, and the
+   * round centre facelet has to fit inside that pad with its dark corners still
+   * visible around it. At 3.4 the disc was wider than the flat and its corners
+   * fell on the shoulder, where the surface is already turning away — the whole
+   * feature drawn and none of it visible.
    *
    * The gap and the shading ramp in Cube.tsx are the other two thirds of this
    * decision and none of the three works alone. What you see between two tiles
@@ -717,7 +709,7 @@ export const CUBE = {
    * and the ramp decides how much of the curve stays the colour of the tile.
    * With the ramp gradual and the slot walls coloured, all of it reads as tile.
    */
-  bevel: 0.0034,
+  bevel: 0.0022,
   /*
    * Between the mat and the notebook, well forward, where a hand reaches
    * without looking.

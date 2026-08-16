@@ -3,8 +3,10 @@
 import { useEffect, useMemo } from "react";
 import {
   BufferAttribute,
+  CanvasTexture,
   Color,
   Quaternion,
+  SRGBColorSpace,
   Vector3,
   type BufferGeometry,
 } from "three";
@@ -66,6 +68,12 @@ import * as M from "./materials";
  * so the whole tile carries a gradient, plus enough gloss for the lamp to lay a
  * specular streak along that crown. At this size the streak *is* the roundness;
  * the geometry only decides where it falls.
+ *
+ * The fifth thing missing was the one feature nothing about a rounded box can
+ * produce: the centre facelet of a real cube is a *disc*, and the four pieces
+ * around it are cut back to concave arcs that follow it. That's `ringTexture`
+ * below — a property of the face rather than of any piece, which is also why it
+ * survives a scramble.
  *
  * All twenty-six merge into one geometry, so the whole cube is a single draw
  * call — cheaper than the version it replaces, and the corners are round.
@@ -271,6 +279,105 @@ const CORE = new Color(CORE_BLACK);
  */
 const SHADOW = 0.46;
 
+/** Radius of the round centre facelet, as a fraction of one cell. */
+const DISC = 0.33;
+/**
+ * Radius of the arc the four pieces around it are cut back to.
+ *
+ * Past half a cell on purpose — that's the whole point of it. At exactly half,
+ * the arc would land on the boundary between the centre piece and its
+ * neighbours, which is already a groove, and nothing would change. Past half it
+ * crosses into them, and the concave bite it takes out of each is as much of
+ * the look as the disc is.
+ */
+const ARC = 0.66;
+/** How dark the mask goes, as a multiplier on whatever colour it crosses. */
+const MASK_DEPTH = 0.55;
+
+/**
+ * The one circle per face, drawn as a mask.
+ *
+ * A real speedcube's centre facelet is a disc, not a square — look at the
+ * reference and every face has a circle at the middle of it, with the four
+ * pieces around it cut to concave arcs that follow it. It reads as a property of
+ * the *face* rather than of any piece, which is also why it survives a scramble:
+ * every edge piece is moulded identically, so the arcs reassemble into a circle
+ * whichever way the cube is turned. That's exactly how it's drawn here — the
+ * vertices are mapped into the coordinates of the cube face they sit on, so one
+ * circle covers all nine pieces of that face and lands correctly on each.
+ *
+ * It has to be a texture. The obvious alternative is to paint it per vertex like
+ * everything else on this cube, and that fails on arithmetic: eight segments
+ * across an 18.6 mm cubie puts the vertices 2.3 mm apart, and a 1.3 mm groove
+ * falls straight between them. Holding it would need about forty segments a
+ * side, which is eighty thousand triangles for a 56 mm object on a desk.
+ *
+ * A bare ring doesn't work either, which took a render to see. Stroke a circle
+ * at the arc radius and it lands in the neighbours' shoulders — surface that is
+ * already turning away into shadow, so the groove goes exactly where nothing
+ * can be seen. What has to be darkened is an *area*: the corners of the centre
+ * cell left over around its disc, which is what makes the disc read as a disc.
+ * So the middle cell is filled and the disc punched back out of it, and the arc
+ * is then stroked across the boundary to take the bite out of the neighbours.
+ *
+ * Multiplied into the colour rather than replacing it, so all of it is whatever
+ * colour the facelet it crosses is, in shadow — same rule as the slot walls,
+ * and the same reason.
+ */
+function ringTexture(): CanvasTexture {
+  const size = 512;
+  const canvas = document.createElement("canvas");
+  canvas.width = size;
+  canvas.height = size;
+
+  const ctx = canvas.getContext("2d")!;
+  ctx.fillStyle = "#ffffff";
+  ctx.fillRect(0, 0, size, size);
+
+  // The face spans three cells, so one cell is a third of the canvas.
+  const cell = size / 3;
+  const mid = size / 2;
+  const dark = `rgba(0, 0, 0, ${1 - MASK_DEPTH})`;
+
+  // The centre cell, minus the disc: the four corners left over around it.
+  ctx.fillStyle = dark;
+  ctx.fillRect(cell, cell, cell, cell);
+  /*
+   * Painted back rather than punched out. `destination-out` is the obvious way
+   * to cut a hole and it cuts the wrong thing: this canvas is opaque, so it
+   * removes alpha and leaves a transparent disc, which arrives at the shader as
+   * black and renders the centre facelet darker than the corners it was meant
+   * to be brighter than.
+   */
+  ctx.fillStyle = "#ffffff";
+  ctx.beginPath();
+  ctx.arc(mid, mid, DISC * cell, 0, Math.PI * 2);
+  ctx.fill();
+
+  /*
+   * The bite out of the four pieces around it.
+   *
+   * Two passes, the wider one fainter, so the arc has a soft outer edge. A
+   * single hard stroke reads as a line drawn on the plastic, which is the same
+   * mistake as the black border one dimension down.
+   */
+  for (const [width, alpha] of [
+    [0.2, 0.14],
+    [0.1, 1 - MASK_DEPTH],
+  ]) {
+    ctx.strokeStyle = `rgba(0, 0, 0, ${alpha})`;
+    ctx.lineWidth = width * cell;
+    ctx.beginPath();
+    ctx.arc(mid, mid, ARC * cell, 0, Math.PI * 2);
+    ctx.stroke();
+  }
+
+  const texture = new CanvasTexture(canvas);
+  texture.colorSpace = SRGBColorSpace;
+  texture.anisotropy = 8;
+  return texture;
+}
+
 /**
  * The whole cube as one geometry, coloured per vertex.
  *
@@ -320,7 +427,9 @@ function buildCube(): BufferGeometry {
     dome(geo);
 
     const normals = geo.attributes.normal;
+    const points = geo.attributes.position;
     const colours = new Float32Array(normals.count * 3);
+    const uvs = new Float32Array(normals.count * 2);
     const faces = faceColours(c);
 
     for (let v = 0; v < normals.count; v++) {
@@ -335,6 +444,22 @@ function buildCube(): BufferGeometry {
         key[a] = n[a] > 0 ? 1 : -1;
         return faces.get(key.join(",")) ?? CORE_BLACK;
       };
+
+      /*
+       * Where this vertex sits on the face of the assembled cube, in 0..1.
+       *
+       * Its own position within the piece, plus the piece's place in the grid.
+       * The two in-plane axes can be taken in either order and either direction
+       * — a circle centred on the face is the one pattern that doesn't care,
+       * which is what makes this cheap enough to be worth doing.
+       */
+      const [across, down] = [0, 1, 2].filter((a) => a !== axis);
+      const local = [points.getX(v), points.getY(v), points.getZ(v)];
+      const face = 3 * pitch;
+      uvs[v * 2] =
+        0.5 + (local[across] + c.pos.getComponent(across) * pitch) / face;
+      uvs[v * 2 + 1] =
+        0.5 + (local[down] + c.pos.getComponent(down) * pitch) / face;
 
       const dominant = faceAt(axis);
       const toward = faceAt(next);
@@ -420,6 +545,9 @@ function buildCube(): BufferGeometry {
     }
 
     geo.setAttribute("color", new BufferAttribute(colours, 3));
+    // Overwritten rather than added: the box arrives with per-face UVs, which
+    // would put a whole circle on every one of the cube's fifty-four facelets.
+    geo.setAttribute("uv", new BufferAttribute(uvs, 2));
     geo.translate(c.pos.x * pitch, c.pos.y * pitch, c.pos.z * pitch);
     parts.push(geo);
   }
@@ -431,7 +559,9 @@ function buildCube(): BufferGeometry {
 
 export function Cube({ top }: { top: number }) {
   const geometry = useMemo(() => buildCube(), []);
+  const rings = useMemo(() => ringTexture(), []);
   useEffect(() => () => geometry.dispose(), [geometry]);
+  useEffect(() => () => rings.dispose(), [rings]);
 
   return (
     <mesh
@@ -448,9 +578,11 @@ export function Cube({ top }: { top: number }) {
 
         `vertexColors` multiplies the attribute into the material's base colour,
         so the colour has to stay white here — anything else tints all six faces
-        by the same amount and the whole cube goes muddy.
+        by the same amount and the whole cube goes muddy. The map multiplies in
+        on top of both, which is what lets one greyscale ring darken fifty-four
+        differently coloured facelets without knowing anything about any of them.
       */}
-      <meshStandardMaterial {...M.CUBE_PLASTIC} vertexColors />
+      <meshStandardMaterial {...M.CUBE_PLASTIC} map={rings} vertexColors />
     </mesh>
   );
 }
