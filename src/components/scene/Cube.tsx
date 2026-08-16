@@ -3,12 +3,10 @@
 import { useEffect, useMemo } from "react";
 import {
   BufferAttribute,
-  CanvasTexture,
+  BufferGeometry,
   Color,
   Quaternion,
-  SRGBColorSpace,
   Vector3,
-  type BufferGeometry,
 } from "three";
 import { mergeBufferGeometries, RoundedBoxGeometry } from "three-stdlib";
 
@@ -69,11 +67,14 @@ import * as M from "./materials";
  * specular streak along that crown. At this size the streak *is* the roundness;
  * the geometry only decides where it falls.
  *
- * The fifth thing missing was the one feature nothing about a rounded box can
- * produce: the centre facelet of a real cube is a *disc*, and the four pieces
- * around it are cut back to concave arcs that follow it. That's `ringTexture`
- * below — a property of the face rather than of any piece, which is also why it
- * survives a scramble.
+ * The fifth version was missing the one feature no rounded box can produce: the
+ * centre facelet of a real cube is a *disc*, and the four pieces around it are
+ * cut back to arcs that follow it. Drawing that as a texture was the sixth
+ * mistake — a picture of the right thing on the wrong shape. A circle painted
+ * on a square tile reads as a decal, because the silhouette, the rim highlight
+ * and the shadow in the seam all still belong to the square, and none of those
+ * come from paint. So each facelet is now its own moulded pad with the outline
+ * it actually has, standing proud of a piece that shows around it.
  *
  * All twenty-six merge into one geometry, so the whole cube is a single draw
  * call — cheaper than the version it replaces, and the corners are round.
@@ -279,103 +280,205 @@ const CORE = new Color(CORE_BLACK);
  */
 const SHADOW = 0.46;
 
-/** Radius of the round centre facelet, as a fraction of one cell. */
-const DISC = 0.33;
-/**
- * Radius of the arc the four pieces around it are cut back to.
+/*
+ * ---------------------------------------------------------------------------
+ * The pads
+ * ---------------------------------------------------------------------------
  *
- * Past half a cell on purpose — that's the whole point of it. At exactly half,
- * the arc would land on the boundary between the centre piece and its
- * neighbours, which is already a groove, and nothing would change. Past half it
- * crosses into them, and the concave bite it takes out of each is as much of
- * the look as the disc is.
+ * A facelet is a separate moulded pad sitting proud of the piece it's part of,
+ * and its outline is not a square. The centre one is a disc; the four around it
+ * are cut back to an arc that follows the disc. The version before this drew
+ * that as a texture, which is a picture of the right thing on the wrong shape —
+ * a circle painted on a square tile reads as a decal, because the silhouette,
+ * the rim highlight and the shadow in the seam all still belong to the square.
+ * None of those come from paint. They come from an outline, so the pads are
+ * built as geometry with the outline they actually have.
  */
-const ARC = 0.66;
-/** How dark the mask goes, as a multiplier on whatever colour it crosses. */
-const MASK_DEPTH = 0.55;
+
+/** Gap between a pad and the edge of the piece it's moulded into. */
+const SEAM = 0.0005;
+const PAD_HALF = CUBE.cubie / 2 - SEAM;
+/**
+ * Superellipse exponent for the pads that aren't round.
+ *
+ * A rounded square, expressed as one number instead of four arcs and four
+ * lines: at 2 this is a circle, at infinity a square, and around 4.5 it's the
+ * shape a moulded pad actually has. It also makes the arc below trivial to cut,
+ * since every point of the outline is already computed from an angle.
+ */
+const PAD_SQUARENESS = 4.5;
+/** Radius of the round centre facelet. */
+const DISC_R = 0.0089;
+/**
+ * Radius of the arc the four pieces around the centre are cut back to.
+ *
+ * The geometry here is tighter than it looks. The disc can be at most as wide
+ * as its own piece, so the arc that clears it can only just reach into the
+ * neighbours — this cuts a lens about 8 mm wide and 0.7 mm deep out of each,
+ * and no bigger is available without the disc overhanging a piece it isn't
+ * part of. Small, and it's the difference between four square tiles around a
+ * circle and four tiles that were made for it.
+ */
+const ARC_R = 0.0107;
+/** How far a pad stands proud of the piece under it. */
+const PAD_RISE = 0.0004;
+/** And how much higher its middle is than its rim. */
+const PAD_CROWN = 0.0009;
+/** Rings across a pad, and points around its outline. */
+const PAD_RINGS = 5;
+const PAD_STEPS = 44;
+/** How dark the piece is where it shows around and between the pads. */
+const BODY_DIM = 0.62;
 
 /**
- * The one circle per face, drawn as a mask.
+ * The outline of one pad, in the plane of the face it sits on.
  *
- * A real speedcube's centre facelet is a disc, not a square — look at the
- * reference and every face has a circle at the middle of it, with the four
- * pieces around it cut to concave arcs that follow it. It reads as a property of
- * the *face* rather than of any piece, which is also why it survives a scramble:
- * every edge piece is moulded identically, so the arcs reassemble into a circle
- * whichever way the cube is turned. That's exactly how it's drawn here — the
- * vertices are mapped into the coordinates of the cube face they sit on, so one
- * circle covers all nine pieces of that face and lands correctly on each.
- *
- * It has to be a texture. The obvious alternative is to paint it per vertex like
- * everything else on this cube, and that fails on arithmetic: eight segments
- * across an 18.6 mm cubie puts the vertices 2.3 mm apart, and a 1.3 mm groove
- * falls straight between them. Holding it would need about forty segments a
- * side, which is eighty thousand triangles for a 56 mm object on a desk.
- *
- * A bare ring doesn't work either, which took a render to see. Stroke a circle
- * at the arc radius and it lands in the neighbours' shoulders — surface that is
- * already turning away into shadow, so the groove goes exactly where nothing
- * can be seen. What has to be darkened is an *area*: the corners of the centre
- * cell left over around its disc, which is what makes the disc read as a disc.
- * So the middle cell is filled and the disc punched back out of it, and the arc
- * is then stroked across the boundary to take the bite out of the neighbours.
- *
- * Multiplied into the colour rather than replacing it, so all of it is whatever
- * colour the facelet it crosses is, in shadow — same rule as the slot walls,
- * and the same reason.
+ * `cu`/`cv` are where the pad's own centre falls on the cube's face, which is
+ * what lets the arc be cut without the pad knowing which piece it belongs to:
+ * every point is tested against one circle centred on the *face*, and anything
+ * inside it is pushed back out to the rim. The disc, the four bitten pads and
+ * the four untouched corner pads all fall out of that single rule — which is
+ * also why the pattern survives a scramble, since it never depended on which
+ * piece was where.
  */
-function ringTexture(): CanvasTexture {
-  const size = 512;
-  const canvas = document.createElement("canvas");
-  canvas.width = size;
-  canvas.height = size;
+function padOutline(centre: boolean, cu: number, cv: number): number[][] {
+  const points: number[][] = [];
 
-  const ctx = canvas.getContext("2d")!;
-  ctx.fillStyle = "#ffffff";
-  ctx.fillRect(0, 0, size, size);
+  for (let i = 0; i < PAD_STEPS; i++) {
+    const angle = (i / PAD_STEPS) * Math.PI * 2;
+    const cos = Math.cos(angle);
+    const sin = Math.sin(angle);
 
-  // The face spans three cells, so one cell is a third of the canvas.
-  const cell = size / 3;
-  const mid = size / 2;
-  const dark = `rgba(0, 0, 0, ${1 - MASK_DEPTH})`;
+    if (centre) {
+      points.push([DISC_R * cos, DISC_R * sin]);
+      continue;
+    }
 
-  // The centre cell, minus the disc: the four corners left over around it.
-  ctx.fillStyle = dark;
-  ctx.fillRect(cell, cell, cell, cell);
-  /*
-   * Painted back rather than punched out. `destination-out` is the obvious way
-   * to cut a hole and it cuts the wrong thing: this canvas is opaque, so it
-   * removes alpha and leaves a transparent disc, which arrives at the shader as
-   * black and renders the centre facelet darker than the corners it was meant
-   * to be brighter than.
-   */
-  ctx.fillStyle = "#ffffff";
-  ctx.beginPath();
-  ctx.arc(mid, mid, DISC * cell, 0, Math.PI * 2);
-  ctx.fill();
+    const r =
+      PAD_HALF /
+      Math.pow(
+        Math.abs(cos) ** PAD_SQUARENESS + Math.abs(sin) ** PAD_SQUARENESS,
+        1 / PAD_SQUARENESS,
+      );
 
-  /*
-   * The bite out of the four pieces around it.
-   *
-   * Two passes, the wider one fainter, so the arc has a soft outer edge. A
-   * single hard stroke reads as a line drawn on the plastic, which is the same
-   * mistake as the black border one dimension down.
-   */
-  for (const [width, alpha] of [
-    [0.2, 0.14],
-    [0.1, 1 - MASK_DEPTH],
-  ]) {
-    ctx.strokeStyle = `rgba(0, 0, 0, ${alpha})`;
-    ctx.lineWidth = width * cell;
-    ctx.beginPath();
-    ctx.arc(mid, mid, ARC * cell, 0, Math.PI * 2);
-    ctx.stroke();
+    let u = r * cos;
+    let v = r * sin;
+
+    // Cut back to the arc wherever this pad would otherwise crowd the disc.
+    const fu = u + cu;
+    const fv = v + cv;
+    const away = Math.hypot(fu, fv);
+    if (away < ARC_R) {
+      const push = ARC_R / away;
+      u = fu * push - cu;
+      v = fv * push - cv;
+    }
+
+    points.push([u, v]);
   }
 
-  const texture = new CanvasTexture(canvas);
-  texture.colorSpace = SRGBColorSpace;
-  texture.anisotropy = 8;
-  return texture;
+  return points;
+}
+
+/**
+ * One pad: an outline, crowned, with a short skirt down to the piece.
+ *
+ * Built as rings scaled in toward the middle rather than extruded, because an
+ * extrusion's cap is flat — and a flat cap is the thing four rounds of this
+ * cube already established doesn't read as moulded. The profile is a spherical
+ * cap, so it leaves the rim vertically and flattens toward the middle, which
+ * puts the highlight in a line around the edge of the pad instead of a blob in
+ * the centre of it.
+ */
+function padGeometry(
+  centre: boolean,
+  cu: number,
+  cv: number,
+  axis: number,
+  sign: number,
+  colour: Color,
+  rim: Color,
+): BufferGeometry {
+  const outline = padOutline(centre, cu, cv);
+  const base = CUBE.cubie / 2;
+
+  /** Rings from the skirt's foot up and in to the crown. */
+  const rings: number[][][] = [outline.map(([u, v]) => [u, v, 0])];
+  for (let i = 0; i <= PAD_RINGS; i++) {
+    const out = 1 - i / PAD_RINGS;
+    const height = PAD_RISE + PAD_CROWN * Math.sqrt(Math.max(0, 1 - out * out));
+    rings.push(outline.map(([u, v]) => [u * out, v * out, height]));
+  }
+
+  const positions: number[] = [];
+  const colours: number[] = [];
+
+  /** Lift a point out of the face's plane and into the cubie's frame. */
+  const place = (p: number[]) => {
+    const [across, down] = [0, 1, 2].filter((a) => a !== axis);
+    const xyz = [0, 0, 0];
+    xyz[across] = p[0];
+    xyz[down] = p[1];
+    xyz[axis] = sign * (base + p[2]);
+    return xyz;
+  };
+
+  const push = (p: number[], c: Color) => {
+    const xyz = place(p);
+    positions.push(xyz[0], xyz[1], xyz[2]);
+    colours.push(c.r, c.g, c.b);
+  };
+
+  /*
+   * Which way round to wind each triangle.
+   *
+   * Two things flip it, and they can cancel. Taking the two in-plane axes in
+   * ascending order gives a right-handed frame for X and Z but a left-handed
+   * one for Y — (x, z, y) is a swap, not a rotation — and pointing the pad down
+   * a negative axis flips it again. Get this wrong and the normals face into
+   * the cube: the pad still has the right silhouette, so it looks like a
+   * lighting bug rather than a winding one, which is exactly how it presented.
+   */
+  const flip = (axis === 1) !== (sign < 0);
+  const tri = (a: number[], b: number[], d: number[], ca: Color, cb: Color) => {
+    if (flip) {
+      push(d, cb);
+      push(b, cb);
+      push(a, ca);
+    } else {
+      push(a, ca);
+      push(b, cb);
+      push(d, cb);
+    }
+  };
+
+  for (let r = 0; r < rings.length - 1; r++) {
+    const lower = rings[r];
+    const upper = rings[r + 1];
+    // The skirt is the piece's own plastic in shadow, not the facelet.
+    const a = r === 0 ? rim : colour;
+    const b = r === 0 ? colour : colour;
+
+    for (let i = 0; i < PAD_STEPS; i++) {
+      const j = (i + 1) % PAD_STEPS;
+      tri(lower[i], upper[j], upper[i], a, b);
+      tri(lower[i], lower[j], upper[j], a, a);
+    }
+  }
+
+  // Cap the middle, which the innermost ring has scaled almost to a point.
+  const top = rings[rings.length - 1];
+  const peak = [0, 0, PAD_RISE + PAD_CROWN];
+  for (let i = 0; i < PAD_STEPS; i++) {
+    const j = (i + 1) % PAD_STEPS;
+    tri(top[i], top[j], peak, colour, colour);
+  }
+
+  const geo = new BufferGeometry();
+  geo.setAttribute("position", new BufferAttribute(new Float32Array(positions), 3));
+  geo.setAttribute("color", new BufferAttribute(new Float32Array(colours), 3));
+  geo.computeVertexNormals();
+  return geo;
 }
 
 /**
@@ -427,9 +530,7 @@ function buildCube(): BufferGeometry {
     dome(geo);
 
     const normals = geo.attributes.normal;
-    const points = geo.attributes.position;
     const colours = new Float32Array(normals.count * 3);
-    const uvs = new Float32Array(normals.count * 2);
     const faces = faceColours(c);
 
     for (let v = 0; v < normals.count; v++) {
@@ -444,22 +545,6 @@ function buildCube(): BufferGeometry {
         key[a] = n[a] > 0 ? 1 : -1;
         return faces.get(key.join(",")) ?? CORE_BLACK;
       };
-
-      /*
-       * Where this vertex sits on the face of the assembled cube, in 0..1.
-       *
-       * Its own position within the piece, plus the piece's place in the grid.
-       * The two in-plane axes can be taken in either order and either direction
-       * — a circle centred on the face is the one pattern that doesn't care,
-       * which is what makes this cheap enough to be worth doing.
-       */
-      const [across, down] = [0, 1, 2].filter((a) => a !== axis);
-      const local = [points.getX(v), points.getY(v), points.getZ(v)];
-      const face = 3 * pitch;
-      uvs[v * 2] =
-        0.5 + (local[across] + c.pos.getComponent(across) * pitch) / face;
-      uvs[v * 2 + 1] =
-        0.5 + (local[down] + c.pos.getComponent(down) * pitch) / face;
 
       const dominant = faceAt(axis);
       const toward = faceAt(next);
@@ -514,9 +599,15 @@ function buildCube(): BufferGeometry {
        * piece.
        */
       if (dominant !== CORE_BLACK) {
-        colour.set(dominant);
+        /*
+         * Dimmed, because this is no longer the facelet — the pad above it is.
+         * What's left of the piece's own face is the frame around and between
+         * the pads, and on a real cube that frame is the same plastic sitting
+         * a little lower with less light on it.
+         */
+        colour.set(dominant).multiplyScalar(BODY_DIM);
         if (toward === CORE_BLACK) {
-          shade.set(dominant).multiplyScalar(SHADOW);
+          shade.set(dominant).multiplyScalar(SHADOW * BODY_DIM);
           colour.lerp(shade, smoothstep(0.08, 1, turned));
         }
       } else if (toward !== CORE_BLACK) {
@@ -545,11 +636,39 @@ function buildCube(): BufferGeometry {
     }
 
     geo.setAttribute("color", new BufferAttribute(colours, 3));
-    // Overwritten rather than added: the box arrives with per-face UVs, which
-    // would put a whole circle on every one of the cube's fifty-four facelets.
-    geo.setAttribute("uv", new BufferAttribute(uvs, 2));
+    geo.deleteAttribute("uv");
     geo.translate(c.pos.x * pitch, c.pos.y * pitch, c.pos.z * pitch);
-    parts.push(geo);
+    parts.push(geo.index ? geo.toNonIndexed() : geo);
+
+    /*
+     * A pad on each face this piece actually shows.
+     *
+     * Which shape it gets is decided by where the piece sits on that face, not
+     * by what kind of piece it is: dead centre gets the disc, and everything
+     * else gets a rounded square that the disc's arc may or may not reach. It
+     * comes out the same either way, and it means a scrambled cube reassembles
+     * the pattern correctly without anything having to track it.
+     */
+    for (let axis = 0; axis < 3; axis++) {
+      const sign = c.pos.getComponent(axis);
+      if (sign === 0) continue;
+
+      const hue = faces.get(
+        [0, 1, 2].map((a) => (a === axis ? sign : 0)).join(","),
+      );
+      if (!hue || hue === CORE_BLACK) continue;
+
+      const [across, down] = [0, 1, 2].filter((a) => a !== axis);
+      const cu = c.pos.getComponent(across) * pitch;
+      const cv = c.pos.getComponent(down) * pitch;
+
+      colour.set(hue).convertSRGBToLinear();
+      shade.set(hue).multiplyScalar(SHADOW * BODY_DIM).convertSRGBToLinear();
+
+      const pad = padGeometry(cu === 0 && cv === 0, cu, cv, axis, sign, colour, shade);
+      pad.translate(c.pos.x * pitch, c.pos.y * pitch, c.pos.z * pitch);
+      parts.push(pad);
+    }
   }
 
   const merged = mergeBufferGeometries(parts, false)!;
@@ -559,9 +678,7 @@ function buildCube(): BufferGeometry {
 
 export function Cube({ top }: { top: number }) {
   const geometry = useMemo(() => buildCube(), []);
-  const rings = useMemo(() => ringTexture(), []);
   useEffect(() => () => geometry.dispose(), [geometry]);
-  useEffect(() => () => rings.dispose(), [rings]);
 
   return (
     <mesh
@@ -578,11 +695,9 @@ export function Cube({ top }: { top: number }) {
 
         `vertexColors` multiplies the attribute into the material's base colour,
         so the colour has to stay white here — anything else tints all six faces
-        by the same amount and the whole cube goes muddy. The map multiplies in
-        on top of both, which is what lets one greyscale ring darken fifty-four
-        differently coloured facelets without knowing anything about any of them.
+        by the same amount and the whole cube goes muddy.
       */}
-      <meshStandardMaterial {...M.CUBE_PLASTIC} map={rings} vertexColors />
+      <meshStandardMaterial {...M.CUBE_PLASTIC} vertexColors />
     </mesh>
   );
 }

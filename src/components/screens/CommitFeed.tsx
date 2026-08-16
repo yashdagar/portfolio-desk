@@ -182,7 +182,15 @@ function Row({
       >
         {repo?.replace(/^yashdagar\//, "")}
       </span>
+      {/*
+        The server renders "35m" and the client, a moment later, renders "36m".
+        React treats that as a hydration mismatch and throws the whole subtree
+        away to re-render it — for a number that is *supposed* to disagree,
+        since it's the time since something happened. This is the case the
+        escape hatch exists for.
+      */}
       <span
+        suppressHydrationWarning
         className={`${AGE} shrink-0 text-right text-ink-faint tabular-nums @max-[720px]:ml-auto`}
       >
         {shortAge(commit.at)}
@@ -334,7 +342,10 @@ export function CommitFeed({ initial }: { initial?: ActivityFeed | null }) {
         */}
         <div className="flex items-center">
           <Prompt />
-          <span className="ml-auto px-2 text-ink-faint tabular-nums">
+          <span
+            suppressHydrationWarning
+            className="ml-auto px-2 text-ink-faint tabular-nums"
+          >
             updated {relativeTime(feed.generatedAt)}
           </span>
         </div>
