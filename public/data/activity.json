@@ -1,6 +1,46 @@
 {
-  "generatedAt": "2026-08-16T18:14:27.738Z",
+  "generatedAt": "2026-08-16T18:48:19.190Z",
   "commits": [
+    {
+      "id": "4d940db440b8",
+      "visibility": "public",
+      "kind": "other",
+      "message": "Take the square out from behind the disc",
+      "repo": "yashdagar/portfolio-desk",
+      "url": "https://github.com/yashdagar/portfolio-desk/commit/4d940db440b8dad1975799d8d937dce3c5f6d37f",
+      "language": "TypeScript",
+      "at": "2026-08-16T18:47:21Z"
+    },
+    {
+      "id": "fef219dbf10b",
+      "visibility": "public",
+      "kind": "other",
+      "message": "Seat the pads on the piece instead of floating them over it",
+      "repo": "yashdagar/portfolio-desk",
+      "url": "https://github.com/yashdagar/portfolio-desk/commit/fef219dbf10b46d1c774be3f8c943442dcb8f03e",
+      "language": "TypeScript",
+      "at": "2026-08-16T18:38:13Z"
+    },
+    {
+      "id": "b3f07ef4d4d2",
+      "visibility": "public",
+      "kind": "other",
+      "message": "Facelets are moulded pads with the outline they actually have",
+      "repo": "yashdagar/portfolio-desk",
+      "url": "https://github.com/yashdagar/portfolio-desk/commit/b3f07ef4d4d2289f28dda39fc769738ecd443ab9",
+      "language": "TypeScript",
+      "at": "2026-08-16T18:30:03Z"
+    },
+    {
+      "id": "e7257bea5b52",
+      "visibility": "public",
+      "kind": "other",
+      "message": "Round centres, and the arcs the pieces around them are cut to",
+      "repo": "yashdagar/portfolio-desk",
+      "url": "https://github.com/yashdagar/portfolio-desk/commit/e7257bea5b529425d1f2b2a56cac736c9da3b9b2",
+      "language": "TypeScript",
+      "at": "2026-08-16T18:17:14Z"
+    },
     {
       "id": "0c467df154b9",
       "visibility": "public",
@@ -1430,30 +1470,10 @@
       "url": "https://github.com/yashdagar/order_karo_partners/commit/b5b5f528c1c6f993568b97482df054ecd95f7bcc",
       "language": "Dart",
       "at": "2025-08-16T21:39:51Z"
-    },
-    {
-      "id": "8cc963faa563",
-      "visibility": "public",
-      "kind": "other",
-      "message": "Update aws.png",
-      "repo": "yashdagar/awsugdehradun",
-      "url": "https://github.com/yashdagar/awsugdehradun/commit/8cc963faa5639b7b09b7e81c56a166962f146ec8",
-      "language": "TypeScript",
-      "at": "2025-08-16T18:29:41Z"
-    },
-    {
-      "id": "0b43e2dc5658",
-      "visibility": "public",
-      "kind": "feat",
-      "message": "add aws sponsor, change github to gold sponsor",
-      "repo": "yashdagar/awsugdehradun",
-      "url": "https://github.com/yashdagar/awsugdehradun/commit/0b43e2dc56580584c8e857f480db8fc87273f247",
-      "language": "TypeScript",
-      "at": "2025-08-16T18:23:09Z"
     }
   ],
   "totals": {
-    "year": 145,
+    "year": 147,
     "streak": 1
   }
 }
