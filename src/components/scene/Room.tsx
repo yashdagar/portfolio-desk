@@ -5,8 +5,25 @@ import { useFrame } from "@react-three/fiber";
 import { useMemo, useRef, useState } from "react";
 import { MathUtils, Vector3, type Mesh } from "three";
 
-import { BOX, CAMERA, DESK, MONITOR, SCREENS, SHELF, WALL } from "@/lib/layout";
+import { About } from "@/components/screens/About";
+import { BoxBack } from "@/components/screens/BoxBack";
+import { CommitFeed } from "@/components/screens/CommitFeed";
+import { NowPlaying } from "@/components/screens/NowPlaying";
+import {
+  BOX,
+  BOX_DESIGN,
+  CAMERA,
+  DESK,
+  MONITOR,
+  SCREENS,
+  SCREEN_DESIGN,
+  SHELF,
+  WALL,
+  type ScreenId,
+} from "@/lib/layout";
 import { useScene, type BoxId } from "@/lib/store";
+
+import { Surface } from "./Surface";
 
 /*
  * Greybox.
@@ -65,14 +82,24 @@ function Walls() {
   );
 }
 
+const SCREEN_CONTENT: Record<ScreenId, () => React.ReactElement> = {
+  commits: CommitFeed,
+  about: About,
+  music: NowPlaying,
+};
+
 function Monitor({
   placement,
 }: {
   placement: (typeof SCREENS)[number];
 }) {
   const focusScreen = useScene((s) => s.focusScreen);
+  const focus = useScene((s) => s.focus);
   const [hovered, setHovered] = useState(false);
   useCursor(hovered);
+
+  const focused = focus.kind === "screen" && focus.id === placement.id;
+  const Content = SCREEN_CONTENT[placement.id];
 
   const outerW = MONITOR.panelW + MONITOR.bezel * 2;
   const outerH = MONITOR.panelH + MONITOR.bezel * 2;
@@ -103,13 +130,28 @@ function Monitor({
         onPointerOut={() => setHovered(false)}
       >
         <planeGeometry args={[MONITOR.panelW, MONITOR.panelH]} />
+        {/*
+          Backing for the DOM in front of it. Kept very dark and slightly
+          emissive so the panel reads as powered on even in the moment before
+          the HTML paints, and so the glass has some depth behind the text.
+        */}
         <meshStandardMaterial
-          color={hovered ? "#1d2b30" : "#141b1e"}
-          emissive={hovered ? "#2b4d55" : "#1d3339"}
+          color="#0b0e10"
+          emissive={hovered ? "#1c3238" : "#12232a"}
           emissiveIntensity={1}
           roughness={0.35}
         />
       </mesh>
+
+      <Surface
+        designW={SCREEN_DESIGN.w}
+        designH={SCREEN_DESIGN.h}
+        worldW={MONITOR.panelW}
+        focused={focused}
+        position={[0, 0, MONITOR.depth / 2 + 0.001]}
+      >
+        <Content />
+      </Surface>
 
       {/* Stand: a neck down to the desk and a foot. */}
       <mesh position={[0, -MONITOR.panelH / 2 - MONITOR.liftY / 2, -0.02]} castShadow>
@@ -190,9 +232,14 @@ function GameBox({ id, index }: { id: BoxId; index: number }) {
     mesh.position.lerp(held ? HELD : shelved, k);
 
     // Flat on the shelf the lid points at the ceiling; held, it should point at
-    // the viewer, which is a quarter turn about X. The extra tilt keeps it from
-    // reading as a flat rectangle pasted onto the frame.
-    const targetX = held ? -Math.PI / 2 + 0.14 : 0;
+    // the viewer, which is a quarter turn about X.
+    //
+    // Positive, not negative: rotating by -PI/2 maps +Y to -Z and turns the lid
+    // *away* from the camera. With a plain material both faces look identical
+    // so the greybox couldn't show it; the back cover appearing blank is what
+    // finally did. The 0.14 tips the top edge back so it isn't a flat rectangle
+    // pasted on the frame.
+    const targetX = held ? Math.PI / 2 - 0.14 : 0;
     const targetY = held ? 0 : 0;
     mesh.rotation.x = MathUtils.lerp(mesh.rotation.x, targetX, k);
     mesh.rotation.y = MathUtils.lerp(mesh.rotation.y, targetY, k);
@@ -220,6 +267,28 @@ function GameBox({ id, index }: { id: BoxId; index: number }) {
         color={hovered ? "#9a8f7a" : "#7d7466"}
         roughness={0.8}
       />
+
+      {/*
+        The back cover, on the lid.
+        Rotated a quarter turn because the lid faces +Y while the box lies flat,
+        and only mounted while held — an unread box back is a full DOM tree
+        rendering every frame for a surface pointed at the ceiling.
+      */}
+      {held && (
+        <Surface
+          designW={BOX_DESIGN.w}
+          designH={BOX_DESIGN.h}
+          // Inset from the lid. Printed exactly edge to edge the surface covers
+          // the whole face and the thing reads as a floating card; leaving a
+          // sliver of box visible is what makes it read as an object with depth.
+          worldW={BOX.w * 0.94}
+          focused
+          position={[0, BOX.h / 2 + 0.001, 0]}
+          rotation={[-Math.PI / 2, 0, 0]}
+        >
+          <BoxBack id={id} />
+        </Surface>
+      )}
     </mesh>
   );
 }

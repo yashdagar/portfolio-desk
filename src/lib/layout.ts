@@ -122,3 +122,15 @@ export const BOX = {
   h: 0.075,
   d: 0.295,
 } as const;
+
+/*
+ * Design sizes for the DOM mounted onto surfaces.
+ *
+ * These are the CSS pixel dimensions the screen components are authored at; the
+ * 3D mount scales them onto the physical plane. Chosen so that a focused
+ * surface lands near 1:1 on a typical laptop — render much smaller and the text
+ * is soft when leaned in, much larger and every font size has to be inflated to
+ * stay legible from the rest pose.
+ */
+export const SCREEN_DESIGN = { w: 1100, h: Math.round(1100 * (MONITOR.panelH / MONITOR.panelW)) } as const;
+export const BOX_DESIGN = { w: 860, h: 860 } as const;
