@@ -204,6 +204,14 @@ const GROOVE_RAMP = 0.002;
  * the ramp lands halfway down a wall no camera ever sees between two pieces.
  */
 const SIDE = 0.003;
+/**
+ * How far the facelet's plastic reaches down into the slot before the piece's
+ * black interior takes over. Deeper than any camera can see into a 2 mm gap, on
+ * purpose: a stickerless piece is moulded in its own colour, and stopping the
+ * colour at the rim draws a black box round every tile and turns the face into a
+ * grid of stickers. Only what is genuinely inside the cube is black.
+ */
+const WRAP = 0.008;
 
 /**
  * The height of a piece's own surface at a point on its face. Solved rather than
@@ -591,7 +599,6 @@ function buildCube(): BufferGeometry {
       h ? new Color(h).multiplyScalar(by) : null;
     const lit = hues.map(tint(BODY_DIM));
     const sunk = hues.map(tint(SHADOW * BODY_DIM));
-    const walls = hues.map(tint(SHADOW));
     const rims = hues.map((h, s): Float32Array | null => {
       if (!h) return null;
       const [across, down] = PLANE[s >> 1];
@@ -606,6 +613,8 @@ function buildCube(): BufferGeometry {
       const s = slot(axis, sign);
       if (sign !== 0 && rims[s]) faces.push({ axis, sign, rim: rims[s]! });
     }
+
+    const p = [0, 0, 0];
 
     for (let v = 0; v < count; v++) {
       const i = v * 3;
@@ -639,42 +648,45 @@ function buildCube(): BufferGeometry {
       /** 1 where the surface has turned 45° from the dominant face, 0 on flat. */
       const turned = Math.min(1, Math.abs(nNext) / Math.SQRT1_2);
 
+      p[0] = points[i];
+      p[1] = points[i + 1];
+      p[2] = points[i + 2];
+
       /*
-       * Three cases that have to agree at the joins: at 45° the shoulder reaches
-       * exactly `colour × SHADOW`, which is where the wall case starts, or there
-       * is a visible ring at 45° on every edge.
-       *
-       * The shoulder's colour holds across almost the whole turn and gives up
-       * only at the very bottom, to its own colour in shadow rather than black.
-       * Ramping from the moment the surface starts to turn paints a border round
-       * a flat square, which is a sticker.
+       * Two cases that have to agree where they meet, at 45° on a chamfer: both
+       * arrive at `sunk`, the facelet's own colour with no light on it. Anything
+       * else leaves a ring at 45° round every tile.
        */
       if (dominant) {
-        // Dimmed: the facelet is the pad above this, and what's left of the
-        // piece's face is the frame around it, sitting a little lower.
-        colour.copy(lit[here]!);
-        if (!toward) colour.lerp(sunk[here]!, smoothstep(0.08, 1, turned));
-
         /*
-         * Outside the pad the piece stops being a facelet and becomes a hole.
-         * How much box shows past the pad varies from 0.6 mm of seam along the
-         * axes — which must stay coloured or every tile gets a border — to
-         * 4.5 mm of open void at the diagonals. Measuring from the pad's own rim
-         * handles both: near the axes nothing ever reaches the ramp.
+         * Outward-facing plastic. Whichever is further gone: the shoulder turning
+         * away from the light, or the piece falling away where no tile covers it.
+         *
+         * Ramping from the moment the surface starts to turn paints a border
+         * round a flat square, which is a sticker — hence the 0.08.
          */
-        const [across, down] = PLANE[axis];
-        const bu = points[i + across];
-        const bv = points[i + down];
-        const out = Math.sqrt(bu * bu + bv * bv);
-        if (out > 0) {
-          const rim = rimAt(rims[here]!, bu, bv);
-          colour.lerp(CORE, smoothstep(rim + 0.0002, rim + 0.001, out));
-        }
-      } else if (toward) {
-        // A slot wall: the same coloured plastic with no light on it, not black.
-        colour.copy(CORE).lerp(walls[over]!, turned);
+        const open = 1 - shelter(faces, p);
+        const away = toward ? 0 : smoothstep(0.08, 1, turned);
+        colour.copy(lit[here]!).lerp(sunk[here]!, open > away ? open : away);
       } else {
+        /*
+         * Inside a slot, where the shell is still the colour of whichever face it
+         * hangs below — by depth under that face rather than by which way it
+         * points, because the wall of a slot points nowhere near the face it
+         * belongs to. Past `WRAP` down there is nothing but interior.
+         */
+        let shell = 0;
+        let from = -1;
+        for (const f of faces) {
+          const under = CUBE.cubie / 2 - p[f.axis] * f.sign;
+          const near = 1 - smoothstep(0, WRAP, under);
+          if (near > shell) {
+            shell = near;
+            from = slot(f.axis, f.sign);
+          }
+        }
         colour.copy(CORE);
+        if (from >= 0) colour.lerp(sunk[from]!, shell);
       }
 
       // Vertex colours are read in linear space; the hex strings are sRGB.
