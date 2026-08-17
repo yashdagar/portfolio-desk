@@ -1,6 +1,46 @@
 {
-  "generatedAt": "2026-08-17T04:59:32.955Z",
+  "generatedAt": "2026-08-17T05:24:01.327Z",
   "commits": [
+    {
+      "id": "60527048f2a4",
+      "visibility": "public",
+      "kind": "other",
+      "message": "Finish the comment pass across the rest of the repo",
+      "repo": "yashdagar/portfolio-desk",
+      "url": "https://github.com/yashdagar/portfolio-desk/commit/60527048f2a4518925ef933c9f06f058b01e5b95",
+      "language": "TypeScript",
+      "at": "2026-08-17T05:23:19Z"
+    },
+    {
+      "id": "10efca062aab",
+      "visibility": "public",
+      "kind": "other",
+      "message": "Comment pass: triptych, chessCase, store, activity.server, api routes, Cables, CameraRig, weather, capabilities, WallClock, Lamp, Mug, Headphones",
+      "repo": "yashdagar/portfolio-desk",
+      "url": "https://github.com/yashdagar/portfolio-desk/commit/10efca062aab562e373979fa350afcbb364c33cd",
+      "language": "TypeScript",
+      "at": "2026-08-16T20:44:45Z"
+    },
+    {
+      "id": "8c6995d4ead3",
+      "visibility": "public",
+      "kind": "other",
+      "message": "Comment pass: Curtain, CommitFeed, Planter, Keyboard, daylight, useActivity, geometry, Surface, leetcode",
+      "repo": "yashdagar/portfolio-desk",
+      "url": "https://github.com/yashdagar/portfolio-desk/commit/8c6995d4ead37a79ad56fb6ce52cd03bd59144e0",
+      "language": "TypeScript",
+      "at": "2026-08-16T20:40:13Z"
+    },
+    {
+      "id": "8f03f34fa8be",
+      "visibility": "public",
+      "kind": "other",
+      "message": "Comment pass: layout, materials, Room, Cube, Mouse, windowView, Plant, Scene, activity",
+      "repo": "yashdagar/portfolio-desk",
+      "url": "https://github.com/yashdagar/portfolio-desk/commit/8f03f34fa8bea53675d75e9a93a78d99db72ed39",
+      "language": "TypeScript",
+      "at": "2026-08-16T20:33:49Z"
+    },
     {
       "id": "7c4a51e09a49",
       "visibility": "public",
@@ -1483,7 +1523,7 @@
     }
   ],
   "totals": {
-    "year": 148,
-    "streak": 1
+    "year": 152,
+    "streak": 2
   }
 }
