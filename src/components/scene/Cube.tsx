@@ -26,7 +26,11 @@ import * as M from "./materials";
  * Judge it at ~55 px, not magnified — `scripts/shot-cube.mjs` renders both. And
  * note the pad is not the only thing visible: a piece is a square box and a pad
  * isn't, so a strip of box shows past every pad's edge and the eye measures
- * *that* corner unless the fade in `buildCube` takes it to black.
+ * *that* corner unless `carve` takes it out of the way.
+ *
+ * That strip was painted black for a long time before it was cut away, and paint
+ * is not a shape: a flat square face lit across its whole width still reads as a
+ * flat square however dark one end of it is. The pockets have to be holes.
  */
 
 /**
@@ -98,32 +102,39 @@ const SCRAMBLE: [Vector3, number, number][] = [
   [Y, 1, 1],
 ];
 
+/** The two in-plane axes of each face axis, in ascending order. */
+const PLANE: [number, number][] = [
+  [1, 2],
+  [0, 2],
+  [0, 1],
+];
+
+/** Face slot, so everything per-face can live in a plain six-element array
+ *  rather than a map keyed by a joined string built once per vertex. */
+function slot(axis: number, sign: number): number {
+  return axis * 2 + (sign > 0 ? 0 : 1);
+}
+
 /**
- * Which colour each of a cubie's six faces shows, in world axes. Rotating a
- * world direction back through the inverse asks "which face was this before it
- * was turned". Faces inside the cube get the black core.
+ * Which colour each of a cubie's six faces shows, in world axes, by slot.
+ * Rotating a world direction back through the inverse asks "which face was this
+ * before it was turned". Faces inside the cube are null, not a colour.
  */
-function faceColours(c: Cubie): Map<string, string> {
+function faceColours(c: Cubie): (string | null)[] {
   const inverse = new Quaternion().copy(c.quat).invert();
   const local = new Vector3();
-  const out = new Map<string, string>();
+  const out: (string | null)[] = [null, null, null, null, null, null];
 
   for (const [wx, wy, wz] of AXES) {
-    const onSurface =
-      (wx !== 0 && c.pos.x === wx) ||
-      (wy !== 0 && c.pos.y === wy) ||
-      (wz !== 0 && c.pos.z === wz);
-
-    if (!onSurface) {
-      out.set(`${wx},${wy},${wz}`, CORE_BLACK);
-      continue;
-    }
+    const axis = wx !== 0 ? 0 : wy !== 0 ? 1 : 2;
+    const sign = wx + wy + wz;
+    if (c.pos.getComponent(axis) !== sign) continue;
 
     local.set(wx, wy, wz).applyQuaternion(inverse);
     const key = `${Math.round(local.x)},${Math.round(local.y)},${Math.round(
       local.z,
     )}`;
-    out.set(`${wx},${wy},${wz}`, FACE_COLOURS[key]);
+    out[slot(axis, sign)] = FACE_COLOURS[key];
   }
 
   return out;
@@ -172,6 +183,29 @@ const PAD_STEPS = 64;
 const BODY_DIM = 0.7;
 
 /**
+ * How far the piece falls away where no tile covers it. Under half the bevel, so
+ * the rounded corner it eats into stays rounded rather than inverting.
+ */
+const GROOVE = 0.0011;
+/** Flat land outside the rim before the fall, so a tile is seated in the piece
+ *  rather than perched on a ridge of it. */
+const GROOVE_LIP = 0.0003;
+/** Wide, and it has to be: the pockets are the one place the piece is allowed to
+ *  be soft, and a step here would alias at the size this is actually seen. */
+const GROOVE_RAMP = 0.002;
+/**
+ * How far onto a face's own half of the piece a vertex must be before that
+ * face's tile can shelter it from the carve — a tile can't reach round the back.
+ *
+ * By height rather than by which way the surface points, which sounds equivalent
+ * and is not: a piece's side wall points away from its own top while still being
+ * directly under the tile's edge, so a facing test carves the wall out from under
+ * every tile and doubles the width of every seam. Ramped, and wide enough that
+ * the ramp lands halfway down a wall no camera ever sees between two pieces.
+ */
+const SIDE = 0.003;
+
+/**
  * The height of a piece's own surface at a point on its face. Solved rather than
  * guessed because the pads' rims have to land *on* it — the difference between a
  * facelet and a button is about a millimetre of daylight.
@@ -206,6 +240,103 @@ function padRadius(
       ];
 
   return PAD_HALF / Math.pow(Math.abs(cos) ** n + Math.abs(sin) ** n, 1 / n);
+}
+
+const RIM_STEPS = 48;
+/** Direction at parameter t within each octant, as (a + b·t, c + d·t). */
+const OCTANT: [number, number, number, number][] = [
+  [1, 0, 0, 1],
+  [0, 1, 1, 0],
+  [0, -1, 1, 0],
+  [-1, 0, 0, 1],
+  [-1, 0, 0, -1],
+  [0, -1, -1, 0],
+  [0, 1, -1, 0],
+  [1, 0, 0, -1],
+];
+
+/**
+ * `padRadius` sampled by direction, once per face. The carve asks for the rim a
+ * few hundred thousand times and three `pow`s each is most of a second.
+ *
+ * Indexed by octant and then by the ratio of the smaller in-plane coordinate to
+ * the larger, which is one divide and is a bijection with angle inside an
+ * octant. Octant boundaries fall on the axes and the diagonals, so the quadrant
+ * an exponent belongs to never straddles two rows — the table is smooth wherever
+ * the shape is.
+ */
+function rimTable(centre: boolean, cu: number, cv: number): Float32Array {
+  const table = new Float32Array(8 * (RIM_STEPS + 1));
+
+  for (let o = 0; o < 8; o++) {
+    const [a, b, cc, d] = OCTANT[o];
+    for (let k = 0; k <= RIM_STEPS; k++) {
+      const t = k / RIM_STEPS;
+      const du = a + b * t;
+      const dv = cc + d * t;
+      const len = Math.sqrt(du * du + dv * dv);
+      table[o * (RIM_STEPS + 1) + k] = padRadius(
+        centre,
+        cu,
+        cv,
+        du / len,
+        dv / len,
+      );
+    }
+  }
+
+  return table;
+}
+
+function rimAt(table: Float32Array, u: number, v: number): number {
+  const au = Math.abs(u);
+  const av = Math.abs(v);
+  const wide = au >= av;
+  const t = wide ? (au === 0 ? 0 : av / au) : au / av;
+
+  const o = u >= 0 ? (v >= 0 ? (wide ? 0 : 1) : wide ? 7 : 6) : v >= 0 ? (wide ? 3 : 2) : wide ? 4 : 5;
+
+  const f = t * RIM_STEPS;
+  const i = f >= RIM_STEPS ? RIM_STEPS - 1 : f | 0;
+  const at = o * (RIM_STEPS + 1) + i;
+  return table[at] + (table[at + 1] - table[at]) * (f - i);
+}
+
+interface Face {
+  axis: number;
+  sign: number;
+  rim: Float32Array;
+}
+
+/**
+ * How much of the piece survives at a point: 1 under a tile, 0 out in the open.
+ *
+ * A max over the faces, not a blend, because a point on the chamfer between two
+ * tiles belongs to whichever one still reaches it — blending would sink the
+ * shared edge, and that edge is the cube's silhouette. The pads overhang the
+ * chamfer by design (`PAD_HALF` is 8.7 mm, the chamfer's midpoint 8.66), so two
+ * tiles meeting on an edge shelter it between them with nothing left over.
+ */
+function shelter(faces: Face[], p: number[]): number {
+  let keep = 0;
+
+  for (const f of faces) {
+    const side = smoothstep(0, SIDE, p[f.axis] * f.sign);
+    if (side <= 0) continue;
+
+    const [across, down] = PLANE[f.axis];
+    const u = p[across];
+    const v = p[down];
+    const rim = rimAt(f.rim, u, v);
+    const out = Math.sqrt(u * u + v * v);
+
+    const k =
+      (1 - smoothstep(rim + GROOVE_LIP, rim + GROOVE_LIP + GROOVE_RAMP, out)) *
+      side;
+    if (k > keep) keep = k;
+  }
+
+  return keep;
 }
 
 function padOutline(centre: boolean, cu: number, cv: number): number[][] {
@@ -325,6 +456,89 @@ function padGeometry(
 }
 
 /**
+ * Cut the piece back to the shape its colours already claim, so a four-tile
+ * pocket is a hole with sides that catch the light rather than a dark patch on a
+ * flat block.
+ *
+ * Displacement is along the vertex's own normal, which keeps a chamfer a chamfer
+ * and a corner a corner instead of pushing everything straight down one axis. In
+ * exchange the normals have to be rebuilt, and `computeVertexNormals` can't do
+ * it: `RoundedBoxGeometry` is non-indexed and analytically smooth, so recomputing
+ * from the triangles would facet the whole cube. Two samples of the depth along
+ * the surface give the slope instead, which is all a normal is.
+ */
+function carve(geo: BufferGeometry, faces: Face[]) {
+  const positions = geo.attributes.position.array as Float32Array;
+  const normals = geo.attributes.normal.array as Float32Array;
+  /** Under the mesh's own spacing, so the slope is the carve's and not the box's. */
+  const STEP = 0.00035;
+
+  const p = [0, 0, 0];
+  const n = [0, 0, 0];
+  const at = [0, 0, 0];
+
+  for (let i = 0; i < positions.length; i += 3) {
+    p[0] = positions[i];
+    p[1] = positions[i + 1];
+    p[2] = positions[i + 2];
+    n[0] = normals[i];
+    n[1] = normals[i + 1];
+    n[2] = normals[i + 2];
+
+    const depth = GROOVE * (1 - shelter(faces, p));
+
+    // Any two directions across the surface will do; cross with whichever axis
+    // the normal leans on least, or the two come out parallel.
+    const ax = Math.abs(n[0]);
+    const ay = Math.abs(n[1]);
+    const az = Math.abs(n[2]);
+    let ux: number, uy: number, uz: number;
+    if (ax <= ay && ax <= az) {
+      ux = 0;
+      uy = n[2];
+      uz = -n[1];
+    } else if (ay <= az) {
+      ux = -n[2];
+      uy = 0;
+      uz = n[0];
+    } else {
+      ux = n[1];
+      uy = -n[0];
+      uz = 0;
+    }
+    const ul = Math.sqrt(ux * ux + uy * uy + uz * uz);
+    ux /= ul;
+    uy /= ul;
+    uz /= ul;
+    const wx = n[1] * uz - n[2] * uy;
+    const wy = n[2] * ux - n[0] * uz;
+    const wz = n[0] * uy - n[1] * ux;
+
+    at[0] = p[0] + STEP * ux;
+    at[1] = p[1] + STEP * uy;
+    at[2] = p[2] + STEP * uz;
+    const du = GROOVE * (1 - shelter(faces, at)) - depth;
+
+    at[0] = p[0] + STEP * wx;
+    at[1] = p[1] + STEP * wy;
+    at[2] = p[2] + STEP * wz;
+    const dv = GROOVE * (1 - shelter(faces, at)) - depth;
+
+    const mx = STEP * n[0] + du * ux + dv * wx;
+    const my = STEP * n[1] + du * uy + dv * wy;
+    const mz = STEP * n[2] + du * uz + dv * wz;
+    const ml = Math.sqrt(mx * mx + my * my + mz * mz) || 1;
+
+    positions[i] = p[0] - n[0] * depth;
+    positions[i + 1] = p[1] - n[1] * depth;
+    positions[i + 2] = p[2] - n[2] * depth;
+    normals[i] = mx / ml;
+    normals[i + 1] = my / ml;
+    normals[i + 2] = mz / ml;
+  }
+}
+
+/**
  * Each cubie is one rounded box, not three coloured slabs — those meet at a
  * right angle where they wrap a corner and leave the silhouette square in the
  * eight places you actually look. Vertices take the colour of whichever face
@@ -352,40 +566,78 @@ function buildCube(): BufferGeometry {
   const shade = new Color();
 
   for (const c of cubies) {
-    // Far more segments than the shape needs, because the box also carries where
-    // the pad ends as a vertex colour, and a vertex colour is only as sharp as
-    // the mesh under it. At eight the samples were 2.3 mm apart and every tile
-    // edge came out dithered; eighteen puts them under the seam's own width.
+    // More segments than a rounded box needs, because this one is also the
+    // canvas the carve is cut into and the surface a vertex colour is painted
+    // on, and both are only as sharp as the mesh under them. Twelve is 0.74 mm
+    // between samples: three across the groove's ramp, and under the width of
+    // the colour's own.
     const geo = new RoundedBoxGeometry(
       CUBE.cubie,
       CUBE.cubie,
       CUBE.cubie,
-      18,
+      12,
       CUBE.bevel,
     );
 
-    const normals = geo.attributes.normal;
-    const points = geo.attributes.position;
-    const colours = new Float32Array(normals.count * 3);
-    const faces = faceColours(c);
+    const normals = geo.attributes.normal.array as Float32Array;
+    const points = geo.attributes.position.array as Float32Array;
+    const count = geo.attributes.position.count;
+    const colours = new Float32Array(count * 3);
 
-    for (let v = 0; v < normals.count; v++) {
-      const n = [normals.getX(v), normals.getY(v), normals.getZ(v)];
+    const hues = faceColours(c);
+    // Per face rather than per vertex: a million `multiplyScalar`s and a million
+    // joined map keys were most of this function's second.
+    const tint = (by: number) => (h: string | null) =>
+      h ? new Color(h).multiplyScalar(by) : null;
+    const lit = hues.map(tint(BODY_DIM));
+    const sunk = hues.map(tint(SHADOW * BODY_DIM));
+    const walls = hues.map(tint(SHADOW));
+    const rims = hues.map((h, s): Float32Array | null => {
+      if (!h) return null;
+      const [across, down] = PLANE[s >> 1];
+      const cu = c.pos.getComponent(across) * PITCH;
+      const cv = c.pos.getComponent(down) * PITCH;
+      return rimTable(cu === 0 && cv === 0, cu, cv);
+    });
+
+    const faces: Face[] = [];
+    for (let axis = 0; axis < 3; axis++) {
+      const sign = c.pos.getComponent(axis);
+      const s = slot(axis, sign);
+      if (sign !== 0 && rims[s]) faces.push({ axis, sign, rim: rims[s]! });
+    }
+
+    for (let v = 0; v < count; v++) {
+      const i = v * 3;
+      const nx = normals[i];
+      const ny = normals[i + 1];
+      const nz = normals[i + 2];
+      const ax = Math.abs(nx);
+      const ay = Math.abs(ny);
+      const az = Math.abs(nz);
+
       // Dominant axis is the face this vertex belongs to; the runner-up is
       // whichever face the chamfer is heading toward.
-      const order = [0, 1, 2].sort((a, b) => Math.abs(n[b]) - Math.abs(n[a]));
-      const [axis, next] = order;
+      let axis: number, next: number;
+      if (ax >= ay && ax >= az) {
+        axis = 0;
+        next = ay >= az ? 1 : 2;
+      } else if (ay >= az) {
+        axis = 1;
+        next = ax >= az ? 0 : 2;
+      } else {
+        axis = 2;
+        next = ax >= ay ? 0 : 1;
+      }
 
-      const faceAt = (a: number) => {
-        const key = [0, 0, 0];
-        key[a] = n[a] > 0 ? 1 : -1;
-        return faces.get(key.join(",")) ?? CORE_BLACK;
-      };
+      const nNext = next === 0 ? nx : next === 1 ? ny : nz;
+      const here = slot(axis, (axis === 0 ? nx : axis === 1 ? ny : nz) > 0 ? 1 : -1);
+      const over = slot(next, nNext > 0 ? 1 : -1);
 
-      const dominant = faceAt(axis);
-      const toward = faceAt(next);
+      const dominant = hues[here];
+      const toward = hues[over];
       /** 1 where the surface has turned 45° from the dominant face, 0 on flat. */
-      const turned = Math.min(1, Math.abs(n[next]) / Math.SQRT1_2);
+      const turned = Math.min(1, Math.abs(nNext) / Math.SQRT1_2);
 
       /*
        * Three cases that have to agree at the joins: at 45° the shoulder reaches
@@ -397,14 +649,11 @@ function buildCube(): BufferGeometry {
        * Ramping from the moment the surface starts to turn paints a border round
        * a flat square, which is a sticker.
        */
-      if (dominant !== CORE_BLACK) {
+      if (dominant) {
         // Dimmed: the facelet is the pad above this, and what's left of the
         // piece's face is the frame around it, sitting a little lower.
-        colour.set(dominant).multiplyScalar(BODY_DIM);
-        if (toward === CORE_BLACK) {
-          shade.set(dominant).multiplyScalar(SHADOW * BODY_DIM);
-          colour.lerp(shade, smoothstep(0.08, 1, turned));
-        }
+        colour.copy(lit[here]!);
+        if (!toward) colour.lerp(sunk[here]!, smoothstep(0.08, 1, turned));
 
         /*
          * Outside the pad the piece stops being a facelet and becomes a hole.
@@ -413,26 +662,19 @@ function buildCube(): BufferGeometry {
          * 4.5 mm of open void at the diagonals. Measuring from the pad's own rim
          * handles both: near the axes nothing ever reaches the ramp.
          */
-        const [across, down] = [0, 1, 2].filter((a) => a !== axis);
-        const bu = points.getComponent(v, across);
-        const bv = points.getComponent(v, down);
-        const out = Math.hypot(bu, bv);
+        const [across, down] = PLANE[axis];
+        const bu = points[i + across];
+        const bv = points[i + down];
+        const out = Math.sqrt(bu * bu + bv * bv);
         if (out > 0) {
-          const rim = padRadius(
-            c.pos.getComponent(across) === 0 && c.pos.getComponent(down) === 0,
-            c.pos.getComponent(across) * PITCH,
-            c.pos.getComponent(down) * PITCH,
-            bu / out,
-            bv / out,
-          );
+          const rim = rimAt(rims[here]!, bu, bv);
           colour.lerp(CORE, smoothstep(rim + 0.0002, rim + 0.001, out));
         }
-      } else if (toward !== CORE_BLACK) {
+      } else if (toward) {
         // A slot wall: the same coloured plastic with no light on it, not black.
-        shade.set(toward).multiplyScalar(SHADOW);
-        colour.copy(CORE).lerp(shade, turned);
+        colour.copy(CORE).lerp(walls[over]!, turned);
       } else {
-        colour.set(CORE_BLACK);
+        colour.copy(CORE);
       }
 
       // Vertex colours are read in linear space; the hex strings are sRGB.
@@ -442,21 +684,18 @@ function buildCube(): BufferGeometry {
       colours[v * 3 + 2] = colour.b;
     }
 
+    // After the colours, which are read off where the box was, not where it ends
+    // up: the two agree on the rim and would drift apart if the carve went first.
+    carve(geo, faces);
+
     geo.setAttribute("color", new BufferAttribute(colours, 3));
     geo.deleteAttribute("uv");
     geo.translate(c.pos.x * PITCH, c.pos.y * PITCH, c.pos.z * PITCH);
     parts.push(geo.index ? geo.toNonIndexed() : geo);
 
-    for (let axis = 0; axis < 3; axis++) {
-      const sign = c.pos.getComponent(axis);
-      if (sign === 0) continue;
-
-      const hue = faces.get(
-        [0, 1, 2].map((a) => (a === axis ? sign : 0)).join(","),
-      );
-      if (!hue || hue === CORE_BLACK) continue;
-
-      const [across, down] = [0, 1, 2].filter((a) => a !== axis);
+    for (const { axis, sign } of faces) {
+      const hue = hues[slot(axis, sign)]!;
+      const [across, down] = PLANE[axis];
       const cu = c.pos.getComponent(across) * PITCH;
       const cv = c.pos.getComponent(down) * PITCH;
 
