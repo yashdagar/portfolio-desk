@@ -49,11 +49,31 @@ export interface ActivityFeed {
   generatedAt: string;
   commits: Commit[];
   totals: {
-    /** Real commits in the last year, after filtering. */
+    /** Real commits in the last year, after filtering. Includes work. */
     year: number;
     /** Consecutive days with at least one real commit, ending today. */
     streak: number;
   };
+  /**
+   * Work commits as a count per UTC day, and nothing else. Never a list.
+   *
+   * The tier used to publish one redacted record per commit, which held a
+   * timestamp — and a timestamp is a clock-in. The grid only ever needed to
+   * know how many, on which day, so that is all that leaves the Action now:
+   * no time of day, no type label, no per-commit identity to line up against
+   * anything else. Absent entirely when the tier is off.
+   */
+  workDays?: Record<string, number>;
+}
+
+/** Collapse work commits to the only shape that gets published. */
+export function toWorkDays(commits: Commit[]): Record<string, number> {
+  const days: Record<string, number> = {};
+  for (const commit of commits) {
+    const day = commit.at.slice(0, 10);
+    days[day] = (days[day] ?? 0) + 1;
+  }
+  return days;
 }
 
 /*
@@ -268,8 +288,29 @@ function fnv1a(s: string): number {
 }
 
 /** Consecutive days ending today that have at least one commit. */
-export function computeStreak(commits: Commit[], today = new Date()): number {
+/**
+ * Every UTC day with something on it, from both tiers. Work days arrive as
+ * counts rather than commits, so they have to be folded in by key.
+ */
+export function activeDays(
+  commits: Commit[],
+  workDays?: Record<string, number>,
+): Set<string> {
   const days = new Set(commits.map((c) => c.at.slice(0, 10)));
+  for (const [day, count] of Object.entries(workDays ?? {})) {
+    if (count > 0) days.add(day);
+  }
+  return days;
+}
+
+export function computeStreak(
+  commits: Commit[],
+  today = new Date(),
+  // A day spent entirely on work repos is still a day you wrote code, and
+  // dropping it would break a streak that never actually broke.
+  workDays?: Record<string, number>,
+): number {
+  const days = activeDays(commits, workDays);
   let streak = 0;
   const cursor = new Date(today);
   // Today not yet having a commit shouldn't zero a streak that's still alive,

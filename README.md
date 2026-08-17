@@ -64,11 +64,21 @@ summary widget. The library, the history and the position are all real.
 Design rules for everything rendered as DOM live in
 [`docs/ui-detailing.md`](docs/ui-detailing.md).
 
-**Work commits are redacted at the source.** Private-repo activity is processed
+**Work commits are counted, never listed.** Private-repo activity is processed
 inside a scheduled GitHub Action and committed as static JSON, so the token that
-can read it is never present at request time. Only a conventional-commit type
-label and a timestamp survive — never the message, the repo name, or a usable
-sha prefix.
+can read it is never present at request time. What survives is a single number
+per day:
+
+```json
+"workDays": { "2026-08-14": 3, "2026-08-13": 1 }
+```
+
+No message, no repo name, no sha, no type label — and no time of day. An earlier
+version published one redacted record per commit, which still carried a
+timestamp, and enough timestamps is a record of when somebody is at their desk.
+The contribution grid only ever needed to know how many and on which day, so
+that is all that leaves the Action. `npm run audit` fails the build if a
+per-commit work record ever reappears in the output.
 
 ## Setup
 
@@ -85,7 +95,7 @@ It needs two repository secrets:
 | Secret | Scope | Why |
 |---|---|---|
 | `PERSONAL_GITHUB_TOKEN` | `repo` (read) on `yashdagar` | Reads own public + private repos, full messages |
-| `WORK_GITHUB_TOKEN` | `repo` (read) on the work org | Counts work commits; content never published |
+| `WORK_GITHUB_TOKEN` | `repo` (read) on the work org | Counts work commits per day; nothing else published |
 
 Both belong in **Actions secrets only**. Putting either in the deployed app
 would expose private repos to anyone who could read an env var — which is the

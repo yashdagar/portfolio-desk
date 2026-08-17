@@ -25,6 +25,7 @@ import {
   isBotMessage,
   toOwnCommit,
   toWorkCommit,
+  toWorkDays,
   type ActivityFeed,
   type Commit,
 } from "../src/lib/activity";
@@ -241,13 +242,31 @@ async function main() {
   );
 
   // The guard runs over everything, not just the work tier, so a future change
-  // that mislabels an own-repo commit as `work` still gets caught.
+  // that mislabels an own-repo commit as `work` still gets caught. It runs
+  // before the split, while the work records still exist to be checked.
   for (const c of all) assertNoLeak(c);
+
+  /*
+   * Work commits are counted, then discarded. They are never published one by
+   * one, even redacted: a per-commit record carries a timestamp, and enough
+   * timestamps is a record of when somebody is at their desk. A count per day
+   * is everything the contribution grid reads and nothing more.
+   */
+  const workCommits = all.filter((c) => c.visibility === "work");
+  const published = all.filter((c) => c.visibility !== "work");
+  const workDays = toWorkDays(workCommits);
 
   const feed: ActivityFeed = {
     generatedAt: new Date().toISOString(),
-    commits: all.slice(0, FEED_LIMIT),
-    totals: { year: all.length, streak: computeStreak(all) },
+    commits: published.slice(0, FEED_LIMIT),
+    totals: {
+      // The year total counts work; only the per-commit detail is dropped.
+      year: all.length,
+      streak: computeStreak(published, new Date(), workDays),
+    },
+    // Omitted entirely rather than written empty, so a feed collected without
+    // the work token is byte-identical to one from before the tier existed.
+    ...(workCommits.length ? { workDays } : {}),
   };
 
   await mkdir(path.dirname(OUT), { recursive: true });
@@ -258,6 +277,8 @@ async function main() {
     `\nwrote ${OUT}\n` +
       `  ${all.length} commits — ${byTier("public")} public, ` +
       `${byTier("personal")} personal, ${byTier("work")} work\n` +
+      `  work published as ${Object.keys(workDays).length} day counts, ` +
+      `no per-commit records\n` +
       `  streak ${feed.totals.streak}d, publishing ${feed.commits.length}`,
   );
 }

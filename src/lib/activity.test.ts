@@ -10,6 +10,7 @@ import {
   isBotMessage,
   toOwnCommit,
   toWorkCommit,
+  toWorkDays,
 } from "./activity";
 
 describe("isBlockedRepo", () => {
@@ -262,5 +263,55 @@ describe("computeStreak", () => {
       computeStreak([at("2026-07-01")], new Date("2026-08-16T12:00:00Z")),
       0,
     );
+  });
+
+  it("counts a day that was only work, which is still a day of code", () => {
+    const commits = [at("2026-08-16"), at("2026-08-14")];
+    assert.equal(
+      computeStreak(commits, new Date("2026-08-16T12:00:00Z"), {
+        "2026-08-15": 4,
+      }),
+      3,
+    );
+  });
+
+  it("ignores a work day recorded as zero", () => {
+    const commits = [at("2026-08-16")];
+    assert.equal(
+      computeStreak(commits, new Date("2026-08-16T12:00:00Z"), {
+        "2026-08-15": 0,
+      }),
+      1,
+    );
+  });
+});
+
+describe("toWorkDays", () => {
+  const commit = (at: string) => ({ at, visibility: "work" }) as never;
+
+  it("reduces commits to a count per day", () => {
+    assert.deepEqual(
+      toWorkDays([
+        commit("2026-08-16T09:12:00Z"),
+        commit("2026-08-16T17:40:00Z"),
+        commit("2026-08-15T11:03:00Z"),
+      ]),
+      { "2026-08-16": 2, "2026-08-15": 1 },
+    );
+  });
+
+  it("keeps no time of day anywhere in the result", () => {
+    const days = toWorkDays([commit("2026-08-16T09:12:33Z")]);
+    for (const key of Object.keys(days)) {
+      assert.match(key, /^\d{4}-\d{2}-\d{2}$/);
+    }
+    // The counts are numbers, so there is nothing else a clock could hide in.
+    for (const value of Object.values(days)) {
+      assert.equal(typeof value, "number");
+    }
+  });
+
+  it("is empty for no work at all", () => {
+    assert.deepEqual(toWorkDays([]), {});
   });
 });

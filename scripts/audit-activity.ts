@@ -51,6 +51,28 @@ for (const commit of feed.commits) {
   }
 }
 
+/* ---- 1b. Work is counts only, and no work record survives ---------------- */
+
+// The whole point of the tier's redesign: if a per-commit work record ever
+// reaches the file again, that is a regression worth failing the build over.
+const strayWork = feed.commits.filter((c) => c.visibility === "work");
+if (strayWork.length) {
+  fail(
+    `${strayWork.length} per-commit work record(s) in the feed — ` +
+      `work is published as day counts only`,
+  );
+}
+
+for (const [day, count] of Object.entries(feed.workDays ?? {})) {
+  // A key that isn't a bare date means something carried a time through.
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(day)) {
+    fail(`workDays key is not a plain date: ${day}`);
+  }
+  if (typeof count !== "number" || !Number.isInteger(count) || count < 0) {
+    fail(`workDays value for ${day} is not a count: ${JSON.stringify(count)}`);
+  }
+}
+
 /* ---- 2. Nothing secret-shaped anywhere in the file ----------------------- */
 
 for (const [pattern, label] of FORBIDDEN_PATTERNS) {
@@ -103,9 +125,11 @@ if (workToken) {
 if (!feed.commits.length) fail("feed is empty");
 if (!feed.generatedAt) fail("feed has no generatedAt");
 
-const workCount = feed.commits.filter((c) => c.visibility === "work").length;
+const workDayCount = Object.keys(feed.workDays ?? {}).length;
+const workTotal = Object.values(feed.workDays ?? {}).reduce((a, b) => a + b, 0);
 console.log(
-  `audited ${feed.commits.length} commits (${workCount} work-tier), ` +
+  `audited ${feed.commits.length} commits, ` +
+    `${workTotal} work commits as ${workDayCount} day counts, ` +
     `${(raw.length / 1024).toFixed(0)}kb`,
 );
 

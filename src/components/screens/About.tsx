@@ -15,15 +15,25 @@ const WEEKS = 18;
  * claim as a shape rather than a sentence, and the one element on it that reads
  * from the rest pose.
  *
- * Work commits count: their messages never leave the collector, but the fact
- * that a day had work in it is not a secret, and excluding them would draw a
- * picture of someone who doesn't have a job.
+ * Work commits count: excluding them would draw a picture of someone who
+ * doesn't have a job. They arrive already reduced to a count per day — the
+ * collector never publishes them one by one — so they're folded in by key
+ * rather than tallied like the rest.
  */
-function ContributionGrid({ commits }: { commits: Commit[] }) {
+function ContributionGrid({
+  commits,
+  workDays,
+}: {
+  commits: Commit[];
+  workDays?: Record<string, number>;
+}) {
   const counts = new Map<string, number>();
   for (const c of commits) {
     const day = c.at.slice(0, 10);
     counts.set(day, (counts.get(day) ?? 0) + 1);
+  }
+  for (const [day, count] of Object.entries(workDays ?? {})) {
+    counts.set(day, (counts.get(day) ?? 0) + count);
   }
 
   const today = new Date();
@@ -125,7 +135,9 @@ export function About({
           ))}
         </div>
 
-        {feed && <ContributionGrid commits={feed.commits} />}
+        {feed && (
+          <ContributionGrid commits={feed.commits} workDays={feed.workDays} />
+        )}
 
         {feed && (
           <p className="mt-5">
