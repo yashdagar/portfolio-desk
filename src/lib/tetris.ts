@@ -57,46 +57,186 @@ type Shape = readonly (readonly [number, number])[];
 
 const SHAPES: Record<PieceKind, readonly Shape[]> = {
   I: [
-    [[1, 0], [1, 1], [1, 2], [1, 3]],
-    [[0, 2], [1, 2], [2, 2], [3, 2]],
-    [[2, 0], [2, 1], [2, 2], [2, 3]],
-    [[0, 1], [1, 1], [2, 1], [3, 1]],
+    [
+      [1, 0],
+      [1, 1],
+      [1, 2],
+      [1, 3],
+    ],
+    [
+      [0, 2],
+      [1, 2],
+      [2, 2],
+      [3, 2],
+    ],
+    [
+      [2, 0],
+      [2, 1],
+      [2, 2],
+      [2, 3],
+    ],
+    [
+      [0, 1],
+      [1, 1],
+      [2, 1],
+      [3, 1],
+    ],
   ],
   J: [
-    [[0, 0], [1, 0], [1, 1], [1, 2]],
-    [[0, 1], [0, 2], [1, 1], [2, 1]],
-    [[1, 0], [1, 1], [1, 2], [2, 2]],
-    [[0, 1], [1, 1], [2, 0], [2, 1]],
+    [
+      [0, 0],
+      [1, 0],
+      [1, 1],
+      [1, 2],
+    ],
+    [
+      [0, 1],
+      [0, 2],
+      [1, 1],
+      [2, 1],
+    ],
+    [
+      [1, 0],
+      [1, 1],
+      [1, 2],
+      [2, 2],
+    ],
+    [
+      [0, 1],
+      [1, 1],
+      [2, 0],
+      [2, 1],
+    ],
   ],
   L: [
-    [[0, 2], [1, 0], [1, 1], [1, 2]],
-    [[0, 1], [1, 1], [2, 1], [2, 2]],
-    [[1, 0], [1, 1], [1, 2], [2, 0]],
-    [[0, 0], [0, 1], [1, 1], [2, 1]],
+    [
+      [0, 2],
+      [1, 0],
+      [1, 1],
+      [1, 2],
+    ],
+    [
+      [0, 1],
+      [1, 1],
+      [2, 1],
+      [2, 2],
+    ],
+    [
+      [1, 0],
+      [1, 1],
+      [1, 2],
+      [2, 0],
+    ],
+    [
+      [0, 0],
+      [0, 1],
+      [1, 1],
+      [2, 1],
+    ],
   ],
   O: [
-    [[0, 0], [0, 1], [1, 0], [1, 1]],
-    [[0, 0], [0, 1], [1, 0], [1, 1]],
-    [[0, 0], [0, 1], [1, 0], [1, 1]],
-    [[0, 0], [0, 1], [1, 0], [1, 1]],
+    [
+      [0, 0],
+      [0, 1],
+      [1, 0],
+      [1, 1],
+    ],
+    [
+      [0, 0],
+      [0, 1],
+      [1, 0],
+      [1, 1],
+    ],
+    [
+      [0, 0],
+      [0, 1],
+      [1, 0],
+      [1, 1],
+    ],
+    [
+      [0, 0],
+      [0, 1],
+      [1, 0],
+      [1, 1],
+    ],
   ],
   S: [
-    [[0, 1], [0, 2], [1, 0], [1, 1]],
-    [[0, 1], [1, 1], [1, 2], [2, 2]],
-    [[1, 1], [1, 2], [2, 0], [2, 1]],
-    [[0, 0], [1, 0], [1, 1], [2, 1]],
+    [
+      [0, 1],
+      [0, 2],
+      [1, 0],
+      [1, 1],
+    ],
+    [
+      [0, 1],
+      [1, 1],
+      [1, 2],
+      [2, 2],
+    ],
+    [
+      [1, 1],
+      [1, 2],
+      [2, 0],
+      [2, 1],
+    ],
+    [
+      [0, 0],
+      [1, 0],
+      [1, 1],
+      [2, 1],
+    ],
   ],
   T: [
-    [[0, 1], [1, 0], [1, 1], [1, 2]],
-    [[0, 1], [1, 1], [1, 2], [2, 1]],
-    [[1, 0], [1, 1], [1, 2], [2, 1]],
-    [[0, 1], [1, 0], [1, 1], [2, 1]],
+    [
+      [0, 1],
+      [1, 0],
+      [1, 1],
+      [1, 2],
+    ],
+    [
+      [0, 1],
+      [1, 1],
+      [1, 2],
+      [2, 1],
+    ],
+    [
+      [1, 0],
+      [1, 1],
+      [1, 2],
+      [2, 1],
+    ],
+    [
+      [0, 1],
+      [1, 0],
+      [1, 1],
+      [2, 1],
+    ],
   ],
   Z: [
-    [[0, 0], [0, 1], [1, 1], [1, 2]],
-    [[0, 2], [1, 1], [1, 2], [2, 1]],
-    [[1, 0], [1, 1], [2, 1], [2, 2]],
-    [[0, 1], [1, 0], [1, 1], [2, 0]],
+    [
+      [0, 0],
+      [0, 1],
+      [1, 1],
+      [1, 2],
+    ],
+    [
+      [0, 2],
+      [1, 1],
+      [1, 2],
+      [2, 1],
+    ],
+    [
+      [1, 0],
+      [1, 1],
+      [2, 1],
+      [2, 2],
+    ],
+    [
+      [0, 1],
+      [1, 0],
+      [1, 1],
+      [2, 0],
+    ],
   ],
 };
 
@@ -118,25 +258,121 @@ const SPAWN_COL: Record<PieceKind, number> = {
  * be checked against any source without translating them first.
  */
 const JLSTZ_KICKS: Record<string, readonly (readonly [number, number])[]> = {
-  "0>1": [[0, 0], [-1, 0], [-1, 1], [0, -2], [-1, -2]],
-  "1>0": [[0, 0], [1, 0], [1, -1], [0, 2], [1, 2]],
-  "1>2": [[0, 0], [1, 0], [1, -1], [0, 2], [1, 2]],
-  "2>1": [[0, 0], [-1, 0], [-1, 1], [0, -2], [-1, -2]],
-  "2>3": [[0, 0], [1, 0], [1, 1], [0, -2], [1, -2]],
-  "3>2": [[0, 0], [-1, 0], [-1, -1], [0, 2], [-1, 2]],
-  "3>0": [[0, 0], [-1, 0], [-1, -1], [0, 2], [-1, 2]],
-  "0>3": [[0, 0], [1, 0], [1, 1], [0, -2], [1, -2]],
+  "0>1": [
+    [0, 0],
+    [-1, 0],
+    [-1, 1],
+    [0, -2],
+    [-1, -2],
+  ],
+  "1>0": [
+    [0, 0],
+    [1, 0],
+    [1, -1],
+    [0, 2],
+    [1, 2],
+  ],
+  "1>2": [
+    [0, 0],
+    [1, 0],
+    [1, -1],
+    [0, 2],
+    [1, 2],
+  ],
+  "2>1": [
+    [0, 0],
+    [-1, 0],
+    [-1, 1],
+    [0, -2],
+    [-1, -2],
+  ],
+  "2>3": [
+    [0, 0],
+    [1, 0],
+    [1, 1],
+    [0, -2],
+    [1, -2],
+  ],
+  "3>2": [
+    [0, 0],
+    [-1, 0],
+    [-1, -1],
+    [0, 2],
+    [-1, 2],
+  ],
+  "3>0": [
+    [0, 0],
+    [-1, 0],
+    [-1, -1],
+    [0, 2],
+    [-1, 2],
+  ],
+  "0>3": [
+    [0, 0],
+    [1, 0],
+    [1, 1],
+    [0, -2],
+    [1, -2],
+  ],
 };
 
 const I_KICKS: Record<string, readonly (readonly [number, number])[]> = {
-  "0>1": [[0, 0], [-2, 0], [1, 0], [-2, -1], [1, 2]],
-  "1>0": [[0, 0], [2, 0], [-1, 0], [2, 1], [-1, -2]],
-  "1>2": [[0, 0], [-1, 0], [2, 0], [-1, 2], [2, -1]],
-  "2>1": [[0, 0], [1, 0], [-2, 0], [1, -2], [-2, 1]],
-  "2>3": [[0, 0], [2, 0], [-1, 0], [2, 1], [-1, -2]],
-  "3>2": [[0, 0], [-2, 0], [1, 0], [-2, -1], [1, 2]],
-  "3>0": [[0, 0], [1, 0], [-2, 0], [1, -2], [-2, 1]],
-  "0>3": [[0, 0], [-1, 0], [2, 0], [-1, 2], [2, -1]],
+  "0>1": [
+    [0, 0],
+    [-2, 0],
+    [1, 0],
+    [-2, -1],
+    [1, 2],
+  ],
+  "1>0": [
+    [0, 0],
+    [2, 0],
+    [-1, 0],
+    [2, 1],
+    [-1, -2],
+  ],
+  "1>2": [
+    [0, 0],
+    [-1, 0],
+    [2, 0],
+    [-1, 2],
+    [2, -1],
+  ],
+  "2>1": [
+    [0, 0],
+    [1, 0],
+    [-2, 0],
+    [1, -2],
+    [-2, 1],
+  ],
+  "2>3": [
+    [0, 0],
+    [2, 0],
+    [-1, 0],
+    [2, 1],
+    [-1, -2],
+  ],
+  "3>2": [
+    [0, 0],
+    [-2, 0],
+    [1, 0],
+    [-2, -1],
+    [1, 2],
+  ],
+  "3>0": [
+    [0, 0],
+    [1, 0],
+    [-2, 0],
+    [1, -2],
+    [-2, 1],
+  ],
+  "0>3": [
+    [0, 0],
+    [-1, 0],
+    [2, 0],
+    [-1, 2],
+    [2, -1],
+  ],
 };
 
 export interface Piece {
@@ -168,6 +404,14 @@ export interface Game {
   dropTimer: number;
   /** Rows taken out by the most recent lock, for the UI to react to. */
   cleared: number;
+  /** Which rows those were, indexed into `preClear` rather than `board`. */
+  clearedRows: number[];
+  /**
+   * The board a frame before those rows came out, piece included. The renderer
+   * holds this on screen for a moment so a clear is something you watch happen
+   * rather than something you infer from the stack being shorter.
+   */
+  preClear: (PieceKind | null)[] | null;
 }
 
 /**
@@ -261,6 +505,8 @@ export function createGame(seed: number): Game {
     lockResets: 0,
     dropTimer: 0,
     cleared: 0,
+    clearedRows: [],
+    preClear: null,
   };
 }
 
@@ -302,7 +548,8 @@ export function rotate(game: Game, dir: 1 | -1): Game {
       col: game.current.col + x,
       row: game.current.row - y,
     };
-    if (canPlace(game.board, next)) return afterAction(game, { ...game, current: next });
+    if (canPlace(game.board, next))
+      return afterAction(game, { ...game, current: next });
   }
   return game;
 }
@@ -387,16 +634,25 @@ export function lock(game: Game): Game {
   // Locking entirely above the visible field is a lock-out: there was no room
   // left to place it, even though nothing collided on the way down.
   if (placed.every(([row]) => row < BUFFER)) {
-    return { ...game, board, current: null, over: true, cleared: 0 };
+    return {
+      ...game,
+      board,
+      current: null,
+      over: true,
+      cleared: 0,
+      clearedRows: [],
+      preClear: null,
+    };
   }
 
   const kept: (PieceKind | null)[] = [];
-  let cleared = 0;
+  const clearedRows: number[] = [];
   for (let row = 0; row < HEIGHT; row++) {
     const line = board.slice(row * WIDTH, row * WIDTH + WIDTH);
-    if (line.every(Boolean)) cleared++;
+    if (line.every(Boolean)) clearedRows.push(row);
     else kept.push(...line);
   }
+  const cleared = clearedRows.length;
   const settled = [
     ...new Array(cleared * WIDTH).fill(null),
     ...kept,
@@ -412,6 +668,11 @@ export function lock(game: Game): Game {
   return {
     ...game,
     board: settled,
+    // The board as it looked with the piece in it and the full rows still
+    // there. The rows have to be seen going, or a tetris and a single look
+    // identical: the stack is simply lower than it was a frame ago.
+    preClear: cleared ? board : null,
+    clearedRows,
     // Blocked at the spawn point: nowhere to put the next piece, so that's it.
     current: canPlace(settled, next) ? next : null,
     over: !canPlace(settled, next),

@@ -92,6 +92,24 @@ interface TetrisState {
   plan: Placement | null;
   botTimer: number;
 
+  /**
+   * Milliseconds left of the line-clear hold. Gravity stops while this runs —
+   * the rows have to be seen leaving, and a piece that keeps falling through
+   * the moment turns it into a glitch.
+   */
+  clearing: number;
+  /** What to draw while it runs: the board before the rows came out. */
+  clearBoard: Game["board"] | null;
+  clearRows: number[];
+  /** "TETRIS", "TRIPLE", "DOUBLE" — nothing for a single, which no game
+   *  congratulates you for. */
+  callout: string | null;
+  /** Bumped on every hard drop, purely so the well can be told to flinch. */
+  slams: number;
+  /** Bumped on every clear, so the callout can be replayed for an identical
+   *  one. Two tetrises in a row must not render as a caption that never moved. */
+  clears: number;
+
   advance: (dt: number) => void;
   startGame: (seed: number) => void;
   pause: () => void;
@@ -117,10 +135,28 @@ export const useTetris = create<TetrisState>((set, get) => ({
   initials: "",
   plan: null,
   botTimer: 0,
+  clearing: 0,
+  clearBoard: null,
+  clearRows: [],
+  callout: null,
+  slams: 0,
+  clears: 0,
 
   advance: (dt) => {
-    const { mode, game } = get();
+    const { mode, game, clearing } = get();
     if (mode === "paused" || mode === "over") return;
+
+    // Everything waits for the clear, including the bot. It plays the same game
+    // a person does, so it should have to watch its own tetrises too.
+    if (clearing > 0) {
+      const left = clearing - dt;
+      set(
+        left > 0
+          ? { clearing: left }
+          : { clearing: 0, clearBoard: null, clearRows: [] },
+      );
+      return;
+    }
 
     if (mode === "attract") {
       // The bot tops out eventually — it doesn't look ahead. Starting over is
@@ -129,31 +165,53 @@ export const useTetris = create<TetrisState>((set, get) => ({
         set({ game: createGame((game.seed ^ game.score) | 0), plan: null });
         return;
       }
-      set({ game: tick(game, dt) });
+      const ticked = tick(game, dt);
+      set({ game: ticked, ...clearEffects(game, ticked) });
+      if (get().clearing > 0) return;
       if (get().botTimer >= BOT_STEP) stepBot();
       else set({ botTimer: get().botTimer + dt });
       return;
     }
 
     const next = tick(game, dt);
-    set({ game: next });
+    set({ game: next, ...clearEffects(game, next) });
     if (next.over) set({ mode: "over", initials: "" });
   },
 
   startGame: (seed) =>
-    set({ game: createGame(seed), mode: "playing", plan: null, botTimer: 0 }),
+    set({
+      game: createGame(seed),
+      mode: "playing",
+      plan: null,
+      botTimer: 0,
+      clearing: 0,
+      clearBoard: null,
+      clearRows: [],
+      callout: null,
+    }),
 
   pause: () => set((s) => (s.mode === "playing" ? { mode: "paused" } : s)),
   resume: () => set((s) => (s.mode === "paused" ? { mode: "playing" } : s)),
 
   toAttract: () =>
-    set({ game: createGame(INITIAL_SEED), mode: "attract", plan: null, initials: "" }),
+    set({
+      game: createGame(INITIAL_SEED),
+      mode: "attract",
+      plan: null,
+      initials: "",
+      clearing: 0,
+      clearBoard: null,
+      clearRows: [],
+      callout: null,
+    }),
 
   loadScores: () => set({ scores: readScores() }),
 
   typeInitial: (char) =>
     set((s) =>
-      s.initials.length >= 3 ? s : { initials: s.initials + char.toUpperCase() },
+      s.initials.length >= 3
+        ? s
+        : { initials: s.initials + char.toUpperCase() },
     ),
 
   backspace: () => set((s) => ({ initials: s.initials.slice(0, -1) })),
@@ -173,16 +231,26 @@ export const useTetris = create<TetrisState>((set, get) => ({
     get().toAttract();
   },
 
-  left: () => set((s) => (s.mode === "playing" ? { game: move(s.game, -1) } : s)),
-  right: () => set((s) => (s.mode === "playing" ? { game: move(s.game, 1) } : s)),
-  turn: (dir) => set((s) => (s.mode === "playing" ? { game: rotate(s.game, dir) } : s)),
-  down: () => set((s) => (s.mode === "playing" ? { game: softDrop(s.game) } : s)),
-  swap: () => set((s) => (s.mode === "playing" ? { game: hold(s.game) } : s)),
+  // All gated on `live`: during a line clear the board on screen is a frame
+  // that has already been superseded, so a keypress would move a piece the
+  // player cannot see against a stack that is no longer there.
+  left: () => set((s) => (live(s) ? { game: move(s.game, -1) } : s)),
+  right: () => set((s) => (live(s) ? { game: move(s.game, 1) } : s)),
+  turn: (dir) => set((s) => (live(s) ? { game: rotate(s.game, dir) } : s)),
+  down: () => set((s) => (live(s) ? { game: softDrop(s.game) } : s)),
+  swap: () => set((s) => (live(s) ? { game: hold(s.game) } : s)),
   slam: () =>
     set((s) => {
-      if (s.mode !== "playing") return s;
+      if (!live(s)) return s;
       const game = hardDrop(s.game);
-      return game.over ? { game, mode: "over" as Mode, initials: "" } : { game };
+      const shaken = {
+        game,
+        slams: s.slams + 1,
+        ...clearEffects(s.game, game),
+      };
+      return game.over
+        ? { ...shaken, mode: "over" as Mode, initials: "" }
+        : shaken;
     }),
 }));
 
@@ -190,6 +258,36 @@ export const useTetris = create<TetrisState>((set, get) => ({
 // game state can't pass by photographing a board that stopped responding.
 if (process.env.NODE_ENV !== "production" && typeof window !== "undefined") {
   (window as unknown as { __tetris: typeof useTetris }).__tetris = useTetris;
+}
+
+/** How long the cleared rows stay on screen before the stack drops into them. */
+const CLEAR_HOLD = 200;
+
+/** Playing, and not mid-clear. */
+const live = (s: TetrisState) => s.mode === "playing" && s.clearing === 0;
+
+const CALLOUTS: Record<number, string> = {
+  2: "Double",
+  3: "Triple",
+  4: "Tetris",
+};
+
+/**
+ * Whether a tick just cleared rows, and what to show for it.
+ *
+ * Detected off the board's identity rather than a flag: `board` is replaced only
+ * by a lock, so a changed reference is exactly the event worth reacting to, and
+ * nothing has to remember to raise anything.
+ */
+function clearEffects(prev: Game, next: Game) {
+  if (next.board === prev.board || !next.cleared || !next.preClear) return null;
+  return {
+    clearing: CLEAR_HOLD,
+    clearBoard: next.preClear,
+    clearRows: next.clearedRows,
+    callout: CALLOUTS[next.cleared] ?? null,
+    clears: useTetris.getState().clears + 1,
+  };
 }
 
 /**
@@ -219,7 +317,14 @@ function stepBot() {
     set({ game: moved, plan: moved === game ? null : plan, botTimer: 0 });
     return;
   }
-  set({ game: hardDrop(game), plan: null, botTimer: 0 });
+  const dropped = hardDrop(game);
+  set({
+    game: dropped,
+    plan: null,
+    botTimer: 0,
+    slams: useTetris.getState().slams + 1,
+    ...clearEffects(game, dropped),
+  });
 }
 
 /**

@@ -70,7 +70,21 @@ Everything that changes state moves, and nothing moves linearly.
 - Nothing animates on first paint. The room is already a lot; screens that also
   fly in read as a demo reel.
 - All of it is off under `prefers-reduced-motion`, which the global sheet
-  already enforces.
+  already enforces. The well's hard-drop flinch checks the query itself, because
+  it runs through the Web Animations API rather than a stylesheet.
+- **The game is the exception to "motion is decoration".** On the centre monitor
+  motion *is* the feedback, and it's the difference between a game and a
+  simulation of one:
+  - **Line clear: 200ms.** Gravity stops, the rows blow out to white, and the
+    stack drops only afterwards. Without the pause a tetris and a single are
+    indistinguishable — the stack is simply shorter than it was a frame ago.
+    200ms because it also has to be over before it becomes waiting.
+  - **Hard drop: a 4px flinch, 140ms.** A piece that lands silently feels like
+    nothing happened.
+  - **Callout: 900ms rise and fade**, for a double, triple or tetris. Nothing
+    for a single, which no game has ever congratulated anyone for.
+  - **Danger: a 1.6s pulse** in the well's ring when the stack is four rows from
+    the top. Slow deliberately — quicker reads as a fault rather than pressure.
 
 ## 5. Per-screen
 
@@ -199,7 +213,12 @@ Warm paper, not screen. Different rules apply: this is printed matter.
 
 ## 6. What this pass explicitly does not do
 
-- No shadows on screen content.
+- No shadows on screen content — with one exception, for the same reason as the
+  colour one. A tetromino gets an inset bevel: lit top-left, shaded
+  bottom-right. That isn't elevation, which is what the rule is about; nothing
+  is floating above anything. It's the block's own material, and without it the
+  well is seven colours of flat rounded rectangle, which is what a UI looks
+  like and not what a game looks like.
 - No gradients on text.
 - No second accent colour **for design**. Two surfaces are exempt, and the
   exemption is narrow enough to state precisely: a screen that is pretending to

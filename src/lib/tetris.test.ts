@@ -196,6 +196,35 @@ describe("clearing lines", () => {
     assert.equal(hardDrop(game).score, 500);
   });
 
+  it("says which rows went, so they can be seen going", () => {
+    const board = blank();
+    for (let r = HEIGHT - 2; r < HEIGHT; r++) fillRow(board, r, [0]);
+    const game = { ...at(createGame(1), "I", 1, HEIGHT - 4, -2), board };
+    const done = hardDrop(game);
+    assert.deepEqual(done.clearedRows, [HEIGHT - 2, HEIGHT - 1]);
+  });
+
+  it("keeps the frame before the clear, piece and full rows included", () => {
+    const board = blank();
+    fillRow(board, HEIGHT - 1, [0]);
+    const game = { ...at(createGame(1), "I", 1, HEIGHT - 4, -2), board };
+    const done = hardDrop(game);
+    assert.ok(done.preClear);
+    // Whole in the held frame. Not in the live one — where the rest of the I
+    // has already dropped a row into it, which is why this counts rather than
+    // checking any single cell.
+    for (let c = 0; c < WIDTH; c++) {
+      assert.ok(done.preClear![(HEIGHT - 1) * WIDTH + c]);
+    }
+    assert.equal(filled(done, HEIGHT - 1), 1);
+  });
+
+  it("holds nothing back when a piece lands without clearing", () => {
+    const done = hardDrop(at(createGame(1), "O", 0, 0, 4));
+    assert.equal(done.preClear, null);
+    assert.deepEqual(done.clearedRows, []);
+  });
+
   it("raises the level every ten rows", () => {
     const board = blank();
     for (let r = HEIGHT - 4; r < HEIGHT; r++) fillRow(board, r, [0]);

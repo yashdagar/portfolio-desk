@@ -1,6 +1,6 @@
 "use client";
 
-import { memo, useEffect, useMemo, useState } from "react";
+import { memo, useEffect, useMemo, useRef, useState } from "react";
 
 import { useScene } from "@/lib/store";
 import {
@@ -40,19 +40,68 @@ import { useTetris, useTetrisDriver, useTetrisKeys } from "@/lib/useTetris";
 const CELL = 29;
 const GAP = 2;
 
-const EMPTY = "rgba(255,255,255,0.04)";
+const EMPTY = "rgba(255,255,255,0.035)";
 
-function Cell({ colour, ghost }: { colour: string; ghost: boolean }) {
+/**
+ * The lit top-left and shaded bottom-right that make a coloured square read as
+ * a moulded block instead of a UI chip. Painted as one gradient over whatever
+ * the piece colour is, so it needs no per-colour maths and no second token.
+ *
+ * §6 of docs/ui-detailing.md bans shadows on screen content. This is not
+ * elevation — nothing is floating over anything — it's the block's own
+ * material, and without it seven colours of flat rounded rectangle is exactly
+ * what the screen looks like.
+ */
+const FACE =
+  "linear-gradient(158deg, rgba(255,255,255,0.34) 0%, rgba(255,255,255,0.05) 46%, rgba(0,0,0,0.28) 100%)";
+
+type CellKind = "empty" | "block" | "ghost" | "clearing";
+
+function Cell({ colour, kind }: { colour: string; kind: CellKind }) {
+  // Longhand `backgroundColor`, never the `background` shorthand. A cell is one
+  // DOM node that changes kind constantly, and React warns — correctly — that
+  // swapping a shorthand against a longhand can leave the old gradient painted
+  // on a square that has since become empty.
+  if (kind === "clearing") {
+    return (
+      <span
+        className="animate-line-clear rounded-chip"
+        style={{ backgroundColor: colour, backgroundImage: FACE }}
+      />
+    );
+  }
+
+  if (kind === "ghost") {
+    return (
+      <span
+        className="rounded-chip"
+        style={{
+          // Strong enough to find at a glance against the darkened well: the
+          // ghost is the only thing telling you where the piece is going, and
+          // a subtle one is the same as none.
+          backgroundColor: `${colour}1f`,
+          backgroundImage: "none",
+          boxShadow: `inset 0 0 0 2px ${colour}bb`,
+        }}
+      />
+    );
+  }
+
   return (
     <span
       className="rounded-chip"
       style={
-        ghost
+        kind === "block"
           ? {
-              background: "transparent",
-              boxShadow: `inset 0 0 0 2px ${colour}`,
+              backgroundColor: colour,
+              backgroundImage: FACE,
+              boxShadow: "inset 0 0 0 1px rgba(0,0,0,0.3)",
             }
-          : { background: colour }
+          : {
+              backgroundColor: EMPTY,
+              backgroundImage: "none",
+              boxShadow: "none",
+            }
       }
     />
   );
@@ -65,11 +114,37 @@ function Cell({ colour, ghost }: { colour: string; ghost: boolean }) {
 const Well = memo(function Well({
   board,
   current,
+  clearBoard,
+  clearRows,
+  danger,
 }: {
   board: Game["board"];
   current: Game["current"];
+  /** When set, this is shown instead: the frame before the rows came out. */
+  clearBoard: Game["board"] | null;
+  clearRows: number[];
+  danger: boolean;
 }) {
-  const { painted, ghosts, ghostColour } = useMemo(() => {
+  const { painted, ghosts, ghostColour, going } = useMemo(() => {
+    const going = new Set<number>();
+
+    // Mid-clear the engine has already moved on — the next piece exists and is
+    // falling. Drawing it over a board it was never on would be a lie, so the
+    // held frame is shown exactly as it was, alone.
+    if (clearBoard) {
+      for (const row of clearRows) {
+        if (row < BUFFER) continue;
+        for (let col = 0; col < WIDTH; col++)
+          going.add((row - BUFFER) * WIDTH + col);
+      }
+      return {
+        painted: clearBoard.slice(BUFFER * WIDTH),
+        ghosts: new Set<number>(),
+        ghostColour: EMPTY,
+        going,
+      };
+    }
+
     // Only the visible rows: pieces spawn in a buffer above the well.
     const painted = board.slice(BUFFER * WIDTH);
     const ghosts = new Set<number>();
@@ -89,12 +164,15 @@ const Well = memo(function Well({
       painted,
       ghosts,
       ghostColour: current ? PIECE_COLOURS[current.kind] : EMPTY,
+      going,
     };
-  }, [board, current]);
+  }, [board, current, clearBoard, clearRows]);
 
   return (
     <div
-      className="grid rounded-card bg-screen p-2"
+      className={`grid rounded-card bg-[#080b0d] p-2 ring-1 ring-white/[0.06] ${
+        danger ? "animate-danger" : ""
+      }`}
       style={{
         gridTemplateColumns: `repeat(${WIDTH}, ${CELL}px)`,
         gridTemplateRows: `repeat(${VISIBLE}, ${CELL}px)`,
@@ -104,7 +182,15 @@ const Well = memo(function Well({
       {painted.map((kind, i) => (
         <Cell
           key={i}
-          ghost={!kind && ghosts.has(i)}
+          kind={
+            going.has(i)
+              ? "clearing"
+              : kind
+                ? "block"
+                : ghosts.has(i)
+                  ? "ghost"
+                  : "empty"
+          }
           colour={
             kind ? PIECE_COLOURS[kind] : ghosts.has(i) ? ghostColour : EMPTY
           }
@@ -141,7 +227,10 @@ function Mini({ kind, cell = 13 }: { kind: PieceKind; cell?: number }) {
           <span
             key={i}
             className="rounded-[3px]"
-            style={{ background: on ? PIECE_COLOURS[kind] : "transparent" }}
+            style={{
+              backgroundColor: on ? PIECE_COLOURS[kind] : "transparent",
+              backgroundImage: on ? FACE : "none",
+            }}
           />
         );
       })}
@@ -277,6 +366,32 @@ function TouchPad() {
   );
 }
 
+/**
+ * One letter per piece, in the piece's own colour. Six letters and seven
+ * tetrominoes, which is a coincidence worth spending: it says what the screen
+ * is from across the room, in the only vocabulary this screen has.
+ */
+const WORDMARK: [string, PieceKind][] = [
+  ["T", "T"],
+  ["E", "I"],
+  ["T", "L"],
+  ["R", "S"],
+  ["I", "J"],
+  ["S", "Z"],
+];
+
+function Wordmark() {
+  return (
+    <p className="flex gap-[3px] font-mono text-[22px] font-bold leading-none tracking-[0.16em]">
+      {WORDMARK.map(([letter, kind], i) => (
+        <span key={i} style={{ color: PIECE_COLOURS[kind] }}>
+          {letter}
+        </span>
+      ))}
+    </p>
+  );
+}
+
 const KEYS: [string, string][] = [
   ["← →", "move"],
   ["↑ / X", "rotate"],
@@ -330,6 +445,38 @@ export function Tetris({
   const queue = useTetris((s) => s.game.queue);
   const scores = useTetris((s) => s.scores);
   const mode = useTetris((s) => s.mode);
+  const clearBoard = useTetris((s) => s.clearBoard);
+  const clearRows = useTetris((s) => s.clearRows);
+  const callout = useTetris((s) => s.callout);
+  const clears = useTetris((s) => s.clears);
+  const slams = useTetris((s) => s.slams);
+
+  /** Four rows from the top. Cheap enough to walk on every lock. */
+  const danger = useMemo(() => {
+    for (let row = BUFFER; row < BUFFER + 4; row++) {
+      for (let col = 0; col < WIDTH; col++) {
+        if (board[row * WIDTH + col]) return true;
+      }
+    }
+    return false;
+  }, [board]);
+
+  // The well flinches on a hard drop. Driven straight at the element rather
+  // than through a class, so landing a piece doesn't re-render two hundred
+  // cells to play a 140ms animation.
+  const wellRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!slams || !wellRef.current) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    wellRef.current.animate(
+      [
+        { transform: "translateY(0)" },
+        { transform: "translateY(4px)" },
+        { transform: "translateY(0)" },
+      ],
+      { duration: 140, easing: "cubic-bezier(.2,.8,.3,1)" },
+    );
+  }, [slams]);
 
   return (
     /*
@@ -354,36 +501,39 @@ export function Tetris({
         {/* Leaderboard. First on the ultrawide, last when it has to queue up. */}
         <section className="flex h-full w-full max-w-[300px] flex-col justify-center gap-6 justify-self-end @max-[1180px]:order-5 @max-[1180px]:h-auto @max-[1180px]:max-w-[334px]">
           <div>
-            <p className="font-mono text-[15px] uppercase tracking-[0.42em] text-accent">
-              Tetris
-            </p>
-            <p className="mt-1 font-mono text-[11px] text-ink-faint">
+            <Wordmark />
+            <p className="mt-2 font-mono text-[11px] text-ink-faint">
               {mode === "attract" ? "demo playing" : "in play"}
             </p>
           </div>
           <div>
             <Label>High scores</Label>
-            {scores.length ? (
-              <ol className="mt-3 space-y-1.5">
-                {scores.map((s, i) => (
-                  <li
-                    key={`${s.name}-${i}`}
-                    className="flex items-baseline gap-3 rounded-row bg-screen-raised px-3 py-1.5 font-mono text-[13px] tabular-nums"
+            {/* Always five rows, filled or not. A table with two entries and a
+                paragraph of explanation where the other three should be is a
+                settings panel; one with dashes in it is a table waiting to be
+                beaten. */}
+            <ol className="mt-3 space-y-1.5">
+              {Array.from({ length: 5 }, (_, i) => scores[i]).map((s, i) => (
+                <li
+                  key={i}
+                  className={`flex items-baseline gap-3 rounded-row px-3 py-1.5 font-mono text-[13px] tabular-nums ${
+                    s ? "bg-screen-raised" : "bg-screen-raised/40"
+                  }`}
+                >
+                  <span className={s ? "text-accent" : "text-ink-faint/50"}>
+                    {i + 1}
+                  </span>
+                  <span className={s ? "text-ink" : "text-ink-faint/50"}>
+                    {s ? s.name : "———"}
+                  </span>
+                  <span
+                    className={`ml-auto ${s ? "text-ink-dim" : "text-ink-faint/50"}`}
                   >
-                    <span className="text-ink-faint">{i + 1}</span>
-                    <span className="text-ink">{s.name}</span>
-                    <span className="ml-auto text-ink-dim">
-                      {s.score.toLocaleString("en-GB")}
-                    </span>
-                  </li>
-                ))}
-              </ol>
-            ) : (
-              <p className="mt-3 rounded-row bg-screen-raised px-3 py-2.5 font-mono text-[12px] leading-relaxed text-ink-faint">
-                Nobody has played yet. The table is yours alone — it lives in
-                this browser and goes nowhere.
-              </p>
-            )}
+                    {(s?.score ?? 0).toLocaleString("en-GB")}
+                  </span>
+                </li>
+              ))}
+            </ol>
           </div>
         </section>
 
@@ -398,17 +548,38 @@ export function Tetris({
             </div>
           </div>
           <Stat label="Level" value={level} />
-          <Stat label="Rows" value={lines} />
+          {/* "Lines", not "rows" — it's what the game has always called them,
+              and this screen is allowed to speak the game's language. */}
+          <Stat label="Lines" value={lines} />
         </section>
 
         {/* The well */}
         <section className="relative @max-[1180px]:order-1">
           <div
+            ref={wellRef}
             role="img"
             aria-label={`Tetris. Score ${score}, level ${level}, ${lines} rows cleared.`}
           >
-            <Well board={board} current={current} />
+            <Well
+              board={board}
+              current={current}
+              clearBoard={clearBoard}
+              clearRows={clearRows}
+              danger={danger}
+            />
           </div>
+
+          {/* Keyed on the clear count, or a second tetris in a row renders as a
+              caption that never moved. */}
+          {callout && (
+            <p
+              key={clears}
+              className="animate-callout pointer-events-none absolute inset-x-0 top-[34%] text-center font-mono text-[30px] font-bold uppercase tracking-[0.28em] text-accent"
+              style={{ textShadow: "0 0 24px rgba(78,205,196,0.55)" }}
+            >
+              {callout}
+            </p>
+          )}
           <Overlay interactive={interactive} />
           {/* Fixed height whether or not there's anything to say, so starting a
             game doesn't shift the board up by a line. */}
@@ -438,8 +609,14 @@ export function Tetris({
         <section className="flex h-full w-full max-w-[300px] flex-col justify-center gap-7 @max-[1180px]:order-4 @max-[1180px]:h-auto @max-[1180px]:max-w-[334px]">
           <div>
             <Label>Score</Label>
-            <p className="mt-1 font-mono text-[42px] leading-none text-ink tabular-nums">
-              {score.toLocaleString("en-GB")}
+            {/* Padded to six figures. A score that changes width as it grows
+                makes the whole column twitch, and an arcade counter that starts
+                at 000000 is already promising you it goes higher. */}
+            <p className="mt-1 font-mono text-[46px] font-bold leading-none tracking-tight tabular-nums">
+              <span className="text-ink-faint/30">
+                {"0".repeat(Math.max(0, 6 - String(score).length))}
+              </span>
+              <span className="text-ink">{score}</span>
             </p>
           </div>
           <div>
