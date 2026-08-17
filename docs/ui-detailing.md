@@ -74,7 +74,56 @@ Everything that changes state moves, and nothing moves linearly.
 
 ## 5. Per-screen
 
-### Left — commit feed
+### Left — about
+
+Moved here from the ultrawide, and it reads better for the move: the two-column
+split exists because a short bio in one column leaves a dead band down the middle
+of a 16:9 panel, and this is the first 16:9 panel it has actually been on.
+
+- Name stays large and unadorned. It's the only place in the whole project where
+  restraint beats decoration.
+- The role/location line is an accent pill.
+- Contacts are **cards**: level 1, `--r-md`, label above value, the whole card a
+  hit target. Underlined text was four small targets in a column, which looks
+  like a footer, and a footer is the last thing anyone clicks.
+- The contribution grid and the total that sums it sit **together at the bottom**
+  of the column. The column has slack to absorb, and it belongs between two
+  unrelated blocks rather than between a grid and the line that totals it.
+- The commit-count line is a level-1 strip at `--r-full`.
+
+### Centre — Tetris
+
+A real game, on the largest panel in the room. Its own rules, for one reason
+that decides everything else: **the game has to be self-contained on one
+screen.** `CameraRig` flies the camera in until the focused panel fills the
+frame, so a score panel on a neighbouring monitor is out of shot at exactly the
+moment it's being read. That constraint is what the 2.37:1 aspect is for — the
+rails, queue, leaderboard and controls all fit beside the well.
+
+- **Five columns**, well centred: leaderboard · hold and counters · the well ·
+  next queue · score and controls. The two outer columns are the same width and
+  both filled to it. An outer column that doesn't fill its width pools its slack
+  at the edge, and the board stops looking centred even when it is.
+- **Level-1 filled rows** for both the leaderboard and the controls legend, which
+  is what gives those two columns matching weight.
+- **The prompt goes under the well, never over it.** Twenty rows are sized to
+  leave a line free below. An overlay covering the board hides the stack it is
+  inviting you to come and play with.
+- **Attract mode is never covered.** A bot plays whenever nobody else is, because
+  the rest pose is the frame almost every visitor sees and a still board on the
+  biggest monitor would be worse than what it replaced.
+- Paused and game-over *do* take the full cover — there is nothing behind them
+  worth looking at.
+- **Below 1180px the rails fold under the well** and the leaderboard goes last.
+  Container query, not media: mounted in the room this DOM is on a plane at a
+  fixed 1720px. The wide layout is the default and the narrow one overrides it,
+  so the panel in the room never waits on a query to resolve.
+
+### The commit feed — flat page only
+
+No longer on a monitor. It survives on the flat page, where a linear log is
+exactly what someone skimming wants, and the collector, the redaction rules and
+their tests are all unchanged. The notes below still govern it.
 
 **A terminal running `git log --oneline`.** The exception to the "round and
 friendly" direction above, and the reason for the exception is that this screen
@@ -88,10 +137,8 @@ The container still softens. What doesn't is the content: mono throughout, one
 commit per line, columns rather than cards.
 
 - **Window chrome** at level 1, `--r-md`: three neutral dots and `yash@desk:
-  ~/dev`. This is what carries from the rest pose — from two metres a title bar
-  over a field of monospace is legible as *a terminal* when no word on it is.
-  The dots stay neutral rather than red/amber/green; three saturated hues for
-  decoration would break the one-accent rule the room's colour rests on.
+  ~/dev`. The dots stay neutral rather than red/amber/green; three saturated hues
+  for decoration would break the one-accent rule the room's colour rests on.
 - The two totals stay as **pill badges** (`--r-full`, level 1) in the title bar.
   `updated 4m ago` moves to the bottom line, next to the cursor — the freshness
   stamp belongs with the thing that's waiting for the next commit.
@@ -115,22 +162,12 @@ commit per line, columns rather than cards.
   message wrapped in full underneath. Columns at that width give the message
   ~50 characters and truncate every line to nothing. A narrow terminal wraps
   rather than truncates, so the reflow is the more faithful behaviour as well as
-  the readable one. Container query, not media query — mounted in the room this
-  DOM sits on a plane at a fixed 1100px and the viewport tells it nothing.
+  the readable one. Container query, not media query — kept because the feed is
+  still mounted inside a fixed-width panel on the flat page.
 - **The live tail.** The client re-polls every two minutes and a commit that
   lands mid-session prints itself at the top with the 320ms fade-and-rise from
   §4. Only ids that weren't in the previous poll animate, so the hundred and
   forty already on screen stay still on first paint.
-
-### Centre — about
-
-- Name stays large and unadorned. It's the only place in the whole project where
-  restraint beats decoration.
-- The role/location line becomes an accent pill.
-- Contacts become **cards**: level 1, `--r-md`, label above value, the whole card
-  a hit target. Currently they're underlined text, which is four small targets in
-  a column and looks like a footer.
-- The commit-count line at the bottom becomes a level-1 strip at `--r-full`.
 
 ### Right — now playing
 
@@ -164,6 +201,16 @@ Warm paper, not screen. Different rules apply: this is printed matter.
 
 - No shadows on screen content.
 - No gradients on text.
-- No second accent colour. The green in the player is the player's, and it is
-  scoped to that one surface.
+- No second accent colour **for design**. Two surfaces are exempt, and the
+  exemption is narrow enough to state precisely: a screen that is pretending to
+  be a piece of software someone else made brings that software's palette with
+  it. The green in the player is Spotify's. The seven piece colours in Tetris are
+  Tetris's, and they are not decoration — they are how you tell an S from a Z at
+  a glance, which is the game. Both are scoped to their own surface and neither
+  leaks into a token.
+
+  The tuning that keeps them in the room: the pieces are desaturated from the
+  canonical seven so they sit in a warm space rather than glowing out of it, and
+  S and Z reuse `--add` and `--del`, which already mean good-thing and bad-thing
+  everywhere else on these screens.
 - No animated skeletons. Content arrives or it says why it hasn't.

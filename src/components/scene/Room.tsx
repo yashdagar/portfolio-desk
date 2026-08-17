@@ -5,10 +5,10 @@ import { useFrame } from "@react-three/fiber";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { MathUtils, Vector3, type Group } from "three";
 
-import { CentreScreen } from "@/components/screens/CentreScreen";
+import { About } from "@/components/screens/About";
 import { BoxBack } from "@/components/screens/BoxBack";
-import { CommitFeed } from "@/components/screens/CommitFeed";
 import { NowPlaying } from "@/components/screens/NowPlaying";
+import { Tetris } from "@/components/screens/Tetris";
 import type { ActivityFeed } from "@/lib/activity";
 import type { Daylight } from "@/lib/daylight";
 import { isWet, type Weather } from "@/lib/weather";
@@ -255,8 +255,10 @@ function ScreenContent({
   id: ScreenId;
   activity: ActivityFeed | null;
 }) {
-  if (id === "commits") return <CommitFeed initial={activity} />;
-  if (id === "about") return <CentreScreen initial={activity} />;
+  // The ids are the placements, not the contents: "commits" is the left 27" and
+  // "about" is the ultrawide, whatever each is currently showing.
+  if (id === "commits") return <About initial={activity} />;
+  if (id === "about") return <Tetris />;
   // The music screen is the portrait one, so it gets the portrait client.
   return <NowPlaying variant="tall" />;
 }

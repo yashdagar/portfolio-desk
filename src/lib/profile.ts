@@ -27,9 +27,10 @@ export const PROFILE = {
    */
   bio: [
     "I build things that have to be correct: rules engines, parsers, board logic. Rust, TypeScript, Dart, a bit of C when the problem deserves it.",
-    // Deliberately not "the monitor to your left" — the same bio is served to
-    // the flat page, where there is no monitor and no left.
-    "The commit feed is live. It's what I actually pushed, not a summary, and I don't get to edit it.",
+    // Names neither the grid beside it nor the feed further down the flat page.
+    // The same two sentences are served to three surfaces, and each of them
+    // shows this history in a different shape.
+    "The commit history is live: what I actually pushed, not a summary, and I don't get to edit it.",
   ],
   githubSince: 2020,
 } as const;

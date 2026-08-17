@@ -61,7 +61,10 @@ function ContributionGrid({ commits }: { commits: Commit[] }) {
             : "bg-accent";
 
   return (
-    <div className="mt-8">
+    // Pushed down rather than sitting under the bio, so the gap the column has
+    // to absorb falls between two unrelated blocks instead of between the grid
+    // and the line that totals it up.
+    <div className="mt-auto pt-8">
       <div
         className="grid w-fit grid-flow-col gap-[4px]"
         style={{ gridTemplateRows: "repeat(7, 13px)" }}
@@ -125,7 +128,7 @@ export function About({
         {feed && <ContributionGrid commits={feed.commits} />}
 
         {feed && (
-          <p className="mt-auto pt-6">
+          <p className="mt-5">
             <span className="inline-block rounded-full bg-screen-raised px-4 py-2 font-mono text-[13px] text-ink-faint tabular-nums">
               {feed.totals.year} commits in the last year
               {feed.totals.streak > 0 && ` · ${feed.totals.streak}d streak`}

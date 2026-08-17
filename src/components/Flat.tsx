@@ -5,6 +5,7 @@ import { BOXES, PROFILE } from "@/lib/profile";
 import { CommitFeed } from "./screens/CommitFeed";
 import { LeetCodePanel } from "./screens/LeetCode";
 import { NowPlaying } from "./screens/NowPlaying";
+import { Tetris } from "./screens/Tetris";
 
 /**
  * The site without the room — not a degraded version, the same content, and for
@@ -85,6 +86,15 @@ export function Flat({
           {(["catan", "chess"] as const).map((id) => (
             <BoxCard key={id} id={id} />
           ))}
+        </div>
+      </Section>
+
+      <Section title="Tetris">
+        {/* The same component the ultrawide mounts, folded up by its own
+            container query. Playable here too — click it, then Escape when you
+            want the arrow keys back. */}
+        <div className="overflow-hidden rounded-panel ring-1 ring-screen-line">
+          <Tetris variant="flat" />
         </div>
       </Section>
 

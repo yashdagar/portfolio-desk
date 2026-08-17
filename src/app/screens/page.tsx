@@ -1,7 +1,8 @@
-import { CentreScreen } from "@/components/screens/CentreScreen";
+import { About } from "@/components/screens/About";
 import { BoxBack } from "@/components/screens/BoxBack";
 import { CommitFeed } from "@/components/screens/CommitFeed";
 import { NowPlaying } from "@/components/screens/NowPlaying";
+import { Tetris } from "@/components/screens/Tetris";
 import {
   BOX_DESIGN,
   MAIN_SCREEN_DESIGN,
@@ -47,15 +48,20 @@ function Frame({
 export default function ScreensPreview() {
   return (
     <main className="min-h-dvh space-y-10 bg-graphite p-10">
-      <Frame label="left · commits" w={SCREEN_DESIGN.w} h={SCREEN_DESIGN.h}>
-        <CommitFeed />
+      <Frame label="left · about" w={SCREEN_DESIGN.w} h={SCREEN_DESIGN.h}>
+        <About />
       </Frame>
       <Frame
-        label="centre · leetcode"
+        label="centre · tetris"
         w={MAIN_SCREEN_DESIGN.w}
         h={MAIN_SCREEN_DESIGN.h}
       >
-        <CentreScreen />
+        <Tetris />
+      </Frame>
+      {/* Still shipped: the flat page renders the commit feed, and it's the one
+          surface whose empty and failure states are worth looking at. */}
+      <Frame label="commits · flat page" w={SCREEN_DESIGN.w} h={SCREEN_DESIGN.h}>
+        <CommitFeed />
       </Frame>
       <Frame
         label="right · music (portrait, as mounted)"

@@ -3,13 +3,19 @@
 A 3D portfolio. You're sitting at a desk; the monitors show what I'm actually
 working on right now.
 
-There is no projects section. The left monitor is a live GitHub commit feed, the
-right one is whatever I'm playing on Spotify, and the centre one is who I am.
-The only work on display is two board games sitting on the shelf as boxes — pull
-one down and the back of the box is the case study.
+There is no projects section. The left monitor is who I am, with a live
+contribution grid built from what I've actually pushed. The right one is whatever
+I'm playing on Spotify. The centre ultrawide is **a playable game of Tetris** —
+seven-bag, SRS kicks with wall kicks, hold, ghost piece, lock delay. Click it and
+play; when nobody is, a bot does. The only work on display is two board games
+sitting on the shelf as boxes — pull one down and the back of the box is the case
+study.
 
 The point is that it's present tense. It can't go stale, and it gets better on
 its own as commits accumulate.
+
+The commit feed hasn't gone anywhere — it's on the flat page below, where a
+linear `git log` is what someone skimming actually wants.
 
 ## Stack
 
@@ -19,9 +25,11 @@ react-three-fiber 9 · drei 10 · three · zustand · @react-three/postprocessin
 ## How it works
 
 **The screens are real DOM, not textures.** React components are rendered as
-HTML and transformed into 3D with drei's `<Html transform occlude>`, so the
-commit feed is selectable text with working links that a screen reader can walk
-and a crawler can index, while still being physically mounted on a monitor.
+HTML and transformed into 3D with drei's `<Html transform occlude>`, so the bio
+is selectable text with working links that a screen reader can walk and a crawler
+can index, while still being physically mounted on a monitor. It's also why the
+Tetris on the centre monitor is playable at all — it's a real page taking real
+key events, not a texture being drawn at you.
 
 **Three delivery modes**, chosen at runtime in `src/lib/capabilities.ts`:
 
@@ -112,7 +120,14 @@ npm run shot out.png                       # screenshot the running scene
 node scripts/shot-states.mjs out/          # rest + each focused state
 node scripts/shot-modes.mjs out/           # desktop, mobile hero, reduced motion
 node scripts/shot-el.mjs out.png URL SEL   # one surface, flat, at design size
+node scripts/smoke-tetris.mjs out/         # actually play the centre monitor
 ```
+
+`smoke-tetris.mjs` drives real key events against the real store and asserts on
+the game state — that the bot plays unattended, that keys are ignored until the
+screen is focused, that auto-shift repeats, that stepping back pauses rather than
+plays on, and that a score survives a reload. A board can look perfect in a
+screenshot and not respond to a single key.
 
 - `/screens` renders every mounted surface flat at its true design size. In the
   scene they're small and at an angle, which hides bad spacing and broken empty
