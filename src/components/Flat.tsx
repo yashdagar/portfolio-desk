@@ -7,16 +7,12 @@ import { LeetCodePanel } from "./screens/LeetCode";
 import { NowPlaying } from "./screens/NowPlaying";
 
 /**
- * The site without the room.
+ * The site without the room — not a degraded version, the same content, and for
+ * someone skimming on a train the better of the two. Building it well is what
+ * lets the 3D be uncompromising, since nobody is stuck with the 3D.
  *
- * Served to phones below the hero, and served alone to anything that can't or
- * shouldn't run the canvas. It is not a degraded version — it carries exactly
- * the same content, and for a recruiter skimming on a train it is the better
- * experience of the two. Building it well is also what lets the 3D be
- * uncompromising, since nobody is stuck with the 3D.
- *
- * Rendered on the server, so the text is in the HTML source and indexable
- * regardless of which mode a visitor ends up in.
+ * Server-rendered, so the text is in the HTML source whichever mode a visitor
+ * ends up in.
  */
 export function Flat({
   feed,
@@ -24,12 +20,10 @@ export function Flat({
 }: {
   feed: ActivityFeed | null;
   /**
-   * Passed in from the server rather than fetched on the client, because this
-   * component *is* the HTML source — it's what a crawler and a reader with
-   * JavaScript off get. The copy of this panel on the 3D centre monitor fetches
-   * its own, since threading a second prop through five layers of scene graph
-   * to reach a card in a sidebar is a worse trade than one extra request in the
-   * mode that is already running a WebGL renderer.
+   * From the server rather than fetched, because this component *is* the HTML
+   * source. The copy on the 3D centre monitor fetches its own — one extra
+   * request in the mode already running WebGL beats threading a prop through
+   * five layers of scene graph.
    */
   leetcode: LeetCodeStats | null;
 }) {
@@ -80,14 +74,8 @@ export function Flat({
 
       {leetcode && (
         <Section title="LeetCode">
-          {/*
-            Capped, and left-aligned rather than stretched.
-
-            The panel is designed for a sidebar on a 27" monitor; run out to the
-            full width of a reading column it becomes a bar chart with 500 px of
-            empty track, which reads as a dashboard widget rather than as a
-            statement about someone.
-          */}
+          {/* Capped: designed for a sidebar, run out to a reading column's full
+              width it becomes a bar chart with 500 px of empty track. */}
           <LeetCodePanel stats={leetcode} className="max-w-sm" />
         </Section>
       )}
@@ -101,12 +89,8 @@ export function Flat({
       </Section>
 
       <Section title="Now playing">
-        {/*
-          Fixed height: the component is a player client built for a
-          monitor-shaped surface, and it needs enough room for a header, a track
-          list and a transport bar. At the 320px it used to get, all three were
-          fighting over the same forty pixels.
-        */}
+        {/* Fixed height: a player client needs room for a header, a track list
+            and a transport bar, and at 320px all three fought for forty. */}
         <div className="overflow-hidden rounded-panel ring-1 ring-screen-line">
           <div className="h-[560px]">
             <NowPlaying />

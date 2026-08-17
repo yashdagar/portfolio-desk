@@ -11,15 +11,11 @@ import { LeetCodePanel } from "./LeetCode";
 const WEEKS = 18;
 
 /**
- * A contribution grid, built from the same commits the left monitor lists.
+ * A contribution grid from the same commits the left monitor lists — the panel's
+ * claim as a shape rather than a sentence, and the one element on it that reads
+ * from the rest pose.
  *
- * It's here because the bio is short and this screen had a hole in the middle
- * of it — but it earns its place beyond filling space. The claim on this panel
- * is "the feed is live, it's what I actually pushed"; a grid of the last four
- * months is that claim as a shape rather than a sentence, and it's the one
- * element on the screen that reads from the rest pose, where the text doesn't.
- *
- * Work commits count. Their messages never leave the collector, but the fact
+ * Work commits count: their messages never leave the collector, but the fact
  * that a day had work in it is not a secret, and excluding them would draw a
  * picture of someone who doesn't have a job.
  */
@@ -89,12 +85,8 @@ function ContributionGrid({ commits }: { commits: Commit[] }) {
   );
 }
 
-/**
- * The centre monitor: who this is, and how to reach him.
- *
- * No projects — the shelf holds those. This screen's whole job is name, claim,
- * and contact, in that order, readable in about eight seconds.
- */
+/** Name, claim and contact, in that order, readable in about eight seconds.
+ *  No projects — the shelf holds those. */
 export function About({
   initial,
   leetcode,
@@ -111,20 +103,10 @@ export function About({
   ];
 
   return (
-    /*
-     * Two columns rather than one.
-     *
-     * The bio is deliberately short, so a single top-to-bottom column on a 16:9
-     * panel leaves a large dead band through the middle. Splitting it puts the
-     * claim on the left and the ways to act on it down the right, and both
-     * columns reach the bottom of the screen.
-     */
+    // The bio is short, so one column on a 16:9 panel leaves a dead band through
+    // the middle. Split, both columns reach the bottom.
     <div className="grid h-full w-full grid-cols-[1.45fr_1fr] gap-8 overflow-hidden bg-screen bg-[radial-gradient(110%_80%_at_35%_0%,#161c20_0%,transparent_68%)] px-9 py-8 font-sans text-ink-dim">
       <div className="flex flex-col">
-        {/*
-          The one place in the whole project where restraint beats decoration.
-          Everything else on this screen got a shape; the name doesn't need one.
-        */}
         <h1 className="text-[44px] font-medium leading-none tracking-tight text-ink">
           {PROFILE.name}
         </h1>
@@ -153,24 +135,10 @@ export function About({
         )}
       </div>
 
-      {/*
-        Contacts as cards rather than as underlined text.
-
-        Four small links stacked in a column read as a footer no matter where
-        they're placed, and a footer is the last thing anyone clicks. Filled
-        cards with the whole rectangle as the hit target read as the thing to
-        do next, which is exactly what they are on a page whose job is to get
-        someone to make contact.
-      */}
+      {/* Cards rather than links: four stacked links read as a footer wherever
+          they're placed, and a footer is the last thing anyone clicks. */}
       <ul className="flex flex-col justify-center gap-2.5">
-        {/*
-          LeetCode sits at the top of this column, above the contacts.
-
-          It's evidence, and the contacts are actions — so it goes first, in the
-          order someone actually reads: what has he done, then how do I reach
-          him. It's also the only card here with a number on it, which gives the
-          column something to start with other than four identical rectangles.
-        */}
+        {/* Evidence above actions: what has he done, then how do I reach him. */}
         {stats && (
           <li>
             <LeetCodePanel stats={stats} className="mb-1.5" />

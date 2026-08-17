@@ -14,18 +14,11 @@ import {
 import { WALL, WINDOW } from "@/lib/layout";
 
 /**
- * Rain on the window.
+ * Two scrolling sheets of streaks rather than particles — on a 90 cm opening at
+ * the edge of frame, individual physics is invisible detail running every frame.
  *
- * Two scrolling sheets of streaks rather than particles. Particles are the
- * obvious way to do rain and the wrong one here: the window is a 90 cm opening
- * at the edge of the frame, so anything with individual physics is invisible
- * detail running every frame. Two textures moving at different speeds give the
- * same read — water sliding down glass, with depth — for two draw calls and no
- * simulation.
- *
- * Additive, because rain on a lit window is a *highlight*: each rivulet is a
- * lens bending the sky toward you, which is brighter than the glass around it,
- * not darker. Multiplied it looks like dirt.
+ * Additive, because rain on a lit window is a *highlight*: each rivulet is a lens
+ * bending the sky toward you. Multiplied it looks like dirt.
  */
 
 function streakTexture(seed: number, count: number, reach = 1): CanvasTexture {
@@ -99,15 +92,9 @@ export function RainGlass({ storm }: { storm: boolean }) {
     return () => sheets.forEach((s) => s.tex.dispose());
   }, [sheets]);
 
-  /*
-   * Scrolled through material refs rather than by touching the memoised
-   * textures directly.
-   *
-   * Same objects either way, but a ref is the thing React sanctions writing to
-   * every frame — reaching into a `useMemo` result and mutating it is exactly
-   * the pattern the compiler rules exist to catch, and here it would be
-   * indistinguishable from a real bug.
-   */
+  // Through material refs rather than the memoised textures directly: same
+  // objects, but mutating a `useMemo` result is the pattern the compiler rules
+  // exist to catch.
   const mats = useRef<(MeshBasicMaterial | null)[]>([]);
   const elapsed = useRef(0);
 

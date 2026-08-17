@@ -1,22 +1,9 @@
 /**
  * Procedural wood for the desk top.
  *
- * The desk is the largest object in the frame by a wide margin, and it was a
- * flat brown. Flat colour on something that size is the most expensive mistake
- * available in a render: every other surface can get away with it because
- * they're small or dark, but two square metres of unbroken tone reads as
- * plastic no matter how well the fillets and the lighting behave.
- *
- * Drawn rather than downloaded for the same reason as everything else here —
- * one canvas beats a 2 MB texture that has to be fetched, decoded and colour
- * managed, and it can be tuned against the room's actual palette instead of
- * fighting it.
- *
- * The trick to convincing grain is that it isn't stripes. Real grain is a
- * *field* of very slightly different tones with occasional strong lines through
- * it, so the recipe here is three passes: a broad tonal wander, hundreds of
- * faint fibres, and a handful of dark cathedral figures that give the eye
- * something to land on.
+ * Convincing grain isn't stripes — it's a *field* of very slightly different
+ * tones with occasional strong lines through it. Three passes: a broad tonal
+ * wander, hundreds of faint fibres, and a few dark cathedral figures.
  */
 
 import { CanvasTexture, LinearFilter, RepeatWrapping, SRGBColorSpace } from "three";
@@ -86,13 +73,8 @@ export function woodTexture(): CanvasTexture {
     ctx.stroke();
   }
 
-  /*
-   * Cathedral figure.
-   *
-   * The nested arcs you get where the saw crosses a growth ring at an angle.
-   * A few of these are what makes a surface read as a specific species rather
-   * than as generic "wood texture", and walnut has them broad and open.
-   */
+  // The nested arcs where the saw crosses a growth ring at an angle. A few of
+  // these are what make a surface read as a species rather than as "wood".
   for (let i = 0; i < 7; i++) {
     const cx = rand() * W;
     const cy = rand() * H;

@@ -1,26 +1,11 @@
 /**
- * Printed artwork for the Catan box.
- *
- * Drawn to canvas rather than shipped as an image file. Two reasons: nothing
- * here needs to be photographic, and a procedural lid means the colours can be
+ * Printed artwork for the Catan box, drawn to canvas rather than shipped as an
+ * image: nothing here needs to be photographic, and a procedural lid can be
  * tuned against the room's palette instead of fighting it.
  *
- * Catan's identity is the hex — it's on the board, the pieces and the logo —
- * and its boxes have always been warm illustrated island scenes under a heavy
- * wordmark banner. So the lid is one: a 3-4-5-4-3 island, six terrains with
- * their icons, number tokens with the red six and eight, roads and settlements
- * laid over it.
- *
- * There was a chess lid beside it in the opposite idiom — minimal, typographic,
- * foil on grey board — and it was decent work that came out of the room the
- * moment the chess set became a wooden folding board instead of a carton. Two
- * printed cartons on a shelf are one object repeated; a carton and a wooden
- * case are a shelf. See chessCase.ts.
- *
- * Built to read as a silhouette first. It sits a metre and a half from the
- * camera where the lid is barely 80 pixels across, so it has to survive being
- * reduced to a field of colour and a bar of type. The detail is for the moment
- * someone pulls it down.
+ * Built to read as a silhouette first. At a metre and a half the lid is barely
+ * 80 pixels across, so it has to survive being reduced to a field of colour and
+ * a bar of type; the detail is for the moment someone pulls it down.
  */
 
 import { CanvasTexture, LinearFilter, SRGBColorSpace } from "three";
@@ -364,13 +349,8 @@ function catanLid(): CanvasTexture {
   ctx.closePath();
   ctx.fill();
 
-  /*
-   * The wordmark banner.
-   *
-   * Knocked out of a solid bar rather than set over the artwork. Type on a busy
-   * field is the single most common way a game box lid goes illegible, and at
-   * eighty pixels the bar does more work than the letters do.
-   */
+  // Knocked out of a solid bar rather than set over the artwork: at eighty
+  // pixels the bar does more work than the letters do.
   const barY = LID * 0.685;
   const barH = LID * 0.215;
 
@@ -435,14 +415,8 @@ function catanSpine(): CanvasTexture {
   ctx.fillText("CATAN", SPINE_H * 1.05, SPINE_H * 0.52);
   ctx.letterSpacing = "0px";
 
-  /*
-   * The credit, only if it fits.
-   *
-   * Both spines used to draw a title from the left and a second line
-   * right-aligned, with no check that the two didn't meet — and on a 75 mm
-   * spine they met in the middle and overprinted into an unreadable smear.
-   * Measuring the title first is three lines and makes the overlap impossible.
-   */
+  // Only if it fits. Drawn from both ends with no check, the two lines meet in
+  // the middle of a 75 mm spine and overprint.
   ctx.textAlign = "right";
   ctx.globalAlpha = 0.6;
   ctx.font = `600 ${SPINE_H * 0.18}px ui-sans-serif, system-ui, sans-serif`;

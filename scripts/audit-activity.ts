@@ -1,17 +1,14 @@
 /**
- * Audit `public/data/activity.json` before it is committed.
+ * Audit `public/data/activity.json` before it is committed — the independent
+ * second opinion on the collector's own guards. It exists because once a leak is
+ * pushed to a public repo it is in the history permanently, and rotating a token
+ * does not undo it.
  *
- * The collector already guards each commit as it is built. This is the
- * independent second opinion, and it exists because the file is committed to a
- * public repo: once a leak is pushed, it is in the git history permanently and
- * rotating a token does not undo it.
+ * The strongest check is only possible inside the Action: it fetches the real
+ * names of the private work repos and asserts none appear in the output, which
+ * catches a leak by its content rather than by a guessed pattern.
  *
- * The strongest check here is only possible inside the Action — it fetches the
- * real names of the private work repos and asserts that none of them appear
- * anywhere in the output. That catches a leak by its actual content rather than
- * by a pattern someone guessed in advance.
- *
- * Exits non-zero on any finding, which fails the workflow before the commit step.
+ * Exits non-zero on any finding, failing the workflow before the commit step.
  */
 import { readFile } from "node:fs/promises";
 import path from "node:path";

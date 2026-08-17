@@ -3,21 +3,16 @@
  *
  *   node scripts/hit-map.mjs [url] [x0] [x1] [y0] [y1]
  *
- * Clicks a grid over the running scene and prints one character per point: `C`
- * commits, `A` about, `M` music, `t` catan, `h` chess, `L` the lamp, `.`
- * nothing. Laid next to a screenshot, the letters should sit exactly where the
- * objects are.
+ * One character per grid point: `C` commits, `A` about, `M` music, `t` catan,
+ * `h` chess, `L` lamp, `.` nothing. Laid beside a screenshot, the letters should
+ * sit where the objects are.
  *
- * This exists because a broken hit region is invisible to every other check we
- * have. The screens mount real DOM through drei's `<Html>`, and R3F measures a
- * click from whichever element it landed on — so when those wrappers are
- * hit-testable, every click near a monitor is measured from the wrong origin
- * and raycast into empty room. The render is perfect and nothing works. Two
- * things keep it fixed: `pointerEvents` on the Html in Surface.tsx and
- * `eventPrefix="client"` on the canvas.
+ * A broken hit region is invisible to every other check here — the render is
+ * perfect and nothing works. Two things keep it fixed: `pointerEvents` on the
+ * Html in Surface.tsx and `eventPrefix="client"` on the canvas.
  *
- * The camera has to be back at rest before each sample, or the map records a
- * moving frame and comes out scrambled.
+ * The camera must be back at rest before each sample or the map comes out
+ * scrambled.
  */
 import { chromium } from "playwright";
 

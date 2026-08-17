@@ -15,21 +15,10 @@ const SCREEN_LABELS: { id: ScreenId; label: string }[] = [
 ];
 
 /**
- * The only chrome over the room.
- *
- * Two jobs, both of which the scene fails without:
- *
- * 1. Say that the screens are clickable. A 3D room gives no affordance that a
- *    flat page gives for free — there are no underlines and no cursor changes
- *    until you're already hovering the right thing. Without a line of text
- *    people look at a nice render and leave.
- *
- * 2. Offer the way out. Someone who wants the information and not the
- *    experience should be one click from an ordinary page, and shouldn't have
- *    to guess that's possible.
- *
- * The clock is a third, quieter job: it says the room is on Yash's time, not
- * yours, which is the whole conceit stated in four characters.
+ * The only chrome over the room, and the scene fails without it: a 3D room gives
+ * no affordance a flat page gives for free — no underlines, no cursor change
+ * until you're already hovering the right thing — so without a line of text
+ * people look at a nice render and leave. It also offers the way out.
  */
 export function Hud() {
   const focus = useScene((s) => s.focus);
@@ -58,12 +47,8 @@ export function Hud() {
 
   return (
     <>
-      {/*
-        First focusable thing on the page.
-        A keyboard user landing in a 3D room needs the way out before they need
-        anything else — and the flat page is the fully accessible version of
-        everything here.
-      */}
+      {/* First focusable thing on the page: a keyboard user landing in a 3D
+          room needs the way out before anything else. */}
       <button
         type="button"
         onClick={() => setForceFlat(true)}
@@ -72,11 +57,8 @@ export function Hud() {
         Skip the room, read this as a page
       </button>
 
-      {/*
-        Keyboard access to the screens themselves. Visually hidden until
-        focused, because the room already says "click a screen" to anyone using
-        a mouse and a row of buttons over the render would be clutter.
-      */}
+      {/* Hidden until focused: the room already says "click a screen" to anyone
+          using a mouse. */}
       <nav
         aria-label="Screens"
         className="fixed left-4 top-16 z-50 flex flex-col gap-2"
@@ -98,12 +80,8 @@ export function Hud() {
           {clock && (
             <span className="text-ink-dim tabular-nums">
               {clock.label} Gurugram
-              {/*
-                The weather is already doing its work in the window — the sun
-                and the sky fill are driven by it — but a render can't tell you
-                whether the flat grey light is a choice or the actual sky. Four
-                words say it's the actual sky.
-              */}
+              {/* A render can't tell you whether flat grey light is a choice or
+                  the actual sky. Four words say it's the actual sky. */}
               {weather && (
                 <span className="text-ink-faint"> · {weather.label}</span>
               )}
@@ -131,11 +109,7 @@ export function Hud() {
         </button>
       </div>
 
-      {/*
-        A real focusable control for the Escape action.
-        Keyboard users get an actual button rather than an undiscoverable key,
-        and it's visually hidden until focused so it doesn't sit on the render.
-      */}
+      {/* A real control for Escape, so it isn't an undiscoverable key. */}
       {focused && (
         <button
           type="button"

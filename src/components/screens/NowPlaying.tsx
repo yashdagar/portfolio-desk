@@ -6,28 +6,17 @@ import type { NowPlaying as Playing, Track } from "@/app/api/spotify/route";
 import { formatDuration, livePosition, useSpotify } from "@/lib/useSpotify";
 
 /**
- * The right monitor: a music player, not a card about music.
+ * A music player, not a card about music — the premise of this screen is that
+ * you're looking at a real one, and nobody's actual screen shows a bespoke
+ * summary widget.
  *
- * The earlier version was a tidy little panel — art, title, artist, a progress
- * bar. It was well behaved and it was wrong, because the premise of this screen
- * is that you're looking at *my actual screen*, and nobody's actual screen shows
- * a bespoke summary widget. They show the app. A sidebar, a library, a track
- * list and a transport bar across the bottom is what a music client looks like,
- * and the moment those are there the panel stops reading as a portfolio module
- * and starts reading as a window into a machine that someone is using.
+ * The library and track list are genuine recent plays and the progress bar
+ * advances against the true position. The transport controls are deliberately
+ * non-interactive and aria-hidden: this is a view of a player, not a remote.
  *
- * Every part of it is real. The library and the track list are genuine recent
- * plays from the API, the progress bar advances against the true position, and
- * the transport controls are deliberately non-interactive: this is a view of a
- * player, not a remote for one. They're rendered as static chrome and marked
- * aria-hidden so a screen reader isn't offered buttons that do nothing.
- *
- * Three states, all of which have to look deliberate — this screen is empty far
- * more often than it's full, since Yash is asleep for a third of every day and
- * the site is public the whole time. The empty state keeps the entire interface
- * and empties only the middle, because an empty state that throws away the
- * layout reads as broken while one that keeps it reads as idle, which is the
- * truth.
+ * The empty state keeps the whole interface and empties only the middle — one
+ * that throws away the layout reads as broken, where this reads as idle. It is
+ * the state this screen is in most of the time.
  */
 
 const GREEN = "#1db954";
@@ -36,16 +25,9 @@ export function NowPlaying({
   variant = "wide",
 }: {
   /**
-   * Which shape of screen this is mounted on.
-   *
-   * `wide` is the desktop client — sidebar, main pane, transport bar across the
-   * bottom. `tall` is the portrait monitor, and it isn't a squeezed version of
-   * the same thing: a 618-pixel column can't hold a 236-pixel sidebar and a
-   * four-column track list, and pretending otherwise gives you a desktop app
-   * with everything truncated. It gets the layout a player actually uses in
-   * portrait — art, title, transport, queue, stacked — which is a better fit for
-   * the data anyway, because a music client is fundamentally a list and a list
-   * wants height.
+   * `wide` is the desktop client. `tall` is not a squeezed version of it — a
+   * 618-pixel column can't hold a 236-pixel sidebar and a four-column track
+   * list — so it gets the stacked layout a player uses in portrait.
    */
   variant?: "wide" | "tall";
 } = {}) {
@@ -108,11 +90,6 @@ function TallPlayer({
         </div>
       ) : (
         <>
-          {/*
-            Art at full column width. On the wide layout it's a 148px thumbnail
-            beside a headline; here it's the subject, which is what a portrait
-            column is for.
-          */}
           <a
             href={track.url}
             target="_blank"
@@ -209,14 +186,8 @@ function TallPlayer({
  * ---------------------------------------------------------------------- */
 
 function Sidebar({ recent }: { recent?: Track[] }) {
-  /*
-   * Artists, not songs.
-   *
-   * The sidebar listed the same five tracks the main pane already lists, which
-   * made the panel look like it was padding itself out. Collapsing history to
-   * its distinct artists gives the library something the track list doesn't
-   * have, and it's the same data — no extra call, no invented content.
-   */
+  // Artists rather than the tracks the main pane already lists, which made the
+  // panel look like it was padding itself out. Same data, no extra call.
   const artists = Array.from(
     new Map(
       (recent ?? []).flatMap((t) =>
@@ -233,12 +204,8 @@ function Sidebar({ recent }: { recent?: Track[] }) {
   return (
     <nav
       aria-label="Library"
-      /*
-        Dropped on narrow viewports. The 3D surface is authored at a fixed
-        1100px and always shows it, but the flat page renders the same component
-        on a phone, where a 236px sidebar takes two thirds of the width and the
-        track list collapses to nothing.
-      */
+      // Dropped on narrow viewports: the 3D surface is authored at a fixed
+      // 1100px, but the flat page renders this on a phone.
       className="hidden w-[236px] shrink-0 flex-col gap-2 sm:flex"
     >
       <div className="rounded-lg bg-[#121212] px-3 py-3">
@@ -310,11 +277,7 @@ function Sidebar({ recent }: { recent?: Track[] }) {
           )}
         </ul>
 
-        {/*
-          Attribution. Spotify's developer terms ask for it wherever their data
-          is shown, and it's also the honest label for what this panel is —
-          somebody else's service, read live, not a mock-up.
-        */}
+        {/* Spotify's developer terms ask for this wherever their data shows. */}
         <p className="px-4 pb-3 pt-1 text-[10px] text-[#6a6a6a]">
           Live from Spotify
         </p>
@@ -374,12 +337,9 @@ function Main({ track }: { track: Playing | null }) {
 
   return (
     <Pane>
-      {/*
-        The header gradient. Spotify pulls it from the artwork; there's no way
-        to sample a cross-origin image without tainting a canvas, so this is a
-        fixed wash instead — which is close enough, because what the gradient is
-        actually doing is separating the header from the list below it.
-      */}
+      {/* Spotify pulls this from the artwork, but a cross-origin image can't be
+          sampled without tainting a canvas. A fixed wash separates the header
+          from the list below it, which is all the gradient is doing. */}
       <div className="relative shrink-0 bg-gradient-to-b from-[#2f4f4a] to-[#121212] px-6 pb-5 pt-6">
         <div className="flex items-end gap-5">
           <Art src={track.albumArt} size={148} radius="rounded-md" shadow />
@@ -504,12 +464,8 @@ function Transport({
         )}
       </div>
 
-      {/*
-        Controls. Chrome, and hidden from assistive tech — a screen reader
-        offered a "play" button that cannot play anything is worse served than
-        one that's simply told the controls aren't there. The real affordance is
-        the link on the artwork above.
-      */}
+      {/* Chrome, and aria-hidden: a screen reader offered a play button that
+          cannot play is worse served than one told the controls aren't there. */}
       <div className="flex min-w-0 flex-1 flex-col items-center gap-[6px]">
         <div
           aria-hidden
@@ -620,13 +576,8 @@ function Bars({ playing }: { playing: boolean }) {
   );
 }
 
-/*
- * Icons.
- *
- * Inline rather than a library: there are ten of them, they never change, and a
- * dependency for ten paths would cost more to load than the entire rest of this
- * screen. Everything inherits currentColor so a parent can recolour the set.
- */
+// Inline rather than a library: ten paths that never change would cost more as
+// a dependency than the rest of this screen. All inherit currentColor.
 const svg = (d: string, size = 16) => (
   <svg
     width={size}

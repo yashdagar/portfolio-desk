@@ -1,15 +1,13 @@
 import { NextResponse } from "next/server";
 
 /**
- * Now playing.
+ * The one source that has to be live at request time — a track changes every few
+ * minutes, so the Action-generated JSON behind the commit feed would always be
+ * wrong here.
  *
- * This is the one source that has to be live at request time — a track changes
- * every few minutes, so the Action-generated JSON that serves the commit feed
- * would always be wrong here.
- *
- * Uses the refresh-token grant: a one-time manual authorisation produces a
- * long-lived refresh token, stored as an env var, which this route exchanges
- * for a short-lived access token on demand. See scripts/spotify-auth.mjs.
+ * Refresh-token grant: a one-time manual authorisation produces a long-lived
+ * refresh token in an env var, exchanged here for a short-lived access token.
+ * See scripts/spotify-auth.mjs.
  */
 
 const TOKEN_URL = "https://accounts.spotify.com/api/token";
@@ -40,14 +38,8 @@ export interface NowPlaying {
   durationMs?: number;
   /** True when this is the most recent track rather than a current one. */
   stale?: boolean;
-  /**
-   * Recently played, most recent first.
-   *
-   * Fetched whether or not something is playing, because the screen is a player
-   * client and a player client with an empty library reads as a mockup. This is
-   * the one call that makes the rest of that interface true rather than
-   * decorative.
-   */
+  /** Fetched whether or not something is playing: a player client with an empty
+   *  library reads as a mockup. */
   recent?: Track[];
 }
 

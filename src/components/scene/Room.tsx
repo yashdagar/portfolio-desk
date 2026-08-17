@@ -169,7 +169,6 @@ function Outside({ day }: { day: Daylight }) {
         <meshBasicMaterial map={view} color={day.windowColor} toneMapped={false} />
       </mesh>
 
-      {/* Lit windows across the city, fading up as the daylight goes. */}
       <mesh position={[0, 0, 0.01]}>
         <planeGeometry args={[WINDOW.w * 1.5, WINDOW.h * 1.35]} />
         <meshBasicMaterial
@@ -230,13 +229,11 @@ function WindowFrame() {
         </mesh>
       ))}
 
-      {/* A handle on the lower right pane, because casements have one. */}
       <mesh position={[WINDOW.w * 0.34, -WINDOW.h * 0.32, depth * 0.6]} castShadow>
         <boxGeometry args={[0.014, 0.055, 0.014]} />
         <meshStandardMaterial {...M.ALUMINIUM} />
       </mesh>
 
-      {/* Sill, projecting into the room. */}
       <RoundedBox
         args={[WINDOW.w + 0.1, 0.032, WINDOW.reveal + 0.08]}
         radius={0.014}
@@ -464,7 +461,6 @@ function Riser({ panelH, lift }: { panelH: number; lift: number }) {
         </mesh>
       ))}
 
-      {/* The blade. Wide across, thin front to back — the whole point. */}
       <RoundedBox
         args={[0.086, lift + 0.02, 0.02]}
         radius={0.008}
@@ -540,13 +536,10 @@ function Link({
  * Built in the monitor's own frame, so it inherits the toe-in for free.
  */
 function MonitorArm({ panelH, lift }: { panelH: number; lift: number }) {
-  /** The desk surface, in this monitor's local frame. */
   const deskY = -panelH / 2 - lift;
-  /** The desk's back edge, likewise local. */
   const edgeZ = -0.118;
   /** Outboard of the panel's right edge, where the arm has room to be seen. */
   const x = 0.3;
-  /** The plane the linkage swings in, just behind the panel. */
   const armZ = -0.062;
 
   /** Post top, elbow, and the VESA end — the three joints. */
@@ -590,7 +583,6 @@ function MonitorArm({ panelH, lift }: { panelH: number; lift: number }) {
       >
         <meshStandardMaterial {...M.POWDER_COAT} />
       </RoundedBox>
-      {/* The screw that does the tightening, standing proud underneath. */}
       <mesh position={[x, deskY - 0.073, edgeZ + 0.016]} castShadow>
         <cylinderGeometry args={[0.007, 0.007, 0.012, 16]} />
         <meshStandardMaterial {...M.ALUMINIUM} />
@@ -609,7 +601,6 @@ function MonitorArm({ panelH, lift }: { panelH: number; lift: number }) {
         <meshStandardMaterial {...M.ALUMINIUM} />
       </RoundedBox>
 
-      {/* Lower link, upper link, folded back over it. */}
       <Link from={post} to={elbow} width={0.036} z={armZ} />
       <Link from={elbow} to={vesa} width={0.03} z={armZ + 0.026} depth={0.026} />
 
@@ -633,7 +624,6 @@ function MonitorArm({ panelH, lift }: { panelH: number; lift: number }) {
         </mesh>
       ))}
 
-      {/* Tilt knuckle and the VESA plate bolted to the back of the panel. */}
       <RoundedBox
         args={[0.078, 0.078, 0.016]}
         radius={0.006}
@@ -905,13 +895,11 @@ function CaseHardware() {
           >
             <meshStandardMaterial {...M.BRASS} />
           </RoundedBox>
-          {/* The hook itself, standing off the plate. */}
           <mesh position={[out + 0.004, -0.006, z]} castShadow>
             <boxGeometry args={[0.005, 0.013, 0.011]} />
             <meshStandardMaterial {...M.BRASS} />
           </mesh>
 
-          {/* Hinge barrels down the other, lying along the parting line. */}
           <mesh position={[-out, 0, z]} rotation={[Math.PI / 2, 0, 0]} castShadow>
             <cylinderGeometry args={[0.0055, 0.0055, 0.042, 14]} />
             <meshStandardMaterial {...M.BRASS} />
@@ -959,7 +947,6 @@ function Shelf() {
       >
         <meshStandardMaterial {...M.SHELF_WOOD} color="#ffffff" map={grain} />
       </RoundedBox>
-      {/* Brackets, so the shelf isn't floating. */}
       {[-SHELF.width / 2 + 0.09, SHELF.width / 2 - 0.09].map((dx, i) => (
         <RoundedBox
           key={i}
@@ -1043,7 +1030,6 @@ function DeskMat() {
 
   return (
     <group position={[MAT.x, DESK.surfaceY, MAT.z]}>
-      {/* Stitched edging, a whisker proud of the mat all the way round. */}
       <mesh geometry={edge} receiveShadow>
         <meshStandardMaterial {...M.MAT_EDGE} />
       </mesh>

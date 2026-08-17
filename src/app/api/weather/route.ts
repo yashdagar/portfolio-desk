@@ -3,16 +3,12 @@ import { NextResponse } from "next/server";
 import { GURUGRAM, readWeather, type Weather } from "@/lib/weather";
 
 /**
- * The weather in Gurugram.
+ * Open-Meteo, because it needs no key and no account: a decorative lookup is not
+ * worth a fourth secret sitting in an environment.
  *
- * Open-Meteo, because it needs no key and no account — which matters more than
- * it sounds. Every other live source in this project costs a secret sitting in
- * an environment somewhere, and a decorative weather lookup is not worth adding
- * a fourth one.
- *
- * Proxied rather than called from the browser so the response is cached once
- * for everyone instead of once per visitor, and so a rate limit or an outage
- * lands here as a null rather than as an unhandled fetch in the render loop.
+ * Proxied rather than called from the browser, so the response is cached once
+ * for everyone and an outage lands here as a null rather than as an unhandled
+ * fetch in the render loop.
  */
 const URL_ =
   "https://api.open-meteo.com/v1/forecast" +
@@ -46,14 +42,8 @@ export async function GET() {
       headers: { "cache-control": "public, max-age=600" },
     });
   } catch {
-    /*
-     * A null, not a 500.
-     *
-     * The room has to light itself whether or not anyone can tell it what the
-     * sky is doing, and it already knows the time. Weather is a modifier on a
-     * scene that works without it, so its failure mode is "clear day", not
-     * "broken screen".
-     */
+    // A null, not a 500: weather modifies a scene that works without it, so its
+    // failure mode is "clear day".
     return NextResponse.json(null, {
       headers: { "cache-control": "public, max-age=120" },
     });

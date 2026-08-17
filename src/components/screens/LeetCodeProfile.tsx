@@ -9,32 +9,18 @@ import {
 } from "@/lib/leetcode";
 
 /**
- * The centre monitor: the LeetCode profile, open in a browser.
- *
- * It used to be an "about me" page with a small LeetCode card in the sidebar,
- * which had the emphasis exactly backwards. A bio is a claim and this is
- * evidence, and the evidence is the thing worth putting on the largest screen
- * on the desk. Nothing is lost by the swap, either — a LeetCode profile
- * genuinely carries a name, a location, a school and a row of outbound links,
- * so the identity that used to live here still does. It just arrives attached
- * to a thousand solved problems.
- *
- * Framed as a browser window rather than as a bare panel, and that frame is
- * load-bearing in two ways. It tells you instantly that this is a real page
- * somewhere rather than a widget someone designed, and it gives the whole thing
- * one obvious click target that opens the real profile — which a page of nested
- * links can't have, since an anchor can't contain another anchor.
+ * The LeetCode profile, framed as a browser window. The frame is load-bearing:
+ * it says this is a real page rather than a widget someone designed, and it
+ * gives the panel one click target that opens the real profile — which a page
+ * of nested links can't have, since an anchor can't contain another anchor.
  */
 
 const ORDER: Difficulty[] = ["Easy", "Medium", "Hard"];
 
 /**
- * A fixed date, not "3 days ago".
- *
- * This component renders on the server for the flat page and on the client in
- * the room. A relative time computed at render differs between the two by
- * however long the request took, and React calls that a hydration mismatch.
- * Pinning the timezone to UTC removes the other half of the same problem.
+ * A fixed date, not "3 days ago": this renders on the server for the flat page
+ * and on the client in the room, and a relative time differs between the two by
+ * however long the request took. UTC removes the other half of the problem.
  */
 const when = (unixSeconds: number) =>
   new Date(unixSeconds * 1000).toLocaleDateString("en-GB", {
@@ -44,29 +30,18 @@ const when = (unixSeconds: number) =>
   });
 
 /**
- * The solved ring.
- *
- * LeetCode's own headline graphic, and worth copying rather than inventing
- * because it does something bars can't: it shows the three difficulties as
- * parts of one quantity, so you read the total and the mix in a single glance.
- * Drawn as SVG arcs on one circle — each difficulty's sweep is its share of the
- * problems solved, and the unfilled remainder of the ring is everything on the
- * site that hasn't been.
+ * Worth copying from LeetCode rather than inventing, because it does something
+ * bars can't: the three difficulties are parts of one quantity, so the total and
+ * the mix read in a single glance.
  */
 function SolvedRing({ stats }: { stats: LeetCodeStats }) {
   const R = 58;
   const C = 2 * Math.PI * R;
   const catalogue = ORDER.reduce((n, d) => n + stats.solved[d].total, 0);
 
-  /*
-   * Each arc's length, then where it starts — as a prefix sum rather than a
-   * running total carried in a closure.
-   *
-   * The obvious version accumulates into a `let` inside the map callback, which
-   * the React compiler rejects: a variable reassigned during render can hold a
-   * stale value if the component re-renders partway through. Three items make
-   * the quadratic slice-and-sum free, and it has no state to be stale.
-   */
+  // A prefix sum rather than a running total in a closure: the React compiler
+  // rejects a `let` reassigned during render, and three items make the quadratic
+  // slice-and-sum free.
   const lengths = ORDER.map(
     (d) => (catalogue > 0 ? stats.solved[d].count / catalogue : 0) * C,
   );
@@ -133,19 +108,8 @@ function SolvedRing({ stats }: { stats: LeetCodeStats }) {
 const WEEKS = 52;
 
 /**
- * The submission calendar.
- *
- * The one graphic on a LeetCode profile that isn't a summary — everything else
- * up the page is a total, and totals say nothing about whether the work
- * happened in one heroic fortnight or every week for a year. This says which,
- * and here the answer is 299 days out of 365, which is the actual claim being
- * made by the whole panel.
- *
- * It also fills the bottom half of an ultrawide, which the three columns above
- * it cannot: they're a sidebar, a chart and two short lists, and none of them
- * has 200 more pixels of anything to say. A full-width band of a year's work is
- * the right thing to put under them for the same reason it's at the bottom of
- * the real page.
+ * The one graphic here that isn't a summary: totals say nothing about whether
+ * the work happened in one heroic fortnight or every week for a year.
  */
 function SubmissionCalendar({ days }: { days: Record<string, number> }) {
   const today = new Date();
@@ -165,15 +129,8 @@ function SubmissionCalendar({ days }: { days: Record<string, number> }) {
     return { key, future: d > today, count: days[key] ?? 0, date: d };
   });
 
-  /*
-   * Five steps, and the thresholds are deliberately low.
-   *
-   * Submission counts are long-tailed — most active days are one to three
-   * problems and the occasional contest day is forty. Scaled against the
-   * maximum, a normal week of real work renders as the palest possible tint and
-   * the whole year looks empty. The point of the grid is which days had
-   * anything in them at all.
-   */
+  // Deliberately low thresholds: counts are long-tailed, so scaled against the
+  // maximum a normal week renders as the palest tint and the year looks empty.
   const tone = (n: number) =>
     n === 0
       ? "bg-screen-raised"
@@ -244,13 +201,8 @@ export function LeetCodeProfile({ stats }: { stats: LeetCodeStats }) {
 
   return (
     <div className="flex h-full w-full flex-col overflow-hidden bg-screen font-sans text-ink-dim">
-      {/*
-        Browser chrome, and the whole of it is the link out.
-
-        A page of a dozen nested links can't itself be a link, so the click
-        target has to be somewhere no other link lives. The address bar is where
-        anyone would click to go to a site anyway.
-      */}
+      {/* The whole chrome is the link out: a page of nested links can't itself
+          be one, so the target has to be somewhere no other link lives. */}
       <a
         href={LEETCODE_URL}
         target="_blank"
@@ -470,14 +422,8 @@ export function LeetCodeProfile({ stats }: { stats: LeetCodeStats }) {
           </div>
         </div>
 
-        {/*
-          A year of submissions, full width, under everything else.
-
-          `mt-auto` rather than a fixed offset: the three panes above are all
-          content-height and the tallest of them decides where this starts, so
-          pinning it to the bottom is what keeps the panel balanced whether
-          there are four badges or none.
-        */}
+        {/* `mt-auto` rather than a fixed offset: the panes above are all
+            content-height, so this stays balanced with four badges or none. */}
         <div className="mt-auto flex items-end justify-between gap-8 border-t border-screen-line pt-5">
           <SubmissionCalendar days={stats.calendar} />
           <p className="shrink-0 pb-1 text-right font-mono text-[11px] leading-relaxed text-ink-faint tabular-nums">

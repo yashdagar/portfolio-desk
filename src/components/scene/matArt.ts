@@ -1,14 +1,8 @@
 /**
- * The desk mat's printed topography.
- *
- * Real contour lines, not drawn squiggles. The field is a sum of a dozen
- * gaussian bumps and a couple of long waves; the lines are its iso-contours,
- * extracted with marching squares. It's more code than faking it with noisy
- * bezier paths and it's the only way to get the thing that actually makes a
- * contour map look like one: the lines nest. Every closed loop sits strictly
- * inside the next, they never cross, and they crowd together where the slope is
- * steep. Hand-drawn squiggles get all three wrong and the eye picks it up
- * immediately, even at the size this is seen.
+ * Real contour lines, not drawn squiggles: a field of gaussian bumps, contoured
+ * with marching squares. More code than noisy beziers, and the only way to get
+ * what makes a contour map read as one — the lines nest, never cross, and crowd
+ * where the slope is steep.
  */
 
 import { CanvasTexture, LinearFilter, SRGBColorSpace } from "three";
@@ -59,13 +53,9 @@ function buildField(rand: () => number): number[][] {
 }
 
 /**
- * Marching squares.
- *
- * The standard 16-case lookup, collapsed: for each cell, interpolate where the
- * threshold crosses each of the four edges, then connect the crossings. The two
- * ambiguous saddle cases (5 and 10) are resolved arbitrarily — at this line
- * weight the difference is invisible, and getting it wrong only ever swaps
- * which of two valid connections is drawn.
+ * The standard 16-case lookup, collapsed. The two ambiguous saddle cases (5 and
+ * 10) are resolved arbitrarily — getting them wrong only swaps which of two
+ * valid connections is drawn.
  */
 function marchingSquares(
   field: number[][],
@@ -177,14 +167,8 @@ export function matTexture(): CanvasTexture {
     ctx.stroke();
   }
 
-  /*
-   * The stitched border.
-   *
-   * A darker band round the outside with a dashed seam inside it. This mat has
-   * real geometry for its edge already, but the *stitch* is a printed-scale
-   * detail — a couple of millimetres — that geometry at this budget can't carry
-   * and a texture can.
-   */
+  // The mat has real geometry for its edge, but a two-millimetre stitch is a
+  // printed-scale detail that geometry at this budget can't carry.
   const inset = 26;
   ctx.globalCompositeOperation = "source-over";
   ctx.strokeStyle = "#232a33";

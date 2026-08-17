@@ -30,13 +30,10 @@ import {
 } from "../src/lib/activity";
 
 /**
- * Logins that count as "Yash" inside his own repos.
+ * Logins that count as "Yash" inside his own repos: personal projects committed
+ * from the work machine are authored as `yashdagar-cn`.
  *
- * He commits to his personal projects from his work machine, so catan and chess
- * are authored as `yashdagar-cn` with a codingninjas.com address. Filtering own
- * repos on `yashdagar` alone found one commit in catan where there are dozens.
- *
- * This only widens authorship *within repos he owns* — it has no bearing on the
+ * This widens authorship only *within repos he owns*. It has no bearing on the
  * work tier, whose visibility is decided by the repo's owner, not the author.
  */
 const OWN_LOGINS = new Set(
@@ -114,11 +111,8 @@ interface RepoCommit {
 }
 
 /**
- * Own repos: public and private alike, full messages.
- *
- * Uses per-repo commit listing rather than the search API, which barely indexes
- * private repos — searching `repo:yashdagar/catan` returns a single commit where
- * the repo actually holds dozens.
+ * Own repos, public and private alike, full messages. Per-repo listing rather
+ * than the search API, which barely indexes private repos.
  */
 async function collectOwn(token: string): Promise<Commit[]> {
   const repos = await ghAll<Repo>(
@@ -185,11 +179,9 @@ async function collectOwn(token: string): Promise<Commit[]> {
 }
 
 /**
- * Work repos: counts and type labels only.
- *
- * Every commit goes through `toWorkCommit`, which reconstructs a fresh object
- * rather than spreading the source, so the message and repo name are dropped
- * here and never travel further.
+ * Work repos: counts and type labels only. Every commit goes through
+ * `toWorkCommit`, which reconstructs a fresh object rather than spreading the
+ * source, so the message and repo name are dropped here.
  */
 async function collectWork(token: string): Promise<Commit[]> {
   const repos = await ghAll<Repo>(
