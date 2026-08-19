@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-19T08:06:22.087Z",
+  "generatedAt": "2026-08-19T08:55:55.313Z",
   "commits": [
     {
       "id": "720c73a4fc3e",
@@ -1550,30 +1550,10 @@
       "url": "https://github.com/yashdagar/awsugdehradun/commit/3f87ac325700b9e09d511e794b2f791d41f66583",
       "language": "TypeScript",
       "at": "2025-08-26T05:59:18Z"
-    },
-    {
-      "id": "5f43d9602b4d",
-      "visibility": "public",
-      "kind": "feat",
-      "message": "add speaker details",
-      "repo": "yashdagar/awsugdehradun",
-      "url": "https://github.com/yashdagar/awsugdehradun/commit/5f43d9602b4d4ea2370b5dd48831998bdf9514a1",
-      "language": "TypeScript",
-      "at": "2025-08-19T08:51:42Z"
-    },
-    {
-      "id": "2b5a0e515d5b",
-      "visibility": "public",
-      "kind": "feat",
-      "message": "add sponsors",
-      "repo": "yashdagar/awsugdehradun",
-      "url": "https://github.com/yashdagar/awsugdehradun/commit/2b5a0e515d5b0a1d33a5a6745ffde592c3776c22",
-      "language": "TypeScript",
-      "at": "2025-08-19T08:09:29Z"
     }
   ],
   "totals": {
-    "year": 217,
+    "year": 215,
     "streak": 0
   },
   "workDays": {
