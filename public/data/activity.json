@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-22T23:13:08.564Z",
+  "generatedAt": "2026-08-22T23:36:00.757Z",
   "commits": [
     {
       "id": "8f6685c3d880",
@@ -380,16 +380,6 @@
       "url": "https://github.com/yashdagar/portfolio-desk/commit/05506a0e3edcded351bce507fce55985608a7399",
       "language": "TypeScript",
       "at": "2026-08-16T07:22:41Z"
-    },
-    {
-      "id": "786fb92948b8",
-      "visibility": "public",
-      "kind": "other",
-      "message": "Greybox: room, seated camera, focus transitions",
-      "repo": "yashdagar/portfolio-desk",
-      "url": "https://github.com/yashdagar/portfolio-desk/commit/786fb92948b8971d86cb54c73fe2576ac034b3a2",
-      "language": "TypeScript",
-      "at": "2026-08-16T07:01:58Z"
     },
     {
       "id": "f462def3e30b",
@@ -1563,7 +1553,7 @@
     }
   ],
   "totals": {
-    "year": 216,
+    "year": 215,
     "streak": 0
   },
   "workDays": {
