@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-22T22:56:26.392Z",
+  "generatedAt": "2026-08-22T23:13:08.564Z",
   "commits": [
     {
       "id": "8f6685c3d880",
@@ -390,16 +390,6 @@
       "url": "https://github.com/yashdagar/portfolio-desk/commit/786fb92948b8971d86cb54c73fe2576ac034b3a2",
       "language": "TypeScript",
       "at": "2026-08-16T07:01:58Z"
-    },
-    {
-      "id": "3c2be3350300",
-      "visibility": "public",
-      "kind": "other",
-      "message": "Data layer: commit feed, redaction, Spotify",
-      "repo": "yashdagar/portfolio-desk",
-      "url": "https://github.com/yashdagar/portfolio-desk/commit/3c2be335030048b00802a42c1e72bad22e94d7fe",
-      "language": "TypeScript",
-      "at": "2026-08-16T06:51:46Z"
     },
     {
       "id": "f462def3e30b",
@@ -1573,7 +1563,7 @@
     }
   ],
   "totals": {
-    "year": 217,
+    "year": 216,
     "streak": 0
   },
   "workDays": {
