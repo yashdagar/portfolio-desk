@@ -1,6 +1,26 @@
 {
-  "generatedAt": "2026-08-23T00:40:55.163Z",
+  "generatedAt": "2026-08-23T02:18:17.369Z",
   "commits": [
+    {
+      "id": "df6ff5c743f7",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Port the chess engine to C++ behind dart:ffi",
+      "repo": "yashdagar/chess",
+      "url": "https://github.com/yashdagar/chess/commit/df6ff5c743f7725e3dd2bf3bb84071b33a0f22d9",
+      "language": "Dart",
+      "at": "2026-08-23T00:12:53Z"
+    },
+    {
+      "id": "2091dac07686",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Recover the working tree after tmp-cleaner data loss",
+      "repo": "yashdagar/chess",
+      "url": "https://github.com/yashdagar/chess/commit/2091dac076863544d03158ce4d487e604d470c50",
+      "language": "Dart",
+      "at": "2026-08-21T19:39:51Z"
+    },
     {
       "id": "8f6685c3d880",
       "visibility": "public",
@@ -350,16 +370,6 @@
       "url": "https://github.com/yashdagar/portfolio-desk/commit/b038d595876e7d7402dcac3b44ac694206d4ed3d",
       "language": "TypeScript",
       "at": "2026-08-16T07:55:35Z"
-    },
-    {
-      "id": "e37cce23e28f",
-      "visibility": "public",
-      "kind": "other",
-      "message": "Three delivery modes, and make the flat one good",
-      "repo": "yashdagar/portfolio-desk",
-      "url": "https://github.com/yashdagar/portfolio-desk/commit/e37cce23e28f5f4762cba2bc2e1798f37519ba22",
-      "language": "TypeScript",
-      "at": "2026-08-16T07:43:33Z"
     },
     {
       "id": "f462def3e30b",
@@ -1533,8 +1543,8 @@
     }
   ],
   "totals": {
-    "year": 213,
-    "streak": 0
+    "year": 214,
+    "streak": 1
   },
   "workDays": {
     "2026-08-14": 1,
