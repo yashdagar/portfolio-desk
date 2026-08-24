@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-24T11:57:41.881Z",
+  "generatedAt": "2026-08-24T12:40:10.469Z",
   "commits": [
     {
       "id": "775ffe1cef2f",
@@ -110,16 +110,6 @@
       "url": "https://github.com/yashdagar/portfolio-desk/commit/7bf82116e50090c541778980bbec38f3839232c8",
       "language": "TypeScript",
       "at": "2026-08-17T06:00:43Z"
-    },
-    {
-      "id": "60527048f2a4",
-      "visibility": "public",
-      "kind": "other",
-      "message": "Finish the comment pass across the rest of the repo",
-      "repo": "yashdagar/portfolio-desk",
-      "url": "https://github.com/yashdagar/portfolio-desk/commit/60527048f2a4518925ef933c9f06f058b01e5b95",
-      "language": "TypeScript",
-      "at": "2026-08-17T05:23:19Z"
     },
     {
       "id": "f462def3e30b",
@@ -1293,7 +1283,7 @@
     }
   ],
   "totals": {
-    "year": 189,
+    "year": 188,
     "streak": 1
   },
   "workDays": {
