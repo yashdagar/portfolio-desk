@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-25T09:25:19.147Z",
+  "generatedAt": "2026-08-25T10:03:42.642Z",
   "commits": [
     {
       "id": "775ffe1cef2f",
@@ -60,16 +60,6 @@
       "url": "https://github.com/yashdagar/CLNLP/commit/16a2cd5ed5babc2c1dce5db8297ddfada65d5401",
       "language": "Jupyter Notebook",
       "at": "2026-08-20T03:53:05Z"
-    },
-    {
-      "id": "720c73a4fc3e",
-      "visibility": "public",
-      "kind": "other",
-      "message": "Publish work commits as a count per day, never one by one",
-      "repo": "yashdagar/portfolio-desk",
-      "url": "https://github.com/yashdagar/portfolio-desk/commit/720c73a4fc3efd56274f494c04a5bec295234e57",
-      "language": "TypeScript",
-      "at": "2026-08-17T20:28:59Z"
     },
     {
       "id": "f462def3e30b",
@@ -1243,7 +1233,7 @@
     }
   ],
   "totals": {
-    "year": 184,
+    "year": 183,
     "streak": 0
   },
   "workDays": {
