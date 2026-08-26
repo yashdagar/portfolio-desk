@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-26T09:58:59.068Z",
+  "generatedAt": "2026-08-26T10:34:40.192Z",
   "commits": [
     {
       "id": "775ffe1cef2f",
@@ -1200,30 +1200,10 @@
       "url": "https://github.com/yashdagar/awsugdehradun/commit/07080bd9cbf29049e04efca76c2d14dc59d205c8",
       "language": "TypeScript",
       "at": "2025-08-26T17:59:10Z"
-    },
-    {
-      "id": "51f3bf82c144",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Update resume.pdf",
-      "repo": "yashdagar/portfolio-3d",
-      "url": "https://github.com/yashdagar/portfolio-3d/commit/51f3bf82c14472a81ad4cdb9a2a781e189947ac1",
-      "language": "TypeScript",
-      "at": "2025-08-26T10:20:39Z"
-    },
-    {
-      "id": "ac3adab2fedf",
-      "visibility": "public",
-      "kind": "feat",
-      "message": "add monster energy as sponsor, optimize speaker images",
-      "repo": "yashdagar/awsugdehradun",
-      "url": "https://github.com/yashdagar/awsugdehradun/commit/ac3adab2fedf318687b4f0a70cefcffa02391b6d",
-      "language": "TypeScript",
-      "at": "2025-08-26T10:14:49Z"
     }
   ],
   "totals": {
-    "year": 182,
+    "year": 180,
     "streak": 0
   },
   "workDays": {
