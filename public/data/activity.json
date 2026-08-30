@@ -1,6 +1,226 @@
 {
-  "generatedAt": "2026-08-30T06:04:40.352Z",
+  "generatedAt": "2026-08-30T11:56:40.571Z",
   "commits": [
+    {
+      "id": "e85c2332c78c",
+      "visibility": "personal",
+      "kind": "build",
+      "message": "build: upgrade Android toolchain and replace broken ionicons with Material icons",
+      "repo": "yashdagar/order_karo_partners",
+      "url": "https://github.com/yashdagar/order_karo_partners/commit/e85c2332c78c5e45db07b27824db43e0423eccae",
+      "language": "Dart",
+      "at": "2026-08-30T06:50:06Z"
+    },
+    {
+      "id": "734f4c8d48c5",
+      "visibility": "personal",
+      "kind": "build",
+      "message": "build: upgrade Android toolchain and replace broken ionicons with Material icons",
+      "repo": "yashdagar/order_karo",
+      "url": "https://github.com/yashdagar/order_karo/commit/734f4c8d48c58a2a438a205a8417b578cd08f29f",
+      "language": "Dart",
+      "at": "2026-08-30T06:47:38Z"
+    },
+    {
+      "id": "4c516a050189",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "polish: accessibility and lint burn-down",
+      "repo": "yashdagar/order_karo_partners",
+      "url": "https://github.com/yashdagar/order_karo_partners/commit/4c516a050189a1d29b95c59df17a21020b10a5df",
+      "language": "Dart",
+      "at": "2026-08-29T21:11:25Z"
+    },
+    {
+      "id": "15451a077b6f",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "polish: accessibility and lint burn-down",
+      "repo": "yashdagar/order_karo",
+      "url": "https://github.com/yashdagar/order_karo/commit/15451a077b6f988e8714f4b2de44f9015c7c3e9c",
+      "language": "Dart",
+      "at": "2026-08-29T21:10:31Z"
+    },
+    {
+      "id": "f8119c3491c0",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "feat: partner console overhaul - per-order undo, new-order alerting, menu deletion",
+      "repo": "yashdagar/order_karo_partners",
+      "url": "https://github.com/yashdagar/order_karo_partners/commit/f8119c3491c008df863f997d2ecee9d586de84e9",
+      "language": "Dart",
+      "at": "2026-08-29T21:07:45Z"
+    },
+    {
+      "id": "acb769abd933",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "feat: customer screen overhaul - virtualized lists, resilient checkout, honest order tracking",
+      "repo": "yashdagar/order_karo",
+      "url": "https://github.com/yashdagar/order_karo/commit/acb769abd93361eb84153cee87c7964d7088a957",
+      "language": "Dart",
+      "at": "2026-08-29T21:04:03Z"
+    },
+    {
+      "id": "82e51301e987",
+      "visibility": "personal",
+      "kind": "refactor",
+      "message": "refactor: migrate state management from provider to flutter_riverpod",
+      "repo": "yashdagar/order_karo_partners",
+      "url": "https://github.com/yashdagar/order_karo_partners/commit/82e51301e987f8613fa6296db9cc601ba54b9ef0",
+      "language": "Dart",
+      "at": "2026-08-29T20:59:53Z"
+    },
+    {
+      "id": "6cd125cdc7af",
+      "visibility": "personal",
+      "kind": "refactor",
+      "message": "refactor: migrate state management from provider to flutter_riverpod",
+      "repo": "yashdagar/order_karo",
+      "url": "https://github.com/yashdagar/order_karo/commit/6cd125cdc7af3d7b08e6d032077256305d191d6b",
+      "language": "Dart",
+      "at": "2026-08-29T20:56:28Z"
+    },
+    {
+      "id": "f93383b4cc4b",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "feat: migrate to go_router with auth redirect, real ledger tab and notification routing",
+      "repo": "yashdagar/order_karo_partners",
+      "url": "https://github.com/yashdagar/order_karo_partners/commit/f93383b4cc4b90f9b1589fb6f509f1d122571663",
+      "language": "Dart",
+      "at": "2026-08-29T20:47:49Z"
+    },
+    {
+      "id": "31af951de153",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "feat: migrate to go_router with auth redirect, tab shell and notification deep links",
+      "repo": "yashdagar/order_karo",
+      "url": "https://github.com/yashdagar/order_karo/commit/31af951de153b09f265f239c58f6199d03c9d359",
+      "language": "Dart",
+      "at": "2026-08-29T20:44:16Z"
+    },
+    {
+      "id": "8ded8e448c1b",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "feat: shared widget library, cached images and destructive-action confirmations",
+      "repo": "yashdagar/order_karo_partners",
+      "url": "https://github.com/yashdagar/order_karo_partners/commit/8ded8e448c1b38331125c188065aef5faa96a933",
+      "language": "Dart",
+      "at": "2026-08-29T20:40:05Z"
+    },
+    {
+      "id": "a9226c7a7823",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "feat: shared widget library with cached images, steppers and semantic indicators",
+      "repo": "yashdagar/order_karo",
+      "url": "https://github.com/yashdagar/order_karo/commit/a9226c7a78232c3ba3e0be609a6a8d3ffed4bbb3",
+      "language": "Dart",
+      "at": "2026-08-29T20:37:55Z"
+    },
+    {
+      "id": "f9adb19b090d",
+      "visibility": "personal",
+      "kind": "refactor",
+      "message": "refactor: extract theme into lib/app/theme and add shared format helpers",
+      "repo": "yashdagar/order_karo_partners",
+      "url": "https://github.com/yashdagar/order_karo_partners/commit/f9adb19b090daed93a9edf96fdb4a2565f727427",
+      "language": "Dart",
+      "at": "2026-08-29T20:33:44Z"
+    },
+    {
+      "id": "869ce4056f08",
+      "visibility": "personal",
+      "kind": "refactor",
+      "message": "refactor: extract theme into lib/app/theme and add shared format helpers",
+      "repo": "yashdagar/order_karo",
+      "url": "https://github.com/yashdagar/order_karo/commit/869ce4056f08adc82b623cde1a918e136d901f55",
+      "language": "Dart",
+      "at": "2026-08-29T20:31:59Z"
+    },
+    {
+      "id": "b9ebc85afcf4",
+      "visibility": "personal",
+      "kind": "refactor",
+      "message": "refactor: single runApp with async init and startup retry state",
+      "repo": "yashdagar/order_karo_partners",
+      "url": "https://github.com/yashdagar/order_karo_partners/commit/b9ebc85afcf4e4d125d7523000243bb68377b9ab",
+      "language": "Dart",
+      "at": "2026-08-29T20:27:36Z"
+    },
+    {
+      "id": "8b358e482498",
+      "visibility": "personal",
+      "kind": "refactor",
+      "message": "refactor: single runApp with async init and startup retry state",
+      "repo": "yashdagar/order_karo",
+      "url": "https://github.com/yashdagar/order_karo/commit/8b358e48249832727e85d2db33089fb4015b5d0a",
+      "language": "Dart",
+      "at": "2026-08-29T20:27:36Z"
+    },
+    {
+      "id": "d4021e9c2f9a",
+      "visibility": "personal",
+      "kind": "fix",
+      "message": "fix: partners P0s - stream leaks, online toggle rollback, order reject, hidden customer orders",
+      "repo": "yashdagar/order_karo_partners",
+      "url": "https://github.com/yashdagar/order_karo_partners/commit/d4021e9c2f9a24871d9fd9eb582a2b42e2acf8a3",
+      "language": "Dart",
+      "at": "2026-08-29T20:22:31Z"
+    },
+    {
+      "id": "3d62c6b5891c",
+      "visibility": "personal",
+      "kind": "fix",
+      "message": "fix: cart survives back navigation, null-safe menus and carts, stock awareness",
+      "repo": "yashdagar/order_karo",
+      "url": "https://github.com/yashdagar/order_karo/commit/3d62c6b5891c63c6849b772e0ab527a794eb99c3",
+      "language": "Dart",
+      "at": "2026-08-29T20:19:56Z"
+    },
+    {
+      "id": "1579fe4c901c",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "feat: replace shared hardcoded password with email OTP sign-in",
+      "repo": "yashdagar/order_karo_partners",
+      "url": "https://github.com/yashdagar/order_karo_partners/commit/1579fe4c901ceed3c7f42f6e578931a0aa83fc00",
+      "language": "Dart",
+      "at": "2026-08-29T20:17:22Z"
+    },
+    {
+      "id": "fc478d820bf7",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "feat: replace shared hardcoded password with email OTP sign-in",
+      "repo": "yashdagar/order_karo",
+      "url": "https://github.com/yashdagar/order_karo/commit/fc478d820bf71c04bbd9ed773442e3f114798dd5",
+      "language": "Dart",
+      "at": "2026-08-29T20:17:22Z"
+    },
+    {
+      "id": "fb2ed3800fa1",
+      "visibility": "personal",
+      "kind": "chore",
+      "message": "chore: remove dead code and enable avoid_print baseline",
+      "repo": "yashdagar/order_karo_partners",
+      "url": "https://github.com/yashdagar/order_karo_partners/commit/fb2ed3800fa1612e5db5e6db37d6bb8f6608e70d",
+      "language": "Dart",
+      "at": "2026-08-29T20:14:30Z"
+    },
+    {
+      "id": "7e7be9dbd2c7",
+      "visibility": "personal",
+      "kind": "chore",
+      "message": "chore: remove dead code and enable avoid_print baseline",
+      "repo": "yashdagar/order_karo",
+      "url": "https://github.com/yashdagar/order_karo/commit/7e7be9dbd2c7f3f140ca6df8e5f966920520e829",
+      "language": "Dart",
+      "at": "2026-08-29T20:14:29Z"
+    },
     {
       "id": "775ffe1cef2f",
       "visibility": "personal",
@@ -1193,8 +1413,8 @@
     }
   ],
   "totals": {
-    "year": 179,
-    "streak": 0
+    "year": 201,
+    "streak": 2
   },
   "workDays": {
     "2026-08-14": 1,
