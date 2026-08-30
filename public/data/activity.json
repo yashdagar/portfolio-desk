@@ -1,6 +1,16 @@
 {
-  "generatedAt": "2026-08-30T15:48:23.433Z",
+  "generatedAt": "2026-08-30T18:55:26.427Z",
   "commits": [
+    {
+      "id": "fbda34b888cd",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "scaffold Flutter desktop app with core services",
+      "repo": "yashdagar/pharma-retail-desktop",
+      "url": "https://github.com/yashdagar/pharma-retail-desktop/commit/fbda34b888cd3eb13f7c23b003eb3169938beff7",
+      "language": "Dart",
+      "at": "2026-08-30T18:41:44Z"
+    },
     {
       "id": "e85c2332c78c",
       "visibility": "personal",
@@ -1390,16 +1400,6 @@
       "url": "https://github.com/yashdagar/awsugdehradun/commit/b2e5e9a52d05172bc9c1a5e02054a3f67ac87387",
       "language": "TypeScript",
       "at": "2025-09-03T06:02:58Z"
-    },
-    {
-      "id": "26ab956bad2f",
-      "visibility": "public",
-      "kind": "feat",
-      "message": "add speaker deepankar anand",
-      "repo": "yashdagar/awsugdehradun",
-      "url": "https://github.com/yashdagar/awsugdehradun/commit/26ab956bad2ffdc76873a388f52f19a877291fd5",
-      "language": "TypeScript",
-      "at": "2025-08-30T15:49:53Z"
     }
   ],
   "totals": {
