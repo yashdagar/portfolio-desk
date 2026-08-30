@@ -1,6 +1,36 @@
 {
-  "generatedAt": "2026-08-30T18:55:26.427Z",
+  "generatedAt": "2026-08-30T21:43:41.822Z",
   "commits": [
+    {
+      "id": "552fbc9d123f",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "bundle relocatable tesseract binary, dylibs and tessdata into the app",
+      "repo": "yashdagar/pharma-retail-desktop",
+      "url": "https://github.com/yashdagar/pharma-retail-desktop/commit/552fbc9d123f985179394ac6c9268967d10ef256",
+      "language": "Dart",
+      "at": "2026-08-30T19:54:45Z"
+    },
+    {
+      "id": "d67d4d7171b1",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "restyle to MiniMax design system with DM Sans and Iconsax icons",
+      "repo": "yashdagar/pharma-retail-desktop",
+      "url": "https://github.com/yashdagar/pharma-retail-desktop/commit/d67d4d7171b1ab1c34200b552c98329fd545437d",
+      "language": "Dart",
+      "at": "2026-08-30T19:40:09Z"
+    },
+    {
+      "id": "707ccfcdc757",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "add purchase OCR, sales billing, invoice PDF, trial licensing and expiry alerts",
+      "repo": "yashdagar/pharma-retail-desktop",
+      "url": "https://github.com/yashdagar/pharma-retail-desktop/commit/707ccfcdc7574e8edac8cf6a6e30119bb2bdf429",
+      "language": "Dart",
+      "at": "2026-08-30T19:01:33Z"
+    },
     {
       "id": "fbda34b888cd",
       "visibility": "personal",
@@ -1403,7 +1433,7 @@
     }
   ],
   "totals": {
-    "year": 200,
+    "year": 203,
     "streak": 2
   },
   "workDays": {
