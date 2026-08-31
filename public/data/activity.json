@@ -1,6 +1,46 @@
 {
-  "generatedAt": "2026-08-31T11:49:30.815Z",
+  "generatedAt": "2026-08-31T18:24:57.617Z",
   "commits": [
+    {
+      "id": "2fb439b7693a",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "assign cells by column shape and derive GST from the bill's own arithmetic",
+      "repo": "yashdagar/pharma-retail-desktop",
+      "url": "https://github.com/yashdagar/pharma-retail-desktop/commit/2fb439b7693add716cec853cc1e5f93b05757d97",
+      "language": "Dart",
+      "at": "2026-08-31T15:18:42Z"
+    },
+    {
+      "id": "8eb2bd199627",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "surface unread rows, reconcile totals, and check column consistency",
+      "repo": "yashdagar/pharma-retail-desktop",
+      "url": "https://github.com/yashdagar/pharma-retail-desktop/commit/8eb2bd199627135457f7fc032468583c0d40d04c",
+      "language": "Dart",
+      "at": "2026-08-31T15:13:06Z"
+    },
+    {
+      "id": "641a20cbf82b",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "parse bill totals, fix money and GST/expiry handling, bound detection input",
+      "repo": "yashdagar/pharma-retail-desktop",
+      "url": "https://github.com/yashdagar/pharma-retail-desktop/commit/641a20cbf82b478a666806b6cb11fef33b4d3fb5",
+      "language": "Dart",
+      "at": "2026-08-31T14:55:28Z"
+    },
+    {
+      "id": "881d654ef0db",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "make scanned bill rows editable and restyle them as cards",
+      "repo": "yashdagar/pharma-retail-desktop",
+      "url": "https://github.com/yashdagar/pharma-retail-desktop/commit/881d654ef0db4239ebce37fdde46f0e403883582",
+      "language": "Dart",
+      "at": "2026-08-31T14:17:21Z"
+    },
     {
       "id": "728a63a0103e",
       "visibility": "personal",
@@ -1453,7 +1493,7 @@
     }
   ],
   "totals": {
-    "year": 205,
+    "year": 209,
     "streak": 3
   },
   "workDays": {
