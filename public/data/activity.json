@@ -1,6 +1,26 @@
 {
-  "generatedAt": "2026-08-31T05:38:09.116Z",
+  "generatedAt": "2026-08-31T11:49:30.815Z",
   "commits": [
+    {
+      "id": "728a63a0103e",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "replace tesseract with a bundled PP-OCRv5 neural engine for windows and macos",
+      "repo": "yashdagar/pharma-retail-desktop",
+      "url": "https://github.com/yashdagar/pharma-retail-desktop/commit/728a63a0103eb3e0899bdea9e68b6201368c43aa",
+      "language": "Dart",
+      "at": "2026-08-31T09:53:41Z"
+    },
+    {
+      "id": "9e1499f04898",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "add apple vision neural OCR engine with tesseract fallback",
+      "repo": "yashdagar/pharma-retail-desktop",
+      "url": "https://github.com/yashdagar/pharma-retail-desktop/commit/9e1499f04898db0dead21bacc9297105373d1f52",
+      "language": "Dart",
+      "at": "2026-08-31T06:42:17Z"
+    },
     {
       "id": "552fbc9d123f",
       "visibility": "personal",
@@ -1433,8 +1453,8 @@
     }
   ],
   "totals": {
-    "year": 203,
-    "streak": 2
+    "year": 205,
+    "streak": 3
   },
   "workDays": {
     "2026-08-14": 1,
