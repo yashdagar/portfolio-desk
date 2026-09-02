@@ -1,6 +1,176 @@
 {
-  "generatedAt": "2026-09-02T13:21:55.354Z",
+  "generatedAt": "2026-09-02T17:17:59.152Z",
   "commits": [
+    {
+      "id": "4857ca702d35",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "ship the C++ runtime beside the exe",
+      "repo": "yashdagar/pharma-retail-desktop",
+      "url": "https://github.com/yashdagar/pharma-retail-desktop/commit/4857ca702d35c1b2bfe802e9f8268ab37ba92d54",
+      "language": "Dart",
+      "at": "2026-09-02T15:17:44Z"
+    },
+    {
+      "id": "45ff8b39da3f",
+      "visibility": "personal",
+      "kind": "build",
+      "message": "build on the VS 2022 toolchain so shipped binaries actually start",
+      "repo": "yashdagar/pharma-retail-desktop",
+      "url": "https://github.com/yashdagar/pharma-retail-desktop/commit/45ff8b39da3fe4cfbe51c1cfd345ecc5bb862a6d",
+      "language": "Dart",
+      "at": "2026-09-02T14:46:55Z"
+    },
+    {
+      "id": "8defdc8e3b6e",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "let the windows build survive MSVC 14.51",
+      "repo": "yashdagar/pharma-retail-desktop",
+      "url": "https://github.com/yashdagar/pharma-retail-desktop/commit/8defdc8e3b6e29edc4ea8caa2364acfacc219a7a",
+      "language": "Dart",
+      "at": "2026-09-02T13:46:26Z"
+    },
+    {
+      "id": "1e10cf2b543c",
+      "visibility": "personal",
+      "kind": "build",
+      "message": "build windows releases on a hosted runner",
+      "repo": "yashdagar/pharma-retail-desktop",
+      "url": "https://github.com/yashdagar/pharma-retail-desktop/commit/1e10cf2b543c22c5ceb4cc5b1ac04251d1d81f37",
+      "language": "Dart",
+      "at": "2026-09-02T13:36:25Z"
+    },
+    {
+      "id": "03a53e8f825b",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "harden the trial against clock rollback and licence deletion",
+      "repo": "yashdagar/pharma-retail-desktop",
+      "url": "https://github.com/yashdagar/pharma-retail-desktop/commit/03a53e8f825bfb1440f993ea117c9e0f03b52236",
+      "language": "Dart",
+      "at": "2026-09-02T13:36:25Z"
+    },
+    {
+      "id": "8d5e724343b4",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "remove dead code left behind by the search and stock rewrites",
+      "repo": "yashdagar/pharma-retail-desktop",
+      "url": "https://github.com/yashdagar/pharma-retail-desktop/commit/8d5e724343b47f7b37ab7785f61be3a839a47364",
+      "language": "Dart",
+      "at": "2026-09-02T13:36:16Z"
+    },
+    {
+      "id": "3729a91d0dc1",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "prefill the MRP and supplier bill date that usually repeat",
+      "repo": "yashdagar/pharma-retail-desktop",
+      "url": "https://github.com/yashdagar/pharma-retail-desktop/commit/3729a91d0dc14376364dd1b6febd61108bb62640",
+      "language": "Dart",
+      "at": "2026-09-02T13:36:08Z"
+    },
+    {
+      "id": "3672188f8aa0",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "edit purchase lines in the table, and accept PDF bills",
+      "repo": "yashdagar/pharma-retail-desktop",
+      "url": "https://github.com/yashdagar/pharma-retail-desktop/commit/3672188f8aa0003c72ae59b9c69c1eee0c39ed16",
+      "language": "Dart",
+      "at": "2026-09-01T17:48:21Z"
+    },
+    {
+      "id": "8f361174008f",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "move the neural OCR engine to PP-OCRv6 medium",
+      "repo": "yashdagar/pharma-retail-desktop",
+      "url": "https://github.com/yashdagar/pharma-retail-desktop/commit/8f361174008fa465d7264dc3208bef2f817336c5",
+      "language": "Dart",
+      "at": "2026-09-01T17:18:12Z"
+    },
+    {
+      "id": "3fd9aba0783a",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "suggest names from history and autocorrect near duplicates",
+      "repo": "yashdagar/pharma-retail-desktop",
+      "url": "https://github.com/yashdagar/pharma-retail-desktop/commit/3fd9aba0783a5d78fa58af93f58bc223076a8119",
+      "language": "Dart",
+      "at": "2026-09-01T15:42:39Z"
+    },
+    {
+      "id": "f3b2db6806a0",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "bundle tesseract for windows and drop all path probing",
+      "repo": "yashdagar/pharma-retail-desktop",
+      "url": "https://github.com/yashdagar/pharma-retail-desktop/commit/f3b2db6806a06459cbd0dc6ea588e771ee4b6ac7",
+      "language": "Dart",
+      "at": "2026-09-01T03:08:07Z"
+    },
+    {
+      "id": "a8d7961660cc",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "detect tesseract automatically instead of asking for its path",
+      "repo": "yashdagar/pharma-retail-desktop",
+      "url": "https://github.com/yashdagar/pharma-retail-desktop/commit/a8d7961660ccd773c8272802995e2fa5f78e7dad",
+      "language": "Dart",
+      "at": "2026-09-01T02:46:10Z"
+    },
+    {
+      "id": "cf2faa1b8bf2",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "add a reorder list and a day-end cash summary",
+      "repo": "yashdagar/pharma-retail-desktop",
+      "url": "https://github.com/yashdagar/pharma-retail-desktop/commit/cf2faa1b8bf2372ffdf9307eba600aa70f3440bf",
+      "language": "Dart",
+      "at": "2026-09-01T02:42:19Z"
+    },
+    {
+      "id": "dd56446e8d0e",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "add search, filters and sorting to every list",
+      "repo": "yashdagar/pharma-retail-desktop",
+      "url": "https://github.com/yashdagar/pharma-retail-desktop/commit/dd56446e8d0e46a26f723bbfb1d614681aac5100",
+      "language": "Dart",
+      "at": "2026-09-01T02:29:06Z"
+    },
+    {
+      "id": "7592697bf708",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "make batches, suppliers and products correctable",
+      "repo": "yashdagar/pharma-retail-desktop",
+      "url": "https://github.com/yashdagar/pharma-retail-desktop/commit/7592697bf70831c547322873c27a35408647a0aa",
+      "language": "Dart",
+      "at": "2026-09-01T02:21:19Z"
+    },
+    {
+      "id": "7d9796e1611b",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "let a saved purchase or sale be opened, corrected or deleted",
+      "repo": "yashdagar/pharma-retail-desktop",
+      "url": "https://github.com/yashdagar/pharma-retail-desktop/commit/7d9796e1611b6fb41f396004e67595b73f2ea9d8",
+      "language": "Dart",
+      "at": "2026-09-01T02:16:00Z"
+    },
+    {
+      "id": "f9e47d3bab67",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "derive stock from documents and add schema v3 foundations",
+      "repo": "yashdagar/pharma-retail-desktop",
+      "url": "https://github.com/yashdagar/pharma-retail-desktop/commit/f9e47d3bab67e062835bfa3f2fd5c90aaf33c657",
+      "language": "Dart",
+      "at": "2026-09-01T02:08:34Z"
+    },
     {
       "id": "2fb439b7693a",
       "visibility": "personal",
@@ -1493,8 +1663,8 @@
     }
   ],
   "totals": {
-    "year": 210,
-    "streak": 4
+    "year": 227,
+    "streak": 5
   },
   "workDays": {
     "2026-09-01": 1,
