@@ -1,6 +1,46 @@
 {
-  "generatedAt": "2026-09-05T04:54:03.893Z",
+  "generatedAt": "2026-09-05T08:42:46.356Z",
   "commits": [
+    {
+      "id": "67cc227f1e78",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "give the OCR a page it can actually read, and shrink the models",
+      "repo": "yashdagar/pharma-retail-desktop",
+      "url": "https://github.com/yashdagar/pharma-retail-desktop/commit/67cc227f1e784cfe9d3f5effa151ce8f277eacc0",
+      "language": "Dart",
+      "at": "2026-09-05T05:50:58Z"
+    },
+    {
+      "id": "8cd7525a607f",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "choose the reader automatically and make the column grid correctable",
+      "repo": "yashdagar/pharma-retail-desktop",
+      "url": "https://github.com/yashdagar/pharma-retail-desktop/commit/8cd7525a607fe4f55b8507ce887c5c489b64d831",
+      "language": "Dart",
+      "at": "2026-09-05T04:29:03Z"
+    },
+    {
+      "id": "fef06caea0ce",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "assign cells from a column grid instead of the nearest header word",
+      "repo": "yashdagar/pharma-retail-desktop",
+      "url": "https://github.com/yashdagar/pharma-retail-desktop/commit/fef06caea0ce585a41557eab1416080b21faa329",
+      "language": "Dart",
+      "at": "2026-09-04T21:02:37Z"
+    },
+    {
+      "id": "0cae0186ecbc",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "read the text a PDF already contains instead of guessing it back",
+      "repo": "yashdagar/pharma-retail-desktop",
+      "url": "https://github.com/yashdagar/pharma-retail-desktop/commit/0cae0186ecbc3d6ea56e59a0e0c4d8ca1464cd0c",
+      "language": "Dart",
+      "at": "2026-09-04T20:52:17Z"
+    },
     {
       "id": "c147829c2c9c",
       "visibility": "personal",
@@ -1683,8 +1723,8 @@
     }
   ],
   "totals": {
-    "year": 231,
-    "streak": 7
+    "year": 235,
+    "streak": 8
   },
   "workDays": {
     "2026-09-04": 2,
