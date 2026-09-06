@@ -1,6 +1,106 @@
 {
-  "generatedAt": "2026-09-06T20:46:21.703Z",
+  "generatedAt": "2026-09-06T22:33:21.561Z",
   "commits": [
+    {
+      "id": "c23c733da879",
+      "visibility": "personal",
+      "kind": "docs",
+      "message": "docs: PR titles carry their tag prefix (#46)",
+      "repo": "yashdagar/skillrank",
+      "url": "https://github.com/yashdagar/skillrank/commit/c23c733da8794fb80687e2481f67c4e3a7638370",
+      "language": "TypeScript",
+      "at": "2026-09-06T22:32:24Z"
+    },
+    {
+      "id": "33538f84e5a5",
+      "visibility": "personal",
+      "kind": "fix",
+      "message": "fix: create the PGlite data directory before opening the database (#45)",
+      "repo": "yashdagar/skillrank",
+      "url": "https://github.com/yashdagar/skillrank/commit/33538f84e5a5e16a51f1953c5ff904aea6dd009a",
+      "language": "TypeScript",
+      "at": "2026-09-06T22:31:43Z"
+    },
+    {
+      "id": "5676154f75f6",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "feat: player card, OG share image, leaderboards, home and landing (#44)",
+      "repo": "yashdagar/skillrank",
+      "url": "https://github.com/yashdagar/skillrank/commit/5676154f75f6e089f384fe7f85209cb4868feaf5",
+      "language": "TypeScript",
+      "at": "2026-09-06T22:30:05Z"
+    },
+    {
+      "id": "e20278deea18",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "feat: GitHub sync, Codeforces and LeetCode token verification, external rating badges (#43)",
+      "repo": "yashdagar/skillrank",
+      "url": "https://github.com/yashdagar/skillrank/commit/e20278deea18fb41ae184470941e1acc28bb5f09",
+      "language": "TypeScript",
+      "at": "2026-09-06T22:29:47Z"
+    },
+    {
+      "id": "cc86fb5b253b",
+      "visibility": "personal",
+      "kind": "chore",
+      "message": "chore: vercel cron config, resync route stub and env documentation (#42)",
+      "repo": "yashdagar/skillrank",
+      "url": "https://github.com/yashdagar/skillrank/commit/cc86fb5b253bdc2bf699753734194fdcdc0a2809",
+      "language": "TypeScript",
+      "at": "2026-09-06T22:20:34Z"
+    },
+    {
+      "id": "9c8054f19c5d",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "feat: score engine v1, score service and required-fields onboarding (#41)",
+      "repo": "yashdagar/skillrank",
+      "url": "https://github.com/yashdagar/skillrank/commit/9c8054f19c5dcb4686ebdd9f6306424393913527",
+      "language": "TypeScript",
+      "at": "2026-09-06T22:18:05Z"
+    },
+    {
+      "id": "89f464b870e1",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "feat: add Drizzle schema, dual-driver db client and NextAuth v5 auth",
+      "repo": "yashdagar/skillrank",
+      "url": "https://github.com/yashdagar/skillrank/commit/89f464b870e1f36ee88023b428813052d15f4f92",
+      "language": "TypeScript",
+      "at": "2026-09-06T22:15:47Z"
+    },
+    {
+      "id": "30372179a009",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "feat: scaffold Next.js app with TypeScript, Tailwind, Drizzle deps and CI",
+      "repo": "yashdagar/skillrank",
+      "url": "https://github.com/yashdagar/skillrank/commit/30372179a00909fb17818fcb93d42a4b9b0a0fde",
+      "language": "TypeScript",
+      "at": "2026-09-06T22:14:16Z"
+    },
+    {
+      "id": "3156ee5793b0",
+      "visibility": "personal",
+      "kind": "docs",
+      "message": "docs: add development plan",
+      "repo": "yashdagar/skillrank",
+      "url": "https://github.com/yashdagar/skillrank/commit/3156ee5793b0ef7b4aeadc555c5a7aedfd8030e9",
+      "language": "TypeScript",
+      "at": "2026-09-06T22:09:11Z"
+    },
+    {
+      "id": "e4f56ed7fb6f",
+      "visibility": "personal",
+      "kind": "docs",
+      "message": "docs: add product plan as README",
+      "repo": "yashdagar/skillrank",
+      "url": "https://github.com/yashdagar/skillrank/commit/e4f56ed7fb6f5140b650fce92451f6d846f4799b",
+      "language": "TypeScript",
+      "at": "2026-09-06T22:09:11Z"
+    },
     {
       "id": "67cc227f1e78",
       "visibility": "personal",
@@ -1703,8 +1803,8 @@
     }
   ],
   "totals": {
-    "year": 233,
-    "streak": 8
+    "year": 243,
+    "streak": 9
   },
   "workDays": {
     "2026-09-04": 2,
