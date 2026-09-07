@@ -1,6 +1,236 @@
 {
-  "generatedAt": "2026-09-07T09:50:30.020Z",
+  "generatedAt": "2026-09-07T15:23:18.894Z",
   "commits": [
+    {
+      "id": "935187917fda",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "feature: replace card hover scaling with a button invert (#118)",
+      "repo": "yashdagar/skillrank",
+      "url": "https://github.com/yashdagar/skillrank/commit/935187917fda3b5f46641cb5bfc2391a6f67d140",
+      "language": "TypeScript",
+      "at": "2026-09-07T13:57:57Z"
+    },
+    {
+      "id": "1f60a435b8e8",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "feature: deepen blitz card shading and glassy start buttons (#117)",
+      "repo": "yashdagar/skillrank",
+      "url": "https://github.com/yashdagar/skillrank/commit/1f60a435b8e8886930d67285f0825dafbe9a3938",
+      "language": "TypeScript",
+      "at": "2026-09-07T13:53:44Z"
+    },
+    {
+      "id": "6c1f2cc6dcd6",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "feature: radial light gradient on blitz mode cards (#116)",
+      "repo": "yashdagar/skillrank",
+      "url": "https://github.com/yashdagar/skillrank/commit/6c1f2cc6dcd6a774918f68ec7a660e7e9902beb4",
+      "language": "TypeScript",
+      "at": "2026-09-07T13:50:42Z"
+    },
+    {
+      "id": "714616234dd9",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "feature: darken blitz cards toward the bottom with a gradient (#115)",
+      "repo": "yashdagar/skillrank",
+      "url": "https://github.com/yashdagar/skillrank/commit/714616234dd99706362865b37b2e8c4ed2cd304d",
+      "language": "TypeScript",
+      "at": "2026-09-07T13:48:41Z"
+    },
+    {
+      "id": "441403be96c1",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "feature: solid color blitz cards with minutes-by-problems display (#114)",
+      "repo": "yashdagar/skillrank",
+      "url": "https://github.com/yashdagar/skillrank/commit/441403be96c13a5dbe991cafd0d0114cb18df81c",
+      "language": "TypeScript",
+      "at": "2026-09-07T13:43:34Z"
+    },
+    {
+      "id": "c1da049a9c56",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "feature: recolor blitz mode cards to green, blue and red (#113)",
+      "repo": "yashdagar/skillrank",
+      "url": "https://github.com/yashdagar/skillrank/commit/c1da049a9c56cf58fa43bfcf0fa424dbd5e3be65",
+      "language": "TypeScript",
+      "at": "2026-09-07T13:33:44Z"
+    },
+    {
+      "id": "56cce9b217f2",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "feature: redesign blitz mode cards with metallic rims and glow (#112)",
+      "repo": "yashdagar/skillrank",
+      "url": "https://github.com/yashdagar/skillrank/commit/56cce9b217f2aa862a97afc92fabcbdf93e8c2d7",
+      "language": "TypeScript",
+      "at": "2026-09-07T13:30:23Z"
+    },
+    {
+      "id": "bc75df96ecb8",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "feature: metal-tier gradient styling for blitz mode cards (#111)",
+      "repo": "yashdagar/skillrank",
+      "url": "https://github.com/yashdagar/skillrank/commit/bc75df96ecb8942c30113197b1737cb5f777e76a",
+      "language": "TypeScript",
+      "at": "2026-09-07T13:17:32Z"
+    },
+    {
+      "id": "61bb4f293bc6",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "feature: blitz lobby with personal bests, daily boards and combo chip (#110)",
+      "repo": "yashdagar/skillrank",
+      "url": "https://github.com/yashdagar/skillrank/commit/61bb4f293bc611e1a3d2404de2354d442da66b37",
+      "language": "TypeScript",
+      "at": "2026-09-07T12:45:21Z"
+    },
+    {
+      "id": "6cf86e8c5b50",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "feature: blitz challenge runs with head-to-head results (#109)",
+      "repo": "yashdagar/skillrank",
+      "url": "https://github.com/yashdagar/skillrank/commit/6cf86e8c5b503e89baf6a521fb1df465fa75b905",
+      "language": "TypeScript",
+      "at": "2026-09-07T12:42:27Z"
+    },
+    {
+      "id": "e6cdd5ba1253",
+      "visibility": "personal",
+      "kind": "style",
+      "message": "style: render the solved marker as an SVG check icon (#108)",
+      "repo": "yashdagar/skillrank",
+      "url": "https://github.com/yashdagar/skillrank/commit/e6cdd5ba1253d6cb8cccd00f38692b8211f51c3b",
+      "language": "TypeScript",
+      "at": "2026-09-07T12:39:49Z"
+    },
+    {
+      "id": "980595d56513",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "feature: shareable blitz results with OG card and juiced finish screen (#107)",
+      "repo": "yashdagar/skillrank",
+      "url": "https://github.com/yashdagar/skillrank/commit/980595d5651374ace393b081406c254653492ffa",
+      "language": "TypeScript",
+      "at": "2026-09-07T12:37:51Z"
+    },
+    {
+      "id": "919fd417252c",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "feature: custom styled dropdown replacing native selects (#106)",
+      "repo": "yashdagar/skillrank",
+      "url": "https://github.com/yashdagar/skillrank/commit/919fd417252cd4312fdefa50f3923b0dcb2c16ed",
+      "language": "TypeScript",
+      "at": "2026-09-07T12:08:37Z"
+    },
+    {
+      "id": "19726802074c",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "feature: add flawless and triathlon blitz badges (#105)",
+      "repo": "yashdagar/skillrank",
+      "url": "https://github.com/yashdagar/skillrank/commit/19726802074c01297709e47787350a7c087a783c",
+      "language": "TypeScript",
+      "at": "2026-09-07T12:08:06Z"
+    },
+    {
+      "id": "419bc22d2fb6",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "feature: blitz schema groundwork for challenges, splits and grading (#104)",
+      "repo": "yashdagar/skillrank",
+      "url": "https://github.com/yashdagar/skillrank/commit/419bc22d2fb6c8055c36d8d8560732d21968877a",
+      "language": "TypeScript",
+      "at": "2026-09-07T12:04:33Z"
+    },
+    {
+      "id": "1afdf10d9d76",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "feature: move player search into the navbar as an expanding text field (#98)",
+      "repo": "yashdagar/skillrank",
+      "url": "https://github.com/yashdagar/skillrank/commit/1afdf10d9d76f172d9d82d5f06a32a907f590ae9",
+      "language": "TypeScript",
+      "at": "2026-09-07T12:04:29Z"
+    },
+    {
+      "id": "0a5492acbaac",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "feat: public solve history with submission viewer and cheat reports (#91)",
+      "repo": "yashdagar/skillrank",
+      "url": "https://github.com/yashdagar/skillrank/commit/0a5492acbaac096c5f1e903edc56a1797716dd16",
+      "language": "TypeScript",
+      "at": "2026-09-07T11:30:32Z"
+    },
+    {
+      "id": "49f420891bf1",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "feat: problems page overhaul with letter ids, filters, and calendar rail (#95)",
+      "repo": "yashdagar/skillrank",
+      "url": "https://github.com/yashdagar/skillrank/commit/49f420891bf1beb4387cb2f46badd4b28b358fc4",
+      "language": "TypeScript",
+      "at": "2026-09-07T11:30:17Z"
+    },
+    {
+      "id": "5dbcb4ffbd27",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "feat: yesterday-only solutions with friends and fastest sections (#94)",
+      "repo": "yashdagar/skillrank",
+      "url": "https://github.com/yashdagar/skillrank/commit/5dbcb4ffbd2710bb7f5fd5fd25b1d61b0ab56543",
+      "language": "TypeScript",
+      "at": "2026-09-07T11:26:46Z"
+    },
+    {
+      "id": "20aa72454f98",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "feat: graceful judge errors, filled test chips, blitz loader (#93)",
+      "repo": "yashdagar/skillrank",
+      "url": "https://github.com/yashdagar/skillrank/commit/20aa72454f98ee8ff5c9db7b2e776c3f9dfdb43b",
+      "language": "TypeScript",
+      "at": "2026-09-07T11:23:41Z"
+    },
+    {
+      "id": "ef549a8646e0",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "feat: profile search, follower system, and profile views (#92)",
+      "repo": "yashdagar/skillrank",
+      "url": "https://github.com/yashdagar/skillrank/commit/ef549a8646e087402eb7320bc7e9c430682c863c",
+      "language": "TypeScript",
+      "at": "2026-09-07T11:21:22Z"
+    },
+    {
+      "id": "794eb46750d8",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "feat: add topic tags to all 100 catalog problems (#90)",
+      "repo": "yashdagar/skillrank",
+      "url": "https://github.com/yashdagar/skillrank/commit/794eb46750d8e8d0c0a724159a710f11cb6790aa",
+      "language": "TypeScript",
+      "at": "2026-09-07T11:19:50Z"
+    },
+    {
+      "id": "067699df7d49",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "feat: social and report schema plus daily nav retirement (#89)",
+      "repo": "yashdagar/skillrank",
+      "url": "https://github.com/yashdagar/skillrank/commit/067699df7d49dd05d7fc2e1de65d889a43180fb0",
+      "language": "TypeScript",
+      "at": "2026-09-07T11:14:48Z"
+    },
     {
       "id": "4805c1f892f8",
       "visibility": "personal",
@@ -1770,240 +2000,10 @@
       "url": "https://github.com/yashdagar/catan/commit/a71fac95b06fa59c94f1b985d771868cd62c220c",
       "language": "Dart",
       "at": "2026-07-25T22:09:35Z"
-    },
-    {
-      "id": "599ad5c6a7c7",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Restyle the board and enlarge road tap targets",
-      "repo": "yashdagar/catan",
-      "url": "https://github.com/yashdagar/catan/commit/599ad5c6a7c7aa6e13929795453a27cefb6fbf7a",
-      "language": "Dart",
-      "at": "2026-07-25T22:09:31Z"
-    },
-    {
-      "id": "bad3b3d35e13",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Offer a way back into the game you left",
-      "repo": "yashdagar/catan",
-      "url": "https://github.com/yashdagar/catan/commit/bad3b3d35e13c20e96e95f05f189dd9c8481fa72",
-      "language": "Dart",
-      "at": "2026-07-25T22:09:31Z"
-    },
-    {
-      "id": "f5fb2260edaf",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Rework the in-game HUD for a landscape phone",
-      "repo": "yashdagar/catan",
-      "url": "https://github.com/yashdagar/catan/commit/f5fb2260edaf9182672c9b4411813c997924a9a7",
-      "language": "Dart",
-      "at": "2026-07-25T22:09:23Z"
-    },
-    {
-      "id": "3e8dfd9c9d03",
-      "visibility": "personal",
-      "kind": "feat",
-      "message": "Add an in-game menu with resume, settings and quit",
-      "repo": "yashdagar/catan",
-      "url": "https://github.com/yashdagar/catan/commit/3e8dfd9c9d0326d1cb92aec3c19d17f3519da71a",
-      "language": "Dart",
-      "at": "2026-07-25T22:09:18Z"
-    },
-    {
-      "id": "de4be4d48a06",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Show development cards as real cards",
-      "repo": "yashdagar/catan",
-      "url": "https://github.com/yashdagar/catan/commit/de4be4d48a061fb57c427d2daa126aadac487731",
-      "language": "Dart",
-      "at": "2026-07-25T22:09:18Z"
-    },
-    {
-      "id": "4363396ed729",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Support two-player games",
-      "repo": "yashdagar/catan",
-      "url": "https://github.com/yashdagar/catan/commit/4363396ed729c4465309ce31b4da7c82126d7118",
-      "language": "Dart",
-      "at": "2026-07-25T22:09:02Z"
-    },
-    {
-      "id": "eaed347729be",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Roll the dice as tumbling 3D cubes",
-      "repo": "yashdagar/catan",
-      "url": "https://github.com/yashdagar/catan/commit/eaed347729bee0fd3a45218a30c0c999d851df5a",
-      "language": "Dart",
-      "at": "2026-07-25T22:09:02Z"
-    },
-    {
-      "id": "3651524fe3ee",
-      "visibility": "personal",
-      "kind": "feat",
-      "message": "Add a wooden board theme and shared UI kit",
-      "repo": "yashdagar/catan",
-      "url": "https://github.com/yashdagar/catan/commit/3651524fe3eebe3e7c40eafaf11016d74fa00381",
-      "language": "Dart",
-      "at": "2026-07-25T22:08:55Z"
-    },
-    {
-      "id": "8db2dac66b98",
-      "visibility": "personal",
-      "kind": "feat",
-      "message": "Add STATUS.md",
-      "repo": "yashdagar/catan",
-      "url": "https://github.com/yashdagar/catan/commit/8db2dac66b9873aefa32cfcf9d065fb44312ddec",
-      "language": "Dart",
-      "at": "2026-07-25T19:47:31Z"
-    },
-    {
-      "id": "2df1c2170373",
-      "visibility": "personal",
-      "kind": "feat",
-      "message": "Add render and hit-test suite driven by real engine output",
-      "repo": "yashdagar/catan",
-      "url": "https://github.com/yashdagar/catan/commit/2df1c217037388f29568ab5d250d8a58eff6be37",
-      "language": "Dart",
-      "at": "2026-07-25T19:27:26Z"
-    },
-    {
-      "id": "6856fbaf3269",
-      "visibility": "personal",
-      "kind": "feat",
-      "message": "Add Edge Function, Flutter client, and landscape-only mobile setup",
-      "repo": "yashdagar/catan",
-      "url": "https://github.com/yashdagar/catan/commit/6856fbaf3269db52a1de0307181cf9130e3b3fa8",
-      "language": "Dart",
-      "at": "2026-07-25T19:25:55Z"
-    },
-    {
-      "id": "6a6e55d22636",
-      "visibility": "personal",
-      "kind": "feat",
-      "message": "Add Catan rules engine, schema, and Flutter scaffold",
-      "repo": "yashdagar/catan",
-      "url": "https://github.com/yashdagar/catan/commit/6a6e55d2263621370dc2e93878db4c970dde667b",
-      "language": "Dart",
-      "at": "2026-07-25T19:15:52Z"
-    },
-    {
-      "id": "91111c5e476b",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Update resume.pdf",
-      "repo": "yashdagar/portfolio-3d",
-      "url": "https://github.com/yashdagar/portfolio-3d/commit/91111c5e476b4d464239bd4cfe2a974d0fe53d9f",
-      "language": "TypeScript",
-      "at": "2026-07-25T13:41:29Z"
-    },
-    {
-      "id": "be94201f6849",
-      "visibility": "personal",
-      "kind": "feat",
-      "message": "add /resume/route.ts",
-      "repo": "yashdagar/portfolio-3d",
-      "url": "https://github.com/yashdagar/portfolio-3d/commit/be94201f68496e8d9c1fa3c77c71b761f90f54af",
-      "language": "TypeScript",
-      "at": "2026-05-09T06:21:45Z"
-    },
-    {
-      "id": "45749793fb6f",
-      "visibility": "personal",
-      "kind": "feat",
-      "message": "add /resume route",
-      "repo": "yashdagar/portfolio-3d",
-      "url": "https://github.com/yashdagar/portfolio-3d/commit/45749793fb6ffce4aba935f04e033a2cb408c1bf",
-      "language": "TypeScript",
-      "at": "2026-05-09T06:15:52Z"
-    },
-    {
-      "id": "86dfa01e47ec",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "changes",
-      "repo": "yashdagar/order_karo",
-      "url": "https://github.com/yashdagar/order_karo/commit/86dfa01e47ec693fe5f31b7657eb78532927cd23",
-      "language": "Dart",
-      "at": "2026-04-04T11:50:36Z"
-    },
-    {
-      "id": "d92ab14336cd",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Update flutter and dart versions",
-      "repo": "yashdagar/tee",
-      "url": "https://github.com/yashdagar/tee/commit/d92ab14336cdf1ba7dc18d876fe78d6a358a5666",
-      "language": "Dart",
-      "at": "2026-03-20T20:01:49Z"
-    },
-    {
-      "id": "d2f461e2ebd5",
-      "visibility": "public",
-      "kind": "feat",
-      "message": "Add Proper tokenization",
-      "repo": "yashdagar/rusty-sql",
-      "url": "https://github.com/yashdagar/rusty-sql/commit/d2f461e2ebd5987dfc7600c2c061715329967df4",
-      "language": "Rust",
-      "at": "2026-03-20T20:00:52Z"
-    },
-    {
-      "id": "246e50d44bda",
-      "visibility": "public",
-      "kind": "feat",
-      "message": "Add Simple Tokenizer",
-      "repo": "yashdagar/rusty-sql",
-      "url": "https://github.com/yashdagar/rusty-sql/commit/246e50d44bdac1fb2237c0009204123904d16f85",
-      "language": "Rust",
-      "at": "2026-03-15T20:53:11Z"
-    },
-    {
-      "id": "ca05ac392ab2",
-      "visibility": "public",
-      "kind": "other",
-      "message": "Mark REPL goal as completed in README",
-      "repo": "yashdagar/rusty-sql",
-      "url": "https://github.com/yashdagar/rusty-sql/commit/ca05ac392ab23f520fc42df4f66637f9b00153ce",
-      "language": "Rust",
-      "at": "2026-03-04T04:22:06Z"
-    },
-    {
-      "id": "ed91a15d6c56",
-      "visibility": "public",
-      "kind": "feat",
-      "message": "Add REPL",
-      "repo": "yashdagar/rusty-sql",
-      "url": "https://github.com/yashdagar/rusty-sql/commit/ed91a15d6c56feb3b3b03d621e9e3fc0b6ceed1b",
-      "language": "Rust",
-      "at": "2026-03-03T14:43:06Z"
-    },
-    {
-      "id": "7518bd4b6501",
-      "visibility": "public",
-      "kind": "other",
-      "message": "Update README with project details and guidelines",
-      "repo": "yashdagar/rusty-sql",
-      "url": "https://github.com/yashdagar/rusty-sql/commit/7518bd4b6501e4e3633b92094bf49191ad287f8d",
-      "language": "Rust",
-      "at": "2026-03-02T20:56:17Z"
-    },
-    {
-      "id": "f6b59bc77330",
-      "visibility": "public",
-      "kind": "other",
-      "message": "Initial commit",
-      "repo": "yashdagar/rusty-sql",
-      "url": "https://github.com/yashdagar/rusty-sql/commit/f6b59bc77330d8df69c89ddf5500e8dcda5dc0f5",
-      "language": "Rust",
-      "at": "2026-03-02T20:42:17Z"
     }
   ],
   "totals": {
-    "year": 270,
+    "year": 293,
     "streak": 10
   },
   "workDays": {
