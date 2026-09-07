@@ -1,6 +1,106 @@
 {
-  "generatedAt": "2026-09-07T04:50:41.765Z",
+  "generatedAt": "2026-09-07T09:50:30.020Z",
   "commits": [
+    {
+      "id": "4805c1f892f8",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "feat: quarterly seasons with rating soft resets (#81)",
+      "repo": "yashdagar/skillrank",
+      "url": "https://github.com/yashdagar/skillrank/commit/4805c1f892f833d478c33bde283683bfd9008983",
+      "language": "TypeScript",
+      "at": "2026-09-07T06:20:33Z"
+    },
+    {
+      "id": "641b9debf083",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "feat: nightly cron settles ratings and resyncs accounts (#80)",
+      "repo": "yashdagar/skillrank",
+      "url": "https://github.com/yashdagar/skillrank/commit/641b9debf083a6ad9971dbd61e199824a6a8ef3f",
+      "language": "TypeScript",
+      "at": "2026-09-07T06:15:18Z"
+    },
+    {
+      "id": "04162384311b",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "feat: rewards store v1 with activity-earned coins (#79)",
+      "repo": "yashdagar/skillrank",
+      "url": "https://github.com/yashdagar/skillrank/commit/04162384311bfc2d902c756ddde23e4bd5928d1b",
+      "language": "TypeScript",
+      "at": "2026-09-07T06:12:19Z"
+    },
+    {
+      "id": "9bc207e77c67",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "feat: weekly quests engine (#78)",
+      "repo": "yashdagar/skillrank",
+      "url": "https://github.com/yashdagar/skillrank/commit/9bc207e77c67121232acb3edbb3712714fdad737",
+      "language": "TypeScript",
+      "at": "2026-09-07T06:08:50Z"
+    },
+    {
+      "id": "1c05af4ddba0",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "feat: streak freeze tokens (#77)",
+      "repo": "yashdagar/skillrank",
+      "url": "https://github.com/yashdagar/skillrank/commit/1c05af4ddba084c3546a748a60b2437f2cf2ce88",
+      "language": "TypeScript",
+      "at": "2026-09-07T06:01:05Z"
+    },
+    {
+      "id": "c5f23341afe7",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "infra: Supabase Postgres docs and env-gated Google sign-in (#76)",
+      "repo": "yashdagar/skillrank",
+      "url": "https://github.com/yashdagar/skillrank/commit/c5f23341afe7b7115f2fce666f400040392d4627",
+      "language": "TypeScript",
+      "at": "2026-09-07T05:57:18Z"
+    },
+    {
+      "id": "e34ed401b0af",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "feat: platform-earned badge catalog v2 (#75)",
+      "repo": "yashdagar/skillrank",
+      "url": "https://github.com/yashdagar/skillrank/commit/e34ed401b0aff90cdc758009be4e344ec6add481",
+      "language": "TypeScript",
+      "at": "2026-09-07T05:55:09Z"
+    },
+    {
+      "id": "ef4a7161bbad",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "feat: Glicko-2 rating from daily standings with ranked tiers (#74)",
+      "repo": "yashdagar/skillrank",
+      "url": "https://github.com/yashdagar/skillrank/commit/ef4a7161bbad0dd671d87cf17e192b0a72d3ac98",
+      "language": "TypeScript",
+      "at": "2026-09-07T05:48:07Z"
+    },
+    {
+      "id": "d5c969a88c61",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "feat: Blitz Rush with 5, 10, and 30 minute modes (#73)",
+      "repo": "yashdagar/skillrank",
+      "url": "https://github.com/yashdagar/skillrank/commit/d5c969a88c61a392ef57a74043c214c49dfb9b47",
+      "language": "TypeScript",
+      "at": "2026-09-07T05:42:22Z"
+    },
+    {
+      "id": "71e92b41d0df",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "feat: next-day solution archive ranked by runtime (#72)",
+      "repo": "yashdagar/skillrank",
+      "url": "https://github.com/yashdagar/skillrank/commit/71e92b41d0df54f0cd7d996ea025a958b10480db",
+      "language": "TypeScript",
+      "at": "2026-09-07T05:35:50Z"
+    },
     {
       "id": "989a50dc7e77",
       "visibility": "personal",
@@ -1900,80 +2000,10 @@
       "url": "https://github.com/yashdagar/rusty-sql/commit/f6b59bc77330d8df69c89ddf5500e8dcda5dc0f5",
       "language": "Rust",
       "at": "2026-03-02T20:42:17Z"
-    },
-    {
-      "id": "45b3736946b1",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "update nextjs version",
-      "repo": "yashdagar/portfolio-3d",
-      "url": "https://github.com/yashdagar/portfolio-3d/commit/45b3736946b1769e77349a39ac4ec97d205c0a45",
-      "language": "TypeScript",
-      "at": "2026-01-15T07:49:08Z"
-    },
-    {
-      "id": "e4f02c4b9df1",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Update footer.tsx",
-      "repo": "yashdagar/portfolio-3d",
-      "url": "https://github.com/yashdagar/portfolio-3d/commit/e4f02c4b9df11792baedd620acfce27e219788e6",
-      "language": "TypeScript",
-      "at": "2026-01-15T07:40:47Z"
-    },
-    {
-      "id": "4bf27ee58b50",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Update page.tsx",
-      "repo": "yashdagar/portfolio-3d",
-      "url": "https://github.com/yashdagar/portfolio-3d/commit/4bf27ee58b50dbfc370108751daef6963ae2cb45",
-      "language": "TypeScript",
-      "at": "2026-01-13T17:04:51Z"
-    },
-    {
-      "id": "6fe9bf70fb61",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Comment out BlogsSection import in page.tsx",
-      "repo": "yashdagar/portfolio-3d",
-      "url": "https://github.com/yashdagar/portfolio-3d/commit/6fe9bf70fb61f6983d750055abfb5db829a36a7f",
-      "language": "TypeScript",
-      "at": "2025-11-14T20:50:46Z"
-    },
-    {
-      "id": "f3d9a811e8d6",
-      "visibility": "public",
-      "kind": "other",
-      "message": "Initial commit",
-      "repo": "yashdagar/ai-scribe-copilot",
-      "url": "https://github.com/yashdagar/ai-scribe-copilot/commit/f3d9a811e8d67668ba5b650ebb77883e23ca9435",
-      "language": "JavaScript",
-      "at": "2025-10-10T20:47:25Z"
-    },
-    {
-      "id": "e74c73239aa1",
-      "visibility": "public",
-      "kind": "feat",
-      "message": "add schedule",
-      "repo": "yashdagar/awsugdehradun",
-      "url": "https://github.com/yashdagar/awsugdehradun/commit/e74c73239aa1f80a0c61e5a1827aca877022a98b",
-      "language": "TypeScript",
-      "at": "2025-09-09T09:46:30Z"
-    },
-    {
-      "id": "e1a040ca6aa7",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "minor changes, resume update",
-      "repo": "yashdagar/portfolio-3d",
-      "url": "https://github.com/yashdagar/portfolio-3d/commit/e1a040ca6aa74a05210b8259e78c489859df6b7d",
-      "language": "TypeScript",
-      "at": "2025-09-07T19:53:09Z"
     }
   ],
   "totals": {
-    "year": 260,
+    "year": 270,
     "streak": 10
   },
   "workDays": {
