@@ -1,6 +1,146 @@
 {
-  "generatedAt": "2026-09-06T22:33:21.561Z",
+  "generatedAt": "2026-09-07T00:18:23.655Z",
   "commits": [
+    {
+      "id": "7a184da7aad3",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "feat: function-signature judging with server-verified hidden tests (#68)",
+      "repo": "yashdagar/skillrank",
+      "url": "https://github.com/yashdagar/skillrank/commit/7a184da7aad3539e548f4cfe902fc20a9864742c",
+      "language": "TypeScript",
+      "at": "2026-09-07T00:17:25Z"
+    },
+    {
+      "id": "38520320cda6",
+      "visibility": "personal",
+      "kind": "ci",
+      "message": "ci: enforce PR title tag, label, and description minimums (#67)",
+      "repo": "yashdagar/skillrank",
+      "url": "https://github.com/yashdagar/skillrank/commit/38520320cda629ee096a70f29d9fc2b5ae3924af",
+      "language": "TypeScript",
+      "at": "2026-09-07T00:17:21Z"
+    },
+    {
+      "id": "cdd21d14a687",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "feat: lighten background tokens (#59)",
+      "repo": "yashdagar/skillrank",
+      "url": "https://github.com/yashdagar/skillrank/commit/cdd21d14a687cb1a8242b0d5b270b969a44b0dd3",
+      "language": "TypeScript",
+      "at": "2026-09-06T23:36:58Z"
+    },
+    {
+      "id": "8ec36a1eb74d",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "feat: switch accent tokens from yellow to orange (#58)",
+      "repo": "yashdagar/skillrank",
+      "url": "https://github.com/yashdagar/skillrank/commit/8ec36a1eb74d9dba4841bf56522c9116194eab5b",
+      "language": "TypeScript",
+      "at": "2026-09-06T23:35:47Z"
+    },
+    {
+      "id": "93c0d543fe45",
+      "visibility": "personal",
+      "kind": "fix",
+      "message": "fix: anchor result toast above the test panel at matching width (#57)",
+      "repo": "yashdagar/skillrank",
+      "url": "https://github.com/yashdagar/skillrank/commit/93c0d543fe451ae58998c0e70d3733679b957a0d",
+      "language": "TypeScript",
+      "at": "2026-09-06T23:31:27Z"
+    },
+    {
+      "id": "1a617820f6f4",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "feat: workspace polish, one-dark syntax, avatar nav, toast, difficulty colors (#56)",
+      "repo": "yashdagar/skillrank",
+      "url": "https://github.com/yashdagar/skillrank/commit/1a617820f6f4f58212aab718a734a64bb3b41d2e",
+      "language": "TypeScript",
+      "at": "2026-09-06T23:27:22Z"
+    },
+    {
+      "id": "86608af5df18",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "feat: full-screen resizable daily workspace, markdown statements, neutral-black theme (#55)",
+      "repo": "yashdagar/skillrank",
+      "url": "https://github.com/yashdagar/skillrank/commit/86608af5df18376f19cd7d23cc6a8e6937d0b7a9",
+      "language": "TypeScript",
+      "at": "2026-09-06T23:19:07Z"
+    },
+    {
+      "id": "a25c18e97530",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "feat: lead with profile-completion framing on home and profile (#54)",
+      "repo": "yashdagar/skillrank",
+      "url": "https://github.com/yashdagar/skillrank/commit/a25c18e975301eb80aa715f1995dda5ec99c3e89",
+      "language": "TypeScript",
+      "at": "2026-09-06T23:13:50Z"
+    },
+    {
+      "id": "12dca879f241",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "feat: daily challenge with in-browser Pyodide/JS judging and C++/Java execution (#53)",
+      "repo": "yashdagar/skillrank",
+      "url": "https://github.com/yashdagar/skillrank/commit/12dca879f2416d6ff20ea7d3bb00b76ecf40e09f",
+      "language": "TypeScript",
+      "at": "2026-09-06T23:07:52Z"
+    },
+    {
+      "id": "63a2d94dec0e",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "feat: design token system with lint enforcement and full surface sweep (#52)",
+      "repo": "yashdagar/skillrank",
+      "url": "https://github.com/yashdagar/skillrank/commit/63a2d94dec0ea2489754f6782656b593ee3f3cc7",
+      "language": "TypeScript",
+      "at": "2026-09-06T22:46:59Z"
+    },
+    {
+      "id": "d3440dbdbe4d",
+      "visibility": "personal",
+      "kind": "ci",
+      "message": "ci: generate next route types before typecheck (#50)",
+      "repo": "yashdagar/skillrank",
+      "url": "https://github.com/yashdagar/skillrank/commit/d3440dbdbe4d257365fc06168c370787037a0ee6",
+      "language": "TypeScript",
+      "at": "2026-09-06T22:38:41Z"
+    },
+    {
+      "id": "9a24c5acee63",
+      "visibility": "personal",
+      "kind": "ci",
+      "message": "ci: skip docs-only changes and cancel superseded runs (#49)",
+      "repo": "yashdagar/skillrank",
+      "url": "https://github.com/yashdagar/skillrank/commit/9a24c5acee635bfb37b58fd777b84ff9fac442be",
+      "language": "TypeScript",
+      "at": "2026-09-06T22:38:04Z"
+    },
+    {
+      "id": "56024a15f9c5",
+      "visibility": "personal",
+      "kind": "fix",
+      "message": "fix: load pglite as a server-external package (#48)",
+      "repo": "yashdagar/skillrank",
+      "url": "https://github.com/yashdagar/skillrank/commit/56024a15f9c5271e250768b6c383f4e9ce32dbae",
+      "language": "TypeScript",
+      "at": "2026-09-06T22:35:37Z"
+    },
+    {
+      "id": "257a0c675c2c",
+      "visibility": "personal",
+      "kind": "fix",
+      "message": "fix: retry database initialization after a failed attempt (#47)",
+      "repo": "yashdagar/skillrank",
+      "url": "https://github.com/yashdagar/skillrank/commit/257a0c675c2cf27a534ff13a5f8ed01e52fd46d0",
+      "language": "TypeScript",
+      "at": "2026-09-06T22:34:04Z"
+    },
     {
       "id": "c23c733da879",
       "visibility": "personal",
@@ -1803,8 +1943,8 @@
     }
   ],
   "totals": {
-    "year": 243,
-    "streak": 9
+    "year": 257,
+    "streak": 10
   },
   "workDays": {
     "2026-09-04": 2,
