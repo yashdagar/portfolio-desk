@@ -1,6 +1,86 @@
 {
-  "generatedAt": "2026-09-07T15:23:18.894Z",
+  "generatedAt": "2026-09-07T19:22:18.209Z",
   "commits": [
+    {
+      "id": "b623118ce2ef",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "feature: add 25 stack and queue problems for batch three (#129)",
+      "repo": "yashdagar/skillrank",
+      "url": "https://github.com/yashdagar/skillrank/commit/b623118ce2ef72b29d4c1615a2df933d5e3eb26c",
+      "language": "TypeScript",
+      "at": "2026-09-07T19:18:07Z"
+    },
+    {
+      "id": "7b67c081eeb9",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "feature: add 25 string and parsing problems for batch three (#128)",
+      "repo": "yashdagar/skillrank",
+      "url": "https://github.com/yashdagar/skillrank/commit/7b67c081eeb9b845a6674ea606819136a52f25dc",
+      "language": "TypeScript",
+      "at": "2026-09-07T19:16:08Z"
+    },
+    {
+      "id": "7587e1f18467",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "feature: add 25 math and bit manipulation problems for batch three (#127)",
+      "repo": "yashdagar/skillrank",
+      "url": "https://github.com/yashdagar/skillrank/commit/7587e1f1846754a66c3ba3023c4c0ad2f0188d88",
+      "language": "TypeScript",
+      "at": "2026-09-07T19:14:41Z"
+    },
+    {
+      "id": "37a893fd3cfe",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "feature: add 25 array and pointer problems for batch three (#126)",
+      "repo": "yashdagar/skillrank",
+      "url": "https://github.com/yashdagar/skillrank/commit/37a893fd3cfed1b87530a200a7d75a94a0123a67",
+      "language": "TypeScript",
+      "at": "2026-09-07T19:14:39Z"
+    },
+    {
+      "id": "681dea0b989e",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "feature: wire batch two into the catalog at 150 problems (#124)",
+      "repo": "yashdagar/skillrank",
+      "url": "https://github.com/yashdagar/skillrank/commit/681dea0b989e73251b97d793947a6bd1dc7d7669",
+      "language": "TypeScript",
+      "at": "2026-09-07T18:24:48Z"
+    },
+    {
+      "id": "91d78b6761bb",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "feature: add 25 advanced catalog problems for batch two (#123)",
+      "repo": "yashdagar/skillrank",
+      "url": "https://github.com/yashdagar/skillrank/commit/91d78b6761bb79ecb74257176e8189c29a21ed56",
+      "language": "TypeScript",
+      "at": "2026-09-07T18:16:14Z"
+    },
+    {
+      "id": "3f13f5c46713",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "feature: add 25 core catalog problems for batch two (#122)",
+      "repo": "yashdagar/skillrank",
+      "url": "https://github.com/yashdagar/skillrank/commit/3f13f5c46713f83917fc8af04744e08b9283eadc",
+      "language": "TypeScript",
+      "at": "2026-09-07T18:13:36Z"
+    },
+    {
+      "id": "0cb0e67647bc",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "feature: blitz round-over takeover with ranked results screen (#121)",
+      "repo": "yashdagar/skillrank",
+      "url": "https://github.com/yashdagar/skillrank/commit/0cb0e67647bce31364da20c1883f9e2d7a1693cb",
+      "language": "TypeScript",
+      "at": "2026-09-07T18:11:48Z"
+    },
     {
       "id": "935187917fda",
       "visibility": "personal",
@@ -1920,90 +2000,10 @@
       "url": "https://github.com/yashdagar/catan/commit/60b36d83e1b45786b6acb54f94dff2d28b92ce0b",
       "language": "Dart",
       "at": "2026-07-25T22:36:18Z"
-    },
-    {
-      "id": "c2f0175cc770",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Wait on a hex flower instead of a spinner",
-      "repo": "yashdagar/catan",
-      "url": "https://github.com/yashdagar/catan/commit/c2f0175cc770f81617b2a82784426e6910a292a1",
-      "language": "Dart",
-      "at": "2026-07-25T22:36:18Z"
-    },
-    {
-      "id": "9874d7077e35",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Restyle the auth screen to match",
-      "repo": "yashdagar/catan",
-      "url": "https://github.com/yashdagar/catan/commit/9874d7077e3526d931560ceb10f9697e6b22fa1c",
-      "language": "Dart",
-      "at": "2026-07-25T22:21:19Z"
-    },
-    {
-      "id": "64532789cd05",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Give the home screen the board's feel",
-      "repo": "yashdagar/catan",
-      "url": "https://github.com/yashdagar/catan/commit/64532789cd05eb019938781fae513898198c9193",
-      "language": "Dart",
-      "at": "2026-07-25T22:21:19Z"
-    },
-    {
-      "id": "cd38f4597b07",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Stand the game rails on dark wood",
-      "repo": "yashdagar/catan",
-      "url": "https://github.com/yashdagar/catan/commit/cd38f4597b070d6c8a08244f75cea32b0cefdfd3",
-      "language": "Dart",
-      "at": "2026-07-25T22:21:19Z"
-    },
-    {
-      "id": "346af6155ebf",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Stop the action rail clipping its labels",
-      "repo": "yashdagar/catan",
-      "url": "https://github.com/yashdagar/catan/commit/346af6155ebf102ca35e49ae4d94a22a943daa31",
-      "language": "Dart",
-      "at": "2026-07-25T22:21:13Z"
-    },
-    {
-      "id": "f08c27e83660",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Put every panel on the same wooden furniture",
-      "repo": "yashdagar/catan",
-      "url": "https://github.com/yashdagar/catan/commit/f08c27e83660775b323e0678a115cb045c5bd081",
-      "language": "Dart",
-      "at": "2026-07-25T22:21:12Z"
-    },
-    {
-      "id": "25fbc771ad23",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Update STATUS.md and ignore .idea",
-      "repo": "yashdagar/catan",
-      "url": "https://github.com/yashdagar/catan/commit/25fbc771ad2372bf19d73a6910c4a2d3e7841524",
-      "language": "Dart",
-      "at": "2026-07-25T22:09:35Z"
-    },
-    {
-      "id": "a71fac95b06f",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Say what the game is waiting for when an action is refused",
-      "repo": "yashdagar/catan",
-      "url": "https://github.com/yashdagar/catan/commit/a71fac95b06fa59c94f1b985d771868cd62c220c",
-      "language": "Dart",
-      "at": "2026-07-25T22:09:35Z"
     }
   ],
   "totals": {
-    "year": 293,
+    "year": 301,
     "streak": 10
   },
   "workDays": {
