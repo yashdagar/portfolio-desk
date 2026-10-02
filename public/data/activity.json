@@ -1,6 +1,16 @@
 {
-  "generatedAt": "2026-10-02T16:41:53.642Z",
+  "generatedAt": "2026-10-02T21:05:44.408Z",
   "commits": [
+    {
+      "id": "509f17fa29f8",
+      "visibility": "public",
+      "kind": "docs",
+      "message": "docs: link the committed experiment results from the readme",
+      "repo": "yashdagar/self-improving-rag",
+      "url": "https://github.com/yashdagar/self-improving-rag/commit/509f17fa29f81aa8ee35ffe592c0707601f0de94",
+      "language": "Python",
+      "at": "2026-10-02T16:43:25Z"
+    },
     {
       "id": "79f86aabc6ea",
       "visibility": "public",
@@ -1990,20 +2000,10 @@
       "url": "https://github.com/yashdagar/catan/commit/8dfb212e04dae5dd939dd2fc40bb571943e3ef3a",
       "language": "Dart",
       "at": "2026-07-29T22:25:55Z"
-    },
-    {
-      "id": "e28b3b25ce99",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Engrave the sea",
-      "repo": "yashdagar/catan",
-      "url": "https://github.com/yashdagar/catan/commit/e28b3b25ce99dd7e94f199427269ac8c5d12a35e",
-      "language": "Dart",
-      "at": "2026-07-29T21:59:36Z"
     }
   ],
   "totals": {
-    "year": 344,
+    "year": 345,
     "streak": 2
   },
   "workDays": {
