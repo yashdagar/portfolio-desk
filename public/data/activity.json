@@ -1,6 +1,126 @@
 {
-  "generatedAt": "2026-10-02T05:40:38.721Z",
+  "generatedAt": "2026-10-02T11:20:32.895Z",
   "commits": [
+    {
+      "id": "25cd704fe05a",
+      "visibility": "personal",
+      "kind": "ci",
+      "message": "ci: run tests, frontend build and commit message checks",
+      "repo": "yashdagar/self-improving-rag",
+      "url": "https://github.com/yashdagar/self-improving-rag/commit/25cd704fe05a99f41f854612c27888fba5aa0079",
+      "language": "Python",
+      "at": "2026-10-02T10:47:41Z"
+    },
+    {
+      "id": "4b1a255b1c94",
+      "visibility": "personal",
+      "kind": "docs",
+      "message": "docs: document pipeline, learning mechanism, experiments and api",
+      "repo": "yashdagar/self-improving-rag",
+      "url": "https://github.com/yashdagar/self-improving-rag/commit/4b1a255b1c944fd5500586520f8579d7ab72fa72",
+      "language": "Python",
+      "at": "2026-10-02T10:47:20Z"
+    },
+    {
+      "id": "ff84654c1d96",
+      "visibility": "personal",
+      "kind": "build",
+      "message": "build(docker): use cpu torch, cache models and reach host llm",
+      "repo": "yashdagar/self-improving-rag",
+      "url": "https://github.com/yashdagar/self-improving-rag/commit/ff84654c1d96f2dc20246e99c04e56348b32ea30",
+      "language": "Python",
+      "at": "2026-10-02T10:46:03Z"
+    },
+    {
+      "id": "a7081bcf791a",
+      "visibility": "personal",
+      "kind": "fix",
+      "message": "fix(arxiv): keep state as a search keyword",
+      "repo": "yashdagar/self-improving-rag",
+      "url": "https://github.com/yashdagar/self-improving-rag/commit/a7081bcf791a1a22aed012c67a09a9886fd60a79",
+      "language": "Python",
+      "at": "2026-10-02T10:45:52Z"
+    },
+    {
+      "id": "e76ede99e2ab",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "feat(experiments): add charts and report with paired bootstrap intervals",
+      "repo": "yashdagar/self-improving-rag",
+      "url": "https://github.com/yashdagar/self-improving-rag/commit/e76ede99e2aba2da35f0f1ca748236654418fe0c",
+      "language": "Python",
+      "at": "2026-10-02T10:45:30Z"
+    },
+    {
+      "id": "b8fe246983bd",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "feat(experiments): add experiment runner and per-cycle comparison api",
+      "repo": "yashdagar/self-improving-rag",
+      "url": "https://github.com/yashdagar/self-improving-rag/commit/b8fe246983bd355c7d495a9a86b520c9d60314af",
+      "language": "Python",
+      "at": "2026-10-02T10:42:30Z"
+    },
+    {
+      "id": "b3009bd02eea",
+      "visibility": "personal",
+      "kind": "refactor",
+      "message": "refactor(pipeline): make evaluation and adaptation explicit with a learn flag",
+      "repo": "yashdagar/self-improving-rag",
+      "url": "https://github.com/yashdagar/self-improving-rag/commit/b3009bd02eea874f4cf7177cc3b7fe2ff7240483",
+      "language": "Python",
+      "at": "2026-10-02T10:38:58Z"
+    },
+    {
+      "id": "525faf1b1d18",
+      "visibility": "personal",
+      "kind": "fix",
+      "message": "fix(arxiv): back off exponentially and honour retry-after on rate limits",
+      "repo": "yashdagar/self-improving-rag",
+      "url": "https://github.com/yashdagar/self-improving-rag/commit/525faf1b1d187b87f1715693e04f9f1934b78fcf",
+      "language": "Python",
+      "at": "2026-10-02T10:30:26Z"
+    },
+    {
+      "id": "df92c1c6e592",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "feat(adaptation): adapt ranking weights from evaluation and feedback",
+      "repo": "yashdagar/self-improving-rag",
+      "url": "https://github.com/yashdagar/self-improving-rag/commit/df92c1c6e592599447c45798fa1c0b1f8d49cf29",
+      "language": "Python",
+      "at": "2026-10-02T08:26:33Z"
+    },
+    {
+      "id": "ece450c51e01",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "feat(evaluation): add llm-judged self-evaluation with traceable scores",
+      "repo": "yashdagar/self-improving-rag",
+      "url": "https://github.com/yashdagar/self-improving-rag/commit/ece450c51e016951efc4f6465e8700381bd9b67d",
+      "language": "Python",
+      "at": "2026-10-02T08:25:02Z"
+    },
+    {
+      "id": "4dac925b528e",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "feat(llm): add grounded answer generation with citation mapping",
+      "repo": "yashdagar/self-improving-rag",
+      "url": "https://github.com/yashdagar/self-improving-rag/commit/4dac925b528ee207218c714ec18776bf88d9fb61",
+      "language": "Python",
+      "at": "2026-10-02T08:23:13Z"
+    },
+    {
+      "id": "37948edf327d",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "feat(ranking): scope learned weights and signals per experiment run",
+      "repo": "yashdagar/self-improving-rag",
+      "url": "https://github.com/yashdagar/self-improving-rag/commit/37948edf327d33011376c745f2ce6de2e15d4191",
+      "language": "Python",
+      "at": "2026-10-02T08:23:12Z"
+    },
     {
       "id": "50e7ba0c7faf",
       "visibility": "personal",
@@ -1880,131 +2000,11 @@
       "url": "https://github.com/yashdagar/catan/commit/72563b0f7e0bd47543d5c02747ba8de86de82538",
       "language": "Dart",
       "at": "2026-07-27T15:00:47Z"
-    },
-    {
-      "id": "91a2be578fb1",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Deal a board no one has to concede at placement",
-      "repo": "yashdagar/catan",
-      "url": "https://github.com/yashdagar/catan/commit/91a2be578fb186c927e0e5e4ce1574d2516cd7e6",
-      "language": "Dart",
-      "at": "2026-07-27T15:00:19Z"
-    },
-    {
-      "id": "6e64c1c62bdf",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Rebuild the lobby out of the board's own furniture",
-      "repo": "yashdagar/catan",
-      "url": "https://github.com/yashdagar/catan/commit/6e64c1c62bdfa9e1f7ab2ab2ed760bbaa6fb527a",
-      "language": "Dart",
-      "at": "2026-07-27T10:40:37Z"
-    },
-    {
-      "id": "cbef1fc33aab",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Let the table talk",
-      "repo": "yashdagar/catan",
-      "url": "https://github.com/yashdagar/catan/commit/cbef1fc33aabd50ee1bec8771e802698dd4609ba",
-      "language": "Dart",
-      "at": "2026-07-27T10:40:33Z"
-    },
-    {
-      "id": "9f9eb37b5196",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Cut the sign in fields into the board",
-      "repo": "yashdagar/catan",
-      "url": "https://github.com/yashdagar/catan/commit/9f9eb37b5196b62f66531ffd651d425d3acd274c",
-      "language": "Dart",
-      "at": "2026-07-27T10:40:29Z"
-    },
-    {
-      "id": "e1805ee20f5b",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Deploy the web build to Netlify from CI",
-      "repo": "yashdagar/catan",
-      "url": "https://github.com/yashdagar/catan/commit/e1805ee20f5be993dfac4032e6036d5b8c158553",
-      "language": "Dart",
-      "at": "2026-07-26T21:57:23Z"
-    },
-    {
-      "id": "325ea39de97d",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Centre the hand on the bar",
-      "repo": "yashdagar/catan",
-      "url": "https://github.com/yashdagar/catan/commit/325ea39de97d1d05745ee3fda217f9a5b321f724",
-      "language": "Dart",
-      "at": "2026-07-26T21:42:03Z"
-    },
-    {
-      "id": "77088d3c2928",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Draw brick, wheat and the sheep the way the board paints them",
-      "repo": "yashdagar/catan",
-      "url": "https://github.com/yashdagar/catan/commit/77088d3c2928d305f45518e2abdb072ac8d5a717",
-      "language": "Dart",
-      "at": "2026-07-26T21:42:03Z"
-    },
-    {
-      "id": "0f20a163ab31",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Stain the resource cards into the same timber",
-      "repo": "yashdagar/catan",
-      "url": "https://github.com/yashdagar/catan/commit/0f20a163ab316b007a64659a95d64cf2732f0331",
-      "language": "Dart",
-      "at": "2026-07-26T20:50:48Z"
-    },
-    {
-      "id": "084d37be8dda",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Cut the development cards from stained timber and parchment",
-      "repo": "yashdagar/catan",
-      "url": "https://github.com/yashdagar/catan/commit/084d37be8dda25af748b33bf18e377f2e3065fba",
-      "language": "Dart",
-      "at": "2026-07-26T20:50:47Z"
-    },
-    {
-      "id": "0aa493d6cf69",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Offer a way back in when the password is forgotten",
-      "repo": "yashdagar/catan",
-      "url": "https://github.com/yashdagar/catan/commit/0aa493d6cf69689baa3713acb9ffbac3f25890ed",
-      "language": "Dart",
-      "at": "2026-07-26T20:50:47Z"
-    },
-    {
-      "id": "06c929b5c7c9",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Count the port ratio in pips instead of spelling it out",
-      "repo": "yashdagar/catan",
-      "url": "https://github.com/yashdagar/catan/commit/06c929b5c7c9505b5accfb7f0ce0b8dc56b4485d",
-      "language": "Dart",
-      "at": "2026-07-26T19:57:04Z"
-    },
-    {
-      "id": "60f1ddb575f5",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Lay the same meadow behind sign-in and loading",
-      "repo": "yashdagar/catan",
-      "url": "https://github.com/yashdagar/catan/commit/60f1ddb575f59ac83d3743b636ea70467fa3a046",
-      "language": "Dart",
-      "at": "2026-07-26T19:53:06Z"
     }
   ],
   "totals": {
-    "year": 318,
-    "streak": 1
+    "year": 330,
+    "streak": 2
   },
   "workDays": {
     "2026-10-01": 2,
