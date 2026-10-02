@@ -1,6 +1,86 @@
 {
-  "generatedAt": "2026-10-01T20:22:00.171Z",
+  "generatedAt": "2026-10-02T00:08:39.271Z",
   "commits": [
+    {
+      "id": "50e7ba0c7faf",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "feat(ranking): add hybrid semantic, recency and feedback ranking",
+      "repo": "yashdagar/self-improving-rag",
+      "url": "https://github.com/yashdagar/self-improving-rag/commit/50e7ba0c7faff697bcc42dab1f8f41e82a994e4d",
+      "language": "Python",
+      "at": "2026-10-01T21:11:34Z"
+    },
+    {
+      "id": "c12f3cee5d75",
+      "visibility": "personal",
+      "kind": "fix",
+      "message": "fix(pdf): drop bibliography blocks when references heading is missed",
+      "repo": "yashdagar/self-improving-rag",
+      "url": "https://github.com/yashdagar/self-improving-rag/commit/c12f3cee5d7598fbe4b5e44750845024c051a576",
+      "language": "Python",
+      "at": "2026-10-01T21:11:34Z"
+    },
+    {
+      "id": "896bebdfb032",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "feat(embeddings): index chunks in chromadb with sentence-transformers",
+      "repo": "yashdagar/self-improving-rag",
+      "url": "https://github.com/yashdagar/self-improving-rag/commit/896bebdfb032e2800d68aaf03505877af4dbc4fc",
+      "language": "Python",
+      "at": "2026-10-01T21:07:31Z"
+    },
+    {
+      "id": "3e32fc193991",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "feat(pdf): add pdf download, section-aware extraction and chunking",
+      "repo": "yashdagar/self-improving-rag",
+      "url": "https://github.com/yashdagar/self-improving-rag/commit/3e32fc193991412577be9cd9e6ffe8d0db38bc0c",
+      "language": "Python",
+      "at": "2026-10-01T21:00:48Z"
+    },
+    {
+      "id": "fe7e76d5d2b0",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "feat(arxiv): add live arxiv search with keyword analysis and caching",
+      "repo": "yashdagar/self-improving-rag",
+      "url": "https://github.com/yashdagar/self-improving-rag/commit/fe7e76d5d2b0aea4cc21d2992a2cd1727a71ee68",
+      "language": "Python",
+      "at": "2026-10-01T20:54:17Z"
+    },
+    {
+      "id": "64a4c9d9e559",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "feat(frontend): show stored weights and database counts",
+      "repo": "yashdagar/self-improving-rag",
+      "url": "https://github.com/yashdagar/self-improving-rag/commit/64a4c9d9e559376c5a422630770c6657fb05bf45",
+      "language": "Python",
+      "at": "2026-10-01T19:41:48Z"
+    },
+    {
+      "id": "3aa8bb7b41d8",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "feat(api): add query, paper, feedback, metrics and history endpoints",
+      "repo": "yashdagar/self-improving-rag",
+      "url": "https://github.com/yashdagar/self-improving-rag/commit/3aa8bb7b41d8528fa55121b23ef85416db981573",
+      "language": "Python",
+      "at": "2026-10-01T19:41:48Z"
+    },
+    {
+      "id": "c7407c98730f",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "feat(db): add models for papers, queries, evaluations and weights",
+      "repo": "yashdagar/self-improving-rag",
+      "url": "https://github.com/yashdagar/self-improving-rag/commit/c7407c98730fbc2086a9b4c11cca837e4368493d",
+      "language": "Python",
+      "at": "2026-10-01T19:41:48Z"
+    },
     {
       "id": "2824a0f09354",
       "visibility": "personal",
@@ -1920,90 +2000,10 @@
       "url": "https://github.com/yashdagar/catan/commit/60f1ddb575f59ac83d3743b636ea70467fa3a046",
       "language": "Dart",
       "at": "2026-07-26T19:53:06Z"
-    },
-    {
-      "id": "42be3e59108a",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Carve the home page controls into plaques and code slots",
-      "repo": "yashdagar/catan",
-      "url": "https://github.com/yashdagar/catan/commit/42be3e59108abcb5a375bd95e05a993a75e1c08c",
-      "language": "Dart",
-      "at": "2026-07-26T19:53:05Z"
-    },
-    {
-      "id": "28a38d67285b",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Ease the rail type back down a point",
-      "repo": "yashdagar/catan",
-      "url": "https://github.com/yashdagar/catan/commit/28a38d67285bc7c89749ef74471ddd64884f93d9",
-      "language": "Dart",
-      "at": "2026-07-26T19:02:54Z"
-    },
-    {
-      "id": "dfea6c62d29d",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Carve the rail into timber name plates",
-      "repo": "yashdagar/catan",
-      "url": "https://github.com/yashdagar/catan/commit/dfea6c62d29d03d9ccae64945fa7182b3e27d6d4",
-      "language": "Dart",
-      "at": "2026-07-26T18:46:42Z"
-    },
-    {
-      "id": "324f474ca1da",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Show your hidden victory point cards on your own rail tile",
-      "repo": "yashdagar/catan",
-      "url": "https://github.com/yashdagar/catan/commit/324f474ca1da08a30e8390ce9eb6e63c9e1855eb",
-      "language": "Dart",
-      "at": "2026-07-26T18:39:52Z"
-    },
-    {
-      "id": "f082db13d013",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Saw the buttons into grained octagonal plaques",
-      "repo": "yashdagar/catan",
-      "url": "https://github.com/yashdagar/catan/commit/f082db13d0132f54d832a1831f0fb44119aebf3a",
-      "language": "Dart",
-      "at": "2026-07-26T18:25:35Z"
-    },
-    {
-      "id": "6407e257fd4c",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Put the dice back in a plain panel",
-      "repo": "yashdagar/catan",
-      "url": "https://github.com/yashdagar/catan/commit/6407e257fd4c24bcc2e9b40e1fddc5b09989aa60",
-      "language": "Dart",
-      "at": "2026-07-26T18:15:52Z"
-    },
-    {
-      "id": "0ea5f3390278",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Round the dice and bevel their faces",
-      "repo": "yashdagar/catan",
-      "url": "https://github.com/yashdagar/catan/commit/0ea5f3390278e3f90b2ac99977feeea20c97f192",
-      "language": "Dart",
-      "at": "2026-07-26T18:11:27Z"
-    },
-    {
-      "id": "424ffe08a609",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Cut the buttons from the board's own timber and sink the dice into a pit",
-      "repo": "yashdagar/catan",
-      "url": "https://github.com/yashdagar/catan/commit/424ffe08a60974e78a87f1aeaeb515b4a733aae3",
-      "language": "Dart",
-      "at": "2026-07-26T18:02:40Z"
     }
   ],
   "totals": {
-    "year": 310,
+    "year": 318,
     "streak": 1
   },
   "workDays": {
