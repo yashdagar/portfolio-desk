@@ -1,6 +1,76 @@
 {
-  "generatedAt": "2026-10-05T15:13:08.575Z",
+  "generatedAt": "2026-10-05T22:02:26.514Z",
   "commits": [
+    {
+      "id": "cc0f2c94c937",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Read dashboard credentials at runtime in middleware",
+      "repo": "yashdagar/portfolio-3d",
+      "url": "https://github.com/yashdagar/portfolio-3d/commit/cc0f2c94c9374bea2cdd26e668dd3cf506665a5f",
+      "language": "TypeScript",
+      "at": "2026-10-05T19:18:25Z"
+    },
+    {
+      "id": "1545289a6180",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Redeploy for /jobs env vars",
+      "repo": "yashdagar/portfolio-3d",
+      "url": "https://github.com/yashdagar/portfolio-3d/commit/1545289a6180af1b17104fbca2bb0617a602fb77",
+      "language": "TypeScript",
+      "at": "2026-10-05T18:56:21Z"
+    },
+    {
+      "id": "00e368a22393",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "Add private /jobs dashboard",
+      "repo": "yashdagar/portfolio-3d",
+      "url": "https://github.com/yashdagar/portfolio-3d/commit/00e368a22393e221e858fd465e411efe2ba220e2",
+      "language": "TypeScript",
+      "at": "2026-10-05T18:20:32Z"
+    },
+    {
+      "id": "0c795341213e",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "job-mailer: jh pipeline CLI, APPLY/CLAUDE/README",
+      "repo": "yashdagar/my-configs",
+      "url": "https://github.com/yashdagar/my-configs/commit/0c795341213e69788a69f4970fb1a761735502ec",
+      "language": "Python",
+      "at": "2026-10-05T17:38:10Z"
+    },
+    {
+      "id": "d0acb65afc6f",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "Add jh pipeline CLI, quickmail, templates, APPLY/CLAUDE/README, leads and logs",
+      "repo": "yashdagar/job-hunt",
+      "url": "https://github.com/yashdagar/job-hunt/commit/d0acb65afc6f45397eda496bb34522c97a1f4103",
+      "language": "HTML",
+      "at": "2026-10-05T17:38:05Z"
+    },
+    {
+      "id": "564912a47fba",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "Add job-mailer (qm quick cold-email script) and zshrc alias",
+      "repo": "yashdagar/my-configs",
+      "url": "https://github.com/yashdagar/my-configs/commit/564912a47fba4a91e82d7a976a76ea9f9997268f",
+      "language": "Python",
+      "at": "2026-10-05T17:34:18Z"
+    },
+    {
+      "id": "98a6be119a06",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Rebuild resume PDF from tex, log deploy",
+      "repo": "yashdagar/job-hunt",
+      "url": "https://github.com/yashdagar/job-hunt/commit/98a6be119a064ddf5a9e6034fc87da8d7e029f34",
+      "language": "HTML",
+      "at": "2026-10-05T15:14:52Z"
+    },
     {
       "id": "6ceac7a54e20",
       "visibility": "personal",
@@ -28,7 +98,7 @@
       "message": "Add history, colima, RubyMine, npmrc template, ninjasio shim, LaunchAgent, scripts",
       "repo": "yashdagar/my-configs",
       "url": "https://github.com/yashdagar/my-configs/commit/c0359291878ff505d61f32887cd008d974bdcd76",
-      "language": "Lua",
+      "language": "Python",
       "at": "2026-10-05T14:20:04Z"
     },
     {
@@ -38,7 +108,7 @@
       "message": "Add matplotlib backend, VS Code extensions, per-project Claude memory",
       "repo": "yashdagar/my-configs",
       "url": "https://github.com/yashdagar/my-configs/commit/755038aa98f556c9cb578c1623d55b0668c5e54f",
-      "language": "Lua",
+      "language": "Python",
       "at": "2026-10-05T13:58:45Z"
     },
     {
@@ -48,7 +118,7 @@
       "message": "Initial commit",
       "repo": "yashdagar/job-hunt",
       "url": "https://github.com/yashdagar/job-hunt/commit/cf6eceae098c4c03aecae14e6e5930e4c9934e60",
-      "language": "TeX",
+      "language": "HTML",
       "at": "2026-10-05T13:58:05Z"
     },
     {
@@ -78,7 +148,7 @@
       "message": "Initial configs backup",
       "repo": "yashdagar/my-configs",
       "url": "https://github.com/yashdagar/my-configs/commit/fea63bd218a6f3eb630943befc76d1b560eea225",
-      "language": "Lua",
+      "language": "Python",
       "at": "2026-10-05T13:55:44Z"
     },
     {
@@ -1930,80 +2000,10 @@
       "url": "https://github.com/yashdagar/chess/commit/2091dac076863544d03158ce4d487e604d470c50",
       "language": "Dart",
       "at": "2026-08-21T19:39:51Z"
-    },
-    {
-      "id": "8f6685c3d880",
-      "visibility": "public",
-      "kind": "other",
-      "message": "Replace REPORT.md with README.md",
-      "repo": "yashdagar/CLNLP",
-      "url": "https://github.com/yashdagar/CLNLP/commit/8f6685c3d8803dfffecb9486076e16dadc420a7d",
-      "language": "Jupyter Notebook",
-      "at": "2026-08-20T03:59:10Z"
-    },
-    {
-      "id": "e97e79ba36fc",
-      "visibility": "public",
-      "kind": "feat",
-      "message": "Add README covering both experiments",
-      "repo": "yashdagar/CLNLP",
-      "url": "https://github.com/yashdagar/CLNLP/commit/e97e79ba36fc6f93d7f27cfbe597dfaa15c53dff",
-      "language": "Jupyter Notebook",
-      "at": "2026-08-20T03:58:03Z"
-    },
-    {
-      "id": "16a2cd5ed5ba",
-      "visibility": "public",
-      "kind": "feat",
-      "message": "Add Experiment-1 (employee data analysis), Experiment-2 (text preprocessing), and report",
-      "repo": "yashdagar/CLNLP",
-      "url": "https://github.com/yashdagar/CLNLP/commit/16a2cd5ed5babc2c1dce5db8297ddfada65d5401",
-      "language": "Jupyter Notebook",
-      "at": "2026-08-20T03:53:05Z"
-    },
-    {
-      "id": "f462def3e30b",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Stamp the score on the proclamation in wax",
-      "repo": "yashdagar/catan",
-      "url": "https://github.com/yashdagar/catan/commit/f462def3e30b48bd245872b4cabd946f287186af",
-      "language": "Dart",
-      "at": "2026-08-03T05:34:23Z"
-    },
-    {
-      "id": "d2ad21641c4a",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Cry the laurels from the scroll, points and all",
-      "repo": "yashdagar/catan",
-      "url": "https://github.com/yashdagar/catan/commit/d2ad21641c4a7e12aa491dcd8a941bc3447fc514",
-      "language": "Dart",
-      "at": "2026-08-02T19:58:14Z"
-    },
-    {
-      "id": "feb2a2c35c3f",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Let the trade banner grow with the table",
-      "repo": "yashdagar/catan",
-      "url": "https://github.com/yashdagar/catan/commit/feb2a2c35c3fe91fff996f1e54f6837a59163f46",
-      "language": "Dart",
-      "at": "2026-08-02T19:37:31Z"
-    },
-    {
-      "id": "4e96b1ec2aaa",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Give every scrollbar a wooden thumb",
-      "repo": "yashdagar/catan",
-      "url": "https://github.com/yashdagar/catan/commit/4e96b1ec2aaa507142560eb527cd515c06741ca8",
-      "language": "Dart",
-      "at": "2026-08-02T19:18:25Z"
     }
   ],
   "totals": {
-    "year": 371,
+    "year": 378,
     "streak": 2
   },
   "workDays": {
