@@ -1,6 +1,26 @@
 {
-  "generatedAt": "2026-10-05T00:57:19.790Z",
+  "generatedAt": "2026-10-05T06:29:37.040Z",
   "commits": [
+    {
+      "id": "a6f1be603ccc",
+      "visibility": "public",
+      "kind": "fix",
+      "message": "Fix vectorised basket metrics on Apple GPU (no float64 on MPS); add MPS test",
+      "repo": "yashdagar/kan-rec",
+      "url": "https://github.com/yashdagar/kan-rec/commit/a6f1be603ccc7b9101a768042bcdacb8c04f25db",
+      "language": "TeX",
+      "at": "2026-10-05T04:48:12Z"
+    },
+    {
+      "id": "b8584e51577d",
+      "visibility": "public",
+      "kind": "other",
+      "message": "Defer extra seeds; basket models first",
+      "repo": "yashdagar/kan-rec",
+      "url": "https://github.com/yashdagar/kan-rec/commit/b8584e51577d746c810490b23206aedec866df45",
+      "language": "TeX",
+      "at": "2026-10-05T04:45:31Z"
+    },
     {
       "id": "91229ab8afc0",
       "visibility": "public",
@@ -1980,31 +2000,11 @@
       "url": "https://github.com/yashdagar/catan/commit/ca769ede2e5cbe90fa1293ce41d64b189459bed6",
       "language": "Dart",
       "at": "2026-07-30T23:13:03Z"
-    },
-    {
-      "id": "6a8385f870f4",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Centre the lobby instead of stretching it across a laptop",
-      "repo": "yashdagar/catan",
-      "url": "https://github.com/yashdagar/catan/commit/6a8385f870f4c23b6b63305a04caf7523dbe4af0",
-      "language": "Dart",
-      "at": "2026-07-30T22:51:26Z"
-    },
-    {
-      "id": "ad9bea36bbcc",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Light the indicators as glass and let the rails grow with the screen",
-      "repo": "yashdagar/catan",
-      "url": "https://github.com/yashdagar/catan/commit/ad9bea36bbcccd80e2b21ac6d35dadd76f67bf06",
-      "language": "Dart",
-      "at": "2026-07-30T17:54:31Z"
     }
   ],
   "totals": {
-    "year": 349,
-    "streak": 1
+    "year": 351,
+    "streak": 2
   },
   "workDays": {
     "2026-10-01": 2,
