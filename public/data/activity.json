@@ -1,6 +1,46 @@
 {
-  "generatedAt": "2026-10-04T22:15:00.069Z",
+  "generatedAt": "2026-10-05T00:57:19.790Z",
   "commits": [
+    {
+      "id": "91229ab8afc0",
+      "visibility": "public",
+      "kind": "other",
+      "message": "Single-file report for Overleaf",
+      "repo": "yashdagar/kan-rec",
+      "url": "https://github.com/yashdagar/kan-rec/commit/91229ab8afc0c3f8dee0e1f3cce6720eb36c19e1",
+      "language": "TeX",
+      "at": "2026-10-04T23:23:50Z"
+    },
+    {
+      "id": "84af2069d128",
+      "visibility": "public",
+      "kind": "other",
+      "message": "UPES notebook verified end to end; table formatting",
+      "repo": "yashdagar/kan-rec",
+      "url": "https://github.com/yashdagar/kan-rec/commit/84af2069d1280f621f70d64d1c35473eae8bb151",
+      "language": "TeX",
+      "at": "2026-10-04T23:10:30Z"
+    },
+    {
+      "id": "513e019eef8e",
+      "visibility": "public",
+      "kind": "feat",
+      "message": "Add Mac results so far, logs and test output",
+      "repo": "yashdagar/kan-rec",
+      "url": "https://github.com/yashdagar/kan-rec/commit/513e019eef8e85f8d528c04f791f3d5ff6d37706",
+      "language": "TeX",
+      "at": "2026-10-04T23:01:17Z"
+    },
+    {
+      "id": "15f2b6bd882d",
+      "visibility": "public",
+      "kind": "other",
+      "message": "KAN in recurrent recommenders: data pipelines, KAN layer, KAN-GRU4Rec, basket models, KAN-NBR, report",
+      "repo": "yashdagar/kan-rec",
+      "url": "https://github.com/yashdagar/kan-rec/commit/15f2b6bd882d437880200d296be8771598a5395f",
+      "language": "TeX",
+      "at": "2026-10-04T22:57:39Z"
+    },
     {
       "id": "509f17fa29f8",
       "visibility": "public",
@@ -1960,51 +2000,11 @@
       "url": "https://github.com/yashdagar/catan/commit/ad9bea36bbcccd80e2b21ac6d35dadd76f67bf06",
       "language": "Dart",
       "at": "2026-07-30T17:54:31Z"
-    },
-    {
-      "id": "4cdc6611212e",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Fly every harbour's flag as the thing it trades",
-      "repo": "yashdagar/catan",
-      "url": "https://github.com/yashdagar/catan/commit/4cdc6611212e124523d99152973988ebb618907b",
-      "language": "Dart",
-      "at": "2026-07-30T06:29:58Z"
-    },
-    {
-      "id": "2eaa17a0e57e",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Give the wool glyph a sheep you can look in the eye",
-      "repo": "yashdagar/catan",
-      "url": "https://github.com/yashdagar/catan/commit/2eaa17a0e57e594b013511d0ef887f8db95e2751",
-      "language": "Dart",
-      "at": "2026-07-30T06:19:27Z"
-    },
-    {
-      "id": "5a5793b86c46",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "The dice stay home and burn brighter",
-      "repo": "yashdagar/catan",
-      "url": "https://github.com/yashdagar/catan/commit/5a5793b86c46dd41367cda6d9920a6bbdc2beddf",
-      "language": "Dart",
-      "at": "2026-07-30T05:44:42Z"
-    },
-    {
-      "id": "8dfb212e04da",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Give the roll a stage",
-      "repo": "yashdagar/catan",
-      "url": "https://github.com/yashdagar/catan/commit/8dfb212e04dae5dd939dd2fc40bb571943e3ef3a",
-      "language": "Dart",
-      "at": "2026-07-29T22:25:55Z"
     }
   ],
   "totals": {
-    "year": 345,
-    "streak": 0
+    "year": 349,
+    "streak": 1
   },
   "workDays": {
     "2026-10-01": 2,
