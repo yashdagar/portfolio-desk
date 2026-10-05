@@ -1,6 +1,86 @@
 {
-  "generatedAt": "2026-10-05T06:29:37.040Z",
+  "generatedAt": "2026-10-05T15:13:08.575Z",
   "commits": [
+    {
+      "id": "6ceac7a54e20",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Update resume.pdf",
+      "repo": "yashdagar/portfolio-3d",
+      "url": "https://github.com/yashdagar/portfolio-3d/commit/6ceac7a54e20133294eea6dabbab8d94670dddd8",
+      "language": "TypeScript",
+      "at": "2026-10-05T15:10:35Z"
+    },
+    {
+      "id": "cb24bac01f18",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Claude Code history snapshot",
+      "repo": "yashdagar/claude-backup",
+      "url": "https://github.com/yashdagar/claude-backup/commit/cb24bac01f18ee2cac1c7071044223fc37f1e08c",
+      "language": "Shell",
+      "at": "2026-10-05T14:36:02Z"
+    },
+    {
+      "id": "c0359291878f",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "Add history, colima, RubyMine, npmrc template, ninjasio shim, LaunchAgent, scripts",
+      "repo": "yashdagar/my-configs",
+      "url": "https://github.com/yashdagar/my-configs/commit/c0359291878ff505d61f32887cd008d974bdcd76",
+      "language": "Lua",
+      "at": "2026-10-05T14:20:04Z"
+    },
+    {
+      "id": "755038aa98f5",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "Add matplotlib backend, VS Code extensions, per-project Claude memory",
+      "repo": "yashdagar/my-configs",
+      "url": "https://github.com/yashdagar/my-configs/commit/755038aa98f556c9cb578c1623d55b0668c5e54f",
+      "language": "Lua",
+      "at": "2026-10-05T13:58:45Z"
+    },
+    {
+      "id": "cf6eceae098c",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Initial commit",
+      "repo": "yashdagar/job-hunt",
+      "url": "https://github.com/yashdagar/job-hunt/commit/cf6eceae098c4c03aecae14e6e5930e4c9934e60",
+      "language": "TeX",
+      "at": "2026-10-05T13:58:05Z"
+    },
+    {
+      "id": "ccf70fcbbbdf",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Initial commit",
+      "repo": "yashdagar/rails-todo-backend",
+      "url": "https://github.com/yashdagar/rails-todo-backend/commit/ccf70fcbbbdf07db0dc59e48626a1c6d38a48adb",
+      "language": "HTML",
+      "at": "2026-10-05T13:57:55Z"
+    },
+    {
+      "id": "0317b80542b4",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Initial commit",
+      "repo": "yashdagar/rails-todo",
+      "url": "https://github.com/yashdagar/rails-todo/commit/0317b80542b4970ede46aebebbae8f094f4f13cb",
+      "language": "HTML",
+      "at": "2026-10-05T13:57:46Z"
+    },
+    {
+      "id": "fea63bd218a6",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Initial configs backup",
+      "repo": "yashdagar/my-configs",
+      "url": "https://github.com/yashdagar/my-configs/commit/fea63bd218a6f3eb630943befc76d1b560eea225",
+      "language": "Lua",
+      "at": "2026-10-05T13:55:44Z"
+    },
     {
       "id": "a6f1be603ccc",
       "visibility": "public",
@@ -430,6 +510,126 @@
       "url": "https://github.com/yashdagar/self-improving-rag/commit/556b9aa9305148418103c06f3209ccf5f80775ec",
       "language": "Python",
       "at": "2026-10-01T19:39:32Z"
+    },
+    {
+      "id": "d84b677aa0c8",
+      "visibility": "personal",
+      "kind": "chore",
+      "message": "chore: add commit author rewrite script",
+      "repo": "yashdagar/fireflies-clone",
+      "url": "https://github.com/yashdagar/fireflies-clone/commit/d84b677aa0c8c5056f7b901eb4b852ae6831fe29",
+      "language": "TypeScript",
+      "at": "2026-09-26T05:03:16Z"
+    },
+    {
+      "id": "265aef630895",
+      "visibility": "personal",
+      "kind": "docs",
+      "message": "docs: point live demo link at fireflies0.vercel.app",
+      "repo": "yashdagar/fireflies-clone",
+      "url": "https://github.com/yashdagar/fireflies-clone/commit/265aef630895b05e2b7c28f93873aaa208f8f51a",
+      "language": "TypeScript",
+      "at": "2026-09-26T05:00:56Z"
+    },
+    {
+      "id": "7e85ee6de809",
+      "visibility": "personal",
+      "kind": "docs",
+      "message": "docs: add live demo link to README",
+      "repo": "yashdagar/fireflies-clone",
+      "url": "https://github.com/yashdagar/fireflies-clone/commit/7e85ee6de8095ca454ec78538e941a11b88d37c3",
+      "language": "TypeScript",
+      "at": "2026-09-26T04:56:21Z"
+    },
+    {
+      "id": "84dc0ab6835d",
+      "visibility": "personal",
+      "kind": "chore",
+      "message": "chore: target Render free plan without persistent disk",
+      "repo": "yashdagar/fireflies-clone",
+      "url": "https://github.com/yashdagar/fireflies-clone/commit/84dc0ab6835dffda7ddc91e93fc87d8a5440e4cb",
+      "language": "TypeScript",
+      "at": "2026-09-26T04:23:07Z"
+    },
+    {
+      "id": "75ad075640d0",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "feat: apply Fireflies design system tokens, dark navigation and menus",
+      "repo": "yashdagar/fireflies-clone",
+      "url": "https://github.com/yashdagar/fireflies-clone/commit/75ad075640d0853b7fe4c9869df19993218d921b",
+      "language": "TypeScript",
+      "at": "2026-09-26T04:21:50Z"
+    },
+    {
+      "id": "e88324c97153",
+      "visibility": "personal",
+      "kind": "fix",
+      "message": "fix: prevent horizontal overflow on the meeting page at mobile widths",
+      "repo": "yashdagar/fireflies-clone",
+      "url": "https://github.com/yashdagar/fireflies-clone/commit/e88324c971539704f9297529d023f1143e0a9b55",
+      "language": "TypeScript",
+      "at": "2026-09-26T04:17:53Z"
+    },
+    {
+      "id": "ae697d1f8054",
+      "visibility": "personal",
+      "kind": "docs",
+      "message": "docs: add README, Render blueprint and Vercel config",
+      "repo": "yashdagar/fireflies-clone",
+      "url": "https://github.com/yashdagar/fireflies-clone/commit/ae697d1f8054a50e76c911cbd72d3592c08ce61b",
+      "language": "TypeScript",
+      "at": "2026-09-26T04:15:51Z"
+    },
+    {
+      "id": "ece4315d6945",
+      "visibility": "personal",
+      "kind": "test",
+      "message": "test: add Playwright end-to-end suite and run-all test script",
+      "repo": "yashdagar/fireflies-clone",
+      "url": "https://github.com/yashdagar/fireflies-clone/commit/ece4315d69452fa8d7cb3f709b6a4c212b08fb00",
+      "language": "TypeScript",
+      "at": "2026-09-26T04:09:18Z"
+    },
+    {
+      "id": "314f5c8d9c08",
+      "visibility": "personal",
+      "kind": "test",
+      "message": "test: add unit and component tests for lib utilities and meeting UI",
+      "repo": "yashdagar/fireflies-clone",
+      "url": "https://github.com/yashdagar/fireflies-clone/commit/314f5c8d9c085714f0c9c8e27a30269e1edd7f3e",
+      "language": "TypeScript",
+      "at": "2026-09-26T04:09:18Z"
+    },
+    {
+      "id": "1fd02b4ad52a",
+      "visibility": "personal",
+      "kind": "fix",
+      "message": "fix: avoid returning scrollIntoView promises from effects",
+      "repo": "yashdagar/fireflies-clone",
+      "url": "https://github.com/yashdagar/fireflies-clone/commit/1fd02b4ad52a4ff27ec9c75a0fc3c5b3116fba90",
+      "language": "TypeScript",
+      "at": "2026-09-26T04:09:18Z"
+    },
+    {
+      "id": "61ab0748e2c4",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "feat: filter meetings by source",
+      "repo": "yashdagar/fireflies-clone",
+      "url": "https://github.com/yashdagar/fireflies-clone/commit/61ab0748e2c4cd84ec6826702ceb006fa67d35a0",
+      "language": "TypeScript",
+      "at": "2026-09-26T04:00:25Z"
+    },
+    {
+      "id": "81ce45f6ff52",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "feat: seed eight sample meetings with transcripts, notes and action items",
+      "repo": "yashdagar/fireflies-clone",
+      "url": "https://github.com/yashdagar/fireflies-clone/commit/81ce45f6ff52f0aae70bff7f320aa436b3332882",
+      "language": "TypeScript",
+      "at": "2026-09-26T04:00:25Z"
     },
     {
       "id": "99ed4ffc107e",
@@ -1800,210 +2000,10 @@
       "url": "https://github.com/yashdagar/catan/commit/4e96b1ec2aaa507142560eb527cd515c06741ca8",
       "language": "Dart",
       "at": "2026-08-02T19:18:25Z"
-    },
-    {
-      "id": "e30943b4062c",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Set the trade offer out on parchment",
-      "repo": "yashdagar/catan",
-      "url": "https://github.com/yashdagar/catan/commit/e30943b4062c3dca8a49f42a4acde0dee742df8c",
-      "language": "Dart",
-      "at": "2026-08-02T19:18:24Z"
-    },
-    {
-      "id": "c6f24e1c9f03",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "The whole window turns the page, not just the middle of it",
-      "repo": "yashdagar/catan",
-      "url": "https://github.com/yashdagar/catan/commit/c6f24e1c9f03b2e31a5699c35a87dbd8676cafe4",
-      "language": "Dart",
-      "at": "2026-08-02T18:13:14Z"
-    },
-    {
-      "id": "ebb03dce5395",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "The shape was already saying it",
-      "repo": "yashdagar/catan",
-      "url": "https://github.com/yashdagar/catan/commit/ebb03dce539545875c3b7a062a5df291d0b7fcf0",
-      "language": "Dart",
-      "at": "2026-08-02T18:06:06Z"
-    },
-    {
-      "id": "7baa753d2ab2",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "A rounder bubble and a shorter tail",
-      "repo": "yashdagar/catan",
-      "url": "https://github.com/yashdagar/catan/commit/7baa753d2ab29177bca4805dc7a95be50e53dd59",
-      "language": "Dart",
-      "at": "2026-08-02T18:01:28Z"
-    },
-    {
-      "id": "3e6479485914",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "The table is set on the live island now",
-      "repo": "yashdagar/catan",
-      "url": "https://github.com/yashdagar/catan/commit/3e6479485914ea0d64296ede4be69b5b0c4d677a",
-      "language": "Dart",
-      "at": "2026-08-02T17:38:44Z"
-    },
-    {
-      "id": "f48314438175",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "A bubble wide enough to hold what it says",
-      "repo": "yashdagar/catan",
-      "url": "https://github.com/yashdagar/catan/commit/f483144381754c3e6d093ef14d518e719cc55c14",
-      "language": "Dart",
-      "at": "2026-08-02T17:30:41Z"
-    },
-    {
-      "id": "15605ab91d3c",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "A shield of your own, a table anyone may sit at, and a way to be called back",
-      "repo": "yashdagar/catan",
-      "url": "https://github.com/yashdagar/catan/commit/15605ab91d3c2c7f05ef0ae02610be6571190d68",
-      "language": "Dart",
-      "at": "2026-08-02T17:10:44Z"
-    },
-    {
-      "id": "b211a335d245",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "A hood, a pinch at the neck, and a hole where the face should be",
-      "repo": "yashdagar/catan",
-      "url": "https://github.com/yashdagar/catan/commit/b211a335d2453169a56cbd09a7e1c79e4cc879a2",
-      "language": "Dart",
-      "at": "2026-08-02T16:21:48Z"
-    },
-    {
-      "id": "d9507063959a",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "One nail where two timbers cross",
-      "repo": "yashdagar/catan",
-      "url": "https://github.com/yashdagar/catan/commit/d9507063959ab04b2da9eeab169de99d2ed931b5",
-      "language": "Dart",
-      "at": "2026-08-02T16:00:02Z"
-    },
-    {
-      "id": "57f1c5248119",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Let a road run through its corners, and let the note say its piece",
-      "repo": "yashdagar/catan",
-      "url": "https://github.com/yashdagar/catan/commit/57f1c524811901a245df6068a2b5a0b6c37c10b9",
-      "language": "Dart",
-      "at": "2026-08-02T15:55:19Z"
-    },
-    {
-      "id": "73551fbbb4fe",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Offer a plot, not a house, and show the piece only where you are pointing",
-      "repo": "yashdagar/catan",
-      "url": "https://github.com/yashdagar/catan/commit/73551fbbb4fed77a38c71d25d4a523e99b6b3f48",
-      "language": "Dart",
-      "at": "2026-08-02T15:42:27Z"
-    },
-    {
-      "id": "5b36573bc272",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Give the reading panels room and the dice a size to match the table",
-      "repo": "yashdagar/catan",
-      "url": "https://github.com/yashdagar/catan/commit/5b36573bc2724240256c431d19b94d745a191e40",
-      "language": "Dart",
-      "at": "2026-08-02T15:23:33Z"
-    },
-    {
-      "id": "12b14d1ec467",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "The screens you meet before the game deserve the room too",
-      "repo": "yashdagar/catan",
-      "url": "https://github.com/yashdagar/catan/commit/12b14d1ec4679f55f18dd3330beef94a9aed1756",
-      "language": "Dart",
-      "at": "2026-08-02T14:44:18Z"
-    },
-    {
-      "id": "b699d5bab64d",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Let a panel take the room a monitor gives it, and take a pasted code",
-      "repo": "yashdagar/catan",
-      "url": "https://github.com/yashdagar/catan/commit/b699d5bab64de5ed7409dbf859bb73ba30f4e00d",
-      "language": "Dart",
-      "at": "2026-08-02T14:26:02Z"
-    },
-    {
-      "id": "397ced9b00ce",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Give a laptop the same table, grown to the room it has",
-      "repo": "yashdagar/catan",
-      "url": "https://github.com/yashdagar/catan/commit/397ced9b00ce24da289fa15705ecccf4a521cef0",
-      "language": "Dart",
-      "at": "2026-08-02T13:50:59Z"
-    },
-    {
-      "id": "0414b1761430",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Give the browser the samples themselves, since it would not take the file",
-      "repo": "yashdagar/catan",
-      "url": "https://github.com/yashdagar/catan/commit/0414b17614305c453f41c11965423655842987c8",
-      "language": "Dart",
-      "at": "2026-07-31T07:17:30Z"
-    },
-    {
-      "id": "a6e3b6cc74eb",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Let the table knock back only when it is knocking at you",
-      "repo": "yashdagar/catan",
-      "url": "https://github.com/yashdagar/catan/commit/a6e3b6cc74eb5970fc9163738b8aa2532dd92da8",
-      "language": "Dart",
-      "at": "2026-07-31T06:32:33Z"
-    },
-    {
-      "id": "aed0366c775f",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Give the table a voice and the turn a nudge",
-      "repo": "yashdagar/catan",
-      "url": "https://github.com/yashdagar/catan/commit/aed0366c775f64ad3463d914089effb2d72501de",
-      "language": "Dart",
-      "at": "2026-07-31T06:23:00Z"
-    },
-    {
-      "id": "9de426c5a38c",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Crown the winner instead of listing them",
-      "repo": "yashdagar/catan",
-      "url": "https://github.com/yashdagar/catan/commit/9de426c5a38c6fb1c27bbf5bce6e9e5f1ff95253",
-      "language": "Dart",
-      "at": "2026-07-31T05:51:27Z"
-    },
-    {
-      "id": "ca769ede2e5c",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Carry the sheep, the flags, the glass and the laptop over the style line",
-      "repo": "yashdagar/catan",
-      "url": "https://github.com/yashdagar/catan/commit/ca769ede2e5cbe90fa1293ce41d64b189459bed6",
-      "language": "Dart",
-      "at": "2026-07-30T23:13:03Z"
     }
   ],
   "totals": {
-    "year": 351,
+    "year": 371,
     "streak": 2
   },
   "workDays": {
