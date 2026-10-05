@@ -367,10 +367,25 @@ function TouchPad() {
 }
 
 /**
- * One letter per piece, in the piece's own colour. Six letters and seven
- * tetrominoes, which is a coincidence worth spending: it says what the screen
- * is from across the room, in the only vocabulary this screen has.
+ * The title, spelled out of the same blocks the game is played with.
+ *
+ * A typeface would be the obvious way to write "Tetris" and the wrong one: this
+ * screen has exactly one vocabulary, and a word set in it says what the panel is
+ * from across the room without anybody having to read it. So each letter is a
+ * 3 × 5 bitmap drawn out of moulded cells, at a quarter of the well's pitch.
+ *
+ * Six letters and seven tetrominoes, which is a coincidence worth spending —
+ * one piece colour per letter, and O sits it out for being the only shape whose
+ * yellow would fight the accent.
  */
+const GLYPHS: Record<string, string[]> = {
+  T: ["###", ".#.", ".#.", ".#.", ".#."],
+  E: ["###", "#..", "###", "#..", "###"],
+  R: ["##.", "#.#", "##.", "#.#", "#.#"],
+  I: ["###", ".#.", ".#.", ".#.", "###"],
+  S: ["###", "#..", "###", "..#", "###"],
+};
+
 const WORDMARK: [string, PieceKind][] = [
   ["T", "T"],
   ["E", "I"],
@@ -380,15 +395,49 @@ const WORDMARK: [string, PieceKind][] = [
   ["S", "Z"],
 ];
 
+/** Small enough that the title reads as a label rather than a second board. */
+const MARK_CELL = 7;
+const MARK_GAP = 2;
+
 function Wordmark() {
   return (
-    <p className="flex gap-[3px] font-mono text-[22px] font-bold leading-none tracking-[0.16em]">
+    // Letters spaced by one whole cell pitch, so the space between them is the
+    // same measure as the space inside them and the word stays on one grid.
+    <div
+      className="flex w-fit"
+      style={{ gap: MARK_CELL + MARK_GAP }}
+      role="img"
+      aria-label="Tetris"
+    >
       {WORDMARK.map(([letter, kind], i) => (
-        <span key={i} style={{ color: PIECE_COLOURS[kind] }}>
-          {letter}
-        </span>
+        <div
+          key={i}
+          className="grid"
+          style={{
+            gridTemplateColumns: `repeat(3, ${MARK_CELL}px)`,
+            gridTemplateRows: `repeat(5, ${MARK_CELL}px)`,
+            gap: MARK_GAP,
+          }}
+        >
+          {GLYPHS[letter].flatMap((row, r) =>
+            [...row].map((on, col) => (
+              <span
+                key={`${r}-${col}`}
+                className="rounded-[2px]"
+                style={
+                  on === "#"
+                    ? {
+                        backgroundColor: PIECE_COLOURS[kind],
+                        backgroundImage: FACE,
+                      }
+                    : { backgroundColor: "transparent" }
+                }
+              />
+            )),
+          )}
+        </div>
       ))}
-    </p>
+    </div>
   );
 }
 
