@@ -1,6 +1,26 @@
 {
-  "generatedAt": "2026-10-06T09:05:58.436Z",
+  "generatedAt": "2026-10-06T15:58:40.129Z",
   "commits": [
+    {
+      "id": "fd5d9224c4d2",
+      "visibility": "public",
+      "kind": "feat",
+      "message": "Add mid-term and end-term presentations and the SRS",
+      "repo": "yashdagar/kan-rec",
+      "url": "https://github.com/yashdagar/kan-rec/commit/fd5d9224c4d2f073d7208a0fc0e7613ed5089012",
+      "language": "Jupyter Notebook",
+      "at": "2026-10-06T13:34:10Z"
+    },
+    {
+      "id": "68f3027cea2b",
+      "visibility": "public",
+      "kind": "other",
+      "message": "Finish Mac basket runs and regenerate report tables and figures",
+      "repo": "yashdagar/kan-rec",
+      "url": "https://github.com/yashdagar/kan-rec/commit/68f3027cea2b218863154f7cf90b4dd531a9fa35",
+      "language": "Jupyter Notebook",
+      "at": "2026-10-06T13:34:10Z"
+    },
     {
       "id": "00510d9c946d",
       "visibility": "personal",
@@ -208,7 +228,7 @@
       "message": "Fix vectorised basket metrics on Apple GPU (no float64 on MPS); add MPS test",
       "repo": "yashdagar/kan-rec",
       "url": "https://github.com/yashdagar/kan-rec/commit/a6f1be603ccc7b9101a768042bcdacb8c04f25db",
-      "language": "TeX",
+      "language": "Jupyter Notebook",
       "at": "2026-10-05T04:48:12Z"
     },
     {
@@ -218,7 +238,7 @@
       "message": "Defer extra seeds; basket models first",
       "repo": "yashdagar/kan-rec",
       "url": "https://github.com/yashdagar/kan-rec/commit/b8584e51577d746c810490b23206aedec866df45",
-      "language": "TeX",
+      "language": "Jupyter Notebook",
       "at": "2026-10-05T04:45:31Z"
     },
     {
@@ -228,7 +248,7 @@
       "message": "Single-file report for Overleaf",
       "repo": "yashdagar/kan-rec",
       "url": "https://github.com/yashdagar/kan-rec/commit/91229ab8afc0c3f8dee0e1f3cce6720eb36c19e1",
-      "language": "TeX",
+      "language": "Jupyter Notebook",
       "at": "2026-10-04T23:23:50Z"
     },
     {
@@ -238,7 +258,7 @@
       "message": "UPES notebook verified end to end; table formatting",
       "repo": "yashdagar/kan-rec",
       "url": "https://github.com/yashdagar/kan-rec/commit/84af2069d1280f621f70d64d1c35473eae8bb151",
-      "language": "TeX",
+      "language": "Jupyter Notebook",
       "at": "2026-10-04T23:10:30Z"
     },
     {
@@ -248,7 +268,7 @@
       "message": "Add Mac results so far, logs and test output",
       "repo": "yashdagar/kan-rec",
       "url": "https://github.com/yashdagar/kan-rec/commit/513e019eef8e85f8d528c04f791f3d5ff6d37706",
-      "language": "TeX",
+      "language": "Jupyter Notebook",
       "at": "2026-10-04T23:01:17Z"
     },
     {
@@ -258,7 +278,7 @@
       "message": "KAN in recurrent recommenders: data pipelines, KAN layer, KAN-GRU4Rec, basket models, KAN-NBR, report",
       "repo": "yashdagar/kan-rec",
       "url": "https://github.com/yashdagar/kan-rec/commit/15f2b6bd882d437880200d296be8771598a5395f",
-      "language": "TeX",
+      "language": "Jupyter Notebook",
       "at": "2026-10-04T22:57:39Z"
     },
     {
@@ -1980,30 +2000,10 @@
       "url": "https://github.com/yashdagar/order_karo/commit/3d62c6b5891c63c6849b772e0ab527a794eb99c3",
       "language": "Dart",
       "at": "2026-08-29T20:19:56Z"
-    },
-    {
-      "id": "1579fe4c901c",
-      "visibility": "personal",
-      "kind": "feat",
-      "message": "feat: replace shared hardcoded password with email OTP sign-in",
-      "repo": "yashdagar/order_karo_partners",
-      "url": "https://github.com/yashdagar/order_karo_partners/commit/1579fe4c901ceed3c7f42f6e578931a0aa83fc00",
-      "language": "Dart",
-      "at": "2026-08-29T20:17:22Z"
-    },
-    {
-      "id": "fc478d820bf7",
-      "visibility": "personal",
-      "kind": "feat",
-      "message": "feat: replace shared hardcoded password with email OTP sign-in",
-      "repo": "yashdagar/order_karo",
-      "url": "https://github.com/yashdagar/order_karo/commit/fc478d820bf71c04bbd9ed773442e3f114798dd5",
-      "language": "Dart",
-      "at": "2026-08-29T20:17:22Z"
     }
   ],
   "totals": {
-    "year": 385,
+    "year": 387,
     "streak": 3
   },
   "workDays": {
