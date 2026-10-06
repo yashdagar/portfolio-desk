@@ -1,6 +1,46 @@
 {
-  "generatedAt": "2026-10-06T02:19:32.027Z",
+  "generatedAt": "2026-10-06T09:05:58.436Z",
   "commits": [
+    {
+      "id": "00510d9c946d",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Jobs page: floating glyph header, coloured KPI cards and section marks",
+      "repo": "yashdagar/portfolio-3d",
+      "url": "https://github.com/yashdagar/portfolio-3d/commit/00510d9c946d4cfc46adcb873a44d02f123a02c4",
+      "language": "TypeScript",
+      "at": "2026-10-06T08:09:32Z"
+    },
+    {
+      "id": "dd6f96f4cc8a",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Jobs page: next-stage list and highlighted stage outcomes in funnel",
+      "repo": "yashdagar/portfolio-3d",
+      "url": "https://github.com/yashdagar/portfolio-3d/commit/dd6f96f4cc8abe267b1ffe208223c6d6cbc7a44e",
+      "language": "TypeScript",
+      "at": "2026-10-06T08:01:12Z"
+    },
+    {
+      "id": "4ada879a5b08",
+      "visibility": "public",
+      "kind": "other",
+      "message": "Match Check: preference-aware profile screening and rejection triage prototype",
+      "repo": "yashdagar/datecrew-match-check",
+      "url": "https://github.com/yashdagar/datecrew-match-check/commit/4ada879a5b08d5a817fdde33664c894aefb1143e",
+      "language": "Python",
+      "at": "2026-10-06T07:50:54Z"
+    },
+    {
+      "id": "24ef6cd4ac7f",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Update global CLAUDE.md and job-mailer CLAUDE.md",
+      "repo": "yashdagar/my-configs",
+      "url": "https://github.com/yashdagar/my-configs/commit/24ef6cd4ac7f3cf7775aa021752b10b835360a49",
+      "language": "Python",
+      "at": "2026-10-06T06:47:06Z"
+    },
     {
       "id": "cf502f9ffdfd",
       "visibility": "personal",
@@ -1960,53 +2000,14 @@
       "url": "https://github.com/yashdagar/order_karo/commit/fc478d820bf71c04bbd9ed773442e3f114798dd5",
       "language": "Dart",
       "at": "2026-08-29T20:17:22Z"
-    },
-    {
-      "id": "fb2ed3800fa1",
-      "visibility": "personal",
-      "kind": "chore",
-      "message": "chore: remove dead code and enable avoid_print baseline",
-      "repo": "yashdagar/order_karo_partners",
-      "url": "https://github.com/yashdagar/order_karo_partners/commit/fb2ed3800fa1612e5db5e6db37d6bb8f6608e70d",
-      "language": "Dart",
-      "at": "2026-08-29T20:14:30Z"
-    },
-    {
-      "id": "7e7be9dbd2c7",
-      "visibility": "personal",
-      "kind": "chore",
-      "message": "chore: remove dead code and enable avoid_print baseline",
-      "repo": "yashdagar/order_karo",
-      "url": "https://github.com/yashdagar/order_karo/commit/7e7be9dbd2c7f3f140ca6df8e5f966920520e829",
-      "language": "Dart",
-      "at": "2026-08-29T20:14:29Z"
-    },
-    {
-      "id": "775ffe1cef2f",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Raise Hard difficulty to depth 7",
-      "repo": "yashdagar/chess",
-      "url": "https://github.com/yashdagar/chess/commit/775ffe1cef2f3f7749eba21818cddd2a463cf14d",
-      "language": "Dart",
-      "at": "2026-08-23T02:48:38Z"
-    },
-    {
-      "id": "df6ff5c743f7",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Port the chess engine to C++ behind dart:ffi",
-      "repo": "yashdagar/chess",
-      "url": "https://github.com/yashdagar/chess/commit/df6ff5c743f7725e3dd2bf3bb84071b33a0f22d9",
-      "language": "Dart",
-      "at": "2026-08-23T00:12:53Z"
     }
   ],
   "totals": {
-    "year": 379,
-    "streak": 2
+    "year": 385,
+    "streak": 3
   },
   "workDays": {
+    "2026-10-06": 2,
     "2026-10-01": 2,
     "2026-09-29": 2,
     "2026-09-08": 4,
