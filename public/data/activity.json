@@ -1,6 +1,36 @@
 {
-  "generatedAt": "2026-10-06T15:58:40.129Z",
+  "generatedAt": "2026-10-06T20:48:00.176Z",
   "commits": [
+    {
+      "id": "0d952af965f1",
+      "visibility": "public",
+      "kind": "other",
+      "message": "Redesign the demo around the shortlist",
+      "repo": "yashdagar/datecrew-match-check",
+      "url": "https://github.com/yashdagar/datecrew-match-check/commit/0d952af965f1cc71fcb80f862fe7c4e8a02b098a",
+      "language": "HTML",
+      "at": "2026-10-06T19:01:01Z"
+    },
+    {
+      "id": "012dfb31c944",
+      "visibility": "public",
+      "kind": "other",
+      "message": "Point the live demo link at Netlify",
+      "repo": "yashdagar/datecrew-match-check",
+      "url": "https://github.com/yashdagar/datecrew-match-check/commit/012dfb31c944dba18b9ae52c1c34d142ed154645",
+      "language": "HTML",
+      "at": "2026-10-06T18:31:44Z"
+    },
+    {
+      "id": "f71e0ff14b22",
+      "visibility": "public",
+      "kind": "feat",
+      "message": "Add live demo, near-miss tier and preference-update suggestions",
+      "repo": "yashdagar/datecrew-match-check",
+      "url": "https://github.com/yashdagar/datecrew-match-check/commit/f71e0ff14b224929cdf8f12828a0f3b4c892c82a",
+      "language": "HTML",
+      "at": "2026-10-06T18:24:12Z"
+    },
     {
       "id": "fd5d9224c4d2",
       "visibility": "public",
@@ -48,7 +78,7 @@
       "message": "Match Check: preference-aware profile screening and rejection triage prototype",
       "repo": "yashdagar/datecrew-match-check",
       "url": "https://github.com/yashdagar/datecrew-match-check/commit/4ada879a5b08d5a817fdde33664c894aefb1143e",
-      "language": "Python",
+      "language": "HTML",
       "at": "2026-10-06T07:50:54Z"
     },
     {
@@ -1970,40 +2000,10 @@
       "url": "https://github.com/yashdagar/order_karo_partners/commit/b9ebc85afcf4e4d125d7523000243bb68377b9ab",
       "language": "Dart",
       "at": "2026-08-29T20:27:36Z"
-    },
-    {
-      "id": "8b358e482498",
-      "visibility": "personal",
-      "kind": "refactor",
-      "message": "refactor: single runApp with async init and startup retry state",
-      "repo": "yashdagar/order_karo",
-      "url": "https://github.com/yashdagar/order_karo/commit/8b358e48249832727e85d2db33089fb4015b5d0a",
-      "language": "Dart",
-      "at": "2026-08-29T20:27:36Z"
-    },
-    {
-      "id": "d4021e9c2f9a",
-      "visibility": "personal",
-      "kind": "fix",
-      "message": "fix: partners P0s - stream leaks, online toggle rollback, order reject, hidden customer orders",
-      "repo": "yashdagar/order_karo_partners",
-      "url": "https://github.com/yashdagar/order_karo_partners/commit/d4021e9c2f9a24871d9fd9eb582a2b42e2acf8a3",
-      "language": "Dart",
-      "at": "2026-08-29T20:22:31Z"
-    },
-    {
-      "id": "3d62c6b5891c",
-      "visibility": "personal",
-      "kind": "fix",
-      "message": "fix: cart survives back navigation, null-safe menus and carts, stock awareness",
-      "repo": "yashdagar/order_karo",
-      "url": "https://github.com/yashdagar/order_karo/commit/3d62c6b5891c63c6849b772e0ab527a794eb99c3",
-      "language": "Dart",
-      "at": "2026-08-29T20:19:56Z"
     }
   ],
   "totals": {
-    "year": 387,
+    "year": 390,
     "streak": 3
   },
   "workDays": {
