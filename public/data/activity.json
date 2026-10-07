@@ -1,6 +1,16 @@
 {
-  "generatedAt": "2026-10-07T06:03:13.632Z",
+  "generatedAt": "2026-10-07T13:27:35.484Z",
   "commits": [
+    {
+      "id": "c4caf17374e9",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Show posted pay in the jobs applications table",
+      "repo": "yashdagar/portfolio-3d",
+      "url": "https://github.com/yashdagar/portfolio-3d/commit/c4caf17374e9c05eedc50aa66149c40499369917",
+      "language": "TypeScript",
+      "at": "2026-10-07T08:00:06Z"
+    },
     {
       "id": "a0c5a725ce1a",
       "visibility": "personal",
@@ -1990,21 +2000,11 @@
       "url": "https://github.com/yashdagar/order_karo_partners/commit/f9adb19b090daed93a9edf96fdb4a2565f727427",
       "language": "Dart",
       "at": "2026-08-29T20:33:44Z"
-    },
-    {
-      "id": "869ce4056f08",
-      "visibility": "personal",
-      "kind": "refactor",
-      "message": "refactor: extract theme into lib/app/theme and add shared format helpers",
-      "repo": "yashdagar/order_karo",
-      "url": "https://github.com/yashdagar/order_karo/commit/869ce4056f08adc82b623cde1a918e136d901f55",
-      "language": "Dart",
-      "at": "2026-08-29T20:31:59Z"
     }
   ],
   "totals": {
-    "year": 391,
-    "streak": 3
+    "year": 392,
+    "streak": 4
   },
   "workDays": {
     "2026-10-06": 2,
