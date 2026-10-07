@@ -1,6 +1,16 @@
 {
-  "generatedAt": "2026-10-06T20:48:00.176Z",
+  "generatedAt": "2026-10-07T00:14:05.839Z",
   "commits": [
+    {
+      "id": "a0c5a725ce1a",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Jobs page: show posted pay on next-stage companies",
+      "repo": "yashdagar/portfolio-3d",
+      "url": "https://github.com/yashdagar/portfolio-3d/commit/a0c5a725ce1abc4f6f436bfe50ae4f7ae7502b90",
+      "language": "TypeScript",
+      "at": "2026-10-06T20:51:40Z"
+    },
     {
       "id": "0d952af965f1",
       "visibility": "public",
@@ -1990,20 +2000,10 @@
       "url": "https://github.com/yashdagar/order_karo/commit/869ce4056f08adc82b623cde1a918e136d901f55",
       "language": "Dart",
       "at": "2026-08-29T20:31:59Z"
-    },
-    {
-      "id": "b9ebc85afcf4",
-      "visibility": "personal",
-      "kind": "refactor",
-      "message": "refactor: single runApp with async init and startup retry state",
-      "repo": "yashdagar/order_karo_partners",
-      "url": "https://github.com/yashdagar/order_karo_partners/commit/b9ebc85afcf4e4d125d7523000243bb68377b9ab",
-      "language": "Dart",
-      "at": "2026-08-29T20:27:36Z"
     }
   ],
   "totals": {
-    "year": 390,
+    "year": 391,
     "streak": 3
   },
   "workDays": {
