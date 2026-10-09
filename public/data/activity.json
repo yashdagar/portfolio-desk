@@ -1,6 +1,16 @@
 {
-  "generatedAt": "2026-10-09T09:34:41.401Z",
+  "generatedAt": "2026-10-09T16:31:16.436Z",
   "commits": [
+    {
+      "id": "f82f83ceea0b",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "Add Google Calendar style events calendar to the jobs page",
+      "repo": "yashdagar/portfolio-3d",
+      "url": "https://github.com/yashdagar/portfolio-3d/commit/f82f83ceea0be719291f401f5e9d9a8bfc6389d7",
+      "language": "TypeScript",
+      "at": "2026-10-09T13:06:57Z"
+    },
     {
       "id": "b7ae80e474fb",
       "visibility": "personal",
@@ -1990,20 +2000,10 @@
       "url": "https://github.com/yashdagar/order_karo_partners/commit/8ded8e448c1b38331125c188065aef5faa96a933",
       "language": "Dart",
       "at": "2026-08-29T20:40:05Z"
-    },
-    {
-      "id": "a9226c7a7823",
-      "visibility": "personal",
-      "kind": "feat",
-      "message": "feat: shared widget library with cached images, steppers and semantic indicators",
-      "repo": "yashdagar/order_karo",
-      "url": "https://github.com/yashdagar/order_karo/commit/a9226c7a78232c3ba3e0be609a6a8d3ffed4bbb3",
-      "language": "Dart",
-      "at": "2026-08-29T20:37:55Z"
     }
   ],
   "totals": {
-    "year": 398,
+    "year": 399,
     "streak": 1
   },
   "workDays": {
