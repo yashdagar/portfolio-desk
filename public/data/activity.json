@@ -1,6 +1,206 @@
 {
-  "generatedAt": "2026-10-10T06:32:02.649Z",
+  "generatedAt": "2026-10-10T13:00:05.113Z",
   "commits": [
+    {
+      "id": "3354fbb40ec2",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Darken the community chapter into the forbidden stone avenue",
+      "repo": "yashdagar/portfolio-3d",
+      "url": "https://github.com/yashdagar/portfolio-3d/commit/3354fbb40ec227a5bcba6258943b8049fa6256ff",
+      "language": "TypeScript",
+      "at": "2026-10-09T22:10:03Z"
+    },
+    {
+      "id": "c342d4ec6bda",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Pin the ending so the moon and knot play on screen",
+      "repo": "yashdagar/portfolio-3d",
+      "url": "https://github.com/yashdagar/portfolio-3d/commit/c342d4ec6bdaeb675bb01501901e242d69e1b071",
+      "language": "TypeScript",
+      "at": "2026-10-09T21:56:33Z"
+    },
+    {
+      "id": "50850154d791",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Grow Kells branches, leaf frames and a stone circle",
+      "repo": "yashdagar/portfolio-3d",
+      "url": "https://github.com/yashdagar/portfolio-3d/commit/50850154d79195c0577202e0b5146f5d6fd00739",
+      "language": "TypeScript",
+      "at": "2026-10-09T21:56:33Z"
+    },
+    {
+      "id": "64651a01822d",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Chart the LeetCode rating and rename the chapter Contests",
+      "repo": "yashdagar/portfolio-3d",
+      "url": "https://github.com/yashdagar/portfolio-3d/commit/64651a01822d044ba4ffc77c2f134fcd55155842",
+      "language": "TypeScript",
+      "at": "2026-10-09T21:56:33Z"
+    },
+    {
+      "id": "ae5f7e5cbcd6",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Redraw Pangur and let him walk the page with the reader",
+      "repo": "yashdagar/portfolio-3d",
+      "url": "https://github.com/yashdagar/portfolio-3d/commit/ae5f7e5cbcd6bb7004e7416221ea4c69b2724100",
+      "language": "TypeScript",
+      "at": "2026-10-09T21:56:33Z"
+    },
+    {
+      "id": "1f1be29191f8",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Inline the stylesheet into the HTML",
+      "repo": "yashdagar/portfolio-3d",
+      "url": "https://github.com/yashdagar/portfolio-3d/commit/1f1be29191f8b453b51b95ee8e95dedd2f0ae21d",
+      "language": "TypeScript",
+      "at": "2026-10-09T21:08:21Z"
+    },
+    {
+      "id": "aafbbb4cd345",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "Add the magic moments, the serpent and Pangur",
+      "repo": "yashdagar/portfolio-3d",
+      "url": "https://github.com/yashdagar/portfolio-3d/commit/aafbbb4cd34550f3d8d14b5f98f26e97621476b8",
+      "language": "TypeScript",
+      "at": "2026-10-09T20:51:46Z"
+    },
+    {
+      "id": "17d40c2a71cb",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "End the page at the sea under a knotted moon",
+      "repo": "yashdagar/portfolio-3d",
+      "url": "https://github.com/yashdagar/portfolio-3d/commit/17d40c2a71cbedad3e0f008e413edd8cbce4714a",
+      "language": "TypeScript",
+      "at": "2026-10-09T20:51:46Z"
+    },
+    {
+      "id": "e1d9b9d54b21",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Rebuild the hero around one line and a guide light",
+      "repo": "yashdagar/portfolio-3d",
+      "url": "https://github.com/yashdagar/portfolio-3d/commit/e1d9b9d54b213228a24307835d4ece68fb4e04f6",
+      "language": "TypeScript",
+      "at": "2026-10-09T20:51:46Z"
+    },
+    {
+      "id": "45a3614813fe",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Make the chalk duel a readable rating chart",
+      "repo": "yashdagar/portfolio-3d",
+      "url": "https://github.com/yashdagar/portfolio-3d/commit/45a3614813fe9ebd6a1fd646ce25d3fce1fbb446",
+      "language": "TypeScript",
+      "at": "2026-10-09T20:37:41Z"
+    },
+    {
+      "id": "c78c753acf27",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Move to a natural Secret of Kells palette",
+      "repo": "yashdagar/portfolio-3d",
+      "url": "https://github.com/yashdagar/portfolio-3d/commit/c78c753acf2747a1325c734cad0ae6a0f352028c",
+      "language": "TypeScript",
+      "at": "2026-10-09T20:31:01Z"
+    },
+    {
+      "id": "24e91498b09b",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Restyle the site as ink on vellum",
+      "repo": "yashdagar/portfolio-3d",
+      "url": "https://github.com/yashdagar/portfolio-3d/commit/24e91498b09be487cbac0ec0a3eaee8106b9f66a",
+      "language": "TypeScript",
+      "at": "2026-10-09T18:21:18Z"
+    },
+    {
+      "id": "21ab97ad2063",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Plan theme v2: ink on vellum, chalk duel, building the wall",
+      "repo": "yashdagar/portfolio-3d",
+      "url": "https://github.com/yashdagar/portfolio-3d/commit/21ab97ad2063abbeb075551cd61ef423fb865fad",
+      "language": "TypeScript",
+      "at": "2026-10-09T17:53:24Z"
+    },
+    {
+      "id": "f400003e5b24",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "Add the procedural art engines",
+      "repo": "yashdagar/portfolio-3d",
+      "url": "https://github.com/yashdagar/portfolio-3d/commit/f400003e5b24bec2bf5c09018f9472c6011481d2",
+      "language": "TypeScript",
+      "at": "2026-10-09T17:48:10Z"
+    },
+    {
+      "id": "89014b3d17cf",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Rebuild the home page as one illuminated scroll",
+      "repo": "yashdagar/portfolio-3d",
+      "url": "https://github.com/yashdagar/portfolio-3d/commit/89014b3d17cf5c5c4fa77f540a2a755c1416cdf5",
+      "language": "TypeScript",
+      "at": "2026-10-09T17:48:10Z"
+    },
+    {
+      "id": "ce01847d2424",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Move the site into a themed route group",
+      "repo": "yashdagar/portfolio-3d",
+      "url": "https://github.com/yashdagar/portfolio-3d/commit/ce01847d2424fbf8db0dc4fcda3bb4efb7b42e8c",
+      "language": "TypeScript",
+      "at": "2026-10-09T17:48:10Z"
+    },
+    {
+      "id": "9b07b51071b7",
+      "visibility": "personal",
+      "kind": "fix",
+      "message": "Fix metadata domain, zoom, fonts, images and dead deps",
+      "repo": "yashdagar/portfolio-3d",
+      "url": "https://github.com/yashdagar/portfolio-3d/commit/9b07b51071b756d028bf9455dd381b26040b7869",
+      "language": "TypeScript",
+      "at": "2026-10-09T17:05:08Z"
+    },
+    {
+      "id": "c1dd97bcaa7b",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "Add traced character SVGs with grain filter",
+      "repo": "yashdagar/portfolio-3d",
+      "url": "https://github.com/yashdagar/portfolio-3d/commit/c1dd97bcaa7ba20a01541019f9521f56f73b03aa",
+      "language": "TypeScript",
+      "at": "2026-10-09T16:55:29Z"
+    },
+    {
+      "id": "3aefcf4f09b9",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Record redesign decisions and character sheet",
+      "repo": "yashdagar/portfolio-3d",
+      "url": "https://github.com/yashdagar/portfolio-3d/commit/3aefcf4f09b92107fe978ecd135898e66cbbb524",
+      "language": "TypeScript",
+      "at": "2026-10-09T16:36:14Z"
+    },
+    {
+      "id": "ddc821f56509",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "Add redesign plan docs for the Kells theme",
+      "repo": "yashdagar/portfolio-3d",
+      "url": "https://github.com/yashdagar/portfolio-3d/commit/ddc821f565095e55aa75e2f79fdc9e9cc5870e50",
+      "language": "TypeScript",
+      "at": "2026-10-09T16:18:17Z"
+    },
     {
       "id": "f82f83ceea0b",
       "visibility": "personal",
@@ -1800,210 +2000,10 @@
       "url": "https://github.com/yashdagar/pharma-retail-desktop/commit/2fb439b7693add716cec853cc1e5f93b05757d97",
       "language": "Dart",
       "at": "2026-08-31T15:18:42Z"
-    },
-    {
-      "id": "8eb2bd199627",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "surface unread rows, reconcile totals, and check column consistency",
-      "repo": "yashdagar/pharma-retail-desktop",
-      "url": "https://github.com/yashdagar/pharma-retail-desktop/commit/8eb2bd199627135457f7fc032468583c0d40d04c",
-      "language": "Dart",
-      "at": "2026-08-31T15:13:06Z"
-    },
-    {
-      "id": "641a20cbf82b",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "parse bill totals, fix money and GST/expiry handling, bound detection input",
-      "repo": "yashdagar/pharma-retail-desktop",
-      "url": "https://github.com/yashdagar/pharma-retail-desktop/commit/641a20cbf82b478a666806b6cb11fef33b4d3fb5",
-      "language": "Dart",
-      "at": "2026-08-31T14:55:28Z"
-    },
-    {
-      "id": "881d654ef0db",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "make scanned bill rows editable and restyle them as cards",
-      "repo": "yashdagar/pharma-retail-desktop",
-      "url": "https://github.com/yashdagar/pharma-retail-desktop/commit/881d654ef0db4239ebce37fdde46f0e403883582",
-      "language": "Dart",
-      "at": "2026-08-31T14:17:21Z"
-    },
-    {
-      "id": "728a63a0103e",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "replace tesseract with a bundled PP-OCRv5 neural engine for windows and macos",
-      "repo": "yashdagar/pharma-retail-desktop",
-      "url": "https://github.com/yashdagar/pharma-retail-desktop/commit/728a63a0103eb3e0899bdea9e68b6201368c43aa",
-      "language": "Dart",
-      "at": "2026-08-31T09:53:41Z"
-    },
-    {
-      "id": "9e1499f04898",
-      "visibility": "personal",
-      "kind": "feat",
-      "message": "add apple vision neural OCR engine with tesseract fallback",
-      "repo": "yashdagar/pharma-retail-desktop",
-      "url": "https://github.com/yashdagar/pharma-retail-desktop/commit/9e1499f04898db0dead21bacc9297105373d1f52",
-      "language": "Dart",
-      "at": "2026-08-31T06:42:17Z"
-    },
-    {
-      "id": "552fbc9d123f",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "bundle relocatable tesseract binary, dylibs and tessdata into the app",
-      "repo": "yashdagar/pharma-retail-desktop",
-      "url": "https://github.com/yashdagar/pharma-retail-desktop/commit/552fbc9d123f985179394ac6c9268967d10ef256",
-      "language": "Dart",
-      "at": "2026-08-30T19:54:45Z"
-    },
-    {
-      "id": "d67d4d7171b1",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "restyle to MiniMax design system with DM Sans and Iconsax icons",
-      "repo": "yashdagar/pharma-retail-desktop",
-      "url": "https://github.com/yashdagar/pharma-retail-desktop/commit/d67d4d7171b1ab1c34200b552c98329fd545437d",
-      "language": "Dart",
-      "at": "2026-08-30T19:40:09Z"
-    },
-    {
-      "id": "707ccfcdc757",
-      "visibility": "personal",
-      "kind": "feat",
-      "message": "add purchase OCR, sales billing, invoice PDF, trial licensing and expiry alerts",
-      "repo": "yashdagar/pharma-retail-desktop",
-      "url": "https://github.com/yashdagar/pharma-retail-desktop/commit/707ccfcdc7574e8edac8cf6a6e30119bb2bdf429",
-      "language": "Dart",
-      "at": "2026-08-30T19:01:33Z"
-    },
-    {
-      "id": "fbda34b888cd",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "scaffold Flutter desktop app with core services",
-      "repo": "yashdagar/pharma-retail-desktop",
-      "url": "https://github.com/yashdagar/pharma-retail-desktop/commit/fbda34b888cd3eb13f7c23b003eb3169938beff7",
-      "language": "Dart",
-      "at": "2026-08-30T18:41:44Z"
-    },
-    {
-      "id": "e85c2332c78c",
-      "visibility": "personal",
-      "kind": "build",
-      "message": "build: upgrade Android toolchain and replace broken ionicons with Material icons",
-      "repo": "yashdagar/order_karo_partners",
-      "url": "https://github.com/yashdagar/order_karo_partners/commit/e85c2332c78c5e45db07b27824db43e0423eccae",
-      "language": "Dart",
-      "at": "2026-08-30T06:50:06Z"
-    },
-    {
-      "id": "734f4c8d48c5",
-      "visibility": "personal",
-      "kind": "build",
-      "message": "build: upgrade Android toolchain and replace broken ionicons with Material icons",
-      "repo": "yashdagar/order_karo",
-      "url": "https://github.com/yashdagar/order_karo/commit/734f4c8d48c58a2a438a205a8417b578cd08f29f",
-      "language": "Dart",
-      "at": "2026-08-30T06:47:38Z"
-    },
-    {
-      "id": "4c516a050189",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "polish: accessibility and lint burn-down",
-      "repo": "yashdagar/order_karo_partners",
-      "url": "https://github.com/yashdagar/order_karo_partners/commit/4c516a050189a1d29b95c59df17a21020b10a5df",
-      "language": "Dart",
-      "at": "2026-08-29T21:11:25Z"
-    },
-    {
-      "id": "15451a077b6f",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "polish: accessibility and lint burn-down",
-      "repo": "yashdagar/order_karo",
-      "url": "https://github.com/yashdagar/order_karo/commit/15451a077b6f988e8714f4b2de44f9015c7c3e9c",
-      "language": "Dart",
-      "at": "2026-08-29T21:10:31Z"
-    },
-    {
-      "id": "f8119c3491c0",
-      "visibility": "personal",
-      "kind": "feat",
-      "message": "feat: partner console overhaul - per-order undo, new-order alerting, menu deletion",
-      "repo": "yashdagar/order_karo_partners",
-      "url": "https://github.com/yashdagar/order_karo_partners/commit/f8119c3491c008df863f997d2ecee9d586de84e9",
-      "language": "Dart",
-      "at": "2026-08-29T21:07:45Z"
-    },
-    {
-      "id": "acb769abd933",
-      "visibility": "personal",
-      "kind": "feat",
-      "message": "feat: customer screen overhaul - virtualized lists, resilient checkout, honest order tracking",
-      "repo": "yashdagar/order_karo",
-      "url": "https://github.com/yashdagar/order_karo/commit/acb769abd93361eb84153cee87c7964d7088a957",
-      "language": "Dart",
-      "at": "2026-08-29T21:04:03Z"
-    },
-    {
-      "id": "82e51301e987",
-      "visibility": "personal",
-      "kind": "refactor",
-      "message": "refactor: migrate state management from provider to flutter_riverpod",
-      "repo": "yashdagar/order_karo_partners",
-      "url": "https://github.com/yashdagar/order_karo_partners/commit/82e51301e987f8613fa6296db9cc601ba54b9ef0",
-      "language": "Dart",
-      "at": "2026-08-29T20:59:53Z"
-    },
-    {
-      "id": "6cd125cdc7af",
-      "visibility": "personal",
-      "kind": "refactor",
-      "message": "refactor: migrate state management from provider to flutter_riverpod",
-      "repo": "yashdagar/order_karo",
-      "url": "https://github.com/yashdagar/order_karo/commit/6cd125cdc7af3d7b08e6d032077256305d191d6b",
-      "language": "Dart",
-      "at": "2026-08-29T20:56:28Z"
-    },
-    {
-      "id": "f93383b4cc4b",
-      "visibility": "personal",
-      "kind": "feat",
-      "message": "feat: migrate to go_router with auth redirect, real ledger tab and notification routing",
-      "repo": "yashdagar/order_karo_partners",
-      "url": "https://github.com/yashdagar/order_karo_partners/commit/f93383b4cc4b90f9b1589fb6f509f1d122571663",
-      "language": "Dart",
-      "at": "2026-08-29T20:47:49Z"
-    },
-    {
-      "id": "31af951de153",
-      "visibility": "personal",
-      "kind": "feat",
-      "message": "feat: migrate to go_router with auth redirect, tab shell and notification deep links",
-      "repo": "yashdagar/order_karo",
-      "url": "https://github.com/yashdagar/order_karo/commit/31af951de153b09f265f239c58f6199d03c9d359",
-      "language": "Dart",
-      "at": "2026-08-29T20:44:16Z"
-    },
-    {
-      "id": "8ded8e448c1b",
-      "visibility": "personal",
-      "kind": "feat",
-      "message": "feat: shared widget library, cached images and destructive-action confirmations",
-      "repo": "yashdagar/order_karo_partners",
-      "url": "https://github.com/yashdagar/order_karo_partners/commit/8ded8e448c1b38331125c188065aef5faa96a933",
-      "language": "Dart",
-      "at": "2026-08-29T20:40:05Z"
     }
   ],
   "totals": {
-    "year": 399,
+    "year": 419,
     "streak": 1
   },
   "workDays": {
