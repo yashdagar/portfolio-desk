@@ -1,6 +1,36 @@
 {
-  "generatedAt": "2026-10-14T05:37:05.636Z",
+  "generatedAt": "2026-10-14T10:34:02.581Z",
   "commits": [
+    {
+      "id": "7cc63655e961",
+      "visibility": "public",
+      "kind": "test",
+      "message": "test: add unit and component tests for the dashboard",
+      "repo": "yashdagar/causalfunnel-analytics",
+      "url": "https://github.com/yashdagar/causalfunnel-analytics/commit/7cc63655e96167f1f3283e2e1380a26d4d112b17",
+      "language": "TypeScript",
+      "at": "2026-10-14T07:17:25Z"
+    },
+    {
+      "id": "3f9815ed5626",
+      "visibility": "public",
+      "kind": "fix",
+      "message": "fix: stack hotspot counts above their ranges so the sidebar does not wrap",
+      "repo": "yashdagar/causalfunnel-analytics",
+      "url": "https://github.com/yashdagar/causalfunnel-analytics/commit/3f9815ed56262faa2732a8034dc969e96ea13885",
+      "language": "TypeScript",
+      "at": "2026-10-14T07:17:25Z"
+    },
+    {
+      "id": "2464233fb3e1",
+      "visibility": "public",
+      "kind": "fix",
+      "message": "fix: skip page text when a click lands outside an interactive element",
+      "repo": "yashdagar/causalfunnel-analytics",
+      "url": "https://github.com/yashdagar/causalfunnel-analytics/commit/2464233fb3e1f16e99302a9e93f46f23799ef988",
+      "language": "TypeScript",
+      "at": "2026-10-14T07:17:25Z"
+    },
     {
       "id": "c241189fac73",
       "visibility": "personal",
@@ -1970,41 +2000,11 @@
       "url": "https://github.com/yashdagar/pharma-retail-desktop/commit/4857ca702d35c1b2bfe802e9f8268ab37ba92d54",
       "language": "Dart",
       "at": "2026-09-02T15:17:44Z"
-    },
-    {
-      "id": "45ff8b39da3f",
-      "visibility": "personal",
-      "kind": "build",
-      "message": "build on the VS 2022 toolchain so shipped binaries actually start",
-      "repo": "yashdagar/pharma-retail-desktop",
-      "url": "https://github.com/yashdagar/pharma-retail-desktop/commit/45ff8b39da3fe4cfbe51c1cfd345ecc5bb862a6d",
-      "language": "Dart",
-      "at": "2026-09-02T14:46:55Z"
-    },
-    {
-      "id": "8defdc8e3b6e",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "let the windows build survive MSVC 14.51",
-      "repo": "yashdagar/pharma-retail-desktop",
-      "url": "https://github.com/yashdagar/pharma-retail-desktop/commit/8defdc8e3b6e29edc4ea8caa2364acfacc219a7a",
-      "language": "Dart",
-      "at": "2026-09-02T13:46:26Z"
-    },
-    {
-      "id": "1e10cf2b543c",
-      "visibility": "personal",
-      "kind": "build",
-      "message": "build windows releases on a hosted runner",
-      "repo": "yashdagar/pharma-retail-desktop",
-      "url": "https://github.com/yashdagar/pharma-retail-desktop/commit/1e10cf2b543c22c5ceb4cc5b1ac04251d1d81f37",
-      "language": "Dart",
-      "at": "2026-09-02T13:36:25Z"
     }
   ],
   "totals": {
-    "year": 433,
-    "streak": 1
+    "year": 436,
+    "streak": 2
   },
   "workDays": {
     "2026-10-13": 1,
