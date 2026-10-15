@@ -1,6 +1,36 @@
 {
-  "generatedAt": "2026-10-15T05:24:16.230Z",
+  "generatedAt": "2026-10-15T10:16:12.991Z",
   "commits": [
+    {
+      "id": "dddf2c7037d8",
+      "visibility": "public",
+      "kind": "docs",
+      "message": "docs: add README with setup, architecture, API and trade-offs",
+      "repo": "yashdagar/causalfunnel-analytics",
+      "url": "https://github.com/yashdagar/causalfunnel-analytics/commit/dddf2c7037d8629744e24c0f40bfcc76dac73b96",
+      "language": "TypeScript",
+      "at": "2026-10-15T07:19:33Z"
+    },
+    {
+      "id": "c521a3111317",
+      "visibility": "public",
+      "kind": "chore",
+      "message": "chore: add test runner, local MongoDB compose file and Render blueprint",
+      "repo": "yashdagar/causalfunnel-analytics",
+      "url": "https://github.com/yashdagar/causalfunnel-analytics/commit/c521a3111317f8c54fa1567be582679bb6c91c40",
+      "language": "TypeScript",
+      "at": "2026-10-15T07:16:36Z"
+    },
+    {
+      "id": "0733329de5f9",
+      "visibility": "public",
+      "kind": "test",
+      "message": "test: add Playwright end-to-end suite for tracking, journeys and heatmap",
+      "repo": "yashdagar/causalfunnel-analytics",
+      "url": "https://github.com/yashdagar/causalfunnel-analytics/commit/0733329de5f996f35c7034016f28880e48e62beb",
+      "language": "TypeScript",
+      "at": "2026-10-15T07:16:36Z"
+    },
     {
       "id": "7cc63655e961",
       "visibility": "public",
@@ -1970,41 +2000,11 @@
       "url": "https://github.com/yashdagar/pharma-retail-desktop/commit/b677fbb8e1a306fc7eac32e9af8e0bde1e538ec1",
       "language": "Dart",
       "at": "2026-09-04T19:03:14Z"
-    },
-    {
-      "id": "300f49109380",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "show buying and selling value on every purchase line",
-      "repo": "yashdagar/pharma-retail-desktop",
-      "url": "https://github.com/yashdagar/pharma-retail-desktop/commit/300f491093801c6099b1c09083e171125345491a",
-      "language": "Dart",
-      "at": "2026-09-03T15:28:22Z"
-    },
-    {
-      "id": "9b8cdd284084",
-      "visibility": "public",
-      "kind": "feat",
-      "message": "Add Experiment-5 (subword tokenization and POS tagging)",
-      "repo": "yashdagar/CLNLP",
-      "url": "https://github.com/yashdagar/CLNLP/commit/9b8cdd284084dd0f5af5de6c25f62de556919adf",
-      "language": "Jupyter Notebook",
-      "at": "2026-09-03T03:00:35Z"
-    },
-    {
-      "id": "4857ca702d35",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "ship the C++ runtime beside the exe",
-      "repo": "yashdagar/pharma-retail-desktop",
-      "url": "https://github.com/yashdagar/pharma-retail-desktop/commit/4857ca702d35c1b2bfe802e9f8268ab37ba92d54",
-      "language": "Dart",
-      "at": "2026-09-02T15:17:44Z"
     }
   ],
   "totals": {
-    "year": 436,
-    "streak": 2
+    "year": 439,
+    "streak": 3
   },
   "workDays": {
     "2026-10-13": 1,
