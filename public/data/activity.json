@@ -1,6 +1,96 @@
 {
-  "generatedAt": "2026-10-17T17:30:39.608Z",
+  "generatedAt": "2026-10-17T19:41:09.843Z",
   "commits": [
+    {
+      "id": "f82001aef011",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "Add the reset backups memory",
+      "repo": "yashdagar/my-configs",
+      "url": "https://github.com/yashdagar/my-configs/commit/f82001aef011dcb6a5e60c942b6acd387c7cfe2a",
+      "language": "Python",
+      "at": "2026-10-17T19:22:27Z"
+    },
+    {
+      "id": "85a10caa7060",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "Add an after-reset checklist, Claude backup script and fresh job-mailer",
+      "repo": "yashdagar/my-configs",
+      "url": "https://github.com/yashdagar/my-configs/commit/85a10caa70609d1647d20a8af32637e511861d26",
+      "language": "Python",
+      "at": "2026-10-17T19:22:03Z"
+    },
+    {
+      "id": "f43e34d0e667",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Claude Code history snapshot 2026-10-18",
+      "repo": "yashdagar/claude-backup",
+      "url": "https://github.com/yashdagar/claude-backup/commit/f43e34d0e667ca543484df219becb13033075361",
+      "language": "Python",
+      "at": "2026-10-17T19:20:23Z"
+    },
+    {
+      "id": "8e07f7acfc8b",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Ignore the embedded datecrew repo",
+      "repo": "yashdagar/job-hunt",
+      "url": "https://github.com/yashdagar/job-hunt/commit/8e07f7acfc8bb913fc4250c84e8acb42a7eea08c",
+      "language": "HTML",
+      "at": "2026-10-17T18:56:49Z"
+    },
+    {
+      "id": "3b51ed8bdfb2",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Back up the job hunt pipeline as of Oct 18",
+      "repo": "yashdagar/job-hunt",
+      "url": "https://github.com/yashdagar/job-hunt/commit/3b51ed8bdfb282cde1b2327e125af16aa4649ed1",
+      "language": "HTML",
+      "at": "2026-10-17T18:56:20Z"
+    },
+    {
+      "id": "b09af37dd41e",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Back up ICPC practice solutions and the cp prep site",
+      "repo": "yashdagar/icpc",
+      "url": "https://github.com/yashdagar/icpc/commit/b09af37dd41ed067903fbe353c9ee0c276fb8785",
+      "language": "C++",
+      "at": "2026-10-17T18:54:35Z"
+    },
+    {
+      "id": "06e2647a2a3b",
+      "visibility": "public",
+      "kind": "chore",
+      "message": "chore: ignore the local data archive",
+      "repo": "yashdagar/self-improving-rag",
+      "url": "https://github.com/yashdagar/self-improving-rag/commit/06e2647a2a3b3f769831c5a448437248ec49fcb6",
+      "language": "Python",
+      "at": "2026-10-17T18:52:00Z"
+    },
+    {
+      "id": "6cd5209219c2",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Set up Go in the terminal script",
+      "repo": "yashdagar/my-configs",
+      "url": "https://github.com/yashdagar/my-configs/commit/6cd5209219c2c90fff42581cdfbf4d89b4fffbf0",
+      "language": "Python",
+      "at": "2026-10-17T18:51:11Z"
+    },
+    {
+      "id": "c2dc67d73c69",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "Add a one-command terminal setup script and refresh configs",
+      "repo": "yashdagar/my-configs",
+      "url": "https://github.com/yashdagar/my-configs/commit/c2dc67d73c698ab7d068f11d5841b913a318bdc1",
+      "language": "Python",
+      "at": "2026-10-17T18:45:08Z"
+    },
     {
       "id": "dddf2c7037d8",
       "visibility": "public",
@@ -628,7 +718,7 @@
       "message": "Claude Code history snapshot",
       "repo": "yashdagar/claude-backup",
       "url": "https://github.com/yashdagar/claude-backup/commit/cb24bac01f18ee2cac1c7071044223fc37f1e08c",
-      "language": "Shell",
+      "language": "Python",
       "at": "2026-10-05T14:36:02Z"
     },
     {
@@ -1910,101 +2000,11 @@
       "url": "https://github.com/yashdagar/skillrank/commit/30372179a00909fb17818fcb93d42a4b9b0a0fde",
       "language": "TypeScript",
       "at": "2026-09-06T22:14:16Z"
-    },
-    {
-      "id": "3156ee5793b0",
-      "visibility": "personal",
-      "kind": "docs",
-      "message": "docs: add development plan",
-      "repo": "yashdagar/skillrank",
-      "url": "https://github.com/yashdagar/skillrank/commit/3156ee5793b0ef7b4aeadc555c5a7aedfd8030e9",
-      "language": "TypeScript",
-      "at": "2026-09-06T22:09:11Z"
-    },
-    {
-      "id": "e4f56ed7fb6f",
-      "visibility": "personal",
-      "kind": "docs",
-      "message": "docs: add product plan as README",
-      "repo": "yashdagar/skillrank",
-      "url": "https://github.com/yashdagar/skillrank/commit/e4f56ed7fb6f5140b650fce92451f6d846f4799b",
-      "language": "TypeScript",
-      "at": "2026-09-06T22:09:11Z"
-    },
-    {
-      "id": "67cc227f1e78",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "give the OCR a page it can actually read, and shrink the models",
-      "repo": "yashdagar/pharma-retail-desktop",
-      "url": "https://github.com/yashdagar/pharma-retail-desktop/commit/67cc227f1e784cfe9d3f5effa151ce8f277eacc0",
-      "language": "Dart",
-      "at": "2026-09-05T05:50:58Z"
-    },
-    {
-      "id": "8cd7525a607f",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "choose the reader automatically and make the column grid correctable",
-      "repo": "yashdagar/pharma-retail-desktop",
-      "url": "https://github.com/yashdagar/pharma-retail-desktop/commit/8cd7525a607fe4f55b8507ce887c5c489b64d831",
-      "language": "Dart",
-      "at": "2026-09-05T04:29:03Z"
-    },
-    {
-      "id": "fef06caea0ce",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "assign cells from a column grid instead of the nearest header word",
-      "repo": "yashdagar/pharma-retail-desktop",
-      "url": "https://github.com/yashdagar/pharma-retail-desktop/commit/fef06caea0ce585a41557eab1416080b21faa329",
-      "language": "Dart",
-      "at": "2026-09-04T21:02:37Z"
-    },
-    {
-      "id": "0cae0186ecbc",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "read the text a PDF already contains instead of guessing it back",
-      "repo": "yashdagar/pharma-retail-desktop",
-      "url": "https://github.com/yashdagar/pharma-retail-desktop/commit/0cae0186ecbc3d6ea56e59a0e0c4d8ca1464cd0c",
-      "language": "Dart",
-      "at": "2026-09-04T20:52:17Z"
-    },
-    {
-      "id": "c147829c2c9c",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "ask for the store name before the app can be used",
-      "repo": "yashdagar/pharma-retail-desktop",
-      "url": "https://github.com/yashdagar/pharma-retail-desktop/commit/c147829c2c9cb4321226f15d791066b6ba9a2873",
-      "language": "Dart",
-      "at": "2026-09-04T19:32:12Z"
-    },
-    {
-      "id": "6c2c5ca8b772",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "size the detector for the machine it has to run on",
-      "repo": "yashdagar/pharma-retail-desktop",
-      "url": "https://github.com/yashdagar/pharma-retail-desktop/commit/6c2c5ca8b772dceeda948b455732081453dfde11",
-      "language": "Dart",
-      "at": "2026-09-04T19:27:26Z"
-    },
-    {
-      "id": "b677fbb8e1a3",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "log what the app does so a client machine can be diagnosed",
-      "repo": "yashdagar/pharma-retail-desktop",
-      "url": "https://github.com/yashdagar/pharma-retail-desktop/commit/b677fbb8e1a306fc7eac32e9af8e0bde1e538ec1",
-      "language": "Dart",
-      "at": "2026-09-04T19:03:14Z"
     }
   ],
   "totals": {
-    "year": 443,
-    "streak": 4
+    "year": 452,
+    "streak": 5
   },
   "workDays": {
     "2026-10-16": 4,
