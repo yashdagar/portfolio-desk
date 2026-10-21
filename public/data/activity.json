@@ -1,6 +1,26 @@
 {
-  "generatedAt": "2026-10-21T19:01:58.193Z",
+  "generatedAt": "2026-10-21T22:23:22.457Z",
   "commits": [
+    {
+      "id": "331c37ab70de",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "Add a one-command VS Code, Go and React Native setup",
+      "repo": "yashdagar/my-configs",
+      "url": "https://github.com/yashdagar/my-configs/commit/331c37ab70de6b5f1c287c3aaf92d5bea5838414",
+      "language": "Python",
+      "at": "2026-10-21T21:09:56Z"
+    },
+    {
+      "id": "8e28a27ecdfe",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Make the restore personal-only and drop rbenv and uv from setup",
+      "repo": "yashdagar/my-configs",
+      "url": "https://github.com/yashdagar/my-configs/commit/8e28a27ecdfe42a6ee35effe9ab4cfda4806d13c",
+      "language": "Python",
+      "at": "2026-10-21T20:52:06Z"
+    },
     {
       "id": "f82001aef011",
       "visibility": "personal",
@@ -1980,30 +2000,10 @@
       "url": "https://github.com/yashdagar/skillrank/commit/9c8054f19c5dcb4686ebdd9f6306424393913527",
       "language": "TypeScript",
       "at": "2026-09-06T22:18:05Z"
-    },
-    {
-      "id": "89f464b870e1",
-      "visibility": "personal",
-      "kind": "feat",
-      "message": "feat: add Drizzle schema, dual-driver db client and NextAuth v5 auth",
-      "repo": "yashdagar/skillrank",
-      "url": "https://github.com/yashdagar/skillrank/commit/89f464b870e1f36ee88023b428813052d15f4f92",
-      "language": "TypeScript",
-      "at": "2026-09-06T22:15:47Z"
-    },
-    {
-      "id": "30372179a009",
-      "visibility": "personal",
-      "kind": "feat",
-      "message": "feat: scaffold Next.js app with TypeScript, Tailwind, Drizzle deps and CI",
-      "repo": "yashdagar/skillrank",
-      "url": "https://github.com/yashdagar/skillrank/commit/30372179a00909fb17818fcb93d42a4b9b0a0fde",
-      "language": "TypeScript",
-      "at": "2026-09-06T22:14:16Z"
     }
   ],
   "totals": {
-    "year": 456,
+    "year": 458,
     "streak": 1
   },
   "workDays": {
