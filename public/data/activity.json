@@ -1,6 +1,66 @@
 {
-  "generatedAt": "2026-10-22T10:35:25.648Z",
+  "generatedAt": "2026-10-22T15:35:42.295Z",
   "commits": [
+    {
+      "id": "2e070f544aa6",
+      "visibility": "public",
+      "kind": "other",
+      "message": "Draw README diagrams with schemdraw",
+      "repo": "yashdagar/conveyor-motor-speed-control",
+      "url": "https://github.com/yashdagar/conveyor-motor-speed-control/commit/2e070f544aa64beffbc9495ca1c3c3c0e17dbf60",
+      "language": "TeX",
+      "at": "2026-10-22T15:00:41Z"
+    },
+    {
+      "id": "c3f2547aac33",
+      "visibility": "public",
+      "kind": "other",
+      "message": "Split install commands by platform in README and report",
+      "repo": "yashdagar/conveyor-motor-speed-control",
+      "url": "https://github.com/yashdagar/conveyor-motor-speed-control/commit/c3f2547aac3306d5fb58e786b782258deb4f0726",
+      "language": "TeX",
+      "at": "2026-10-22T14:56:49Z"
+    },
+    {
+      "id": "426f99d172f5",
+      "visibility": "public",
+      "kind": "feat",
+      "message": "Add DC motor model, load change, report figures and project report",
+      "repo": "yashdagar/conveyor-motor-speed-control",
+      "url": "https://github.com/yashdagar/conveyor-motor-speed-control/commit/426f99d172f566b94e7b6040c40e26171fd6dc13",
+      "language": "TeX",
+      "at": "2026-10-22T14:44:03Z"
+    },
+    {
+      "id": "a04dccb042a1",
+      "visibility": "public",
+      "kind": "feat",
+      "message": "Add PyBullet conveyor speed control sim with bang-bang, PWM and PID",
+      "repo": "yashdagar/conveyor-motor-speed-control",
+      "url": "https://github.com/yashdagar/conveyor-motor-speed-control/commit/a04dccb042a15594910532b06857cd5206852626",
+      "language": "TeX",
+      "at": "2026-10-22T14:08:57Z"
+    },
+    {
+      "id": "15c52a91f235",
+      "visibility": "public",
+      "kind": "other",
+      "message": "Type the caught errors in the ApiClient tests",
+      "repo": "yashdagar/zomato-prep",
+      "url": "https://github.com/yashdagar/zomato-prep/commit/15c52a91f235dc09551b44c048618472afe1b198",
+      "language": "Go",
+      "at": "2026-10-22T10:43:20Z"
+    },
+    {
+      "id": "d7890c428549",
+      "visibility": "public",
+      "kind": "test",
+      "message": "Tests for every step of the Zomato prep plan",
+      "repo": "yashdagar/zomato-prep",
+      "url": "https://github.com/yashdagar/zomato-prep/commit/d7890c428549f42f6f4ec07b9cd95152db434495",
+      "language": "Go",
+      "at": "2026-10-22T10:41:40Z"
+    },
     {
       "id": "c27939c80e37",
       "visibility": "personal",
@@ -1940,70 +2000,10 @@
       "url": "https://github.com/yashdagar/skillrank/commit/63a2d94dec0ea2489754f6782656b593ee3f3cc7",
       "language": "TypeScript",
       "at": "2026-09-06T22:46:59Z"
-    },
-    {
-      "id": "d3440dbdbe4d",
-      "visibility": "personal",
-      "kind": "ci",
-      "message": "ci: generate next route types before typecheck (#50)",
-      "repo": "yashdagar/skillrank",
-      "url": "https://github.com/yashdagar/skillrank/commit/d3440dbdbe4d257365fc06168c370787037a0ee6",
-      "language": "TypeScript",
-      "at": "2026-09-06T22:38:41Z"
-    },
-    {
-      "id": "9a24c5acee63",
-      "visibility": "personal",
-      "kind": "ci",
-      "message": "ci: skip docs-only changes and cancel superseded runs (#49)",
-      "repo": "yashdagar/skillrank",
-      "url": "https://github.com/yashdagar/skillrank/commit/9a24c5acee635bfb37b58fd777b84ff9fac442be",
-      "language": "TypeScript",
-      "at": "2026-09-06T22:38:04Z"
-    },
-    {
-      "id": "56024a15f9c5",
-      "visibility": "personal",
-      "kind": "fix",
-      "message": "fix: load pglite as a server-external package (#48)",
-      "repo": "yashdagar/skillrank",
-      "url": "https://github.com/yashdagar/skillrank/commit/56024a15f9c5271e250768b6c383f4e9ce32dbae",
-      "language": "TypeScript",
-      "at": "2026-09-06T22:35:37Z"
-    },
-    {
-      "id": "257a0c675c2c",
-      "visibility": "personal",
-      "kind": "fix",
-      "message": "fix: retry database initialization after a failed attempt (#47)",
-      "repo": "yashdagar/skillrank",
-      "url": "https://github.com/yashdagar/skillrank/commit/257a0c675c2cf27a534ff13a5f8ed01e52fd46d0",
-      "language": "TypeScript",
-      "at": "2026-09-06T22:34:04Z"
-    },
-    {
-      "id": "c23c733da879",
-      "visibility": "personal",
-      "kind": "docs",
-      "message": "docs: PR titles carry their tag prefix (#46)",
-      "repo": "yashdagar/skillrank",
-      "url": "https://github.com/yashdagar/skillrank/commit/c23c733da8794fb80687e2481f67c4e3a7638370",
-      "language": "TypeScript",
-      "at": "2026-09-06T22:32:24Z"
-    },
-    {
-      "id": "33538f84e5a5",
-      "visibility": "personal",
-      "kind": "fix",
-      "message": "fix: create the PGlite data directory before opening the database (#45)",
-      "repo": "yashdagar/skillrank",
-      "url": "https://github.com/yashdagar/skillrank/commit/33538f84e5a5e16a51f1953c5ff904aea6dd009a",
-      "language": "TypeScript",
-      "at": "2026-09-06T22:31:43Z"
     }
   ],
   "totals": {
-    "year": 462,
+    "year": 468,
     "streak": 2
   },
   "workDays": {
