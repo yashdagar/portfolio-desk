@@ -1,6 +1,16 @@
 {
-  "generatedAt": "2026-10-21T22:23:22.457Z",
+  "generatedAt": "2026-10-22T00:51:54.476Z",
   "commits": [
+    {
+      "id": "61cdc475ea46",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "Add the Zomato prep plan under /zomato",
+      "repo": "yashdagar/portfolio-3d",
+      "url": "https://github.com/yashdagar/portfolio-3d/commit/61cdc475ea4602726fb1c3170b7d43282c4c6b88",
+      "language": "TypeScript",
+      "at": "2026-10-21T22:18:46Z"
+    },
     {
       "id": "331c37ab70de",
       "visibility": "personal",
@@ -1990,20 +2000,10 @@
       "url": "https://github.com/yashdagar/skillrank/commit/cc86fb5b253bdc2bf699753734194fdcdc0a2809",
       "language": "TypeScript",
       "at": "2026-09-06T22:20:34Z"
-    },
-    {
-      "id": "9c8054f19c5d",
-      "visibility": "personal",
-      "kind": "feat",
-      "message": "feat: score engine v1, score service and required-fields onboarding (#41)",
-      "repo": "yashdagar/skillrank",
-      "url": "https://github.com/yashdagar/skillrank/commit/9c8054f19c5dcb4686ebdd9f6306424393913527",
-      "language": "TypeScript",
-      "at": "2026-09-06T22:18:05Z"
     }
   ],
   "totals": {
-    "year": 458,
+    "year": 459,
     "streak": 1
   },
   "workDays": {
