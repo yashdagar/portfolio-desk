@@ -1,6 +1,36 @@
 {
-  "generatedAt": "2026-10-22T05:35:31.103Z",
+  "generatedAt": "2026-10-22T10:35:25.648Z",
   "commits": [
+    {
+      "id": "c27939c80e37",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Deck: dark code, labelled pills, inline-code descriptions, theme switch",
+      "repo": "yashdagar/portfolio-3d",
+      "url": "https://github.com/yashdagar/portfolio-3d/commit/c27939c80e3719d9d985861c47ab1f1bc43bd8fe",
+      "language": "TypeScript",
+      "at": "2026-10-22T08:15:09Z"
+    },
+    {
+      "id": "63b0965eed25",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Turn the Zomato week pages into a step deck",
+      "repo": "yashdagar/portfolio-3d",
+      "url": "https://github.com/yashdagar/portfolio-3d/commit/63b0965eed25320d8d7ddbdb646bad54a52574a9",
+      "language": "TypeScript",
+      "at": "2026-10-22T07:59:28Z"
+    },
+    {
+      "id": "f963b852f382",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "Add reference code, hard requirements and a resources page to the Zomato plan",
+      "repo": "yashdagar/portfolio-3d",
+      "url": "https://github.com/yashdagar/portfolio-3d/commit/f963b852f3829abc1e6709e9cf8d438ac5c35471",
+      "language": "TypeScript",
+      "at": "2026-10-22T06:35:27Z"
+    },
     {
       "id": "61cdc475ea46",
       "visibility": "personal",
@@ -1970,41 +2000,11 @@
       "url": "https://github.com/yashdagar/skillrank/commit/33538f84e5a5e16a51f1953c5ff904aea6dd009a",
       "language": "TypeScript",
       "at": "2026-09-06T22:31:43Z"
-    },
-    {
-      "id": "5676154f75f6",
-      "visibility": "personal",
-      "kind": "feat",
-      "message": "feat: player card, OG share image, leaderboards, home and landing (#44)",
-      "repo": "yashdagar/skillrank",
-      "url": "https://github.com/yashdagar/skillrank/commit/5676154f75f6e089f384fe7f85209cb4868feaf5",
-      "language": "TypeScript",
-      "at": "2026-09-06T22:30:05Z"
-    },
-    {
-      "id": "e20278deea18",
-      "visibility": "personal",
-      "kind": "feat",
-      "message": "feat: GitHub sync, Codeforces and LeetCode token verification, external rating badges (#43)",
-      "repo": "yashdagar/skillrank",
-      "url": "https://github.com/yashdagar/skillrank/commit/e20278deea18fb41ae184470941e1acc28bb5f09",
-      "language": "TypeScript",
-      "at": "2026-09-06T22:29:47Z"
-    },
-    {
-      "id": "cc86fb5b253b",
-      "visibility": "personal",
-      "kind": "chore",
-      "message": "chore: vercel cron config, resync route stub and env documentation (#42)",
-      "repo": "yashdagar/skillrank",
-      "url": "https://github.com/yashdagar/skillrank/commit/cc86fb5b253bdc2bf699753734194fdcdc0a2809",
-      "language": "TypeScript",
-      "at": "2026-09-06T22:20:34Z"
     }
   ],
   "totals": {
-    "year": 459,
-    "streak": 1
+    "year": 462,
+    "streak": 2
   },
   "workDays": {
     "2026-10-21": 4,
