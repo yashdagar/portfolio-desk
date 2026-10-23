@@ -1,6 +1,56 @@
 {
-  "generatedAt": "2026-10-23T19:58:00.787Z",
+  "generatedAt": "2026-10-23T22:52:04.460Z",
   "commits": [
+    {
+      "id": "b10b5c89d2f6",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Keep the backup script out of GitHub account switching",
+      "repo": "yashdagar/my-configs",
+      "url": "https://github.com/yashdagar/my-configs/commit/b10b5c89d2f6f70dc84518ee96eab4131973e139",
+      "language": "Python",
+      "at": "2026-10-23T21:18:17Z"
+    },
+    {
+      "id": "f1bded029c46",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Switch gh back to the previous account after a backup",
+      "repo": "yashdagar/my-configs",
+      "url": "https://github.com/yashdagar/my-configs/commit/f1bded029c46f2d03484e2908338d002ddcb2d51",
+      "language": "Python",
+      "at": "2026-10-23T21:16:58Z"
+    },
+    {
+      "id": "879862d40a4c",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Refresh Claude config and memory 2026-10-24",
+      "repo": "yashdagar/my-configs",
+      "url": "https://github.com/yashdagar/my-configs/commit/879862d40a4c443873a094fd1ab765c2fd699d92",
+      "language": "Python",
+      "at": "2026-10-23T21:16:20Z"
+    },
+    {
+      "id": "2b8434701773",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Claude Code history snapshot 2026-10-24",
+      "repo": "yashdagar/claude-backup",
+      "url": "https://github.com/yashdagar/claude-backup/commit/2b8434701773b1d4b85a896c518830d115cd45de",
+      "language": "Python",
+      "at": "2026-10-23T21:16:05Z"
+    },
+    {
+      "id": "a973809a7351",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "Add one-command Claude backup and restore scripts",
+      "repo": "yashdagar/my-configs",
+      "url": "https://github.com/yashdagar/my-configs/commit/a973809a7351a61ed7f34219541f95839d7f90e1",
+      "language": "Python",
+      "at": "2026-10-23T21:15:35Z"
+    },
     {
       "id": "1853ad043398",
       "visibility": "personal",
@@ -1950,60 +2000,10 @@
       "url": "https://github.com/yashdagar/skillrank/commit/2f70b0d80be7d6b1b60a057a62dec13fd8bb458d",
       "language": "TypeScript",
       "at": "2026-09-07T00:20:40Z"
-    },
-    {
-      "id": "7a184da7aad3",
-      "visibility": "personal",
-      "kind": "feat",
-      "message": "feat: function-signature judging with server-verified hidden tests (#68)",
-      "repo": "yashdagar/skillrank",
-      "url": "https://github.com/yashdagar/skillrank/commit/7a184da7aad3539e548f4cfe902fc20a9864742c",
-      "language": "TypeScript",
-      "at": "2026-09-07T00:17:25Z"
-    },
-    {
-      "id": "38520320cda6",
-      "visibility": "personal",
-      "kind": "ci",
-      "message": "ci: enforce PR title tag, label, and description minimums (#67)",
-      "repo": "yashdagar/skillrank",
-      "url": "https://github.com/yashdagar/skillrank/commit/38520320cda629ee096a70f29d9fc2b5ae3924af",
-      "language": "TypeScript",
-      "at": "2026-09-07T00:17:21Z"
-    },
-    {
-      "id": "cdd21d14a687",
-      "visibility": "personal",
-      "kind": "feat",
-      "message": "feat: lighten background tokens (#59)",
-      "repo": "yashdagar/skillrank",
-      "url": "https://github.com/yashdagar/skillrank/commit/cdd21d14a687cb1a8242b0d5b270b969a44b0dd3",
-      "language": "TypeScript",
-      "at": "2026-09-06T23:36:58Z"
-    },
-    {
-      "id": "8ec36a1eb74d",
-      "visibility": "personal",
-      "kind": "feat",
-      "message": "feat: switch accent tokens from yellow to orange (#58)",
-      "repo": "yashdagar/skillrank",
-      "url": "https://github.com/yashdagar/skillrank/commit/8ec36a1eb74d9dba4841bf56522c9116194eab5b",
-      "language": "TypeScript",
-      "at": "2026-09-06T23:35:47Z"
-    },
-    {
-      "id": "93c0d543fe45",
-      "visibility": "personal",
-      "kind": "fix",
-      "message": "fix: anchor result toast above the test panel at matching width (#57)",
-      "repo": "yashdagar/skillrank",
-      "url": "https://github.com/yashdagar/skillrank/commit/93c0d543fe451ae58998c0e70d3733679b957a0d",
-      "language": "TypeScript",
-      "at": "2026-09-06T23:31:27Z"
     }
   ],
   "totals": {
-    "year": 473,
+    "year": 478,
     "streak": 3
   },
   "workDays": {
