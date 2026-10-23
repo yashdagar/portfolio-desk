@@ -1,6 +1,26 @@
 {
-  "generatedAt": "2026-10-23T06:03:32.143Z",
+  "generatedAt": "2026-10-23T11:42:14.619Z",
   "commits": [
+    {
+      "id": "1853ad043398",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Back up only personal Claude sessions and document moving to a new account",
+      "repo": "yashdagar/my-configs",
+      "url": "https://github.com/yashdagar/my-configs/commit/1853ad0433980305fbca2c7302df14085cae2c53",
+      "language": "Python",
+      "at": "2026-10-23T10:43:20Z"
+    },
+    {
+      "id": "4f6adde7aafd",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Claude Code history snapshot 2026-10-23, personal sessions only",
+      "repo": "yashdagar/claude-backup",
+      "url": "https://github.com/yashdagar/claude-backup/commit/4f6adde7aafd1389e7fa786750341c258618b0c3",
+      "language": "Python",
+      "at": "2026-10-23T10:43:20Z"
+    },
     {
       "id": "71a76c4eb386",
       "visibility": "public",
@@ -1980,30 +2000,10 @@
       "url": "https://github.com/yashdagar/skillrank/commit/93c0d543fe451ae58998c0e70d3733679b957a0d",
       "language": "TypeScript",
       "at": "2026-09-06T23:31:27Z"
-    },
-    {
-      "id": "1a617820f6f4",
-      "visibility": "personal",
-      "kind": "feat",
-      "message": "feat: workspace polish, one-dark syntax, avatar nav, toast, difficulty colors (#56)",
-      "repo": "yashdagar/skillrank",
-      "url": "https://github.com/yashdagar/skillrank/commit/1a617820f6f4f58212aab718a734a64bb3b41d2e",
-      "language": "TypeScript",
-      "at": "2026-09-06T23:27:22Z"
-    },
-    {
-      "id": "86608af5df18",
-      "visibility": "personal",
-      "kind": "feat",
-      "message": "feat: full-screen resizable daily workspace, markdown statements, neutral-black theme (#55)",
-      "repo": "yashdagar/skillrank",
-      "url": "https://github.com/yashdagar/skillrank/commit/86608af5df18376f19cd7d23cc6a8e6937d0b7a9",
-      "language": "TypeScript",
-      "at": "2026-09-06T23:19:07Z"
     }
   ],
   "totals": {
-    "year": 471,
+    "year": 473,
     "streak": 3
   },
   "workDays": {
