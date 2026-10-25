@@ -1,6 +1,86 @@
 {
-  "generatedAt": "2026-10-25T07:36:54.104Z",
+  "generatedAt": "2026-10-25T12:44:41.804Z",
   "commits": [
+    {
+      "id": "f15818cb6aae",
+      "visibility": "public",
+      "kind": "feat",
+      "message": "Add make test and make run with a grouped, logo-headed runner",
+      "repo": "yashdagar/zomato-prep",
+      "url": "https://github.com/yashdagar/zomato-prep/commit/f15818cb6aae1f59861344296d1c77ba60160ede",
+      "language": "Go",
+      "at": "2026-10-25T11:09:28Z"
+    },
+    {
+      "id": "81001d500373",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Store Zomato plan progress in Supabase instead of localStorage",
+      "repo": "yashdagar/portfolio-3d",
+      "url": "https://github.com/yashdagar/portfolio-3d/commit/81001d50037384b7cf22e4b2492d0b8f2fbd1cc4",
+      "language": "TypeScript",
+      "at": "2026-10-25T10:58:38Z"
+    },
+    {
+      "id": "6244b6dc1ab4",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Refresh Claude config and memory 2026-10-25",
+      "repo": "yashdagar/my-configs",
+      "url": "https://github.com/yashdagar/my-configs/commit/6244b6dc1ab4db1bf7a460341adb9e3e54ebc600",
+      "language": "Python",
+      "at": "2026-10-25T10:46:12Z"
+    },
+    {
+      "id": "75fb8672423b",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Claude Code history snapshot 2026-10-25",
+      "repo": "yashdagar/claude-backup",
+      "url": "https://github.com/yashdagar/claude-backup/commit/75fb8672423bf501e14fd6ae312b4d8953cf38fd",
+      "language": "Python",
+      "at": "2026-10-25T10:46:00Z"
+    },
+    {
+      "id": "1b6cb15cbf1c",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Restore sessions removed by local 30-day cleanup",
+      "repo": "yashdagar/claude-backup",
+      "url": "https://github.com/yashdagar/claude-backup/commit/1b6cb15cbf1c40dd2a254dc29ee3967e073630c8",
+      "language": "Python",
+      "at": "2026-10-25T10:45:32Z"
+    },
+    {
+      "id": "f96a0844327c",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Refresh Claude config and memory 2026-10-25",
+      "repo": "yashdagar/my-configs",
+      "url": "https://github.com/yashdagar/my-configs/commit/f96a0844327ccffd58d2ed7b39fedcd6cac1e3f2",
+      "language": "Python",
+      "at": "2026-10-25T10:44:44Z"
+    },
+    {
+      "id": "68cc0a4d6280",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Claude Code history snapshot 2026-10-25",
+      "repo": "yashdagar/claude-backup",
+      "url": "https://github.com/yashdagar/claude-backup/commit/68cc0a4d628042e072b9657d41961752bac991ea",
+      "language": "Python",
+      "at": "2026-10-25T10:44:32Z"
+    },
+    {
+      "id": "64ed8acd4bd4",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Use only the yashdagar GitHub login in the Claude backup and restore",
+      "repo": "yashdagar/my-configs",
+      "url": "https://github.com/yashdagar/my-configs/commit/64ed8acd4bd4552641b5c1f782cc6e435d0c82cc",
+      "language": "Python",
+      "at": "2026-10-25T10:44:02Z"
+    },
     {
       "id": "b10b5c89d2f6",
       "visibility": "personal",
@@ -142,6 +222,16 @@
       "at": "2026-10-22T14:08:57Z"
     },
     {
+      "id": "0845aba77642",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "Add a Verify block with the test command to every build and check step",
+      "repo": "yashdagar/portfolio-3d",
+      "url": "https://github.com/yashdagar/portfolio-3d/commit/0845aba77642749e3333bec78194c663fce0dbb7",
+      "language": "TypeScript",
+      "at": "2026-10-22T10:45:59Z"
+    },
+    {
       "id": "15c52a91f235",
       "visibility": "public",
       "kind": "other",
@@ -160,6 +250,46 @@
       "url": "https://github.com/yashdagar/zomato-prep/commit/d7890c428549f42f6f4ec07b9cd95152db434495",
       "language": "Go",
       "at": "2026-10-22T10:41:40Z"
+    },
+    {
+      "id": "da5852532fad",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Workspace: flat drawer, text-heavy descriptions, dynamic tabs, key hints",
+      "repo": "yashdagar/portfolio-3d",
+      "url": "https://github.com/yashdagar/portfolio-3d/commit/da5852532fad90a11c98433ed00ed8920e7a2018",
+      "language": "TypeScript",
+      "at": "2026-10-22T10:04:20Z"
+    },
+    {
+      "id": "471a1c7a2b03",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Merge zomato-grpc into zomato-workspace",
+      "repo": "yashdagar/portfolio-3d",
+      "url": "https://github.com/yashdagar/portfolio-3d/commit/471a1c7a2b03bddbe49134d0fbf09bdf7d64eceb",
+      "language": "TypeScript",
+      "at": "2026-10-22T10:00:23Z"
+    },
+    {
+      "id": "a1ccccbbd2bc",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Rebuild the Zomato plan as a full-screen workspace",
+      "repo": "yashdagar/portfolio-3d",
+      "url": "https://github.com/yashdagar/portfolio-3d/commit/a1ccccbbd2bc9ea740e66a83e56fb7f5abd13c81",
+      "language": "TypeScript",
+      "at": "2026-10-22T09:33:39Z"
+    },
+    {
+      "id": "fe5b0f8ef1cb",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Week 7: add a gRPC version of the order service",
+      "repo": "yashdagar/portfolio-3d",
+      "url": "https://github.com/yashdagar/portfolio-3d/commit/fe5b0f8ef1cb0d18ae6499ca1fff11c8f3d82042",
+      "language": "TypeScript",
+      "at": "2026-10-22T09:13:22Z"
     },
     {
       "id": "c27939c80e37",
@@ -1870,141 +2000,11 @@
       "url": "https://github.com/yashdagar/skillrank/commit/067699df7d49dd05d7fc2e1de65d889a43180fb0",
       "language": "TypeScript",
       "at": "2026-09-07T11:14:48Z"
-    },
-    {
-      "id": "4805c1f892f8",
-      "visibility": "personal",
-      "kind": "feat",
-      "message": "feat: quarterly seasons with rating soft resets (#81)",
-      "repo": "yashdagar/skillrank",
-      "url": "https://github.com/yashdagar/skillrank/commit/4805c1f892f833d478c33bde283683bfd9008983",
-      "language": "TypeScript",
-      "at": "2026-09-07T06:20:33Z"
-    },
-    {
-      "id": "641b9debf083",
-      "visibility": "personal",
-      "kind": "feat",
-      "message": "feat: nightly cron settles ratings and resyncs accounts (#80)",
-      "repo": "yashdagar/skillrank",
-      "url": "https://github.com/yashdagar/skillrank/commit/641b9debf083a6ad9971dbd61e199824a6a8ef3f",
-      "language": "TypeScript",
-      "at": "2026-09-07T06:15:18Z"
-    },
-    {
-      "id": "04162384311b",
-      "visibility": "personal",
-      "kind": "feat",
-      "message": "feat: rewards store v1 with activity-earned coins (#79)",
-      "repo": "yashdagar/skillrank",
-      "url": "https://github.com/yashdagar/skillrank/commit/04162384311bfc2d902c756ddde23e4bd5928d1b",
-      "language": "TypeScript",
-      "at": "2026-09-07T06:12:19Z"
-    },
-    {
-      "id": "9bc207e77c67",
-      "visibility": "personal",
-      "kind": "feat",
-      "message": "feat: weekly quests engine (#78)",
-      "repo": "yashdagar/skillrank",
-      "url": "https://github.com/yashdagar/skillrank/commit/9bc207e77c67121232acb3edbb3712714fdad737",
-      "language": "TypeScript",
-      "at": "2026-09-07T06:08:50Z"
-    },
-    {
-      "id": "1c05af4ddba0",
-      "visibility": "personal",
-      "kind": "feat",
-      "message": "feat: streak freeze tokens (#77)",
-      "repo": "yashdagar/skillrank",
-      "url": "https://github.com/yashdagar/skillrank/commit/1c05af4ddba084c3546a748a60b2437f2cf2ce88",
-      "language": "TypeScript",
-      "at": "2026-09-07T06:01:05Z"
-    },
-    {
-      "id": "c5f23341afe7",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "infra: Supabase Postgres docs and env-gated Google sign-in (#76)",
-      "repo": "yashdagar/skillrank",
-      "url": "https://github.com/yashdagar/skillrank/commit/c5f23341afe7b7115f2fce666f400040392d4627",
-      "language": "TypeScript",
-      "at": "2026-09-07T05:57:18Z"
-    },
-    {
-      "id": "e34ed401b0af",
-      "visibility": "personal",
-      "kind": "feat",
-      "message": "feat: platform-earned badge catalog v2 (#75)",
-      "repo": "yashdagar/skillrank",
-      "url": "https://github.com/yashdagar/skillrank/commit/e34ed401b0aff90cdc758009be4e344ec6add481",
-      "language": "TypeScript",
-      "at": "2026-09-07T05:55:09Z"
-    },
-    {
-      "id": "ef4a7161bbad",
-      "visibility": "personal",
-      "kind": "feat",
-      "message": "feat: Glicko-2 rating from daily standings with ranked tiers (#74)",
-      "repo": "yashdagar/skillrank",
-      "url": "https://github.com/yashdagar/skillrank/commit/ef4a7161bbad0dd671d87cf17e192b0a72d3ac98",
-      "language": "TypeScript",
-      "at": "2026-09-07T05:48:07Z"
-    },
-    {
-      "id": "d5c969a88c61",
-      "visibility": "personal",
-      "kind": "feat",
-      "message": "feat: Blitz Rush with 5, 10, and 30 minute modes (#73)",
-      "repo": "yashdagar/skillrank",
-      "url": "https://github.com/yashdagar/skillrank/commit/d5c969a88c61a392ef57a74043c214c49dfb9b47",
-      "language": "TypeScript",
-      "at": "2026-09-07T05:42:22Z"
-    },
-    {
-      "id": "71e92b41d0df",
-      "visibility": "personal",
-      "kind": "feat",
-      "message": "feat: next-day solution archive ranked by runtime (#72)",
-      "repo": "yashdagar/skillrank",
-      "url": "https://github.com/yashdagar/skillrank/commit/71e92b41d0df54f0cd7d996ea025a958b10480db",
-      "language": "TypeScript",
-      "at": "2026-09-07T05:35:50Z"
-    },
-    {
-      "id": "989a50dc7e77",
-      "visibility": "personal",
-      "kind": "feat",
-      "message": "feat: daily streaks with calendar, nav flame, and profile CTA (#71)",
-      "repo": "yashdagar/skillrank",
-      "url": "https://github.com/yashdagar/skillrank/commit/989a50dc7e7728f8b566ac3f7bbd465ab54c312a",
-      "language": "TypeScript",
-      "at": "2026-09-07T00:31:09Z"
-    },
-    {
-      "id": "0bf32319e077",
-      "visibility": "personal",
-      "kind": "feat",
-      "message": "feat: problems page with practice workspace (#70)",
-      "repo": "yashdagar/skillrank",
-      "url": "https://github.com/yashdagar/skillrank/commit/0bf32319e0774203fdece78d23686d7d7da09edc",
-      "language": "TypeScript",
-      "at": "2026-09-07T00:25:44Z"
-    },
-    {
-      "id": "2f70b0d80be7",
-      "visibility": "personal",
-      "kind": "feat",
-      "message": "feat: expand the problem bank to 100 verified problems (#69)",
-      "repo": "yashdagar/skillrank",
-      "url": "https://github.com/yashdagar/skillrank/commit/2f70b0d80be7d6b1b60a057a62dec13fd8bb458d",
-      "language": "TypeScript",
-      "at": "2026-09-07T00:20:40Z"
     }
   ],
   "totals": {
-    "year": 478,
-    "streak": 0
+    "year": 491,
+    "streak": 1
   },
   "workDays": {
     "2026-10-21": 4,
