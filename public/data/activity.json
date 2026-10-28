@@ -1,6 +1,16 @@
 {
-  "generatedAt": "2026-10-28T07:19:47.617Z",
+  "generatedAt": "2026-10-28T14:06:44.549Z",
   "commits": [
+    {
+      "id": "707240f187a3",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Record the Zomato SDE-1 offer",
+      "repo": "yashdagar/job-hunt",
+      "url": "https://github.com/yashdagar/job-hunt/commit/707240f187a3bc763e191f61ec19fb598dd905bb",
+      "language": "HTML",
+      "at": "2026-10-28T08:56:44Z"
+    },
     {
       "id": "57d160e81574",
       "visibility": "personal",
@@ -1990,21 +2000,11 @@
       "url": "https://github.com/yashdagar/skillrank/commit/5dbcb4ffbd2710bb7f5fd5fd25b1d61b0ab56543",
       "language": "TypeScript",
       "at": "2026-09-07T11:26:46Z"
-    },
-    {
-      "id": "20aa72454f98",
-      "visibility": "personal",
-      "kind": "feat",
-      "message": "feat: graceful judge errors, filled test chips, blitz loader (#93)",
-      "repo": "yashdagar/skillrank",
-      "url": "https://github.com/yashdagar/skillrank/commit/20aa72454f98ee8ff5c9db7b2e776c3f9dfdb43b",
-      "language": "TypeScript",
-      "at": "2026-09-07T11:23:41Z"
     }
   ],
   "totals": {
-    "year": 496,
-    "streak": 3
+    "year": 497,
+    "streak": 4
   },
   "workDays": {
     "2026-10-27": 2,
