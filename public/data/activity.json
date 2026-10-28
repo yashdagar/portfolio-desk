@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-28T14:06:44.549Z",
+  "generatedAt": "2026-10-28T19:35:50.305Z",
   "commits": [
     {
       "id": "707240f187a3",
@@ -192,12 +192,12 @@
       "at": "2026-10-23T10:43:20Z"
     },
     {
-      "id": "71a76c4eb386",
+      "id": "49ac01bdcf48",
       "visibility": "public",
       "kind": "other",
       "message": "Replace the ASCII physical model sketch with a drawn schematic",
       "repo": "yashdagar/conveyor-motor-speed-control",
-      "url": "https://github.com/yashdagar/conveyor-motor-speed-control/commit/71a76c4eb386dab9f8d5c05a9a5d0513492378ea",
+      "url": "https://github.com/yashdagar/conveyor-motor-speed-control/commit/49ac01bdcf4897320133c107030050761a531716",
       "language": "TeX",
       "at": "2026-10-23T05:53:42Z"
     },
@@ -212,54 +212,34 @@
       "at": "2026-10-22T15:50:36Z"
     },
     {
-      "id": "ea420a0c53d8",
+      "id": "c1638148f6f6",
       "visibility": "public",
-      "kind": "other",
-      "message": "Redraw README diagrams as editorial SVG",
+      "kind": "feat",
+      "message": "Add editorial SVG diagrams to the README",
       "repo": "yashdagar/conveyor-motor-speed-control",
-      "url": "https://github.com/yashdagar/conveyor-motor-speed-control/commit/ea420a0c53d8dcda083899c085620a75fe690215",
+      "url": "https://github.com/yashdagar/conveyor-motor-speed-control/commit/c1638148f6f624ffdc4f576886553d5b4e680f0a",
       "language": "TeX",
       "at": "2026-10-22T15:49:20Z"
     },
     {
-      "id": "2e070f544aa6",
+      "id": "d8396af14557",
       "visibility": "public",
-      "kind": "other",
-      "message": "Draw README diagrams with schemdraw",
+      "kind": "feat",
+      "message": "Add project report, figure pipeline and README",
       "repo": "yashdagar/conveyor-motor-speed-control",
-      "url": "https://github.com/yashdagar/conveyor-motor-speed-control/commit/2e070f544aa64beffbc9495ca1c3c3c0e17dbf60",
-      "language": "TeX",
-      "at": "2026-10-22T15:00:41Z"
-    },
-    {
-      "id": "c3f2547aac33",
-      "visibility": "public",
-      "kind": "other",
-      "message": "Split install commands by platform in README and report",
-      "repo": "yashdagar/conveyor-motor-speed-control",
-      "url": "https://github.com/yashdagar/conveyor-motor-speed-control/commit/c3f2547aac3306d5fb58e786b782258deb4f0726",
+      "url": "https://github.com/yashdagar/conveyor-motor-speed-control/commit/d8396af145574b13d2ca90df27614f4a1b161120",
       "language": "TeX",
       "at": "2026-10-22T14:56:49Z"
     },
     {
-      "id": "426f99d172f5",
+      "id": "362ae65b4ee0",
       "visibility": "public",
-      "kind": "feat",
-      "message": "Add DC motor model, load change, report figures and project report",
+      "kind": "other",
+      "message": "Tune PID, fix URDF inertia loading and add load-change metrics",
       "repo": "yashdagar/conveyor-motor-speed-control",
-      "url": "https://github.com/yashdagar/conveyor-motor-speed-control/commit/426f99d172f566b94e7b6040c40e26171fd6dc13",
+      "url": "https://github.com/yashdagar/conveyor-motor-speed-control/commit/362ae65b4ee0a73673f8259f6ae0312e16c4bc62",
       "language": "TeX",
-      "at": "2026-10-22T14:44:03Z"
-    },
-    {
-      "id": "a04dccb042a1",
-      "visibility": "public",
-      "kind": "feat",
-      "message": "Add PyBullet conveyor speed control sim with bang-bang, PWM and PID",
-      "repo": "yashdagar/conveyor-motor-speed-control",
-      "url": "https://github.com/yashdagar/conveyor-motor-speed-control/commit/a04dccb042a15594910532b06857cd5206852626",
-      "language": "TeX",
-      "at": "2026-10-22T14:08:57Z"
+      "at": "2026-10-22T14:28:00Z"
     },
     {
       "id": "0845aba77642",
@@ -2000,10 +1980,30 @@
       "url": "https://github.com/yashdagar/skillrank/commit/5dbcb4ffbd2710bb7f5fd5fd25b1d61b0ab56543",
       "language": "TypeScript",
       "at": "2026-09-07T11:26:46Z"
+    },
+    {
+      "id": "20aa72454f98",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "feat: graceful judge errors, filled test chips, blitz loader (#93)",
+      "repo": "yashdagar/skillrank",
+      "url": "https://github.com/yashdagar/skillrank/commit/20aa72454f98ee8ff5c9db7b2e776c3f9dfdb43b",
+      "language": "TypeScript",
+      "at": "2026-09-07T11:23:41Z"
+    },
+    {
+      "id": "ef549a8646e0",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "feat: profile search, follower system, and profile views (#92)",
+      "repo": "yashdagar/skillrank",
+      "url": "https://github.com/yashdagar/skillrank/commit/ef549a8646e087402eb7320bc7e9c430682c863c",
+      "language": "TypeScript",
+      "at": "2026-09-07T11:21:22Z"
     }
   ],
   "totals": {
-    "year": 497,
+    "year": 495,
     "streak": 4
   },
   "workDays": {
