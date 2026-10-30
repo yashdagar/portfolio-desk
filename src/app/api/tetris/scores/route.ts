@@ -86,7 +86,8 @@ export async function POST(req: Request) {
       key: entry.key,
       board: publicBoard(board!),
     });
-  } catch {
+  } catch (error) {
+    console.error("tetris: record failed", error);
     return NextResponse.json({ error: "unavailable" }, { status: 503 });
   }
 }
@@ -112,7 +113,8 @@ export async function PATCH(req: Request) {
     );
     if (!board) return NextResponse.json({ error: "not found" }, { status: 404 });
     return NextResponse.json({ board: publicBoard(board) });
-  } catch {
+  } catch (error) {
+    console.error("tetris: rename failed", error);
     return NextResponse.json({ error: "unavailable" }, { status: 503 });
   }
 }

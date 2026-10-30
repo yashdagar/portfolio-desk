@@ -17,8 +17,13 @@ import { EMPTY_BOARD, readBoard, type Board } from "./leaderboard";
  */
 const PATHNAME = `tetris/${process.env.VERCEL_ENV ?? "development"}/leaderboard.json`;
 
-/** Enough for any realistic pile-up of games ending in the same second. */
-const ATTEMPTS = 6;
+/**
+ * Each round of a pile-up lets exactly one writer through, so the attempts
+ * have to outnumber the writers — and the losers back off by a random amount,
+ * or they re-read and collide again in lockstep.
+ */
+const ATTEMPTS = 12;
+const BACKOFF_MS = 40;
 
 export function leaderboardConfigured(): boolean {
   return !!process.env.BLOB_READ_WRITE_TOKEN;
@@ -70,6 +75,9 @@ export async function updateLeaderboard(
         error instanceof BlobPreconditionFailedError ||
         (!etag && error instanceof BlobError);
       if (!lostRace) throw error;
+      await new Promise((r) =>
+        setTimeout(r, BACKOFF_MS * (1 + attempt) * Math.random()),
+      );
     }
   }
   throw new Error("leaderboard: too many concurrent writes");
