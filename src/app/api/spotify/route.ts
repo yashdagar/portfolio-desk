@@ -43,11 +43,21 @@ export interface NowPlaying {
   recent?: Track[];
 }
 
+/**
+ * Held per function instance rather than in the fetch data cache. The data
+ * cache is stale-while-revalidate: after a quiet hour the first visitor got the
+ * expired token back, both Spotify calls failed, and the screen showed nothing
+ * instead of the last track until the background refresh landed.
+ */
+let cached: { token: string; expiresAt: number } | null = null;
+
 async function accessToken(): Promise<string | null> {
   const id = process.env.SPOTIFY_CLIENT_ID;
   const secret = process.env.SPOTIFY_CLIENT_SECRET;
   const refresh = process.env.SPOTIFY_REFRESH_TOKEN;
   if (!id || !secret || !refresh) return null;
+
+  if (cached && Date.now() < cached.expiresAt) return cached.token;
 
   const res = await fetch(TOKEN_URL, {
     method: "POST",
@@ -59,14 +69,22 @@ async function accessToken(): Promise<string | null> {
       grant_type: "refresh_token",
       refresh_token: refresh,
     }),
-    // Access tokens last an hour; refreshing every 50 minutes keeps one call
-    // out of the critical path for almost every visitor.
-    next: { revalidate: 3000 },
+    cache: "no-store",
   });
 
   if (!res.ok) return null;
-  const json = (await res.json()) as { access_token?: string };
-  return json.access_token ?? null;
+  const json = (await res.json()) as {
+    access_token?: string;
+    expires_in?: number;
+  };
+  if (!json.access_token) return null;
+  // Access tokens last an hour; giving them up five minutes early means one
+  // never expires between being handed out and being used.
+  cached = {
+    token: json.access_token,
+    expiresAt: Date.now() + ((json.expires_in ?? 3600) - 300) * 1000,
+  };
+  return cached.token;
 }
 
 interface SpotifyTrack {
