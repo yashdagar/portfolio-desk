@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 
 export type Mode =
   /** Full interactive scene. */
@@ -24,13 +24,24 @@ export interface Capabilities {
  * hydration mismatch on top of a wrong answer.
  */
 export function useCapabilities(): Capabilities {
-  const [caps, setCaps] = useState<Capabilities>({ mode: "flat", ready: false });
+  // The server snapshot is what hydration renders against, then the client one
+  // takes over — the same two-pass render as measuring in an effect, without
+  // the second render being a state update React has to warn about.
+  return useSyncExternalStore(never, measured, () => UNMEASURED);
+}
 
-  useEffect(() => {
-    setCaps({ mode: decide(), ready: true });
-  }, []);
+const UNMEASURED: Capabilities = { mode: "flat", ready: false };
 
-  return caps;
+/** Measured once: none of these signals change while the page is open, and
+ *  `useSyncExternalStore` needs the same object back on every call. */
+let caps: Capabilities | null = null;
+
+function measured(): Capabilities {
+  return (caps ??= { mode: decide(), ready: true });
+}
+
+function never() {
+  return () => {};
 }
 
 function decide(): Mode {

@@ -43,7 +43,6 @@ await page.waitForFunction(() => !!window.__scene, { timeout: 15000 });
 for (const state of STATES) {
   await page.evaluate(
     ([fnBody]) => {
-      // eslint-disable-next-line no-new-func
       new Function("s", fnBody)(window.__scene);
     },
     [`(${state.apply.toString()})(s)`],

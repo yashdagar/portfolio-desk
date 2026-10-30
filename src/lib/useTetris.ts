@@ -452,8 +452,20 @@ const LETTER = /^\p{L}$|^\p{N}$/u;
 /** The game-over name input, found by id from the window key handler. */
 export const NAME_FIELD = "tetris-name";
 
-/** Long enough for a held key to stop repeating into the name field. */
+/**
+ * How long the keyboard has to be still before the name field takes focus.
+ * Measured from the last key, not from game over: someone still mashing
+ * rotate and drop when they top out keeps pushing it back, so the last second
+ * of play never lands in their name.
+ */
 export const NAME_FOCUS_DELAY = 700;
+
+let lastKeyAt = 0;
+
+/** True once the game has ended and no key has gone down for `ms`. */
+export function keysQuietFor(ms: number): boolean {
+  return performance.now() - Math.max(lastKeyAt, overAt) > ms;
+}
 
 /**
  * Binds the keyboard while `active`.
@@ -479,18 +491,18 @@ export function useTetrisKeys(active: boolean) {
     const onDown = (e: KeyboardEvent) => {
       const store = useTetris.getState();
       const { mode } = store;
+      if (mode !== "over") lastKeyAt = performance.now();
 
       // The name field takes its own keys. This only catches someone typing
       // before they've clicked into it, and hands the keystroke over.
       if (mode === "over") {
         const field = document.getElementById(NAME_FIELD);
-        if (
-          field &&
-          e.target !== field &&
-          LETTER.test(e.key) &&
-          performance.now() - overAt > NAME_FOCUS_DELAY
-        ) {
-          field.focus({ preventScroll: true });
+        if (field && e.target !== field) {
+          if (LETTER.test(e.key) && keysQuietFor(NAME_FOCUS_DELAY)) {
+            field.focus({ preventScroll: true });
+          } else {
+            lastKeyAt = performance.now();
+          }
         }
         return;
       }

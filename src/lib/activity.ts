@@ -287,7 +287,6 @@ function fnv1a(s: string): number {
   return h >>> 0;
 }
 
-/** Consecutive days ending today that have at least one commit. */
 /**
  * Every UTC day with something on it, from both tiers. Work days arrive as
  * counts rather than commits, so they have to be folded in by key.
@@ -303,6 +302,7 @@ export function activeDays(
   return days;
 }
 
+/** Consecutive days ending today that have at least one commit. */
 export function computeStreak(
   commits: Commit[],
   today = new Date(),

@@ -97,12 +97,16 @@ export function CameraRig() {
     camera.lookAt(restTarget);
   }, [camera, restTarget]);
 
+  // Read from the store rather than mutated through the hook's return value,
+  // which React treats as frozen.
+  const get = useThree((s) => s.get);
   useEffect(() => {
+    const { camera } = get();
     if ("fov" in camera) {
       camera.fov = CAMERA.fov;
       camera.updateProjectionMatrix();
     }
-  }, [camera]);
+  }, [get]);
 
   return null;
 }

@@ -53,23 +53,12 @@ const FEED_LIMIT = 200;
 
 const since = new Date(Date.now() - WINDOW_DAYS * 864e5).toISOString();
 
-async function gh<T>(url: string, token: string): Promise<T> {
-  const res = await fetch(
-    url.startsWith("http") ? url : `https://api.github.com${url}`,
-    {
-      headers: {
-        authorization: `Bearer ${token}`,
-        accept: "application/vnd.github+json",
-        "x-github-api-version": "2022-11-28",
-        "user-agent": "portfolio-desk-collector",
-      },
-    },
-  );
-  if (!res.ok) {
-    throw new Error(`${res.status} ${res.statusText} for ${url}`);
-  }
-  return res.json() as Promise<T>;
-}
+const HEADERS = (token: string) => ({
+  authorization: `Bearer ${token}`,
+  accept: "application/vnd.github+json",
+  "x-github-api-version": "2022-11-28",
+  "user-agent": "portfolio-desk-collector",
+});
 
 /** Follow `Link: rel="next"` until exhausted. */
 async function ghAll<T>(url: string, token: string, cap = 5): Promise<T[]> {
@@ -78,14 +67,7 @@ async function ghAll<T>(url: string, token: string, cap = 5): Promise<T[]> {
     ? url
     : `https://api.github.com${url}`;
   for (let page = 0; next && page < cap; page++) {
-    const res: Response = await fetch(next, {
-      headers: {
-        authorization: `Bearer ${token}`,
-        accept: "application/vnd.github+json",
-        "x-github-api-version": "2022-11-28",
-        "user-agent": "portfolio-desk-collector",
-      },
-    });
+    const res: Response = await fetch(next, { headers: HEADERS(token) });
     if (!res.ok) throw new Error(`${res.status} ${res.statusText} for ${next}`);
     out.push(...((await res.json()) as T[]));
     const link = res.headers.get("link") ?? "";

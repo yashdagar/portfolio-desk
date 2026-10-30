@@ -227,13 +227,14 @@ function Reflections({ day }: { day: Daylight }) {
 
 /**
  * Client-only: computing this during SSR bakes the build machine's clock into
- * the markup, and the room arrives at whatever time the deploy ran.
+ * the markup, and the room arrives at whatever time the deploy ran. Safe to
+ * read the clock in the initialiser because the scene is never server-rendered
+ * (`ssr: false` in SceneMount).
  */
 function useDaylight(): Daylight {
-  const [day, setDay] = useState<Daylight>(() => daylight());
+  const [day, setDay] = useState<Daylight>(() => daylight(sceneNow()));
 
   useEffect(() => {
-    setDay(daylight(sceneNow()));
     // Pinned by ?t= — nothing to tick.
     if (isPinned()) return;
 
