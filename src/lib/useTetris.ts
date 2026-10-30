@@ -229,9 +229,16 @@ export const useTetris = create<TetrisState>((set, get) => ({
     }
   },
 
-  // Counted in code points, so a name in Devanagari isn't cut off three
-  // characters early by its combining marks being counted as letters.
-  setName: (name) => set({ name: [...name].slice(0, NAME_MAX).join("") }),
+  // Leading spaces dropped and runs collapsed: whoever was holding space to
+  // hard-drop when they topped out would otherwise fill all eight characters
+  // with blanks before they'd seen the prompt. Counted in code points, so a
+  // name in Devanagari isn't cut short by its combining marks.
+  setName: (name) =>
+    set({
+      name: [...name.replace(/^\s+/, "").replace(/\s{2,}/g, " ")]
+        .slice(0, NAME_MAX)
+        .join(""),
+    }),
 
   submit: () => {
     const name = get().name.trim();
@@ -283,7 +290,10 @@ function showBoard(board: PublicBoard) {
  * away, before they've typed anything. Only ever called from a player's game —
  * the bot's are never recorded.
  */
+let overAt = 0;
+
 function finish(game: Game) {
+  overAt = performance.now();
   useTetris.setState({ mode: "over", name: "", saved: "saving" });
   recorded = send("POST", { score: game.score, lines: game.lines }).then(
     (res) => {
@@ -442,6 +452,9 @@ const LETTER = /^\p{L}$|^\p{N}$/u;
 /** The game-over name input, found by id from the window key handler. */
 export const NAME_FIELD = "tetris-name";
 
+/** Long enough for a held key to stop repeating into the name field. */
+export const NAME_FOCUS_DELAY = 700;
+
 /**
  * Binds the keyboard while `active`.
  *
@@ -471,7 +484,12 @@ export function useTetrisKeys(active: boolean) {
       // before they've clicked into it, and hands the keystroke over.
       if (mode === "over") {
         const field = document.getElementById(NAME_FIELD);
-        if (field && e.target !== field && LETTER.test(e.key)) {
+        if (
+          field &&
+          e.target !== field &&
+          LETTER.test(e.key) &&
+          performance.now() - overAt > NAME_FOCUS_DELAY
+        ) {
           field.focus({ preventScroll: true });
         }
         return;

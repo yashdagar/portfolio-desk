@@ -59,6 +59,13 @@ export function Surface({
           // Or tabbing walks into a hundred and twenty commit links before
           // reaching the contact details, none of them legible from rest.
           inert={!focused}
+          // Enter on a link or a form fires a click the keyboard made, at
+          // (0, 0). The canvas reads clicks by client position, so it would
+          // land on the backdrop in the top corner of the room and lean the
+          // camera out of the screen the visitor is typing into.
+          onClick={(e) => {
+            if (e.detail === 0) e.stopPropagation();
+          }}
           style={{
             width: designW,
             height: designH,

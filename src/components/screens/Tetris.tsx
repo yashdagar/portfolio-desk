@@ -16,6 +16,7 @@ import {
 import { NAME_MAX, SHOWN } from "@/lib/leaderboard";
 import {
   NAME_FIELD,
+  NAME_FOCUS_DELAY,
   useTetris,
   useTetrisDriver,
   useTetrisKeys,
@@ -344,8 +345,15 @@ function NameEntry({ interactive }: { interactive: boolean }) {
 
   // Not `autoFocus`: in the room this DOM is transformed onto a monitor, and a
   // focus that scrolls its container drags the screen's contents off the glass.
+  // And not at once: the keys still coming from the last second of play —
+  // a held space, a rotate — would land in the name instead of nowhere.
   useEffect(() => {
-    if (interactive) field.current?.focus({ preventScroll: true });
+    if (!interactive) return;
+    const timer = setTimeout(
+      () => field.current?.focus({ preventScroll: true }),
+      NAME_FOCUS_DELAY,
+    );
+    return () => clearTimeout(timer);
   }, [interactive]);
 
   return (
