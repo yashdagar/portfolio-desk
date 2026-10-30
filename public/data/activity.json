@@ -1,6 +1,46 @@
 {
-  "generatedAt": "2026-10-30T14:11:23.516Z",
+  "generatedAt": "2026-10-30T19:24:53.024Z",
   "commits": [
+    {
+      "id": "d41ba575e681",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Publish Zomato week 2 module 5: errors and the menu configurator",
+      "repo": "yashdagar/portfolio-3d",
+      "url": "https://github.com/yashdagar/portfolio-3d/commit/d41ba575e6814af3510f5afa72715fabcc6eaa1c",
+      "language": "TypeScript",
+      "at": "2026-10-30T18:45:21Z"
+    },
+    {
+      "id": "8d3c10f5bd0f",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Publish Zomato week 2 module 4: N+1 queries and the menu endpoint",
+      "repo": "yashdagar/portfolio-3d",
+      "url": "https://github.com/yashdagar/portfolio-3d/commit/8d3c10f5bd0f1add1b89ae37ce60e31e31e33d76",
+      "language": "TypeScript",
+      "at": "2026-10-30T18:39:47Z"
+    },
+    {
+      "id": "29b37ce37d23",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Publish Zomato week 2 module 3: JSON handlers and keyset pagination",
+      "repo": "yashdagar/portfolio-3d",
+      "url": "https://github.com/yashdagar/portfolio-3d/commit/29b37ce37d23b7c8688989cac831a1a73052ff04",
+      "language": "TypeScript",
+      "at": "2026-10-30T18:35:17Z"
+    },
+    {
+      "id": "5f291fe887ad",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Publish Zomato week 2 module 2 and add a module completion card",
+      "repo": "yashdagar/portfolio-3d",
+      "url": "https://github.com/yashdagar/portfolio-3d/commit/5f291fe887ad46a453e8655a74e430a389a0aa58",
+      "language": "TypeScript",
+      "at": "2026-10-30T17:51:04Z"
+    },
     {
       "id": "621fcfbca2a9",
       "visibility": "personal",
@@ -1960,50 +2000,10 @@
       "url": "https://github.com/yashdagar/skillrank/commit/935187917fda3b5f46641cb5bfc2391a6f67d140",
       "language": "TypeScript",
       "at": "2026-09-07T13:57:57Z"
-    },
-    {
-      "id": "1f60a435b8e8",
-      "visibility": "personal",
-      "kind": "feat",
-      "message": "feature: deepen blitz card shading and glassy start buttons (#117)",
-      "repo": "yashdagar/skillrank",
-      "url": "https://github.com/yashdagar/skillrank/commit/1f60a435b8e8886930d67285f0825dafbe9a3938",
-      "language": "TypeScript",
-      "at": "2026-09-07T13:53:44Z"
-    },
-    {
-      "id": "6c1f2cc6dcd6",
-      "visibility": "personal",
-      "kind": "feat",
-      "message": "feature: radial light gradient on blitz mode cards (#116)",
-      "repo": "yashdagar/skillrank",
-      "url": "https://github.com/yashdagar/skillrank/commit/6c1f2cc6dcd6a774918f68ec7a660e7e9902beb4",
-      "language": "TypeScript",
-      "at": "2026-09-07T13:50:42Z"
-    },
-    {
-      "id": "714616234dd9",
-      "visibility": "personal",
-      "kind": "feat",
-      "message": "feature: darken blitz cards toward the bottom with a gradient (#115)",
-      "repo": "yashdagar/skillrank",
-      "url": "https://github.com/yashdagar/skillrank/commit/714616234dd99706362865b37b2e8c4ed2cd304d",
-      "language": "TypeScript",
-      "at": "2026-09-07T13:48:41Z"
-    },
-    {
-      "id": "441403be96c1",
-      "visibility": "personal",
-      "kind": "feat",
-      "message": "feature: solid color blitz cards with minutes-by-problems display (#114)",
-      "repo": "yashdagar/skillrank",
-      "url": "https://github.com/yashdagar/skillrank/commit/441403be96c13a5dbe991cafd0d0114cb18df81c",
-      "language": "TypeScript",
-      "at": "2026-09-07T13:43:34Z"
     }
   ],
   "totals": {
-    "year": 422,
+    "year": 426,
     "streak": 3
   }
 }
