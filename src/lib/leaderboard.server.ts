@@ -27,8 +27,9 @@ const PATHNAME = `tetris/${process.env.VERCEL_ENV ?? "development"}/leaderboard.
  * Lost races are retried, backing off by a random amount so the losers don't
  * re-read and collide again in lockstep.
  */
-const ATTEMPTS = 10;
+const ATTEMPTS = 16;
 const BACKOFF_MS = 120;
+const BACKOFF_CAP_MS = 1_200;
 
 export function leaderboardConfigured(): boolean {
   return !!process.env.BLOB_READ_WRITE_TOKEN;
@@ -115,7 +116,10 @@ async function write(
         (!etag && error instanceof BlobError);
       if (!lostRace) throw error;
       await new Promise((r) =>
-        setTimeout(r, BACKOFF_MS * (1 + attempt) * Math.random()),
+        setTimeout(
+          r,
+          Math.min(BACKOFF_CAP_MS, BACKOFF_MS * (1 + attempt)) * Math.random(),
+        ),
       );
     }
   }

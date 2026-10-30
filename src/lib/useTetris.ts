@@ -58,20 +58,34 @@ const SCORES_URL = "/api/tetris/scores";
  */
 let recorded: Promise<{ id: string; key: string } | null> | null = null;
 
+/**
+ * A busy board answers 503 and means "try again"; anything else in the 4xx
+ * range is a definite no that retrying won't change.
+ */
+const SEND_TRIES = 3;
+const SEND_RETRY_MS = 2_000;
+
 async function send(
   method: "POST" | "PATCH",
   body: object,
 ): Promise<Record<string, unknown> | null> {
-  try {
-    const res = await fetch(SCORES_URL, {
-      method,
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify(body),
-    });
-    return res.ok ? ((await res.json()) as Record<string, unknown>) : null;
-  } catch {
-    return null;
+  for (let attempt = 1; attempt <= SEND_TRIES; attempt++) {
+    try {
+      const res = await fetch(SCORES_URL, {
+        method,
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(body),
+      });
+      if (res.ok) return (await res.json()) as Record<string, unknown>;
+      if (res.status !== 503) return null;
+    } catch {
+      // Offline for a moment. Worth another go.
+    }
+    if (attempt < SEND_TRIES) {
+      await new Promise((r) => setTimeout(r, SEND_RETRY_MS * attempt));
+    }
   }
+  return null;
 }
 
 interface TetrisState {
