@@ -1,5 +1,9 @@
 # The Desk
 
+**Live at [portfolio-desk-omega.vercel.app](https://portfolio-desk-omega.vercel.app)**
+
+[![The desk at night: the bio monitor, Tetris on the ultrawide, and Spotify on the portrait screen](docs/desk.jpg)](https://portfolio-desk-omega.vercel.app)
+
 A 3D portfolio. You're sitting at a desk; the monitors show what I'm actually
 working on right now.
 
