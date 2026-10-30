@@ -8,9 +8,12 @@ import type { ScreenId } from "@/lib/layout";
 import { useScene } from "@/lib/store";
 import { useWeather } from "@/lib/useWeather";
 
+/** Labelled by what each screen shows now, not by its id: the ids predate the
+ *  layout, and "commits" is the bio while "about" is the Tetris board (see
+ *  `ScreenContent` in Room.tsx). */
 const SCREEN_LABELS: { id: ScreenId; label: string }[] = [
-  { id: "commits", label: "Go to the commit feed" },
-  { id: "about", label: "Go to about and contact" },
+  { id: "commits", label: "Go to about and contact" },
+  { id: "about", label: "Go to Tetris" },
   { id: "music", label: "Go to now playing" },
 ];
 
