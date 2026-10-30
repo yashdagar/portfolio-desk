@@ -1,6 +1,86 @@
 {
-  "generatedAt": "2026-10-29T21:08:39.587Z",
+  "generatedAt": "2026-10-30T01:00:48.257Z",
   "commits": [
+    {
+      "id": "e56fc2a5800b",
+      "visibility": "public",
+      "kind": "fix",
+      "message": "fix(httpx): log JSON encode errors in WriteJSON",
+      "repo": "yashdagar/zomato-prep",
+      "url": "https://github.com/yashdagar/zomato-prep/commit/e56fc2a5800b3aff0bea58ccac7b0ed6c5dc4ad9",
+      "language": "Go",
+      "at": "2026-10-30T00:27:34Z"
+    },
+    {
+      "id": "af43e996220d",
+      "visibility": "public",
+      "kind": "other",
+      "message": "Link the live site from the README",
+      "repo": "yashdagar/portfolio-desk",
+      "url": "https://github.com/yashdagar/portfolio-desk/commit/af43e996220dba1aea63da12c21c9f78cac3bc4c",
+      "language": "TypeScript",
+      "at": "2026-10-30T00:01:37Z"
+    },
+    {
+      "id": "5512fbb715e0",
+      "visibility": "public",
+      "kind": "other",
+      "message": "Keep the Spotify token out of the stale-while-revalidate cache",
+      "repo": "yashdagar/portfolio-desk",
+      "url": "https://github.com/yashdagar/portfolio-desk/commit/5512fbb715e024f63e278bfc01d704ee0d0e07ec",
+      "language": "TypeScript",
+      "at": "2026-10-30T00:01:37Z"
+    },
+    {
+      "id": "113c052ff5d8",
+      "visibility": "public",
+      "kind": "feat",
+      "message": "feat(api): serve /healthz behind the rate limiter",
+      "repo": "yashdagar/zomato-prep",
+      "url": "https://github.com/yashdagar/zomato-prep/commit/113c052ff5d8780cf3c2b4e437dc86baddfcc8dd",
+      "language": "Go",
+      "at": "2026-10-29T23:20:00Z"
+    },
+    {
+      "id": "e0b301bfd194",
+      "visibility": "public",
+      "kind": "feat",
+      "message": "feat(httpx): add rate limit middleware that returns 429",
+      "repo": "yashdagar/zomato-prep",
+      "url": "https://github.com/yashdagar/zomato-prep/commit/e0b301bfd1948c7626b7636211e55159e9b383ab",
+      "language": "Go",
+      "at": "2026-10-29T23:15:00Z"
+    },
+    {
+      "id": "f45e9402ad36",
+      "visibility": "public",
+      "kind": "test",
+      "message": "test(ratelimit): add table-driven token bucket tests with a fake clock",
+      "repo": "yashdagar/zomato-prep",
+      "url": "https://github.com/yashdagar/zomato-prep/commit/f45e9402ad365f93a11e91b67e9aab9da8f75a01",
+      "language": "Go",
+      "at": "2026-10-29T22:02:00Z"
+    },
+    {
+      "id": "66df100921f3",
+      "visibility": "public",
+      "kind": "feat",
+      "message": "feat(ratelimit): add Limiter interface and fixed window limiter",
+      "repo": "yashdagar/zomato-prep",
+      "url": "https://github.com/yashdagar/zomato-prep/commit/66df100921f326e9919138b4bad9208559500d44",
+      "language": "Go",
+      "at": "2026-10-28T13:00:00Z"
+    },
+    {
+      "id": "0a631ce58556",
+      "visibility": "public",
+      "kind": "feat",
+      "message": "feat(ratelimit): add token bucket limiter with lazy refill",
+      "repo": "yashdagar/zomato-prep",
+      "url": "https://github.com/yashdagar/zomato-prep/commit/0a631ce585565b4266d60325416b1a28081de969",
+      "language": "Go",
+      "at": "2026-10-28T12:42:00Z"
+    },
     {
       "id": "707240f187a3",
       "visibility": "personal",
@@ -10,6 +90,26 @@
       "url": "https://github.com/yashdagar/job-hunt/commit/707240f187a3bc763e191f61ec19fb598dd905bb",
       "language": "HTML",
       "at": "2026-10-28T08:56:44Z"
+    },
+    {
+      "id": "6c46d696803d",
+      "visibility": "public",
+      "kind": "test",
+      "message": "test(zt): gate the Redis window test behind a redis build tag",
+      "repo": "yashdagar/zomato-prep",
+      "url": "https://github.com/yashdagar/zomato-prep/commit/6c46d696803daae41afeebeb7a026ff2fc6f77fa",
+      "language": "Go",
+      "at": "2026-10-26T18:18:00Z"
+    },
+    {
+      "id": "42e2ca525044",
+      "visibility": "public",
+      "kind": "build",
+      "message": "build(repo): add lint config, docker-compose and Makefile targets",
+      "repo": "yashdagar/zomato-prep",
+      "url": "https://github.com/yashdagar/zomato-prep/commit/42e2ca5250445d7a803b4f7310a7d563f5ffa412",
+      "language": "Go",
+      "at": "2026-10-26T16:15:00Z"
     },
     {
       "id": "57d160e81574",
@@ -1900,111 +2000,11 @@
       "url": "https://github.com/yashdagar/skillrank/commit/e6cdd5ba1253d6cb8cccd00f38692b8211f51c3b",
       "language": "TypeScript",
       "at": "2026-09-07T12:39:49Z"
-    },
-    {
-      "id": "980595d56513",
-      "visibility": "personal",
-      "kind": "feat",
-      "message": "feature: shareable blitz results with OG card and juiced finish screen (#107)",
-      "repo": "yashdagar/skillrank",
-      "url": "https://github.com/yashdagar/skillrank/commit/980595d5651374ace393b081406c254653492ffa",
-      "language": "TypeScript",
-      "at": "2026-09-07T12:37:51Z"
-    },
-    {
-      "id": "919fd417252c",
-      "visibility": "personal",
-      "kind": "feat",
-      "message": "feature: custom styled dropdown replacing native selects (#106)",
-      "repo": "yashdagar/skillrank",
-      "url": "https://github.com/yashdagar/skillrank/commit/919fd417252cd4312fdefa50f3923b0dcb2c16ed",
-      "language": "TypeScript",
-      "at": "2026-09-07T12:08:37Z"
-    },
-    {
-      "id": "19726802074c",
-      "visibility": "personal",
-      "kind": "feat",
-      "message": "feature: add flawless and triathlon blitz badges (#105)",
-      "repo": "yashdagar/skillrank",
-      "url": "https://github.com/yashdagar/skillrank/commit/19726802074c01297709e47787350a7c087a783c",
-      "language": "TypeScript",
-      "at": "2026-09-07T12:08:06Z"
-    },
-    {
-      "id": "419bc22d2fb6",
-      "visibility": "personal",
-      "kind": "feat",
-      "message": "feature: blitz schema groundwork for challenges, splits and grading (#104)",
-      "repo": "yashdagar/skillrank",
-      "url": "https://github.com/yashdagar/skillrank/commit/419bc22d2fb6c8055c36d8d8560732d21968877a",
-      "language": "TypeScript",
-      "at": "2026-09-07T12:04:33Z"
-    },
-    {
-      "id": "1afdf10d9d76",
-      "visibility": "personal",
-      "kind": "feat",
-      "message": "feature: move player search into the navbar as an expanding text field (#98)",
-      "repo": "yashdagar/skillrank",
-      "url": "https://github.com/yashdagar/skillrank/commit/1afdf10d9d76f172d9d82d5f06a32a907f590ae9",
-      "language": "TypeScript",
-      "at": "2026-09-07T12:04:29Z"
-    },
-    {
-      "id": "0a5492acbaac",
-      "visibility": "personal",
-      "kind": "feat",
-      "message": "feat: public solve history with submission viewer and cheat reports (#91)",
-      "repo": "yashdagar/skillrank",
-      "url": "https://github.com/yashdagar/skillrank/commit/0a5492acbaac096c5f1e903edc56a1797716dd16",
-      "language": "TypeScript",
-      "at": "2026-09-07T11:30:32Z"
-    },
-    {
-      "id": "49f420891bf1",
-      "visibility": "personal",
-      "kind": "feat",
-      "message": "feat: problems page overhaul with letter ids, filters, and calendar rail (#95)",
-      "repo": "yashdagar/skillrank",
-      "url": "https://github.com/yashdagar/skillrank/commit/49f420891bf1beb4387cb2f46badd4b28b358fc4",
-      "language": "TypeScript",
-      "at": "2026-09-07T11:30:17Z"
-    },
-    {
-      "id": "5dbcb4ffbd27",
-      "visibility": "personal",
-      "kind": "feat",
-      "message": "feat: yesterday-only solutions with friends and fastest sections (#94)",
-      "repo": "yashdagar/skillrank",
-      "url": "https://github.com/yashdagar/skillrank/commit/5dbcb4ffbd2710bb7f5fd5fd25b1d61b0ab56543",
-      "language": "TypeScript",
-      "at": "2026-09-07T11:26:46Z"
-    },
-    {
-      "id": "20aa72454f98",
-      "visibility": "personal",
-      "kind": "feat",
-      "message": "feat: graceful judge errors, filled test chips, blitz loader (#93)",
-      "repo": "yashdagar/skillrank",
-      "url": "https://github.com/yashdagar/skillrank/commit/20aa72454f98ee8ff5c9db7b2e776c3f9dfdb43b",
-      "language": "TypeScript",
-      "at": "2026-09-07T11:23:41Z"
-    },
-    {
-      "id": "ef549a8646e0",
-      "visibility": "personal",
-      "kind": "feat",
-      "message": "feat: profile search, follower system, and profile views (#92)",
-      "repo": "yashdagar/skillrank",
-      "url": "https://github.com/yashdagar/skillrank/commit/ef549a8646e087402eb7320bc7e9c430682c863c",
-      "language": "TypeScript",
-      "at": "2026-09-07T11:21:22Z"
     }
   ],
   "totals": {
-    "year": 495,
-    "streak": 4
+    "year": 505,
+    "streak": 6
   },
   "workDays": {
     "2026-10-27": 2,
