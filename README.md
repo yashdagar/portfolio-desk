@@ -125,6 +125,19 @@ npm run spotify:auth              # opens the consent page, prints a refresh tok
 Put all three in `.env.local` and in the deployment's env. Without them the
 right monitor shows a designed empty state rather than breaking.
 
+### Tetris leaderboard
+
+High scores are shared by everyone who plays. Every finished game is saved
+the moment it ends, then the player can sign it with a name of up to 8
+characters. The board lives in a private Vercel Blob store as one JSON file
+per environment (`tetris/<VERCEL_ENV>/leaderboard.json`), so previews never
+write to the production board.
+
+Connecting a Blob store to the project sets `BLOB_READ_WRITE_TOKEN`. Without it
+the table stays empty and the game still plays. The game runs in the browser,
+so a determined visitor can post a score they didn't earn; the API only
+refuses scores no game with that many lines could reach.
+
 ## Development
 
 ```sh

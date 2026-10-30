@@ -68,13 +68,13 @@ export function cleanName(raw: unknown): string | null {
  *
  * Clears pay at most 200 a line (800 for a tetris) times the level, which
  * rises every ten lines. Drops pay at most 2 a row over a 22-row well, for
- * every piece that was ever placed — the cells cleared plus a full board left
- * standing. Generous, so no honest game is ever refused; it only stops the
+ * every piece that was ever placed — the cells cleared plus a full 22×10 well
+ * left standing, with room to spare. Generous, so no honest game is ever refused; it only stops the
  * request that claims a million points from three lines.
  */
 export function maxScore(lines: number): number {
   const clears = 200 * lines * (1 + lines / 10);
-  const pieces = (lines * 10 + 200) / 4;
+  const pieces = (lines * 10 + 240) / 4;
   return Math.ceil(clears + pieces * 44);
 }
 

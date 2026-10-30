@@ -84,19 +84,32 @@ for (const [pattern, label] of FORBIDDEN_PATTERNS) {
 
 const workToken = process.env.WORK_GITHUB_TOKEN;
 if (workToken) {
-  const res = await fetch(
-    `https://api.github.com/orgs/${WORK_ORG}/repos?per_page=100`,
-    {
+  // Every page, not the first hundred: a repo the check never saw is a repo
+  // whose name could leak without anything noticing.
+  const repos: { name: string; full_name: string }[] = [];
+  let next: string | null =
+    `https://api.github.com/orgs/${WORK_ORG}/repos?per_page=100`;
+  let listed = true;
+  while (next) {
+    const res: Response = await fetch(next, {
       headers: {
         authorization: `Bearer ${workToken}`,
         accept: "application/vnd.github+json",
         "user-agent": "portfolio-desk-audit",
       },
-    },
-  );
+    });
+    if (!res.ok) {
+      listed = false;
+      // Not fatal — the org listing can fail for permission reasons that have
+      // nothing to do with whether the output is clean.
+      console.warn(`could not list ${WORK_ORG} repos to cross-check (${res.status})`);
+      break;
+    }
+    repos.push(...((await res.json()) as typeof repos));
+    next = /<([^>]+)>;\s*rel="next"/.exec(res.headers.get("link") ?? "")?.[1] ?? null;
+  }
 
-  if (res.ok) {
-    const repos = (await res.json()) as { name: string; full_name: string }[];
+  if (listed) {
     const haystack = raw.toLowerCase();
     let checked = 0;
     for (const repo of repos) {
@@ -111,10 +124,6 @@ if (workToken) {
       fail(`work org name leaked: ${WORK_ORG}`);
     }
     console.log(`checked ${checked} work repo names against the output`);
-  } else {
-    // Not fatal — the org listing can fail for permission reasons that have
-    // nothing to do with whether the output is clean.
-    console.warn(`could not list ${WORK_ORG} repos to cross-check (${res.status})`);
   }
 } else {
   console.log("no WORK_GITHUB_TOKEN — skipping the work-repo cross-check");
