@@ -63,15 +63,13 @@ jobs:
           git config user.name "activity-bot"
           git config user.email "activity-bot@users.noreply.github.com"
           git add public/data/activity.json
-          # Deliberately no [skip ci].
+          # [skip ci] so Vercel doesn't redeploy for a data refresh. The site
+          # reads this file from raw.githubusercontent.com at request time
+          # (ACTIVITY_URL in src/lib/activity.ts), so a deploy adds nothing,
+          # and every twenty minutes it would be ~70 builds a day against
+          # Vercel's daily deployment limit.
           #
-          # It reads as the obvious way to stop this job retriggering itself,
-          # but Vercel honours the same marker — so every refresh would be
-          # committed and then skipped at deploy, leaving the live site serving
-          # whatever activity.json was baked in at the last real deploy. The
-          # feed would look live in the repo and be frozen in production.
-          #
-          # Self-triggering isn't a risk anyway: the push trigger above only
-          # watches the collector and its lib, never public/data.
-          git commit -m "chore(data): refresh activity feed"
+          # Self-triggering isn't a risk either way: the push trigger above
+          # only watches the collector and its lib, never public/data.
+          git commit -m "chore(data): refresh activity feed [skip ci]"
           git push
