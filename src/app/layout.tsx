@@ -43,10 +43,10 @@ export const metadata: Metadata = {
   },
 };
 
+// No `maximumScale`: the seated scene is desktop-only, where it has no effect,
+// and on a phone — which gets the page — it only stops people zooming to read.
 export const viewport: Viewport = {
   themeColor: "#1a1918",
-  // The scene is a fixed viewport experience; zooming breaks the seated framing.
-  maximumScale: 1,
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
