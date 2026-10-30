@@ -1,4 +1,11 @@
-import { BlobError, BlobPreconditionFailedError, get, put } from "@vercel/blob";
+import {
+  BlobError,
+  BlobNotFoundError,
+  BlobPreconditionFailedError,
+  get,
+  head,
+  put,
+} from "@vercel/blob";
 
 import { EMPTY_BOARD, readBoard, type Board } from "./leaderboard";
 
@@ -18,8 +25,7 @@ const PATHNAME = `tetris/${process.env.VERCEL_ENV ?? "development"}/leaderboard.
 
 /**
  * Lost races are retried, backing off by a random amount so the losers don't
- * re-read and collide again in lockstep. Long enough in total to outlast the
- * few seconds a read can lag behind a write.
+ * re-read and collide again in lockstep.
  */
 const ATTEMPTS = 10;
 const BACKOFF_MS = 120;
@@ -29,35 +35,34 @@ export function leaderboardConfigured(): boolean {
 }
 
 /**
- * What this instance last wrote, and every version it has overwritten.
+ * The current version comes from `head`, which asks the Blob API, and the
+ * content is then fetched under a URL keyed on that version.
  *
- * Reads lag writes by a few seconds, even around the CDN. A read that comes
- * back with a version this instance has already overwritten is that lag, not
- * news, and the copy held here is the truth. A read with any other version is
- * someone else's newer write, and wins.
+ * Fetching the file by its plain URL is not enough, even with the SDK's
+ * `useCache: false`: the CDN kept serving a version that had long since been
+ * replaced, every write built on it was refused, and the board stopped
+ * accepting games altogether. Keyed on the ETag, a cached copy can only ever
+ * be the version it claims to be.
  */
-let lastWrite: { board: Board; etag: string } | null = null;
-const superseded = new Set<string | null>();
-
 async function load(): Promise<{ board: Board; etag: string | null }> {
-  const res = await get(PATHNAME, { access: "private", useCache: false });
-  const read =
-    !res || res.statusCode !== 200
-      ? { board: EMPTY_BOARD, etag: null }
-      : await parse(res.stream, res.blob.etag);
-
-  if (lastWrite && superseded.has(read.etag)) {
-    return { board: lastWrite.board, etag: lastWrite.etag };
-  }
-  return read;
-}
-
-async function parse(stream: ReadableStream, etag: string) {
+  let meta;
   try {
-    const text = await new Response(stream).text();
-    return { board: readBoard(JSON.parse(text)), etag };
+    meta = await head(PATHNAME);
+  } catch (error) {
+    if (error instanceof BlobNotFoundError) return { board: EMPTY_BOARD, etag: null };
+    throw error;
+  }
+
+  const url = new URL(meta.url);
+  url.searchParams.set("v", meta.etag);
+  const res = await get(url.toString(), { access: "private", useCache: false });
+  if (!res || res.statusCode !== 200) return { board: EMPTY_BOARD, etag: meta.etag };
+
+  try {
+    const text = await new Response(res.stream).text();
+    return { board: readBoard(JSON.parse(text)), etag: meta.etag };
   } catch {
-    return { board: EMPTY_BOARD, etag };
+    return { board: EMPTY_BOARD, etag: meta.etag };
   }
 }
 
@@ -68,7 +73,7 @@ export async function readLeaderboard(): Promise<Board> {
 /**
  * One write at a time per instance. Concurrent requests mostly land on the same
  * instance, and queued they each build on the last one's result instead of all
- * racing from the same stale read.
+ * racing from the same read.
  */
 let queue: Promise<unknown> = Promise.resolve();
 
@@ -95,7 +100,7 @@ async function write(
     if (!next) return null;
 
     try {
-      const saved = await put(PATHNAME, JSON.stringify(next), {
+      await put(PATHNAME, JSON.stringify(next), {
         access: "private",
         contentType: "application/json",
         addRandomSuffix: false,
@@ -103,8 +108,6 @@ async function write(
         // a file someone else created a moment ago.
         ...(etag ? { ifMatch: etag } : { allowOverwrite: false }),
       });
-      lastWrite = { board: next, etag: saved.etag };
-      superseded.add(etag);
       return next;
     } catch (error) {
       const lostRace =
