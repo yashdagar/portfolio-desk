@@ -13,7 +13,13 @@ import {
   type Game,
   type PieceKind,
 } from "@/lib/tetris";
-import { useTetris, useTetrisDriver, useTetrisKeys } from "@/lib/useTetris";
+import { NAME_MAX, SHOWN } from "@/lib/leaderboard";
+import {
+  NAME_FIELD,
+  useTetris,
+  useTetrisDriver,
+  useTetrisKeys,
+} from "@/lib/useTetris";
 
 /**
  * The centre monitor: Tetris, on a 40" ultrawide.
@@ -282,7 +288,6 @@ function Overlay({ interactive }: { interactive: boolean }) {
   const mode = useTetris((s) => s.mode);
   const score = useTetris((s) => s.game.score);
   const lines = useTetris((s) => s.game.lines);
-  const initials = useTetris((s) => s.initials);
 
   // Attract mode is never covered. The bot playing behind it is the entire
   // reason the screen looks alive from across the room, and frosting it over to
@@ -300,26 +305,7 @@ function Overlay({ interactive }: { interactive: boolean }) {
             {score.toLocaleString("en-GB")}
           </p>
           <p className="font-mono text-[12px] text-ink-faint">{lines} rows</p>
-          <div className="mt-2">
-            <Label>Your initials</Label>
-            <p className="mt-2 flex justify-center gap-2">
-              {[0, 1, 2].map((i) => (
-                <span
-                  key={i}
-                  className={`flex size-9 items-center justify-center rounded-chip font-mono text-[18px] ${
-                    initials[i]
-                      ? "bg-screen-hi text-ink"
-                      : "bg-screen-raised text-ink-faint"
-                  }`}
-                >
-                  {initials[i] ?? "·"}
-                </span>
-              ))}
-            </p>
-            <p className="mt-3 font-mono text-[11px] text-ink-faint">
-              type, then ↵
-            </p>
-          </div>
+          <NameEntry interactive={interactive} />
         </>
       ) : (
         <>
@@ -334,6 +320,82 @@ function Overlay({ interactive }: { interactive: boolean }) {
         </>
       )}
     </div>
+  );
+}
+
+const SAVED_NOTE = {
+  saving: "saving your score…",
+  saved: "score saved · sign it",
+  failed: "couldn't reach the board",
+} as const;
+
+/**
+ * A real text field rather than arcade letter slots. Eight characters is a
+ * name, not initials, and a phone has no keyboard to type into slots with —
+ * an input is the only thing that summons one.
+ *
+ * The score is already on the board by the time this renders; this only puts a
+ * name to it, so leaving without typing loses nothing.
+ */
+function NameEntry({ interactive }: { interactive: boolean }) {
+  const name = useTetris((s) => s.name);
+  const saved = useTetris((s) => s.saved);
+  const field = useRef<HTMLInputElement>(null);
+
+  // Not `autoFocus`: in the room this DOM is transformed onto a monitor, and a
+  // focus that scrolls its container drags the screen's contents off the glass.
+  useEffect(() => {
+    if (interactive) field.current?.focus({ preventScroll: true });
+  }, [interactive]);
+
+  return (
+    <form
+      className="mt-2 flex flex-col items-center"
+      onSubmit={(e) => {
+        e.preventDefault();
+        useTetris.getState().submit();
+      }}
+    >
+      <label
+        htmlFor={NAME_FIELD}
+        className="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-faint"
+      >
+        Your name
+      </label>
+      <input
+        id={NAME_FIELD}
+        ref={field}
+        value={name}
+        onChange={(e) => useTetris.getState().setName(e.target.value)}
+        placeholder="········"
+        autoComplete="off"
+        autoCapitalize="words"
+        spellCheck={false}
+        enterKeyHint="done"
+        className="mt-2 w-[208px] rounded-chip bg-screen-raised px-3 py-2 text-center font-mono text-[18px] tracking-[0.12em] text-ink ring-1 ring-white/[0.08] outline-none placeholder:text-ink-faint/40 focus:ring-accent/60"
+      />
+      <p className="mt-2 font-mono text-[11px] text-ink-faint tabular-nums">
+        {[...name].length}/{NAME_MAX} · {SAVED_NOTE[saved]}
+      </p>
+      <div className="mt-3 flex gap-2">
+        <button
+          type="submit"
+          className="rounded-row bg-screen-hi px-4 py-1.5 font-mono text-[12px] text-ink"
+        >
+          Save ↵
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            useTetris.getState().setName("");
+            useTetris.getState().submit();
+          }}
+          className="rounded-row px-4 py-1.5 font-mono text-[12px] text-ink-faint"
+        >
+          Skip
+        </button>
+      </div>
+    </form>
   );
 }
 
@@ -468,10 +530,15 @@ export function Tetris({
   useTetrisDriver();
   useTetrisKeys(interactive);
 
-  // After mount, or the server and the client disagree about a table that only
-  // exists in this browser.
+  // After mount, so the server render and the first client render agree, then
+  // every half minute so someone else's game turns up without a reload.
   useEffect(() => {
-    useTetris.getState().loadScores();
+    const load = () => {
+      if (!document.hidden) void useTetris.getState().loadScores();
+    };
+    load();
+    const timer = setInterval(load, 30_000);
+    return () => clearInterval(timer);
   }, []);
 
   // The flat page has no camera to step back from, so Escape has to do it —
@@ -493,6 +560,8 @@ export function Tetris({
   const heldPiece = useTetris((s) => s.game.hold);
   const queue = useTetris((s) => s.game.queue);
   const scores = useTetris((s) => s.scores);
+  const games = useTetris((s) => s.games);
+  const mine = useTetris((s) => s.mine);
   const mode = useTetris((s) => s.mode);
   const clearBoard = useTetris((s) => s.clearBoard);
   const clearRows = useTetris((s) => s.clearRows);
@@ -556,24 +625,36 @@ export function Tetris({
             </p>
           </div>
           <div>
-            <Label>High scores</Label>
+            <div className="flex items-baseline justify-between">
+              <Label>High scores</Label>
+              {games > 0 && (
+                <span className="font-mono text-[11px] text-ink-faint tabular-nums">
+                  {games.toLocaleString("en-GB")} played
+                </span>
+              )}
+            </div>
             {/* Always five rows, filled or not. A table with two entries and a
                 paragraph of explanation where the other three should be is a
                 settings panel; one with dashes in it is a table waiting to be
                 beaten. */}
             <ol className="mt-3 space-y-1.5">
-              {Array.from({ length: 5 }, (_, i) => scores[i]).map((s, i) => (
+              {Array.from({ length: SHOWN }, (_, i) => scores[i]).map((s, i) => (
                 <li
                   key={i}
                   className={`flex items-baseline gap-3 rounded-row px-3 py-1.5 font-mono text-[13px] tabular-nums ${
                     s ? "bg-screen-raised" : "bg-screen-raised/40"
-                  }`}
+                  } ${s && s.id === mine ? "ring-1 ring-accent/50" : ""}`}
                 >
                   <span className={s ? "text-accent" : "text-ink-faint/50"}>
                     {i + 1}
                   </span>
-                  <span className={s ? "text-ink" : "text-ink-faint/50"}>
-                    {s ? s.name : "———"}
+                  {/* A game nobody signed still ranks. It just reads as one. */}
+                  <span
+                    className={
+                      s?.name ? "text-ink" : s ? "text-ink-faint" : "text-ink-faint/50"
+                    }
+                  >
+                    {s ? s.name || "???" : "———"}
                   </span>
                   <span
                     className={`ml-auto ${s ? "text-ink-dim" : "text-ink-faint/50"}`}

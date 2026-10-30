@@ -14,6 +14,7 @@ import {
   type Game,
 } from "./tetris";
 import { bestPlacement, type Placement } from "./tetris.bot";
+import { NAME_MAX, type Entry, type PublicBoard } from "./leaderboard";
 
 /**
  * The clock, the keyboard and the high scores — everything the engine refuses
@@ -46,48 +47,46 @@ const BOT_STEP = 70;
 
 export type Mode = "attract" | "playing" | "paused" | "over";
 
-export interface HighScore {
-  name: string;
-  score: number;
-  lines: number;
-}
+const SCORES_URL = "/api/tetris/scores";
 
-const SCORES_KEY = "desk:tetris:scores";
-const KEPT_SCORES = 5;
+/**
+ * The game that just ended, as the server knows it. Held outside the store: the
+ * key is a credential for one row, and nothing renders it.
+ *
+ * A promise rather than a value because the player can finish typing a name
+ * before the record request has come back, and the name has to wait for it.
+ */
+let recorded: Promise<{ id: string; key: string } | null> | null = null;
 
-function readScores(): HighScore[] {
-  if (typeof window === "undefined") return [];
+async function send(
+  method: "POST" | "PATCH",
+  body: object,
+): Promise<Record<string, unknown> | null> {
   try {
-    const raw = window.localStorage.getItem(SCORES_KEY);
-    if (!raw) return [];
-    const parsed: unknown = JSON.parse(raw);
-    if (!Array.isArray(parsed)) return [];
-    return parsed
-      .filter(
-        (s): s is HighScore =>
-          !!s && typeof s.name === "string" && typeof s.score === "number",
-      )
-      .slice(0, KEPT_SCORES);
+    const res = await fetch(SCORES_URL, {
+      method,
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify(body),
+    });
+    return res.ok ? ((await res.json()) as Record<string, unknown>) : null;
   } catch {
-    // A corrupt or blocked localStorage is not worth a broken screen.
-    return [];
-  }
-}
-
-function writeScores(scores: HighScore[]) {
-  try {
-    window.localStorage.setItem(SCORES_KEY, JSON.stringify(scores));
-  } catch {
-    // Private browsing. The board still works; the table just won't persist.
+    return null;
   }
 }
 
 interface TetrisState {
   game: Game;
   mode: Mode;
-  scores: HighScore[];
-  /** Three characters, arcade-style, while `mode` is "over". */
-  initials: string;
+  /** The top of the shared table, from the server. */
+  scores: Entry[];
+  /** Every game anyone has finished. */
+  games: number;
+  /** The row this browser just played, so it can be picked out of the table. */
+  mine: string | null;
+  /** Up to `NAME_MAX` characters, typed while `mode` is "over". */
+  name: string;
+  /** Whether the game that just ended made it onto the board. */
+  saved: "saving" | "saved" | "failed";
   /** What the bot is currently working toward, and its own step clock. */
   plan: Placement | null;
   botTimer: number;
@@ -115,9 +114,8 @@ interface TetrisState {
   pause: () => void;
   resume: () => void;
   toAttract: () => void;
-  loadScores: () => void;
-  typeInitial: (char: string) => void;
-  backspace: () => void;
+  loadScores: () => Promise<void>;
+  setName: (name: string) => void;
   submit: () => void;
 
   left: () => void;
@@ -132,7 +130,10 @@ export const useTetris = create<TetrisState>((set, get) => ({
   game: createGame(INITIAL_SEED),
   mode: "attract",
   scores: [],
-  initials: "",
+  games: 0,
+  mine: null,
+  name: "",
+  saved: "saving",
   plan: null,
   botTimer: 0,
   clearing: 0,
@@ -175,7 +176,7 @@ export const useTetris = create<TetrisState>((set, get) => ({
 
     const next = tick(game, dt);
     set({ game: next, ...clearEffects(game, next) });
-    if (next.over) set({ mode: "over", initials: "" });
+    if (next.over) finish(next);
   },
 
   startGame: (seed) =>
@@ -198,37 +199,38 @@ export const useTetris = create<TetrisState>((set, get) => ({
       game: createGame(INITIAL_SEED),
       mode: "attract",
       plan: null,
-      initials: "",
+      name: "",
       clearing: 0,
       clearBoard: null,
       clearRows: [],
       callout: null,
     }),
 
-  loadScores: () => set({ scores: readScores() }),
+  loadScores: async () => {
+    try {
+      const res = await fetch(SCORES_URL);
+      if (res.ok) showBoard((await res.json()) as PublicBoard);
+    } catch {
+      // Offline. The table keeps whatever it last showed.
+    }
+  },
 
-  typeInitial: (char) =>
-    set((s) =>
-      s.initials.length >= 3
-        ? s
-        : { initials: s.initials + char.toUpperCase() },
-    ),
-
-  backspace: () => set((s) => ({ initials: s.initials.slice(0, -1) })),
+  // Counted in code points, so a name in Devanagari isn't cut off three
+  // characters early by its combining marks being counted as letters.
+  setName: (name) => set({ name: [...name].slice(0, NAME_MAX).join("") }),
 
   submit: () => {
-    const { game, initials, scores } = get();
-    const entry: HighScore = {
-      name: (initials || "???").padEnd(3, "?").slice(0, 3),
-      score: game.score,
-      lines: game.lines,
-    };
-    const next = [...scores, entry]
-      .sort((a, b) => b.score - a.score)
-      .slice(0, KEPT_SCORES);
-    writeScores(next);
-    set({ scores: next });
+    const name = get().name.trim();
     get().toAttract();
+    // No name is fine: the game is already on the board, just unsigned.
+    if (!name || !recorded) return;
+    const pending = recorded;
+    void (async () => {
+      const game = await pending;
+      if (!game) return;
+      const res = await send("PATCH", { ...game, name });
+      if (res?.board) showBoard(res.board as PublicBoard);
+    })();
   },
 
   // All gated on `live`: during a line clear the board on screen is a frame
@@ -239,19 +241,13 @@ export const useTetris = create<TetrisState>((set, get) => ({
   turn: (dir) => set((s) => (live(s) ? { game: rotate(s.game, dir) } : s)),
   down: () => set((s) => (live(s) ? { game: softDrop(s.game) } : s)),
   swap: () => set((s) => (live(s) ? { game: hold(s.game) } : s)),
-  slam: () =>
-    set((s) => {
-      if (!live(s)) return s;
-      const game = hardDrop(s.game);
-      const shaken = {
-        game,
-        slams: s.slams + 1,
-        ...clearEffects(s.game, game),
-      };
-      return game.over
-        ? { ...shaken, mode: "over" as Mode, initials: "" }
-        : shaken;
-    }),
+  slam: () => {
+    const s = get();
+    if (!live(s)) return;
+    const game = hardDrop(s.game);
+    set({ game, slams: s.slams + 1, ...clearEffects(s.game, game) });
+    if (game.over) finish(game);
+  },
 }));
 
 // Same reason `store.ts` exposes `__scene`: a smoke test that reads the real
@@ -262,6 +258,31 @@ if (process.env.NODE_ENV !== "production" && typeof window !== "undefined") {
 
 /** How long the cleared rows stay on screen before the stack drops into them. */
 const CLEAR_HOLD = 200;
+
+function showBoard(board: PublicBoard) {
+  if (!Array.isArray(board?.entries)) return;
+  useTetris.setState({ scores: board.entries, games: board.games ?? 0 });
+}
+
+/**
+ * A person's game has ended: stop the clock and put it on the board straight
+ * away, before they've typed anything. Only ever called from a player's game —
+ * the bot's are never recorded.
+ */
+function finish(game: Game) {
+  useTetris.setState({ mode: "over", name: "", saved: "saving" });
+  recorded = send("POST", { score: game.score, lines: game.lines }).then(
+    (res) => {
+      if (!res || typeof res.id !== "string" || typeof res.key !== "string") {
+        useTetris.setState({ saved: "failed" });
+        return null;
+      }
+      useTetris.setState({ mine: res.id, saved: "saved" });
+      if (res.board) showBoard(res.board as PublicBoard);
+      return { id: res.id, key: res.key };
+    },
+  );
+}
 
 /** Playing, and not mid-clear. */
 const live = (s: TetrisState) => s.mode === "playing" && s.clearing === 0;
@@ -402,7 +423,10 @@ function pump(dt: number) {
   }
 }
 
-const LETTER = /^[A-Za-z0-9]$/;
+const LETTER = /^\p{L}$|^\p{N}$/u;
+
+/** The game-over name input, found by id from the window key handler. */
+export const NAME_FIELD = "tetris-name";
 
 /**
  * Binds the keyboard while `active`.
@@ -429,12 +453,13 @@ export function useTetrisKeys(active: boolean) {
       const store = useTetris.getState();
       const { mode } = store;
 
+      // The name field takes its own keys. This only catches someone typing
+      // before they've clicked into it, and hands the keystroke over.
       if (mode === "over") {
-        if (e.key === "Enter") store.submit();
-        else if (e.key === "Backspace") store.backspace();
-        else if (LETTER.test(e.key)) store.typeInitial(e.key);
-        else return;
-        e.preventDefault();
+        const field = document.getElementById(NAME_FIELD);
+        if (field && e.target !== field && LETTER.test(e.key)) {
+          field.focus({ preventScroll: true });
+        }
         return;
       }
 
