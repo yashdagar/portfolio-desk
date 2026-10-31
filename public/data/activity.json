@@ -1,6 +1,66 @@
 {
-  "generatedAt": "2026-10-31T14:54:56.414Z",
+  "generatedAt": "2026-10-31T18:55:20.389Z",
   "commits": [
+    {
+      "id": "1c80f4f40877",
+      "visibility": "public",
+      "kind": "test",
+      "message": "test(app): cover the week 4 Expo app libraries",
+      "repo": "yashdagar/zomato-prep",
+      "url": "https://github.com/yashdagar/zomato-prep/commit/1c80f4f408773bb63345c74d0fa891c16d7a95f0",
+      "language": "Go",
+      "at": "2026-10-31T16:39:02Z"
+    },
+    {
+      "id": "55d96f127ec2",
+      "visibility": "public",
+      "kind": "test",
+      "message": "test(w3): cover auth middleware, orders, outbox and the notifier",
+      "repo": "yashdagar/zomato-prep",
+      "url": "https://github.com/yashdagar/zomato-prep/commit/55d96f127ec20268431e8bfb13352c4c11eec785",
+      "language": "Go",
+      "at": "2026-10-31T16:39:02Z"
+    },
+    {
+      "id": "9f6c7186b64f",
+      "visibility": "public",
+      "kind": "test",
+      "message": "test(w2): cover queries, seed, menu, configurator and open hours",
+      "repo": "yashdagar/zomato-prep",
+      "url": "https://github.com/yashdagar/zomato-prep/commit/9f6c7186b64fe86715463ddd73198466822e2855",
+      "language": "Go",
+      "at": "2026-10-31T16:39:02Z"
+    },
+    {
+      "id": "c405fbbb9371",
+      "visibility": "public",
+      "kind": "test",
+      "message": "test(e2e): rate-limit each test client separately",
+      "repo": "yashdagar/zomato-prep",
+      "url": "https://github.com/yashdagar/zomato-prep/commit/c405fbbb93710155e5129d1716751b8790fb0376",
+      "language": "Go",
+      "at": "2026-10-31T16:39:02Z"
+    },
+    {
+      "id": "3d8828cda388",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Publish Zomato weeks 3 and 4",
+      "repo": "yashdagar/portfolio-3d",
+      "url": "https://github.com/yashdagar/portfolio-3d/commit/3d8828cda3883d0657c975c4519abfd0360d46a5",
+      "language": "TypeScript",
+      "at": "2026-10-31T16:38:06Z"
+    },
+    {
+      "id": "3bd59a6f7cf7",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Publish Zomato week 2 modules 6 and 7: open hours and integration tests",
+      "repo": "yashdagar/portfolio-3d",
+      "url": "https://github.com/yashdagar/portfolio-3d/commit/3bd59a6f7cf7086c81ea01020f6736994be70bdd",
+      "language": "TypeScript",
+      "at": "2026-10-31T15:11:52Z"
+    },
     {
       "id": "d41ba575e681",
       "visibility": "personal",
@@ -1940,70 +2000,10 @@
       "url": "https://github.com/yashdagar/skillrank/commit/7587e1f1846754a66c3ba3023c4c0ad2f0188d88",
       "language": "TypeScript",
       "at": "2026-09-07T19:14:41Z"
-    },
-    {
-      "id": "37a893fd3cfe",
-      "visibility": "personal",
-      "kind": "feat",
-      "message": "feature: add 25 array and pointer problems for batch three (#126)",
-      "repo": "yashdagar/skillrank",
-      "url": "https://github.com/yashdagar/skillrank/commit/37a893fd3cfed1b87530a200a7d75a94a0123a67",
-      "language": "TypeScript",
-      "at": "2026-09-07T19:14:39Z"
-    },
-    {
-      "id": "681dea0b989e",
-      "visibility": "personal",
-      "kind": "feat",
-      "message": "feature: wire batch two into the catalog at 150 problems (#124)",
-      "repo": "yashdagar/skillrank",
-      "url": "https://github.com/yashdagar/skillrank/commit/681dea0b989e73251b97d793947a6bd1dc7d7669",
-      "language": "TypeScript",
-      "at": "2026-09-07T18:24:48Z"
-    },
-    {
-      "id": "91d78b6761bb",
-      "visibility": "personal",
-      "kind": "feat",
-      "message": "feature: add 25 advanced catalog problems for batch two (#123)",
-      "repo": "yashdagar/skillrank",
-      "url": "https://github.com/yashdagar/skillrank/commit/91d78b6761bb79ecb74257176e8189c29a21ed56",
-      "language": "TypeScript",
-      "at": "2026-09-07T18:16:14Z"
-    },
-    {
-      "id": "3f13f5c46713",
-      "visibility": "personal",
-      "kind": "feat",
-      "message": "feature: add 25 core catalog problems for batch two (#122)",
-      "repo": "yashdagar/skillrank",
-      "url": "https://github.com/yashdagar/skillrank/commit/3f13f5c46713f83917fc8af04744e08b9283eadc",
-      "language": "TypeScript",
-      "at": "2026-09-07T18:13:36Z"
-    },
-    {
-      "id": "0cb0e67647bc",
-      "visibility": "personal",
-      "kind": "feat",
-      "message": "feature: blitz round-over takeover with ranked results screen (#121)",
-      "repo": "yashdagar/skillrank",
-      "url": "https://github.com/yashdagar/skillrank/commit/0cb0e67647bce31364da20c1883f9e2d7a1693cb",
-      "language": "TypeScript",
-      "at": "2026-09-07T18:11:48Z"
-    },
-    {
-      "id": "935187917fda",
-      "visibility": "personal",
-      "kind": "feat",
-      "message": "feature: replace card hover scaling with a button invert (#118)",
-      "repo": "yashdagar/skillrank",
-      "url": "https://github.com/yashdagar/skillrank/commit/935187917fda3b5f46641cb5bfc2391a6f67d140",
-      "language": "TypeScript",
-      "at": "2026-09-07T13:57:57Z"
     }
   ],
   "totals": {
-    "year": 426,
-    "streak": 3
+    "year": 432,
+    "streak": 4
   }
 }
