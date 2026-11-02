@@ -1,6 +1,46 @@
 {
-  "generatedAt": "2026-11-01T22:51:38.485Z",
+  "generatedAt": "2026-11-02T01:58:40.095Z",
   "commits": [
+    {
+      "id": "bed950ba09e7",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Exempt DASH_PASSWORD from Netlify secrets scanning",
+      "repo": "yashdagar/portfolio-3d",
+      "url": "https://github.com/yashdagar/portfolio-3d/commit/bed950ba09e7da67fbf690b74963b5c82a3e0964",
+      "language": "TypeScript",
+      "at": "2026-11-02T00:22:51Z"
+    },
+    {
+      "id": "a58518ffcf23",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Exempt the public Supabase keys from Netlify secrets scanning",
+      "repo": "yashdagar/portfolio-3d",
+      "url": "https://github.com/yashdagar/portfolio-3d/commit/a58518ffcf23074dc090d3371a06fbc6085d1ce4",
+      "language": "TypeScript",
+      "at": "2026-11-02T00:15:20Z"
+    },
+    {
+      "id": "6559e2d69a4c",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Keep the course pages working when the Supabase key is not set",
+      "repo": "yashdagar/portfolio-3d",
+      "url": "https://github.com/yashdagar/portfolio-3d/commit/6559e2d69a4c3ea2dac088f4c1328cd2236e4bc6",
+      "language": "TypeScript",
+      "at": "2026-11-01T23:54:24Z"
+    },
+    {
+      "id": "4805703de1f8",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Turn the Zomato prep into a login-gated course with a full Week 1",
+      "repo": "yashdagar/portfolio-3d",
+      "url": "https://github.com/yashdagar/portfolio-3d/commit/4805703de1f8cca636f0eb9e19282da7cb0fee93",
+      "language": "TypeScript",
+      "at": "2026-11-01T23:48:12Z"
+    },
     {
       "id": "1c80f4f40877",
       "visibility": "public",
@@ -1960,50 +2000,10 @@
       "url": "https://github.com/yashdagar/fireflies-clone/commit/81ce45f6ff52f0aae70bff7f320aa436b3332882",
       "language": "TypeScript",
       "at": "2026-09-26T04:00:25Z"
-    },
-    {
-      "id": "99ed4ffc107e",
-      "visibility": "public",
-      "kind": "feat",
-      "message": "Add Experiment-3 (stemming, lemmatization, regex) and Experiment-4 (TF, NER, TF-IDF)",
-      "repo": "yashdagar/CLNLP",
-      "url": "https://github.com/yashdagar/CLNLP/commit/99ed4ffc107e8a8f49f1d9ba909534d2c0e1f815",
-      "language": "Jupyter Notebook",
-      "at": "2026-09-17T03:10:17Z"
-    },
-    {
-      "id": "b623118ce2ef",
-      "visibility": "personal",
-      "kind": "feat",
-      "message": "feature: add 25 stack and queue problems for batch three (#129)",
-      "repo": "yashdagar/skillrank",
-      "url": "https://github.com/yashdagar/skillrank/commit/b623118ce2ef72b29d4c1615a2df933d5e3eb26c",
-      "language": "TypeScript",
-      "at": "2026-09-07T19:18:07Z"
-    },
-    {
-      "id": "7b67c081eeb9",
-      "visibility": "personal",
-      "kind": "feat",
-      "message": "feature: add 25 string and parsing problems for batch three (#128)",
-      "repo": "yashdagar/skillrank",
-      "url": "https://github.com/yashdagar/skillrank/commit/7b67c081eeb9b845a6674ea606819136a52f25dc",
-      "language": "TypeScript",
-      "at": "2026-09-07T19:16:08Z"
-    },
-    {
-      "id": "7587e1f18467",
-      "visibility": "personal",
-      "kind": "feat",
-      "message": "feature: add 25 math and bit manipulation problems for batch three (#127)",
-      "repo": "yashdagar/skillrank",
-      "url": "https://github.com/yashdagar/skillrank/commit/7587e1f1846754a66c3ba3023c4c0ad2f0188d88",
-      "language": "TypeScript",
-      "at": "2026-09-07T19:14:41Z"
     }
   ],
   "totals": {
-    "year": 432,
-    "streak": 4
+    "year": 436,
+    "streak": 6
   }
 }
