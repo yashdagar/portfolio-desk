@@ -1,6 +1,36 @@
 {
-  "generatedAt": "2026-11-02T01:58:40.095Z",
+  "generatedAt": "2026-11-02T08:51:34.561Z",
   "commits": [
+    {
+      "id": "6d055ec174fc",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Course UX overhaul, quizzes, capacity lesson and optional Week 1 exercises",
+      "repo": "yashdagar/portfolio-3d",
+      "url": "https://github.com/yashdagar/portfolio-3d/commit/6d055ec174fcd51e014351762e0afd1eb2fcd81e",
+      "language": "TypeScript",
+      "at": "2026-11-02T03:45:43Z"
+    },
+    {
+      "id": "1a570d14d153",
+      "visibility": "public",
+      "kind": "test",
+      "message": "test(w1): add build-tagged tests for the optional rate limiter extras",
+      "repo": "yashdagar/zomato-prep",
+      "url": "https://github.com/yashdagar/zomato-prep/commit/1a570d14d1534e36c6b7299d2d794361b455d69c",
+      "language": "Go",
+      "at": "2026-11-02T03:45:42Z"
+    },
+    {
+      "id": "7d38e58af2cd",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Give the course its own metadata, share image, icons and manifest",
+      "repo": "yashdagar/portfolio-3d",
+      "url": "https://github.com/yashdagar/portfolio-3d/commit/7d38e58af2cd3cd8b9cceb23752a42c7f9ca66f8",
+      "language": "TypeScript",
+      "at": "2026-11-02T03:45:42Z"
+    },
     {
       "id": "bed950ba09e7",
       "visibility": "personal",
@@ -1970,40 +2000,10 @@
       "url": "https://github.com/yashdagar/fireflies-clone/commit/314f5c8d9c085714f0c9c8e27a30269e1edd7f3e",
       "language": "TypeScript",
       "at": "2026-09-26T04:09:18Z"
-    },
-    {
-      "id": "1fd02b4ad52a",
-      "visibility": "personal",
-      "kind": "fix",
-      "message": "fix: avoid returning scrollIntoView promises from effects",
-      "repo": "yashdagar/fireflies-clone",
-      "url": "https://github.com/yashdagar/fireflies-clone/commit/1fd02b4ad52a4ff27ec9c75a0fc3c5b3116fba90",
-      "language": "TypeScript",
-      "at": "2026-09-26T04:09:18Z"
-    },
-    {
-      "id": "61ab0748e2c4",
-      "visibility": "personal",
-      "kind": "feat",
-      "message": "feat: filter meetings by source",
-      "repo": "yashdagar/fireflies-clone",
-      "url": "https://github.com/yashdagar/fireflies-clone/commit/61ab0748e2c4cd84ec6826702ceb006fa67d35a0",
-      "language": "TypeScript",
-      "at": "2026-09-26T04:00:25Z"
-    },
-    {
-      "id": "81ce45f6ff52",
-      "visibility": "personal",
-      "kind": "feat",
-      "message": "feat: seed eight sample meetings with transcripts, notes and action items",
-      "repo": "yashdagar/fireflies-clone",
-      "url": "https://github.com/yashdagar/fireflies-clone/commit/81ce45f6ff52f0aae70bff7f320aa436b3332882",
-      "language": "TypeScript",
-      "at": "2026-09-26T04:00:25Z"
     }
   ],
   "totals": {
-    "year": 436,
+    "year": 439,
     "streak": 6
   }
 }
