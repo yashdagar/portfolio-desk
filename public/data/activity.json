@@ -1,6 +1,86 @@
 {
-  "generatedAt": "2026-11-02T18:58:52.740Z",
+  "generatedAt": "2026-11-03T01:28:07.259Z",
   "commits": [
+    {
+      "id": "b420cae47098",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Redesign course landing page, add resizable lesson panels and overview action bar",
+      "repo": "yashdagar/portfolio-3d",
+      "url": "https://github.com/yashdagar/portfolio-3d/commit/b420cae47098779aff3eda83b0123a2886517c42",
+      "language": "TypeScript",
+      "at": "2026-11-02T22:00:29Z"
+    },
+    {
+      "id": "41ee833a109a",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Link the required concepts on four optional pages",
+      "repo": "yashdagar/portfolio-3d",
+      "url": "https://github.com/yashdagar/portfolio-3d/commit/41ee833a109a0066f752c6e66ce64fc456b21988",
+      "language": "TypeScript",
+      "at": "2026-11-02T09:38:39Z"
+    },
+    {
+      "id": "4d54689582a3",
+      "visibility": "public",
+      "kind": "test",
+      "message": "test: add build-tagged tests for the optional extras",
+      "repo": "yashdagar/zomato-prep",
+      "url": "https://github.com/yashdagar/zomato-prep/commit/4d54689582a332b34579a614b1eab0ceb6922cb0",
+      "language": "Go",
+      "at": "2026-11-02T09:35:03Z"
+    },
+    {
+      "id": "b8ee6326a1ff",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "Add optional extensions to Week 3: refresh reuse detection, multi-relay outbox, login rate limit",
+      "repo": "yashdagar/portfolio-3d",
+      "url": "https://github.com/yashdagar/portfolio-3d/commit/b8ee6326a1ffd5298b2f55d1965929dff46cf2ba",
+      "language": "TypeScript",
+      "at": "2026-11-02T09:34:54Z"
+    },
+    {
+      "id": "08c6d73b1b84",
+      "visibility": "public",
+      "kind": "test",
+      "message": "test: add build-tagged tests for the optional extras",
+      "repo": "yashdagar/zomato-prep",
+      "url": "https://github.com/yashdagar/zomato-prep/commit/08c6d73b1b84776cd78cb87cdb0080e793711611",
+      "language": "Go",
+      "at": "2026-11-02T07:51:52Z"
+    },
+    {
+      "id": "9abe803a82e2",
+      "visibility": "public",
+      "kind": "test",
+      "message": "test: add build-tagged tests for the optional extras",
+      "repo": "yashdagar/zomato-prep",
+      "url": "https://github.com/yashdagar/zomato-prep/commit/9abe803a82e2297a778aed744024e2b4c90335e0",
+      "language": "Go",
+      "at": "2026-11-02T07:51:50Z"
+    },
+    {
+      "id": "e9d0e47edf57",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "Add capacity lessons and optional extensions to Weeks 2 to 4",
+      "repo": "yashdagar/portfolio-3d",
+      "url": "https://github.com/yashdagar/portfolio-3d/commit/e9d0e47edf57bf53896e980036bcdf10656d7631",
+      "language": "TypeScript",
+      "at": "2026-11-02T07:51:47Z"
+    },
+    {
+      "id": "a35e84b9079a",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Redesign the course landing page and overview, and drop eyebrow headlines",
+      "repo": "yashdagar/portfolio-3d",
+      "url": "https://github.com/yashdagar/portfolio-3d/commit/a35e84b9079a6e68094e89d7bfb85872fd9afce7",
+      "language": "TypeScript",
+      "at": "2026-11-02T07:51:47Z"
+    },
     {
       "id": "6d055ec174fc",
       "visibility": "personal",
@@ -12,16 +92,6 @@
       "at": "2026-11-02T03:45:43Z"
     },
     {
-      "id": "7d38e58af2cd",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Give the course its own metadata, share image, icons and manifest",
-      "repo": "yashdagar/portfolio-3d",
-      "url": "https://github.com/yashdagar/portfolio-3d/commit/7d38e58af2cd3cd8b9cceb23752a42c7f9ca66f8",
-      "language": "TypeScript",
-      "at": "2026-11-02T03:45:42Z"
-    },
-    {
       "id": "1a570d14d153",
       "visibility": "public",
       "kind": "test",
@@ -29,6 +99,16 @@
       "repo": "yashdagar/zomato-prep",
       "url": "https://github.com/yashdagar/zomato-prep/commit/1a570d14d1534e36c6b7299d2d794361b455d69c",
       "language": "Go",
+      "at": "2026-11-02T03:45:42Z"
+    },
+    {
+      "id": "7d38e58af2cd",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Give the course its own metadata, share image, icons and manifest",
+      "repo": "yashdagar/portfolio-3d",
+      "url": "https://github.com/yashdagar/portfolio-3d/commit/7d38e58af2cd3cd8b9cceb23752a42c7f9ca66f8",
+      "language": "TypeScript",
       "at": "2026-11-02T03:45:42Z"
     },
     {
@@ -1920,90 +2000,10 @@
       "url": "https://github.com/yashdagar/fireflies-clone/commit/d84b677aa0c8c5056f7b901eb4b852ae6831fe29",
       "language": "TypeScript",
       "at": "2026-09-26T05:03:16Z"
-    },
-    {
-      "id": "265aef630895",
-      "visibility": "personal",
-      "kind": "docs",
-      "message": "docs: point live demo link at fireflies0.vercel.app",
-      "repo": "yashdagar/fireflies-clone",
-      "url": "https://github.com/yashdagar/fireflies-clone/commit/265aef630895b05e2b7c28f93873aaa208f8f51a",
-      "language": "TypeScript",
-      "at": "2026-09-26T05:00:56Z"
-    },
-    {
-      "id": "7e85ee6de809",
-      "visibility": "personal",
-      "kind": "docs",
-      "message": "docs: add live demo link to README",
-      "repo": "yashdagar/fireflies-clone",
-      "url": "https://github.com/yashdagar/fireflies-clone/commit/7e85ee6de8095ca454ec78538e941a11b88d37c3",
-      "language": "TypeScript",
-      "at": "2026-09-26T04:56:21Z"
-    },
-    {
-      "id": "84dc0ab6835d",
-      "visibility": "personal",
-      "kind": "chore",
-      "message": "chore: target Render free plan without persistent disk",
-      "repo": "yashdagar/fireflies-clone",
-      "url": "https://github.com/yashdagar/fireflies-clone/commit/84dc0ab6835dffda7ddc91e93fc87d8a5440e4cb",
-      "language": "TypeScript",
-      "at": "2026-09-26T04:23:07Z"
-    },
-    {
-      "id": "75ad075640d0",
-      "visibility": "personal",
-      "kind": "feat",
-      "message": "feat: apply Fireflies design system tokens, dark navigation and menus",
-      "repo": "yashdagar/fireflies-clone",
-      "url": "https://github.com/yashdagar/fireflies-clone/commit/75ad075640d0853b7fe4c9869df19993218d921b",
-      "language": "TypeScript",
-      "at": "2026-09-26T04:21:50Z"
-    },
-    {
-      "id": "e88324c97153",
-      "visibility": "personal",
-      "kind": "fix",
-      "message": "fix: prevent horizontal overflow on the meeting page at mobile widths",
-      "repo": "yashdagar/fireflies-clone",
-      "url": "https://github.com/yashdagar/fireflies-clone/commit/e88324c971539704f9297529d023f1143e0a9b55",
-      "language": "TypeScript",
-      "at": "2026-09-26T04:17:53Z"
-    },
-    {
-      "id": "ae697d1f8054",
-      "visibility": "personal",
-      "kind": "docs",
-      "message": "docs: add README, Render blueprint and Vercel config",
-      "repo": "yashdagar/fireflies-clone",
-      "url": "https://github.com/yashdagar/fireflies-clone/commit/ae697d1f8054a50e76c911cbd72d3592c08ce61b",
-      "language": "TypeScript",
-      "at": "2026-09-26T04:15:51Z"
-    },
-    {
-      "id": "ece4315d6945",
-      "visibility": "personal",
-      "kind": "test",
-      "message": "test: add Playwright end-to-end suite and run-all test script",
-      "repo": "yashdagar/fireflies-clone",
-      "url": "https://github.com/yashdagar/fireflies-clone/commit/ece4315d69452fa8d7cb3f709b6a4c212b08fb00",
-      "language": "TypeScript",
-      "at": "2026-09-26T04:09:18Z"
-    },
-    {
-      "id": "314f5c8d9c08",
-      "visibility": "personal",
-      "kind": "test",
-      "message": "test: add unit and component tests for lib utilities and meeting UI",
-      "repo": "yashdagar/fireflies-clone",
-      "url": "https://github.com/yashdagar/fireflies-clone/commit/314f5c8d9c085714f0c9c8e27a30269e1edd7f3e",
-      "language": "TypeScript",
-      "at": "2026-09-26T04:09:18Z"
     }
   ],
   "totals": {
-    "year": 439,
+    "year": 447,
     "streak": 6
   }
 }
