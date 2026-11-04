@@ -1,6 +1,56 @@
 {
-  "generatedAt": "2026-11-04T01:47:17.326Z",
+  "generatedAt": "2026-11-04T08:17:53.847Z",
   "commits": [
+    {
+      "id": "ec62888fcc65",
+      "visibility": "public",
+      "kind": "feat",
+      "message": "feat(db): add the restaurant and menu migrations",
+      "repo": "yashdagar/zomato-prep-fork",
+      "url": "https://github.com/yashdagar/zomato-prep-fork/commit/ec62888fcc65712c6fb90ed71c9569ef40f6e28c",
+      "language": "Go",
+      "at": "2026-11-04T06:39:44Z"
+    },
+    {
+      "id": "8cca72bceaec",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Remove the unused enrolAction",
+      "repo": "yashdagar/portfolio-3d",
+      "url": "https://github.com/yashdagar/portfolio-3d/commit/8cca72bceaeca60e06d276b61745d1679a96f492",
+      "language": "TypeScript",
+      "at": "2026-11-04T03:05:47Z"
+    },
+    {
+      "id": "92ef36fbc16a",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Point the Week 6 B3 tests at internal/httpxtest",
+      "repo": "yashdagar/portfolio-3d",
+      "url": "https://github.com/yashdagar/portfolio-3d/commit/92ef36fbc16acffcf9d41574abc320a21a1026ec",
+      "language": "TypeScript",
+      "at": "2026-11-04T02:28:36Z"
+    },
+    {
+      "id": "e4c6c3d8f4d5",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "Add Weeks 5 to 8 and open the whole course to read without an account",
+      "repo": "yashdagar/portfolio-3d",
+      "url": "https://github.com/yashdagar/portfolio-3d/commit/e4c6c3d8f4d545dc01f854550648158822af117c",
+      "language": "TypeScript",
+      "at": "2026-11-04T02:02:31Z"
+    },
+    {
+      "id": "64d506e0d260",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Polish course UI: centred FAQ icons, dark module cards",
+      "repo": "yashdagar/portfolio-3d",
+      "url": "https://github.com/yashdagar/portfolio-3d/commit/64d506e0d260f9d293745af5318528ced6b5f0c4",
+      "language": "TypeScript",
+      "at": "2026-11-03T12:06:24Z"
+    },
     {
       "id": "b420cae47098",
       "visibility": "personal",
@@ -32,6 +82,16 @@
       "at": "2026-11-02T09:35:03Z"
     },
     {
+      "id": "4d54689582a3",
+      "visibility": "public",
+      "kind": "test",
+      "message": "test: add build-tagged tests for the optional extras",
+      "repo": "yashdagar/zomato-prep-fork",
+      "url": "https://github.com/yashdagar/zomato-prep-fork/commit/4d54689582a332b34579a614b1eab0ceb6922cb0",
+      "language": "Go",
+      "at": "2026-11-02T09:35:03Z"
+    },
+    {
       "id": "b8ee6326a1ff",
       "visibility": "personal",
       "kind": "feat",
@@ -52,12 +112,32 @@
       "at": "2026-11-02T07:51:52Z"
     },
     {
+      "id": "08c6d73b1b84",
+      "visibility": "public",
+      "kind": "test",
+      "message": "test: add build-tagged tests for the optional extras",
+      "repo": "yashdagar/zomato-prep-fork",
+      "url": "https://github.com/yashdagar/zomato-prep-fork/commit/08c6d73b1b84776cd78cb87cdb0080e793711611",
+      "language": "Go",
+      "at": "2026-11-02T07:51:52Z"
+    },
+    {
       "id": "9abe803a82e2",
       "visibility": "public",
       "kind": "test",
       "message": "test: add build-tagged tests for the optional extras",
       "repo": "yashdagar/zomato-prep",
       "url": "https://github.com/yashdagar/zomato-prep/commit/9abe803a82e2297a778aed744024e2b4c90335e0",
+      "language": "Go",
+      "at": "2026-11-02T07:51:50Z"
+    },
+    {
+      "id": "9abe803a82e2",
+      "visibility": "public",
+      "kind": "test",
+      "message": "test: add build-tagged tests for the optional extras",
+      "repo": "yashdagar/zomato-prep-fork",
+      "url": "https://github.com/yashdagar/zomato-prep-fork/commit/9abe803a82e2297a778aed744024e2b4c90335e0",
       "language": "Go",
       "at": "2026-11-02T07:51:50Z"
     },
@@ -112,6 +192,16 @@
       "at": "2026-11-02T03:45:42Z"
     },
     {
+      "id": "1a570d14d153",
+      "visibility": "public",
+      "kind": "test",
+      "message": "test(w1): add build-tagged tests for the optional rate limiter extras",
+      "repo": "yashdagar/zomato-prep-fork",
+      "url": "https://github.com/yashdagar/zomato-prep-fork/commit/1a570d14d1534e36c6b7299d2d794361b455d69c",
+      "language": "Go",
+      "at": "2026-11-02T03:45:42Z"
+    },
+    {
       "id": "bed950ba09e7",
       "visibility": "personal",
       "kind": "other",
@@ -150,46 +240,6 @@
       "url": "https://github.com/yashdagar/portfolio-3d/commit/4805703de1f8cca636f0eb9e19282da7cb0fee93",
       "language": "TypeScript",
       "at": "2026-11-01T23:48:12Z"
-    },
-    {
-      "id": "1c80f4f40877",
-      "visibility": "public",
-      "kind": "test",
-      "message": "test(app): cover the week 4 Expo app libraries",
-      "repo": "yashdagar/zomato-prep",
-      "url": "https://github.com/yashdagar/zomato-prep/commit/1c80f4f408773bb63345c74d0fa891c16d7a95f0",
-      "language": "Go",
-      "at": "2026-10-31T16:39:02Z"
-    },
-    {
-      "id": "55d96f127ec2",
-      "visibility": "public",
-      "kind": "test",
-      "message": "test(w3): cover auth middleware, orders, outbox and the notifier",
-      "repo": "yashdagar/zomato-prep",
-      "url": "https://github.com/yashdagar/zomato-prep/commit/55d96f127ec20268431e8bfb13352c4c11eec785",
-      "language": "Go",
-      "at": "2026-10-31T16:39:02Z"
-    },
-    {
-      "id": "9f6c7186b64f",
-      "visibility": "public",
-      "kind": "test",
-      "message": "test(w2): cover queries, seed, menu, configurator and open hours",
-      "repo": "yashdagar/zomato-prep",
-      "url": "https://github.com/yashdagar/zomato-prep/commit/9f6c7186b64fe86715463ddd73198466822e2855",
-      "language": "Go",
-      "at": "2026-10-31T16:39:02Z"
-    },
-    {
-      "id": "c405fbbb9371",
-      "visibility": "public",
-      "kind": "test",
-      "message": "test(e2e): rate-limit each test client separately",
-      "repo": "yashdagar/zomato-prep",
-      "url": "https://github.com/yashdagar/zomato-prep/commit/c405fbbb93710155e5129d1716751b8790fb0376",
-      "language": "Go",
-      "at": "2026-10-31T16:39:02Z"
     },
     {
       "id": "3d8828cda388",
@@ -272,34 +322,14 @@
       "at": "2026-10-30T03:10:55Z"
     },
     {
-      "id": "87a48a68c3f3",
+      "id": "b7e80cb091bf",
       "visibility": "public",
-      "kind": "ci",
-      "message": "ci: lint and race-test the backend on every push",
-      "repo": "yashdagar/zomato-prep",
-      "url": "https://github.com/yashdagar/zomato-prep/commit/87a48a68c3f34b309389792712a5c12e3ffdacab",
+      "kind": "feat",
+      "message": "feat(api): rate limit through Redis with in-memory fallback",
+      "repo": "yashdagar/zomato-prep-fork",
+      "url": "https://github.com/yashdagar/zomato-prep-fork/commit/b7e80cb091bfda52657b87a3b58adec208b979f2",
       "language": "Go",
-      "at": "2026-10-30T03:02:20Z"
-    },
-    {
-      "id": "b7731543a6fc",
-      "visibility": "public",
-      "kind": "test",
-      "message": "test(zt): treat a missing Expo app as not written in jest runs",
-      "repo": "yashdagar/zomato-prep",
-      "url": "https://github.com/yashdagar/zomato-prep/commit/b7731543a6fc1ba46ad975eaeaef76d292310674",
-      "language": "Go",
-      "at": "2026-10-30T03:02:20Z"
-    },
-    {
-      "id": "0c7bf2fcf62c",
-      "visibility": "public",
-      "kind": "build",
-      "message": "build(repo): lint only packages that have code",
-      "repo": "yashdagar/zomato-prep",
-      "url": "https://github.com/yashdagar/zomato-prep/commit/0c7bf2fcf62c64b4d774624ae4bf3f369f4a085f",
-      "language": "Go",
-      "at": "2026-10-30T03:02:20Z"
+      "at": "2026-10-30T03:10:55Z"
     },
     {
       "id": "861b3e41d8a1",
@@ -312,12 +342,32 @@
       "at": "2026-10-30T03:01:37Z"
     },
     {
+      "id": "861b3e41d8a1",
+      "visibility": "public",
+      "kind": "feat",
+      "message": "feat(ratelimit): add Redis fixed window limiter that fails open",
+      "repo": "yashdagar/zomato-prep-fork",
+      "url": "https://github.com/yashdagar/zomato-prep-fork/commit/861b3e41d8a1c6666432079a887cda4baad22866",
+      "language": "Go",
+      "at": "2026-10-30T03:01:37Z"
+    },
+    {
       "id": "e56fc2a5800b",
       "visibility": "public",
       "kind": "fix",
       "message": "fix(httpx): log JSON encode errors in WriteJSON",
       "repo": "yashdagar/zomato-prep",
       "url": "https://github.com/yashdagar/zomato-prep/commit/e56fc2a5800b3aff0bea58ccac7b0ed6c5dc4ad9",
+      "language": "Go",
+      "at": "2026-10-30T00:27:34Z"
+    },
+    {
+      "id": "e56fc2a5800b",
+      "visibility": "public",
+      "kind": "fix",
+      "message": "fix(httpx): log JSON encode errors in WriteJSON",
+      "repo": "yashdagar/zomato-prep-fork",
+      "url": "https://github.com/yashdagar/zomato-prep-fork/commit/e56fc2a5800b3aff0bea58ccac7b0ed6c5dc4ad9",
       "language": "Go",
       "at": "2026-10-30T00:27:34Z"
     },
@@ -352,12 +402,32 @@
       "at": "2026-10-29T23:20:00Z"
     },
     {
+      "id": "113c052ff5d8",
+      "visibility": "public",
+      "kind": "feat",
+      "message": "feat(api): serve /healthz behind the rate limiter",
+      "repo": "yashdagar/zomato-prep-fork",
+      "url": "https://github.com/yashdagar/zomato-prep-fork/commit/113c052ff5d8780cf3c2b4e437dc86baddfcc8dd",
+      "language": "Go",
+      "at": "2026-10-29T23:20:00Z"
+    },
+    {
       "id": "e0b301bfd194",
       "visibility": "public",
       "kind": "feat",
       "message": "feat(httpx): add rate limit middleware that returns 429",
       "repo": "yashdagar/zomato-prep",
       "url": "https://github.com/yashdagar/zomato-prep/commit/e0b301bfd1948c7626b7636211e55159e9b383ab",
+      "language": "Go",
+      "at": "2026-10-29T23:15:00Z"
+    },
+    {
+      "id": "e0b301bfd194",
+      "visibility": "public",
+      "kind": "feat",
+      "message": "feat(httpx): add rate limit middleware that returns 429",
+      "repo": "yashdagar/zomato-prep-fork",
+      "url": "https://github.com/yashdagar/zomato-prep-fork/commit/e0b301bfd1948c7626b7636211e55159e9b383ab",
       "language": "Go",
       "at": "2026-10-29T23:15:00Z"
     },
@@ -372,6 +442,16 @@
       "at": "2026-10-29T22:02:00Z"
     },
     {
+      "id": "f45e9402ad36",
+      "visibility": "public",
+      "kind": "test",
+      "message": "test(ratelimit): add table-driven token bucket tests with a fake clock",
+      "repo": "yashdagar/zomato-prep-fork",
+      "url": "https://github.com/yashdagar/zomato-prep-fork/commit/f45e9402ad365f93a11e91b67e9aab9da8f75a01",
+      "language": "Go",
+      "at": "2026-10-29T22:02:00Z"
+    },
+    {
       "id": "66df100921f3",
       "visibility": "public",
       "kind": "feat",
@@ -382,12 +462,32 @@
       "at": "2026-10-28T13:00:00Z"
     },
     {
+      "id": "66df100921f3",
+      "visibility": "public",
+      "kind": "feat",
+      "message": "feat(ratelimit): add Limiter interface and fixed window limiter",
+      "repo": "yashdagar/zomato-prep-fork",
+      "url": "https://github.com/yashdagar/zomato-prep-fork/commit/66df100921f326e9919138b4bad9208559500d44",
+      "language": "Go",
+      "at": "2026-10-28T13:00:00Z"
+    },
+    {
       "id": "0a631ce58556",
       "visibility": "public",
       "kind": "feat",
       "message": "feat(ratelimit): add token bucket limiter with lazy refill",
       "repo": "yashdagar/zomato-prep",
       "url": "https://github.com/yashdagar/zomato-prep/commit/0a631ce585565b4266d60325416b1a28081de969",
+      "language": "Go",
+      "at": "2026-10-28T12:42:00Z"
+    },
+    {
+      "id": "0a631ce58556",
+      "visibility": "public",
+      "kind": "feat",
+      "message": "feat(ratelimit): add token bucket limiter with lazy refill",
+      "repo": "yashdagar/zomato-prep-fork",
+      "url": "https://github.com/yashdagar/zomato-prep-fork/commit/0a631ce585565b4266d60325416b1a28081de969",
       "language": "Go",
       "at": "2026-10-28T12:42:00Z"
     },
@@ -412,12 +512,32 @@
       "at": "2026-10-26T18:18:00Z"
     },
     {
+      "id": "6c46d696803d",
+      "visibility": "public",
+      "kind": "test",
+      "message": "test(zt): gate the Redis window test behind a redis build tag",
+      "repo": "yashdagar/zomato-prep-fork",
+      "url": "https://github.com/yashdagar/zomato-prep-fork/commit/6c46d696803daae41afeebeb7a026ff2fc6f77fa",
+      "language": "Go",
+      "at": "2026-10-26T18:18:00Z"
+    },
+    {
       "id": "42e2ca525044",
       "visibility": "public",
       "kind": "build",
       "message": "build(repo): add lint config, docker-compose and Makefile targets",
       "repo": "yashdagar/zomato-prep",
       "url": "https://github.com/yashdagar/zomato-prep/commit/42e2ca5250445d7a803b4f7310a7d563f5ffa412",
+      "language": "Go",
+      "at": "2026-10-26T16:15:00Z"
+    },
+    {
+      "id": "42e2ca525044",
+      "visibility": "public",
+      "kind": "build",
+      "message": "build(repo): add lint config, docker-compose and Makefile targets",
+      "repo": "yashdagar/zomato-prep-fork",
+      "url": "https://github.com/yashdagar/zomato-prep-fork/commit/42e2ca5250445d7a803b4f7310a7d563f5ffa412",
       "language": "Go",
       "at": "2026-10-26T16:15:00Z"
     },
@@ -458,6 +578,16 @@
       "message": "Add make test and make run with a grouped, logo-headed runner",
       "repo": "yashdagar/zomato-prep",
       "url": "https://github.com/yashdagar/zomato-prep/commit/f15818cb6aae1f59861344296d1c77ba60160ede",
+      "language": "Go",
+      "at": "2026-10-25T11:09:28Z"
+    },
+    {
+      "id": "f15818cb6aae",
+      "visibility": "public",
+      "kind": "feat",
+      "message": "Add make test and make run with a grouped, logo-headed runner",
+      "repo": "yashdagar/zomato-prep-fork",
+      "url": "https://github.com/yashdagar/zomato-prep-fork/commit/f15818cb6aae1f59861344296d1c77ba60160ede",
       "language": "Go",
       "at": "2026-10-25T11:09:28Z"
     },
@@ -672,12 +802,32 @@
       "at": "2026-10-22T10:43:20Z"
     },
     {
+      "id": "15c52a91f235",
+      "visibility": "public",
+      "kind": "other",
+      "message": "Type the caught errors in the ApiClient tests",
+      "repo": "yashdagar/zomato-prep-fork",
+      "url": "https://github.com/yashdagar/zomato-prep-fork/commit/15c52a91f235dc09551b44c048618472afe1b198",
+      "language": "Go",
+      "at": "2026-10-22T10:43:20Z"
+    },
+    {
       "id": "d7890c428549",
       "visibility": "public",
       "kind": "test",
       "message": "Tests for every step of the Zomato prep plan",
       "repo": "yashdagar/zomato-prep",
       "url": "https://github.com/yashdagar/zomato-prep/commit/d7890c428549f42f6f4ec07b9cd95152db434495",
+      "language": "Go",
+      "at": "2026-10-22T10:41:40Z"
+    },
+    {
+      "id": "d7890c428549",
+      "visibility": "public",
+      "kind": "test",
+      "message": "Tests for every step of the Zomato prep plan",
+      "repo": "yashdagar/zomato-prep-fork",
+      "url": "https://github.com/yashdagar/zomato-prep-fork/commit/d7890c428549f42f6f4ec07b9cd95152db434495",
       "language": "Go",
       "at": "2026-10-22T10:41:40Z"
     },
@@ -1850,160 +2000,10 @@
       "url": "https://github.com/yashdagar/self-improving-rag/commit/525faf1b1d187b87f1715693e04f9f1934b78fcf",
       "language": "Python",
       "at": "2026-10-02T10:30:26Z"
-    },
-    {
-      "id": "df92c1c6e592",
-      "visibility": "public",
-      "kind": "feat",
-      "message": "feat(adaptation): adapt ranking weights from evaluation and feedback",
-      "repo": "yashdagar/self-improving-rag",
-      "url": "https://github.com/yashdagar/self-improving-rag/commit/df92c1c6e592599447c45798fa1c0b1f8d49cf29",
-      "language": "Python",
-      "at": "2026-10-02T08:26:33Z"
-    },
-    {
-      "id": "ece450c51e01",
-      "visibility": "public",
-      "kind": "feat",
-      "message": "feat(evaluation): add llm-judged self-evaluation with traceable scores",
-      "repo": "yashdagar/self-improving-rag",
-      "url": "https://github.com/yashdagar/self-improving-rag/commit/ece450c51e016951efc4f6465e8700381bd9b67d",
-      "language": "Python",
-      "at": "2026-10-02T08:25:02Z"
-    },
-    {
-      "id": "4dac925b528e",
-      "visibility": "public",
-      "kind": "feat",
-      "message": "feat(llm): add grounded answer generation with citation mapping",
-      "repo": "yashdagar/self-improving-rag",
-      "url": "https://github.com/yashdagar/self-improving-rag/commit/4dac925b528ee207218c714ec18776bf88d9fb61",
-      "language": "Python",
-      "at": "2026-10-02T08:23:13Z"
-    },
-    {
-      "id": "37948edf327d",
-      "visibility": "public",
-      "kind": "feat",
-      "message": "feat(ranking): scope learned weights and signals per experiment run",
-      "repo": "yashdagar/self-improving-rag",
-      "url": "https://github.com/yashdagar/self-improving-rag/commit/37948edf327d33011376c745f2ce6de2e15d4191",
-      "language": "Python",
-      "at": "2026-10-02T08:23:12Z"
-    },
-    {
-      "id": "50e7ba0c7faf",
-      "visibility": "public",
-      "kind": "feat",
-      "message": "feat(ranking): add hybrid semantic, recency and feedback ranking",
-      "repo": "yashdagar/self-improving-rag",
-      "url": "https://github.com/yashdagar/self-improving-rag/commit/50e7ba0c7faff697bcc42dab1f8f41e82a994e4d",
-      "language": "Python",
-      "at": "2026-10-01T21:11:34Z"
-    },
-    {
-      "id": "c12f3cee5d75",
-      "visibility": "public",
-      "kind": "fix",
-      "message": "fix(pdf): drop bibliography blocks when references heading is missed",
-      "repo": "yashdagar/self-improving-rag",
-      "url": "https://github.com/yashdagar/self-improving-rag/commit/c12f3cee5d7598fbe4b5e44750845024c051a576",
-      "language": "Python",
-      "at": "2026-10-01T21:11:34Z"
-    },
-    {
-      "id": "896bebdfb032",
-      "visibility": "public",
-      "kind": "feat",
-      "message": "feat(embeddings): index chunks in chromadb with sentence-transformers",
-      "repo": "yashdagar/self-improving-rag",
-      "url": "https://github.com/yashdagar/self-improving-rag/commit/896bebdfb032e2800d68aaf03505877af4dbc4fc",
-      "language": "Python",
-      "at": "2026-10-01T21:07:31Z"
-    },
-    {
-      "id": "3e32fc193991",
-      "visibility": "public",
-      "kind": "feat",
-      "message": "feat(pdf): add pdf download, section-aware extraction and chunking",
-      "repo": "yashdagar/self-improving-rag",
-      "url": "https://github.com/yashdagar/self-improving-rag/commit/3e32fc193991412577be9cd9e6ffe8d0db38bc0c",
-      "language": "Python",
-      "at": "2026-10-01T21:00:48Z"
-    },
-    {
-      "id": "fe7e76d5d2b0",
-      "visibility": "public",
-      "kind": "feat",
-      "message": "feat(arxiv): add live arxiv search with keyword analysis and caching",
-      "repo": "yashdagar/self-improving-rag",
-      "url": "https://github.com/yashdagar/self-improving-rag/commit/fe7e76d5d2b0aea4cc21d2992a2cd1727a71ee68",
-      "language": "Python",
-      "at": "2026-10-01T20:54:17Z"
-    },
-    {
-      "id": "64a4c9d9e559",
-      "visibility": "public",
-      "kind": "feat",
-      "message": "feat(frontend): show stored weights and database counts",
-      "repo": "yashdagar/self-improving-rag",
-      "url": "https://github.com/yashdagar/self-improving-rag/commit/64a4c9d9e559376c5a422630770c6657fb05bf45",
-      "language": "Python",
-      "at": "2026-10-01T19:41:48Z"
-    },
-    {
-      "id": "3aa8bb7b41d8",
-      "visibility": "public",
-      "kind": "feat",
-      "message": "feat(api): add query, paper, feedback, metrics and history endpoints",
-      "repo": "yashdagar/self-improving-rag",
-      "url": "https://github.com/yashdagar/self-improving-rag/commit/3aa8bb7b41d8528fa55121b23ef85416db981573",
-      "language": "Python",
-      "at": "2026-10-01T19:41:48Z"
-    },
-    {
-      "id": "c7407c98730f",
-      "visibility": "public",
-      "kind": "feat",
-      "message": "feat(db): add models for papers, queries, evaluations and weights",
-      "repo": "yashdagar/self-improving-rag",
-      "url": "https://github.com/yashdagar/self-improving-rag/commit/c7407c98730fbc2086a9b4c11cca837e4368493d",
-      "language": "Python",
-      "at": "2026-10-01T19:41:48Z"
-    },
-    {
-      "id": "2824a0f09354",
-      "visibility": "public",
-      "kind": "chore",
-      "message": "chore: enforce conventional commits and comment-free source",
-      "repo": "yashdagar/self-improving-rag",
-      "url": "https://github.com/yashdagar/self-improving-rag/commit/2824a0f09354d5e82570e9261c65ce2c16c3ebc6",
-      "language": "Python",
-      "at": "2026-10-01T19:39:33Z"
-    },
-    {
-      "id": "556b9aa93051",
-      "visibility": "public",
-      "kind": "chore",
-      "message": "chore: scaffold fastapi backend, react dashboard and project tooling",
-      "repo": "yashdagar/self-improving-rag",
-      "url": "https://github.com/yashdagar/self-improving-rag/commit/556b9aa9305148418103c06f3209ccf5f80775ec",
-      "language": "Python",
-      "at": "2026-10-01T19:39:32Z"
-    },
-    {
-      "id": "d84b677aa0c8",
-      "visibility": "personal",
-      "kind": "chore",
-      "message": "chore: add commit author rewrite script",
-      "repo": "yashdagar/fireflies-clone",
-      "url": "https://github.com/yashdagar/fireflies-clone/commit/d84b677aa0c8c5056f7b901eb4b852ae6831fe29",
-      "language": "TypeScript",
-      "at": "2026-09-26T05:03:16Z"
     }
   ],
   "totals": {
-    "year": 447,
-    "streak": 0
+    "year": 462,
+    "streak": 8
   }
 }
