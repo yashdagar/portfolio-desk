@@ -1,6 +1,86 @@
 {
-  "generatedAt": "2026-11-04T08:17:53.847Z",
+  "generatedAt": "2026-11-04T16:23:33.208Z",
   "commits": [
+    {
+      "id": "eab07d97e4ed",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Start the course from the Week 1 overview instead of the first lesson",
+      "repo": "yashdagar/portfolio-3d",
+      "url": "https://github.com/yashdagar/portfolio-3d/commit/eab07d97e4edc3cb59b7bdb860c69245b89b5499",
+      "language": "TypeScript",
+      "at": "2026-11-04T12:37:19Z"
+    },
+    {
+      "id": "5119038e2550",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Share the section hash across the landing, overview and lesson pages",
+      "repo": "yashdagar/portfolio-3d",
+      "url": "https://github.com/yashdagar/portfolio-3d/commit/5119038e2550c9ed2a6c340b1d9e5a3b0ec72614",
+      "language": "TypeScript",
+      "at": "2026-11-04T12:37:19Z"
+    },
+    {
+      "id": "471673feaab9",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Remove the author name from the course and fix dark-theme card shadows",
+      "repo": "yashdagar/portfolio-3d",
+      "url": "https://github.com/yashdagar/portfolio-3d/commit/471673feaab92fa39bbd95eab34d21b5cc4628be",
+      "language": "TypeScript",
+      "at": "2026-11-04T12:14:15Z"
+    },
+    {
+      "id": "ecbb51e5e3f4",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Give the link preview banner and icons the dark course design",
+      "repo": "yashdagar/portfolio-3d",
+      "url": "https://github.com/yashdagar/portfolio-3d/commit/ecbb51e5e3f4fc718aa4fa5cb70678089b7101b0",
+      "language": "TypeScript",
+      "at": "2026-11-04T12:14:15Z"
+    },
+    {
+      "id": "4f70ddbf6905",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Keep the current lesson section in the URL hash",
+      "repo": "yashdagar/portfolio-3d",
+      "url": "https://github.com/yashdagar/portfolio-3d/commit/4f70ddbf6905d0b0fe2b04ea839ad099cdcf1fe1",
+      "language": "TypeScript",
+      "at": "2026-11-04T08:59:03Z"
+    },
+    {
+      "id": "9f9c7eedfa77",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Remove shortcut badges from the course header and reword the search placeholder",
+      "repo": "yashdagar/portfolio-3d",
+      "url": "https://github.com/yashdagar/portfolio-3d/commit/9f9c7eedfa772a276e575c2bd991774a40e18b39",
+      "language": "TypeScript",
+      "at": "2026-11-04T08:59:03Z"
+    },
+    {
+      "id": "c1ddff70ae0d",
+      "visibility": "public",
+      "kind": "other",
+      "message": "Run only lint in CI so unsolved code does not fail it",
+      "repo": "yashdagar/zomato-prep",
+      "url": "https://github.com/yashdagar/zomato-prep/commit/c1ddff70ae0d9aaadb979951def7d5e5af4c2fde",
+      "language": "Go",
+      "at": "2026-11-04T06:52:18Z"
+    },
+    {
+      "id": "b42216dda34a",
+      "visibility": "public",
+      "kind": "other",
+      "message": "Remove the migrations that were committed by mistake",
+      "repo": "yashdagar/zomato-prep",
+      "url": "https://github.com/yashdagar/zomato-prep/commit/b42216dda34a7f7a013c5d7bf0ee581e0a20ad32",
+      "language": "Go",
+      "at": "2026-11-04T06:40:01Z"
+    },
     {
       "id": "ec62888fcc65",
       "visibility": "public",
@@ -30,6 +110,96 @@
       "url": "https://github.com/yashdagar/portfolio-3d/commit/92ef36fbc16acffcf9d41574abc320a21a1026ec",
       "language": "TypeScript",
       "at": "2026-11-04T02:28:36Z"
+    },
+    {
+      "id": "93accd07bbd1",
+      "visibility": "public",
+      "kind": "other",
+      "message": "Remove leaked Week 5 solution code and keep the Week 6 httpx test out of lint",
+      "repo": "yashdagar/zomato-prep",
+      "url": "https://github.com/yashdagar/zomato-prep/commit/93accd07bbd1d16c4263032ba0c5aa0efcd68ae3",
+      "language": "Go",
+      "at": "2026-11-04T02:25:01Z"
+    },
+    {
+      "id": "4bb7de053319",
+      "visibility": "public",
+      "kind": "other",
+      "message": "Merge w8-content",
+      "repo": "yashdagar/zomato-prep",
+      "url": "https://github.com/yashdagar/zomato-prep/commit/4bb7de053319986de0b75f43fffaddd8b6e4db4e",
+      "language": "Go",
+      "at": "2026-11-04T02:19:11Z"
+    },
+    {
+      "id": "101ae746bfd0",
+      "visibility": "public",
+      "kind": "other",
+      "message": "Merge w7-content",
+      "repo": "yashdagar/zomato-prep",
+      "url": "https://github.com/yashdagar/zomato-prep/commit/101ae746bfd0e27c8a499bfe1246f50bc71e2ad8",
+      "language": "Go",
+      "at": "2026-11-04T02:19:11Z"
+    },
+    {
+      "id": "c0d4fe75be2d",
+      "visibility": "public",
+      "kind": "other",
+      "message": "Merge w6-content",
+      "repo": "yashdagar/zomato-prep",
+      "url": "https://github.com/yashdagar/zomato-prep/commit/c0d4fe75be2d4d96a4bcb7e243ddb23dfcef2849",
+      "language": "Go",
+      "at": "2026-11-04T02:19:11Z"
+    },
+    {
+      "id": "cdb622ab48f5",
+      "visibility": "public",
+      "kind": "other",
+      "message": "Merge w5-content",
+      "repo": "yashdagar/zomato-prep",
+      "url": "https://github.com/yashdagar/zomato-prep/commit/cdb622ab48f5978b248f4d99c2d916656249514a",
+      "language": "Go",
+      "at": "2026-11-04T02:19:11Z"
+    },
+    {
+      "id": "9193542678f7",
+      "visibility": "public",
+      "kind": "test",
+      "message": "test(w8): add Week 8 tests for exercises and optional extras",
+      "repo": "yashdagar/zomato-prep",
+      "url": "https://github.com/yashdagar/zomato-prep/commit/9193542678f7eccdc27b4d5056ab625e5d8a33f1",
+      "language": "Go",
+      "at": "2026-11-04T02:18:58Z"
+    },
+    {
+      "id": "b347a7133d81",
+      "visibility": "public",
+      "kind": "test",
+      "message": "test(w7): add Week 7 tests for exercises and optional extras",
+      "repo": "yashdagar/zomato-prep",
+      "url": "https://github.com/yashdagar/zomato-prep/commit/b347a7133d81797e09c63142d888b0485c16bf5d",
+      "language": "Go",
+      "at": "2026-11-04T02:18:58Z"
+    },
+    {
+      "id": "f40be4127e23",
+      "visibility": "public",
+      "kind": "test",
+      "message": "test(w6): add Week 6 tests for exercises and optional extras",
+      "repo": "yashdagar/zomato-prep",
+      "url": "https://github.com/yashdagar/zomato-prep/commit/f40be4127e23915648927008df6fee9f03e21835",
+      "language": "Go",
+      "at": "2026-11-04T02:18:58Z"
+    },
+    {
+      "id": "52e99d2b3e76",
+      "visibility": "public",
+      "kind": "test",
+      "message": "test(w5): add Week 5 tests for exercises and optional extras",
+      "repo": "yashdagar/zomato-prep",
+      "url": "https://github.com/yashdagar/zomato-prep/commit/52e99d2b3e76eee1649680da7d5663cf622a4186",
+      "language": "Go",
+      "at": "2026-11-04T02:18:58Z"
     },
     {
       "id": "e4c6c3d8f4d5",
@@ -1830,180 +2000,10 @@
       "url": "https://github.com/yashdagar/self-improving-rag/commit/ecdae1a1d82e3e614fb35f1601aa5fbc8d9d4756",
       "language": "Python",
       "at": "2026-10-02T14:33:48Z"
-    },
-    {
-      "id": "7c0a8699afeb",
-      "visibility": "public",
-      "kind": "fix",
-      "message": "fix(config): treat empty env values as unset",
-      "repo": "yashdagar/self-improving-rag",
-      "url": "https://github.com/yashdagar/self-improving-rag/commit/7c0a8699afebda1fd4f07339f131b8107cf010b3",
-      "language": "Python",
-      "at": "2026-10-02T14:33:48Z"
-    },
-    {
-      "id": "c95d47346c0e",
-      "visibility": "public",
-      "kind": "feat",
-      "message": "feat(llm): allow a separate provider and key for the evaluator",
-      "repo": "yashdagar/self-improving-rag",
-      "url": "https://github.com/yashdagar/self-improving-rag/commit/c95d47346c0e0c9af1033369a649efc1e3c272ae",
-      "language": "Python",
-      "at": "2026-10-02T14:31:30Z"
-    },
-    {
-      "id": "de9d993dc640",
-      "visibility": "public",
-      "kind": "docs",
-      "message": "docs(experiments): add results of the qwen2.5 7b 24-question run",
-      "repo": "yashdagar/self-improving-rag",
-      "url": "https://github.com/yashdagar/self-improving-rag/commit/de9d993dc640cf013a13452f52bba11f52c2e4d8",
-      "language": "Python",
-      "at": "2026-10-02T14:25:51Z"
-    },
-    {
-      "id": "d1b08b9d34fd",
-      "visibility": "public",
-      "kind": "fix",
-      "message": "fix(experiments): label the frozen test phase in the weights table",
-      "repo": "yashdagar/self-improving-rag",
-      "url": "https://github.com/yashdagar/self-improving-rag/commit/d1b08b9d34fd260355dd1a28736c054e8eb5dd24",
-      "language": "Python",
-      "at": "2026-10-02T14:25:51Z"
-    },
-    {
-      "id": "26e9371d4ea0",
-      "visibility": "public",
-      "kind": "build",
-      "message": "build(dev): make the backend port configurable for scripts and proxy",
-      "repo": "yashdagar/self-improving-rag",
-      "url": "https://github.com/yashdagar/self-improving-rag/commit/26e9371d4ea02e4d92a430849bb822031c048739",
-      "language": "Python",
-      "at": "2026-10-02T12:01:18Z"
-    },
-    {
-      "id": "5b8c000ddefc",
-      "visibility": "public",
-      "kind": "feat",
-      "message": "feat(frontend): add improvement history and experiment comparison pages",
-      "repo": "yashdagar/self-improving-rag",
-      "url": "https://github.com/yashdagar/self-improving-rag/commit/5b8c000ddefc7bbebb3bf943fec3dc64344008f3",
-      "language": "Python",
-      "at": "2026-10-02T12:00:25Z"
-    },
-    {
-      "id": "54c7d64d7eec",
-      "visibility": "public",
-      "kind": "feat",
-      "message": "feat(frontend): add research view with cited answers, evidence and feedback",
-      "repo": "yashdagar/self-improving-rag",
-      "url": "https://github.com/yashdagar/self-improving-rag/commit/54c7d64d7eec0801afde52c9703d40f90221d6a7",
-      "language": "Python",
-      "at": "2026-10-02T12:00:11Z"
-    },
-    {
-      "id": "60d79d6ffe08",
-      "visibility": "public",
-      "kind": "feat",
-      "message": "feat(frontend): add svg chart primitives and formatting helpers",
-      "repo": "yashdagar/self-improving-rag",
-      "url": "https://github.com/yashdagar/self-improving-rag/commit/60d79d6ffe083173fb18120adb9aaa9119ad4f9e",
-      "language": "Python",
-      "at": "2026-10-02T12:00:02Z"
-    },
-    {
-      "id": "2979cd0bf593",
-      "visibility": "public",
-      "kind": "ci",
-      "message": "ci: move actions off the deprecated node 20 runtime",
-      "repo": "yashdagar/self-improving-rag",
-      "url": "https://github.com/yashdagar/self-improving-rag/commit/2979cd0bf59361c4990d25d02f07c977521c8873",
-      "language": "Python",
-      "at": "2026-10-02T10:49:55Z"
-    },
-    {
-      "id": "25cd704fe05a",
-      "visibility": "public",
-      "kind": "ci",
-      "message": "ci: run tests, frontend build and commit message checks",
-      "repo": "yashdagar/self-improving-rag",
-      "url": "https://github.com/yashdagar/self-improving-rag/commit/25cd704fe05a99f41f854612c27888fba5aa0079",
-      "language": "Python",
-      "at": "2026-10-02T10:47:41Z"
-    },
-    {
-      "id": "4b1a255b1c94",
-      "visibility": "public",
-      "kind": "docs",
-      "message": "docs: document pipeline, learning mechanism, experiments and api",
-      "repo": "yashdagar/self-improving-rag",
-      "url": "https://github.com/yashdagar/self-improving-rag/commit/4b1a255b1c944fd5500586520f8579d7ab72fa72",
-      "language": "Python",
-      "at": "2026-10-02T10:47:20Z"
-    },
-    {
-      "id": "ff84654c1d96",
-      "visibility": "public",
-      "kind": "build",
-      "message": "build(docker): use cpu torch, cache models and reach host llm",
-      "repo": "yashdagar/self-improving-rag",
-      "url": "https://github.com/yashdagar/self-improving-rag/commit/ff84654c1d96f2dc20246e99c04e56348b32ea30",
-      "language": "Python",
-      "at": "2026-10-02T10:46:03Z"
-    },
-    {
-      "id": "a7081bcf791a",
-      "visibility": "public",
-      "kind": "fix",
-      "message": "fix(arxiv): keep state as a search keyword",
-      "repo": "yashdagar/self-improving-rag",
-      "url": "https://github.com/yashdagar/self-improving-rag/commit/a7081bcf791a1a22aed012c67a09a9886fd60a79",
-      "language": "Python",
-      "at": "2026-10-02T10:45:52Z"
-    },
-    {
-      "id": "e76ede99e2ab",
-      "visibility": "public",
-      "kind": "feat",
-      "message": "feat(experiments): add charts and report with paired bootstrap intervals",
-      "repo": "yashdagar/self-improving-rag",
-      "url": "https://github.com/yashdagar/self-improving-rag/commit/e76ede99e2aba2da35f0f1ca748236654418fe0c",
-      "language": "Python",
-      "at": "2026-10-02T10:45:30Z"
-    },
-    {
-      "id": "b8fe246983bd",
-      "visibility": "public",
-      "kind": "feat",
-      "message": "feat(experiments): add experiment runner and per-cycle comparison api",
-      "repo": "yashdagar/self-improving-rag",
-      "url": "https://github.com/yashdagar/self-improving-rag/commit/b8fe246983bd355c7d495a9a86b520c9d60314af",
-      "language": "Python",
-      "at": "2026-10-02T10:42:30Z"
-    },
-    {
-      "id": "b3009bd02eea",
-      "visibility": "public",
-      "kind": "refactor",
-      "message": "refactor(pipeline): make evaluation and adaptation explicit with a learn flag",
-      "repo": "yashdagar/self-improving-rag",
-      "url": "https://github.com/yashdagar/self-improving-rag/commit/b3009bd02eea874f4cf7177cc3b7fe2ff7240483",
-      "language": "Python",
-      "at": "2026-10-02T10:38:58Z"
-    },
-    {
-      "id": "525faf1b1d18",
-      "visibility": "public",
-      "kind": "fix",
-      "message": "fix(arxiv): back off exponentially and honour retry-after on rate limits",
-      "repo": "yashdagar/self-improving-rag",
-      "url": "https://github.com/yashdagar/self-improving-rag/commit/525faf1b1d187b87f1715693e04f9f1934b78fcf",
-      "language": "Python",
-      "at": "2026-10-02T10:30:26Z"
     }
   ],
   "totals": {
-    "year": 462,
+    "year": 479,
     "streak": 8
   }
 }
