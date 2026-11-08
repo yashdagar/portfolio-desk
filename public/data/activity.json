@@ -1,6 +1,73 @@
 {
-  "generatedAt": "2026-11-08T02:00:09.425Z",
+  "generatedAt": "2026-11-08T08:41:03.082Z",
   "commits": [
+    {
+      "id": "a8902be9261b",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Align FAQ CPU target with budget",
+      "repo": "yashdagar/weathers-in-mac",
+      "url": "https://github.com/yashdagar/weathers-in-mac/commit/a8902be9261bcec76277223d3d80e4ea0b86e5a8",
+      "at": "2026-11-08T07:14:23Z"
+    },
+    {
+      "id": "e2242a543bd7",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "Add asset options, generation prompts and lean stack decision",
+      "repo": "yashdagar/weathers-in-mac",
+      "url": "https://github.com/yashdagar/weathers-in-mac/commit/e2242a543bd71be0d72442111b3ca932eecb8b08",
+      "at": "2026-11-08T07:14:18Z"
+    },
+    {
+      "id": "5fa0e41983b4",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "Add product README and winter design blueprint",
+      "repo": "yashdagar/weathers-in-mac",
+      "url": "https://github.com/yashdagar/weathers-in-mac/commit/5fa0e41983b4e8bd3f98653be69401e302962f69",
+      "at": "2026-11-08T06:38:51Z"
+    },
+    {
+      "id": "af3a17eccb32",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "feat(restaurant): add nearby listing and menu endpoints",
+      "repo": "yashdagar/zomato-prep-work",
+      "url": "https://github.com/yashdagar/zomato-prep-work/commit/af3a17eccb32c64d0c1eba952f4e28b0550eb1cd",
+      "language": "Go",
+      "at": "2026-11-08T05:38:28Z"
+    },
+    {
+      "id": "5e8d9b1b9c2c",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "feat(seed): seed 50 restaurants and one full menu",
+      "repo": "yashdagar/zomato-prep-work",
+      "url": "https://github.com/yashdagar/zomato-prep-work/commit/5e8d9b1b9c2c7b02f93c24c7ad3924f33ab0c7dd",
+      "language": "Go",
+      "at": "2026-11-08T05:38:15Z"
+    },
+    {
+      "id": "b86636a545d2",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "feat(db):add sqlc restaurant and menu queries",
+      "repo": "yashdagar/zomato-prep-work",
+      "url": "https://github.com/yashdagar/zomato-prep-work/commit/b86636a545d296f95ce12719d6ec86730d89de0e",
+      "language": "Go",
+      "at": "2026-11-08T05:37:59Z"
+    },
+    {
+      "id": "6b3b8d74edf1",
+      "visibility": "personal",
+      "kind": "fix",
+      "message": "fix(db): store option group limits as unsigned tinyint",
+      "repo": "yashdagar/zomato-prep-work",
+      "url": "https://github.com/yashdagar/zomato-prep-work/commit/6b3b8d74edf11cc27a8de0ff154f86de3be14d70",
+      "language": "Go",
+      "at": "2026-11-08T05:37:12Z"
+    },
     {
       "id": "49c670eba93a",
       "visibility": "personal",
@@ -382,16 +449,6 @@
       "at": "2026-11-02T03:45:43Z"
     },
     {
-      "id": "7d38e58af2cd",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Give the course its own metadata, share image, icons and manifest",
-      "repo": "yashdagar/portfolio-3d",
-      "url": "https://github.com/yashdagar/portfolio-3d/commit/7d38e58af2cd3cd8b9cceb23752a42c7f9ca66f8",
-      "language": "TypeScript",
-      "at": "2026-11-02T03:45:42Z"
-    },
-    {
       "id": "1a570d14d153",
       "visibility": "personal",
       "kind": "test",
@@ -399,6 +456,16 @@
       "repo": "yashdagar/zomato-prep-work",
       "url": "https://github.com/yashdagar/zomato-prep-work/commit/1a570d14d1534e36c6b7299d2d794361b455d69c",
       "language": "Go",
+      "at": "2026-11-02T03:45:42Z"
+    },
+    {
+      "id": "7d38e58af2cd",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Give the course its own metadata, share image, icons and manifest",
+      "repo": "yashdagar/portfolio-3d",
+      "url": "https://github.com/yashdagar/portfolio-3d/commit/7d38e58af2cd3cd8b9cceb23752a42c7f9ca66f8",
+      "language": "TypeScript",
       "at": "2026-11-02T03:45:42Z"
     },
     {
@@ -1930,80 +1997,10 @@
       "url": "https://github.com/yashdagar/portfolio-3d/commit/1545289a6180af1b17104fbca2bb0617a602fb77",
       "language": "TypeScript",
       "at": "2026-10-05T18:56:21Z"
-    },
-    {
-      "id": "00e368a22393",
-      "visibility": "personal",
-      "kind": "feat",
-      "message": "Add private /jobs dashboard",
-      "repo": "yashdagar/portfolio-3d",
-      "url": "https://github.com/yashdagar/portfolio-3d/commit/00e368a22393e221e858fd465e411efe2ba220e2",
-      "language": "TypeScript",
-      "at": "2026-10-05T18:20:32Z"
-    },
-    {
-      "id": "0c795341213e",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "job-mailer: jh pipeline CLI, APPLY/CLAUDE/README",
-      "repo": "yashdagar/my-configs",
-      "url": "https://github.com/yashdagar/my-configs/commit/0c795341213e69788a69f4970fb1a761735502ec",
-      "language": "Python",
-      "at": "2026-10-05T17:38:10Z"
-    },
-    {
-      "id": "d0acb65afc6f",
-      "visibility": "personal",
-      "kind": "feat",
-      "message": "Add jh pipeline CLI, quickmail, templates, APPLY/CLAUDE/README, leads and logs",
-      "repo": "yashdagar/job-hunt",
-      "url": "https://github.com/yashdagar/job-hunt/commit/d0acb65afc6f45397eda496bb34522c97a1f4103",
-      "language": "HTML",
-      "at": "2026-10-05T17:38:05Z"
-    },
-    {
-      "id": "564912a47fba",
-      "visibility": "personal",
-      "kind": "feat",
-      "message": "Add job-mailer (qm quick cold-email script) and zshrc alias",
-      "repo": "yashdagar/my-configs",
-      "url": "https://github.com/yashdagar/my-configs/commit/564912a47fba4a91e82d7a976a76ea9f9997268f",
-      "language": "Python",
-      "at": "2026-10-05T17:34:18Z"
-    },
-    {
-      "id": "98a6be119a06",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Rebuild resume PDF from tex, log deploy",
-      "repo": "yashdagar/job-hunt",
-      "url": "https://github.com/yashdagar/job-hunt/commit/98a6be119a064ddf5a9e6034fc87da8d7e029f34",
-      "language": "HTML",
-      "at": "2026-10-05T15:14:52Z"
-    },
-    {
-      "id": "6ceac7a54e20",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Update resume.pdf",
-      "repo": "yashdagar/portfolio-3d",
-      "url": "https://github.com/yashdagar/portfolio-3d/commit/6ceac7a54e20133294eea6dabbab8d94670dddd8",
-      "language": "TypeScript",
-      "at": "2026-10-05T15:10:35Z"
-    },
-    {
-      "id": "cb24bac01f18",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Claude Code history snapshot",
-      "repo": "yashdagar/claude-backup",
-      "url": "https://github.com/yashdagar/claude-backup/commit/cb24bac01f18ee2cac1c7071044223fc37f1e08c",
-      "language": "Python",
-      "at": "2026-10-05T14:36:02Z"
     }
   ],
   "totals": {
-    "year": 497,
-    "streak": 0
+    "year": 504,
+    "streak": 1
   }
 }
