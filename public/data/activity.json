@@ -1,6 +1,42 @@
 {
-  "generatedAt": "2026-11-08T08:41:03.082Z",
+  "generatedAt": "2026-11-08T15:34:41.529Z",
   "commits": [
+    {
+      "id": "68c1a998fdf1",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Make icon snow fully opaque",
+      "repo": "yashdagar/weathers-in-mac",
+      "url": "https://github.com/yashdagar/weathers-in-mac/commit/68c1a998fdf13b7ecf0149a365a423eba0d658a9",
+      "at": "2026-11-08T10:07:39Z"
+    },
+    {
+      "id": "e23273dcb0d4",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Use the snowman ball style for snowballs",
+      "repo": "yashdagar/weathers-in-mac",
+      "url": "https://github.com/yashdagar/weathers-in-mac/commit/e23273dcb0d4ee75940276b9b7b5f443887dffa4",
+      "at": "2026-11-08T10:05:00Z"
+    },
+    {
+      "id": "1dfd641b3de6",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Lock chosen assets, redo snowballs, soften Santa, add icon variations",
+      "repo": "yashdagar/weathers-in-mac",
+      "url": "https://github.com/yashdagar/weathers-in-mac/commit/1dfd641b3de6c94b7d3b71266c94e28265a0e74e",
+      "at": "2026-11-08T09:53:09Z"
+    },
+    {
+      "id": "72190f0f753d",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Revise window snow, snowballs, splat, Santa, frost and icon",
+      "repo": "yashdagar/weathers-in-mac",
+      "url": "https://github.com/yashdagar/weathers-in-mac/commit/72190f0f753d4525ceb1a4654574456ca9b6b13a",
+      "at": "2026-11-08T09:43:10Z"
+    },
     {
       "id": "a8902be9261b",
       "visibility": "personal",
@@ -1957,50 +1993,10 @@
       "url": "https://github.com/yashdagar/datecrew-match-check/commit/4ada879a5b08d5a817fdde33664c894aefb1143e",
       "language": "HTML",
       "at": "2026-10-06T07:50:54Z"
-    },
-    {
-      "id": "24ef6cd4ac7f",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Update global CLAUDE.md and job-mailer CLAUDE.md",
-      "repo": "yashdagar/my-configs",
-      "url": "https://github.com/yashdagar/my-configs/commit/24ef6cd4ac7f3cf7775aa021752b10b835360a49",
-      "language": "Python",
-      "at": "2026-10-06T06:47:06Z"
-    },
-    {
-      "id": "cf502f9ffdfd",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Jobs page: count emailed applications, show watchlist notes",
-      "repo": "yashdagar/portfolio-3d",
-      "url": "https://github.com/yashdagar/portfolio-3d/commit/cf502f9ffdfd3f12d3c309b17468630aa025f90f",
-      "language": "TypeScript",
-      "at": "2026-10-05T22:22:59Z"
-    },
-    {
-      "id": "cc0f2c94c937",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Read dashboard credentials at runtime in middleware",
-      "repo": "yashdagar/portfolio-3d",
-      "url": "https://github.com/yashdagar/portfolio-3d/commit/cc0f2c94c9374bea2cdd26e668dd3cf506665a5f",
-      "language": "TypeScript",
-      "at": "2026-10-05T19:18:25Z"
-    },
-    {
-      "id": "1545289a6180",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Redeploy for /jobs env vars",
-      "repo": "yashdagar/portfolio-3d",
-      "url": "https://github.com/yashdagar/portfolio-3d/commit/1545289a6180af1b17104fbca2bb0617a602fb77",
-      "language": "TypeScript",
-      "at": "2026-10-05T18:56:21Z"
     }
   ],
   "totals": {
-    "year": 504,
+    "year": 508,
     "streak": 1
   }
 }
