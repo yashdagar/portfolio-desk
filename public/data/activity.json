@@ -1,6 +1,16 @@
 {
-  "generatedAt": "2026-11-09T10:36:23.871Z",
+  "generatedAt": "2026-11-09T21:01:57.231Z",
   "commits": [
+    {
+      "id": "ec800bf56708",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "Add quiz review with confidence, variants and a skill roadmap",
+      "repo": "yashdagar/portfolio-3d",
+      "url": "https://github.com/yashdagar/portfolio-3d/commit/ec800bf567084da6ae851c1172edf4e36e619dd7",
+      "language": "TypeScript",
+      "at": "2026-11-09T17:56:15Z"
+    },
     {
       "id": "aa67ddb62cda",
       "visibility": "public",
@@ -595,16 +605,6 @@
       "at": "2026-11-02T03:45:43Z"
     },
     {
-      "id": "1a570d14d153",
-      "visibility": "public",
-      "kind": "test",
-      "message": "test(w1): add build-tagged tests for the optional rate limiter extras",
-      "repo": "yashdagar/zomato-prep",
-      "url": "https://github.com/yashdagar/zomato-prep/commit/1a570d14d1534e36c6b7299d2d794361b455d69c",
-      "language": "Go",
-      "at": "2026-11-02T03:45:42Z"
-    },
-    {
       "id": "7d38e58af2cd",
       "visibility": "personal",
       "kind": "other",
@@ -612,6 +612,16 @@
       "repo": "yashdagar/portfolio-3d",
       "url": "https://github.com/yashdagar/portfolio-3d/commit/7d38e58af2cd3cd8b9cceb23752a42c7f9ca66f8",
       "language": "TypeScript",
+      "at": "2026-11-02T03:45:42Z"
+    },
+    {
+      "id": "1a570d14d153",
+      "visibility": "public",
+      "kind": "test",
+      "message": "test(w1): add build-tagged tests for the optional rate limiter extras",
+      "repo": "yashdagar/zomato-prep",
+      "url": "https://github.com/yashdagar/zomato-prep/commit/1a570d14d1534e36c6b7299d2d794361b455d69c",
+      "language": "Go",
       "at": "2026-11-02T03:45:42Z"
     },
     {
@@ -1983,20 +1993,10 @@
       "url": "https://github.com/yashdagar/portfolio-3d/commit/ddc821f565095e55aa75e2f79fdc9e9cc5870e50",
       "language": "TypeScript",
       "at": "2026-10-09T16:18:17Z"
-    },
-    {
-      "id": "f82f83ceea0b",
-      "visibility": "personal",
-      "kind": "feat",
-      "message": "Add Google Calendar style events calendar to the jobs page",
-      "repo": "yashdagar/portfolio-3d",
-      "url": "https://github.com/yashdagar/portfolio-3d/commit/f82f83ceea0be719291f401f5e9d9a8bfc6389d7",
-      "language": "TypeScript",
-      "at": "2026-10-09T13:06:57Z"
     }
   ],
   "totals": {
-    "year": 519,
+    "year": 520,
     "streak": 2
   }
 }
