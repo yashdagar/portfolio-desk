@@ -1,6 +1,36 @@
 {
-  "generatedAt": "2026-11-10T03:35:49.999Z",
+  "generatedAt": "2026-11-10T11:42:00.005Z",
   "commits": [
+    {
+      "id": "bcd7f2eeaab5",
+      "visibility": "public",
+      "kind": "test",
+      "message": "tests: define layer contracts and the gold question set",
+      "repo": "yashdagar/the-relay",
+      "url": "https://github.com/yashdagar/the-relay/commit/bcd7f2eeaab505656825de3262ce7defe0faa66a",
+      "language": "Python",
+      "at": "2026-11-10T07:37:57Z"
+    },
+    {
+      "id": "b69b9e9f2726",
+      "visibility": "public",
+      "kind": "other",
+      "message": "library: split papers into pieces cited by section and page",
+      "repo": "yashdagar/the-relay",
+      "url": "https://github.com/yashdagar/the-relay/commit/b69b9e9f27262bb70937e9862073c62d7d18f14a",
+      "language": "Python",
+      "at": "2026-11-10T07:37:56Z"
+    },
+    {
+      "id": "ce5b45beb670",
+      "visibility": "public",
+      "kind": "chore",
+      "message": "chore: scaffold project, library papers and conventions",
+      "repo": "yashdagar/the-relay",
+      "url": "https://github.com/yashdagar/the-relay/commit/ce5b45beb670a9108a71e46e9231e2c13a41a9e0",
+      "language": "Python",
+      "at": "2026-11-10T07:37:56Z"
+    },
     {
       "id": "ec800bf56708",
       "visibility": "personal",
@@ -1963,40 +1993,10 @@
       "url": "https://github.com/yashdagar/portfolio-3d/commit/9b07b51071b756d028bf9455dd381b26040b7869",
       "language": "TypeScript",
       "at": "2026-10-09T17:05:08Z"
-    },
-    {
-      "id": "c1dd97bcaa7b",
-      "visibility": "personal",
-      "kind": "feat",
-      "message": "Add traced character SVGs with grain filter",
-      "repo": "yashdagar/portfolio-3d",
-      "url": "https://github.com/yashdagar/portfolio-3d/commit/c1dd97bcaa7ba20a01541019f9521f56f73b03aa",
-      "language": "TypeScript",
-      "at": "2026-10-09T16:55:29Z"
-    },
-    {
-      "id": "3aefcf4f09b9",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Record redesign decisions and character sheet",
-      "repo": "yashdagar/portfolio-3d",
-      "url": "https://github.com/yashdagar/portfolio-3d/commit/3aefcf4f09b92107fe978ecd135898e66cbbb524",
-      "language": "TypeScript",
-      "at": "2026-10-09T16:36:14Z"
-    },
-    {
-      "id": "ddc821f56509",
-      "visibility": "personal",
-      "kind": "feat",
-      "message": "Add redesign plan docs for the Kells theme",
-      "repo": "yashdagar/portfolio-3d",
-      "url": "https://github.com/yashdagar/portfolio-3d/commit/ddc821f565095e55aa75e2f79fdc9e9cc5870e50",
-      "language": "TypeScript",
-      "at": "2026-10-09T16:18:17Z"
     }
   ],
   "totals": {
-    "year": 520,
-    "streak": 2
+    "year": 523,
+    "streak": 3
   }
 }
