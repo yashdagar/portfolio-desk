@@ -1,6 +1,436 @@
 {
-  "generatedAt": "2026-11-11T06:26:15.762Z",
+  "generatedAt": "2026-11-11T14:41:25.589Z",
   "commits": [
+    {
+      "id": "ef9b3c8ed062",
+      "visibility": "public",
+      "kind": "other",
+      "message": "Replace the conversation export with the full session (#3)",
+      "repo": "yashdagar/the-relay",
+      "url": "https://github.com/yashdagar/the-relay/commit/ef9b3c8ed0629470b69bf75d5d91b05166c42275",
+      "language": "Python",
+      "at": "2026-11-11T13:05:50Z"
+    },
+    {
+      "id": "02f8c21f733f",
+      "visibility": "public",
+      "kind": "docs",
+      "message": "docs: replace the conversation export with the full session",
+      "repo": "yashdagar/the-relay",
+      "url": "https://github.com/yashdagar/the-relay/commit/02f8c21f733f7a1c221560493c98ecca41a70e25",
+      "language": "Python",
+      "at": "2026-11-11T13:05:43Z"
+    },
+    {
+      "id": "3c3cdc901f8c",
+      "visibility": "public",
+      "kind": "other",
+      "message": "Split injection safety from injection answer quality (#2)",
+      "repo": "yashdagar/the-relay",
+      "url": "https://github.com/yashdagar/the-relay/commit/3c3cdc901f8cdd130daae74df4b074bd08270e25",
+      "language": "Python",
+      "at": "2026-11-11T12:55:12Z"
+    },
+    {
+      "id": "27476f00c657",
+      "visibility": "public",
+      "kind": "test",
+      "message": "tests: split injection safety from injection answer quality",
+      "repo": "yashdagar/the-relay",
+      "url": "https://github.com/yashdagar/the-relay/commit/27476f00c657058bea6ec989a31ce6934dce275b",
+      "language": "Python",
+      "at": "2026-11-11T12:55:06Z"
+    },
+    {
+      "id": "4a4051edf3ba",
+      "visibility": "public",
+      "kind": "build",
+      "message": "Build, measure and write up the Relay pipeline (#1)",
+      "repo": "yashdagar/the-relay",
+      "url": "https://github.com/yashdagar/the-relay/commit/4a4051edf3ba3fb245a37dcfe40860a4112108d9",
+      "language": "Python",
+      "at": "2026-11-11T12:53:28Z"
+    },
+    {
+      "id": "802609f805dc",
+      "visibility": "public",
+      "kind": "docs",
+      "message": "docs: add the write-up, findings log and conversation export",
+      "repo": "yashdagar/the-relay",
+      "url": "https://github.com/yashdagar/the-relay/commit/802609f805dc153f7dff82a7bce6c1fd8ce79b34",
+      "language": "Python",
+      "at": "2026-11-11T12:08:31Z"
+    },
+    {
+      "id": "92a76fd2661f",
+      "visibility": "public",
+      "kind": "other",
+      "message": "results: assemble results.csv and the tables from the run manifest",
+      "repo": "yashdagar/the-relay",
+      "url": "https://github.com/yashdagar/the-relay/commit/92a76fd2661fa9438b6ca5d87e1192751cdfd78b",
+      "language": "Python",
+      "at": "2026-11-11T12:01:24Z"
+    },
+    {
+      "id": "cc4643a2fcdc",
+      "visibility": "public",
+      "kind": "other",
+      "message": "tables: take the real paced row from the default-setting run only",
+      "repo": "yashdagar/the-relay",
+      "url": "https://github.com/yashdagar/the-relay/commit/cc4643a2fcdc56bcd37ade6578e38c8e45db5183",
+      "language": "Python",
+      "at": "2026-11-11T11:55:36Z"
+    },
+    {
+      "id": "065ed8b40e74",
+      "visibility": "public",
+      "kind": "other",
+      "message": "results: add the valid load shapes and the first Table 3 runs",
+      "repo": "yashdagar/the-relay",
+      "url": "https://github.com/yashdagar/the-relay/commit/065ed8b40e7442d7cc053d4c09bf3adedd806d1a",
+      "language": "Python",
+      "at": "2026-11-11T11:54:51Z"
+    },
+    {
+      "id": "8c6fc41268d6",
+      "visibility": "public",
+      "kind": "other",
+      "message": "results: add the hybrid Table 3 run after the decide-score fix",
+      "repo": "yashdagar/the-relay",
+      "url": "https://github.com/yashdagar/the-relay/commit/8c6fc41268d68a09f2d534d472b2be9e547b1708",
+      "language": "Python",
+      "at": "2026-11-11T11:34:02Z"
+    },
+    {
+      "id": "73596fc95187",
+      "visibility": "public",
+      "kind": "other",
+      "message": "tables: assemble results.csv from a run manifest and render the tables",
+      "repo": "yashdagar/the-relay",
+      "url": "https://github.com/yashdagar/the-relay/commit/73596fc951871ad5a6c4b70afc9cfe463918e452",
+      "language": "Python",
+      "at": "2026-11-11T11:26:41Z"
+    },
+    {
+      "id": "7b4964fb9360",
+      "visibility": "public",
+      "kind": "other",
+      "message": "tables: price each request from its step trace",
+      "repo": "yashdagar/the-relay",
+      "url": "https://github.com/yashdagar/the-relay/commit/7b4964fb9360067a210e22e6965e7170c1f47ac4",
+      "language": "Python",
+      "at": "2026-11-11T11:25:54Z"
+    },
+    {
+      "id": "3399db13ff8c",
+      "visibility": "public",
+      "kind": "other",
+      "message": "pipeline: decide on the lexical score whatever the ranking method",
+      "repo": "yashdagar/the-relay",
+      "url": "https://github.com/yashdagar/the-relay/commit/3399db13ff8c84c6b25c045651f5ed42662136fe",
+      "language": "Python",
+      "at": "2026-11-11T11:25:12Z"
+    },
+    {
+      "id": "f801c66d0c65",
+      "visibility": "public",
+      "kind": "other",
+      "message": "results: keep three load runs invalidated by laptop sleep",
+      "repo": "yashdagar/the-relay",
+      "url": "https://github.com/yashdagar/the-relay/commit/f801c66d0c657d3a5aa154baea84bdc9f783684a",
+      "language": "Python",
+      "at": "2026-11-11T03:06:51Z"
+    },
+    {
+      "id": "fceb37315025",
+      "visibility": "public",
+      "kind": "other",
+      "message": "load: drive five load shapes against the stand-in at free-tier limits",
+      "repo": "yashdagar/the-relay",
+      "url": "https://github.com/yashdagar/the-relay/commit/fceb37315025f439b940c46faa7c8681e86697df",
+      "language": "Python",
+      "at": "2026-11-10T22:17:57Z"
+    },
+    {
+      "id": "56424550a905",
+      "visibility": "public",
+      "kind": "other",
+      "message": "pipeline: reply at once when no checked answer is affordable today",
+      "repo": "yashdagar/the-relay",
+      "url": "https://github.com/yashdagar/the-relay/commit/56424550a905474bf7af97a2dd764327f0ecfdfd",
+      "language": "Python",
+      "at": "2026-11-10T22:17:57Z"
+    },
+    {
+      "id": "fb9dd6bba7dd",
+      "visibility": "public",
+      "kind": "other",
+      "message": "governor: treat an empty local daily bucket as exhausted",
+      "repo": "yashdagar/the-relay",
+      "url": "https://github.com/yashdagar/the-relay/commit/fb9dd6bba7ddcb4629ccdf40554b6d10e7681b60",
+      "language": "Python",
+      "at": "2026-11-10T22:17:57Z"
+    },
+    {
+      "id": "da65082b8c97",
+      "visibility": "public",
+      "kind": "other",
+      "message": "standin: answer gold questions from their evidence in oracle mode",
+      "repo": "yashdagar/the-relay",
+      "url": "https://github.com/yashdagar/the-relay/commit/da65082b8c974e06e3cef5f72679cbedcc15ea91",
+      "language": "Python",
+      "at": "2026-11-10T22:17:57Z"
+    },
+    {
+      "id": "74c1a318105c",
+      "visibility": "public",
+      "kind": "other",
+      "message": "pipeline: let the router name the paper for each sub-question",
+      "repo": "yashdagar/the-relay",
+      "url": "https://github.com/yashdagar/the-relay/commit/74c1a318105c6e1f40014cf8ca26388c5a916f87",
+      "language": "Python",
+      "at": "2026-11-10T21:52:53Z"
+    },
+    {
+      "id": "7a619c09a532",
+      "visibility": "public",
+      "kind": "other",
+      "message": "results: add re-run of four questions after the truncation and feedback fixes",
+      "repo": "yashdagar/the-relay",
+      "url": "https://github.com/yashdagar/the-relay/commit/7a619c09a532e928e2b474ec432825ba1024e977",
+      "language": "Python",
+      "at": "2026-11-10T21:52:53Z"
+    },
+    {
+      "id": "d9fb9885bb3f",
+      "visibility": "public",
+      "kind": "other",
+      "message": "pipeline: reject truncated drafts and keep sub-question passages on the lean path",
+      "repo": "yashdagar/the-relay",
+      "url": "https://github.com/yashdagar/the-relay/commit/d9fb9885bb3f1a4709ff8134833f7d6a2e624bf5",
+      "language": "Python",
+      "at": "2026-11-10T21:49:54Z"
+    },
+    {
+      "id": "64bd1e5381b9",
+      "visibility": "public",
+      "kind": "other",
+      "message": "results: add targeted re-run of the ten failed questions",
+      "repo": "yashdagar/the-relay",
+      "url": "https://github.com/yashdagar/the-relay/commit/64bd1e5381b9424348b733adea748979350bc2e9",
+      "language": "Python",
+      "at": "2026-11-10T21:49:53Z"
+    },
+    {
+      "id": "60432f9fa480",
+      "visibility": "public",
+      "kind": "other",
+      "message": "results: add router-only check after the glossary fix",
+      "repo": "yashdagar/the-relay",
+      "url": "https://github.com/yashdagar/the-relay/commit/60432f9fa480125b3d09c7148b7e53de9e65dfb9",
+      "language": "Python",
+      "at": "2026-11-10T21:45:05Z"
+    },
+    {
+      "id": "6b5cf62e6db3",
+      "visibility": "public",
+      "kind": "other",
+      "message": "prompts: give the router a glossary of each paper's own names",
+      "repo": "yashdagar/the-relay",
+      "url": "https://github.com/yashdagar/the-relay/commit/6b5cf62e6db3f5f1152a19c4c7439971708a4161",
+      "language": "Python",
+      "at": "2026-11-10T21:39:57Z"
+    },
+    {
+      "id": "728b2ee4ccd9",
+      "visibility": "public",
+      "kind": "other",
+      "message": "eval: match number words against digit facts",
+      "repo": "yashdagar/the-relay",
+      "url": "https://github.com/yashdagar/the-relay/commit/728b2ee4ccd9785cf36b616267d5c84dac02a2de",
+      "language": "Python",
+      "at": "2026-11-10T21:13:29Z"
+    },
+    {
+      "id": "901d5fde638a",
+      "visibility": "public",
+      "kind": "other",
+      "message": "pipeline: trace every model attempt on the reply",
+      "repo": "yashdagar/the-relay",
+      "url": "https://github.com/yashdagar/the-relay/commit/901d5fde638acd8260427c593c6c0b31bb46ffe2",
+      "language": "Python",
+      "at": "2026-11-10T21:13:12Z"
+    },
+    {
+      "id": "67777c96235d",
+      "visibility": "public",
+      "kind": "other",
+      "message": "results: add first full real evaluation on the default setting",
+      "repo": "yashdagar/the-relay",
+      "url": "https://github.com/yashdagar/the-relay/commit/67777c96235d7b88586e1f9b16b78409e53eb391",
+      "language": "Python",
+      "at": "2026-11-10T21:12:06Z"
+    },
+    {
+      "id": "072e369490ac",
+      "visibility": "public",
+      "kind": "other",
+      "message": "evaluate: add a paced runner that grades the gold set into results rows",
+      "repo": "yashdagar/the-relay",
+      "url": "https://github.com/yashdagar/the-relay/commit/072e369490acba6fa13e7b03cca8f42b1708ed9d",
+      "language": "Python",
+      "at": "2026-11-10T20:43:05Z"
+    },
+    {
+      "id": "0054460d6b9d",
+      "visibility": "public",
+      "kind": "other",
+      "message": "pipeline: understand, retrieve, decide, draft and check under a deadline",
+      "repo": "yashdagar/the-relay",
+      "url": "https://github.com/yashdagar/the-relay/commit/0054460d6b9dd371163d7049357326c452ee6583",
+      "language": "Python",
+      "at": "2026-11-10T20:41:33Z"
+    },
+    {
+      "id": "ae1e51167acb",
+      "visibility": "public",
+      "kind": "other",
+      "message": "governor: add per-model budget buckets synced from Groq responses",
+      "repo": "yashdagar/the-relay",
+      "url": "https://github.com/yashdagar/the-relay/commit/ae1e51167acb274b6d2888fb01c4c0fa6689c256",
+      "language": "Python",
+      "at": "2026-11-10T20:37:21Z"
+    },
+    {
+      "id": "8a1eb47a37bb",
+      "visibility": "public",
+      "kind": "other",
+      "message": "standin: add a Groq-shaped stand-in calibrated from the latency probe",
+      "repo": "yashdagar/the-relay",
+      "url": "https://github.com/yashdagar/the-relay/commit/8a1eb47a37bb698ee1607051f3fbce6737fbe842",
+      "language": "Python",
+      "at": "2026-11-10T20:36:40Z"
+    },
+    {
+      "id": "9b4c16dd54a5",
+      "visibility": "public",
+      "kind": "other",
+      "message": "results: add requests-per-minute and tokens-per-minute probes",
+      "repo": "yashdagar/the-relay",
+      "url": "https://github.com/yashdagar/the-relay/commit/9b4c16dd54a560acdf7d7789fd254b946625de2e",
+      "language": "Python",
+      "at": "2026-11-10T20:30:39Z"
+    },
+    {
+      "id": "72545247f8c0",
+      "visibility": "public",
+      "kind": "other",
+      "message": "client: redact the organization id from recorded error bodies",
+      "repo": "yashdagar/the-relay",
+      "url": "https://github.com/yashdagar/the-relay/commit/72545247f8c0aab7a13c6625f9c752b1791d3748",
+      "language": "Python",
+      "at": "2026-11-10T20:30:13Z"
+    },
+    {
+      "id": "f44acc863c00",
+      "visibility": "public",
+      "kind": "other",
+      "message": "results: add latency probe, 20 draft calls on each of three models",
+      "repo": "yashdagar/the-relay",
+      "url": "https://github.com/yashdagar/the-relay/commit/f44acc863c001880dbed030e0301735e1cc8b303",
+      "language": "Python",
+      "at": "2026-11-10T20:29:54Z"
+    },
+    {
+      "id": "3aedbbabcf66",
+      "visibility": "public",
+      "kind": "other",
+      "message": "eval: grade the formats real models actually write",
+      "repo": "yashdagar/the-relay",
+      "url": "https://github.com/yashdagar/the-relay/commit/3aedbbabcf66233281c9bbc5d40574585d71db83",
+      "language": "Python",
+      "at": "2026-11-10T20:29:47Z"
+    },
+    {
+      "id": "c6070f321599",
+      "visibility": "public",
+      "kind": "other",
+      "message": "probe: add latency, requests-per-minute and tokens-per-minute phases",
+      "repo": "yashdagar/the-relay",
+      "url": "https://github.com/yashdagar/the-relay/commit/c6070f321599524ab1c1ada1a01dc5c44bcfebe3",
+      "language": "Python",
+      "at": "2026-11-10T20:20:29Z"
+    },
+    {
+      "id": "fa4eb1634058",
+      "visibility": "public",
+      "kind": "other",
+      "message": "results: add first limits probe, one call per Groq chat model",
+      "repo": "yashdagar/the-relay",
+      "url": "https://github.com/yashdagar/the-relay/commit/fa4eb1634058d2e78e903ef63beb86aa982cf40b",
+      "language": "Python",
+      "at": "2026-11-10T20:18:41Z"
+    },
+    {
+      "id": "801917aa7d9c",
+      "visibility": "public",
+      "kind": "other",
+      "message": "client: add a streaming client and a Groq limits probe",
+      "repo": "yashdagar/the-relay",
+      "url": "https://github.com/yashdagar/the-relay/commit/801917aa7d9c55f6308ddb321ea909b50be85198",
+      "language": "Python",
+      "at": "2026-11-10T20:18:20Z"
+    },
+    {
+      "id": "0e0351872bb0",
+      "visibility": "public",
+      "kind": "other",
+      "message": "results: add offline retrieval comparison from e99e166",
+      "repo": "yashdagar/the-relay",
+      "url": "https://github.com/yashdagar/the-relay/commit/0e0351872bb066ae6ec3cbe305455793ef755c11",
+      "language": "Python",
+      "at": "2026-11-10T20:17:02Z"
+    },
+    {
+      "id": "9c82c5c1d2e4",
+      "visibility": "public",
+      "kind": "other",
+      "message": "retrieval: record benchmark start time before the run",
+      "repo": "yashdagar/the-relay",
+      "url": "https://github.com/yashdagar/the-relay/commit/9c82c5c1d2e4663a827a900071650e361b095b3b",
+      "language": "Python",
+      "at": "2026-11-10T20:17:02Z"
+    },
+    {
+      "id": "d31b0105129c",
+      "visibility": "public",
+      "kind": "other",
+      "message": "tables: compute every write-up table from results.csv",
+      "repo": "yashdagar/the-relay",
+      "url": "https://github.com/yashdagar/the-relay/commit/d31b0105129ccefc02f6c55d801ee9fb304bd7e1",
+      "language": "Python",
+      "at": "2026-11-10T18:59:55Z"
+    },
+    {
+      "id": "d69eea4cad75",
+      "visibility": "public",
+      "kind": "other",
+      "message": "eval: add retrieval metrics, groundedness and answer grading",
+      "repo": "yashdagar/the-relay",
+      "url": "https://github.com/yashdagar/the-relay/commit/d69eea4cad75f253da84549433e4b952bfe1bd75",
+      "language": "Python",
+      "at": "2026-11-10T18:31:56Z"
+    },
+    {
+      "id": "094f74ce0e99",
+      "visibility": "public",
+      "kind": "other",
+      "message": "data: replace mos-08 evidence that never matched on word boundaries",
+      "repo": "yashdagar/the-relay",
+      "url": "https://github.com/yashdagar/the-relay/commit/094f74ce0e9972ceb4a44cad63b58912a82bd7e9",
+      "language": "Python",
+      "at": "2026-11-10T18:31:56Z"
+    },
     {
       "id": "bcd7f2eeaab5",
       "visibility": "public",
@@ -1563,440 +1993,10 @@
       "url": "https://github.com/yashdagar/claude-backup/commit/f43e34d0e667ca543484df219becb13033075361",
       "language": "Python",
       "at": "2026-10-17T19:20:23Z"
-    },
-    {
-      "id": "8e07f7acfc8b",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Ignore the embedded datecrew repo",
-      "repo": "yashdagar/job-hunt",
-      "url": "https://github.com/yashdagar/job-hunt/commit/8e07f7acfc8bb913fc4250c84e8acb42a7eea08c",
-      "language": "HTML",
-      "at": "2026-10-17T18:56:49Z"
-    },
-    {
-      "id": "3b51ed8bdfb2",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Back up the job hunt pipeline as of Oct 18",
-      "repo": "yashdagar/job-hunt",
-      "url": "https://github.com/yashdagar/job-hunt/commit/3b51ed8bdfb282cde1b2327e125af16aa4649ed1",
-      "language": "HTML",
-      "at": "2026-10-17T18:56:20Z"
-    },
-    {
-      "id": "b09af37dd41e",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Back up ICPC practice solutions and the cp prep site",
-      "repo": "yashdagar/icpc",
-      "url": "https://github.com/yashdagar/icpc/commit/b09af37dd41ed067903fbe353c9ee0c276fb8785",
-      "language": "C++",
-      "at": "2026-10-17T18:54:35Z"
-    },
-    {
-      "id": "06e2647a2a3b",
-      "visibility": "public",
-      "kind": "chore",
-      "message": "chore: ignore the local data archive",
-      "repo": "yashdagar/self-improving-rag",
-      "url": "https://github.com/yashdagar/self-improving-rag/commit/06e2647a2a3b3f769831c5a448437248ec49fcb6",
-      "language": "Python",
-      "at": "2026-10-17T18:52:00Z"
-    },
-    {
-      "id": "6cd5209219c2",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Set up Go in the terminal script",
-      "repo": "yashdagar/my-configs",
-      "url": "https://github.com/yashdagar/my-configs/commit/6cd5209219c2c90fff42581cdfbf4d89b4fffbf0",
-      "language": "Python",
-      "at": "2026-10-17T18:51:11Z"
-    },
-    {
-      "id": "c2dc67d73c69",
-      "visibility": "personal",
-      "kind": "feat",
-      "message": "Add a one-command terminal setup script and refresh configs",
-      "repo": "yashdagar/my-configs",
-      "url": "https://github.com/yashdagar/my-configs/commit/c2dc67d73c698ab7d068f11d5841b913a318bdc1",
-      "language": "Python",
-      "at": "2026-10-17T18:45:08Z"
-    },
-    {
-      "id": "dddf2c7037d8",
-      "visibility": "public",
-      "kind": "docs",
-      "message": "docs: add README with setup, architecture, API and trade-offs",
-      "repo": "yashdagar/causalfunnel-analytics",
-      "url": "https://github.com/yashdagar/causalfunnel-analytics/commit/dddf2c7037d8629744e24c0f40bfcc76dac73b96",
-      "language": "TypeScript",
-      "at": "2026-10-15T07:19:33Z"
-    },
-    {
-      "id": "c521a3111317",
-      "visibility": "public",
-      "kind": "chore",
-      "message": "chore: add test runner, local MongoDB compose file and Render blueprint",
-      "repo": "yashdagar/causalfunnel-analytics",
-      "url": "https://github.com/yashdagar/causalfunnel-analytics/commit/c521a3111317f8c54fa1567be582679bb6c91c40",
-      "language": "TypeScript",
-      "at": "2026-10-15T07:16:36Z"
-    },
-    {
-      "id": "0733329de5f9",
-      "visibility": "public",
-      "kind": "test",
-      "message": "test: add Playwright end-to-end suite for tracking, journeys and heatmap",
-      "repo": "yashdagar/causalfunnel-analytics",
-      "url": "https://github.com/yashdagar/causalfunnel-analytics/commit/0733329de5f996f35c7034016f28880e48e62beb",
-      "language": "TypeScript",
-      "at": "2026-10-15T07:16:36Z"
-    },
-    {
-      "id": "7cc63655e961",
-      "visibility": "public",
-      "kind": "test",
-      "message": "test: add unit and component tests for the dashboard",
-      "repo": "yashdagar/causalfunnel-analytics",
-      "url": "https://github.com/yashdagar/causalfunnel-analytics/commit/7cc63655e96167f1f3283e2e1380a26d4d112b17",
-      "language": "TypeScript",
-      "at": "2026-10-14T07:17:25Z"
-    },
-    {
-      "id": "3f9815ed5626",
-      "visibility": "public",
-      "kind": "fix",
-      "message": "fix: stack hotspot counts above their ranges so the sidebar does not wrap",
-      "repo": "yashdagar/causalfunnel-analytics",
-      "url": "https://github.com/yashdagar/causalfunnel-analytics/commit/3f9815ed56262faa2732a8034dc969e96ea13885",
-      "language": "TypeScript",
-      "at": "2026-10-14T07:17:25Z"
-    },
-    {
-      "id": "2464233fb3e1",
-      "visibility": "public",
-      "kind": "fix",
-      "message": "fix: skip page text when a click lands outside an interactive element",
-      "repo": "yashdagar/causalfunnel-analytics",
-      "url": "https://github.com/yashdagar/causalfunnel-analytics/commit/2464233fb3e1f16e99302a9e93f46f23799ef988",
-      "language": "TypeScript",
-      "at": "2026-10-14T07:17:25Z"
-    },
-    {
-      "id": "c241189fac73",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Hide Crom in the cave as a faint key-pattern outline",
-      "repo": "yashdagar/portfolio-3d",
-      "url": "https://github.com/yashdagar/portfolio-3d/commit/c241189fac737dd8556a9dce4c6f71567c8d9a49",
-      "language": "TypeScript",
-      "at": "2026-10-11T08:16:51Z"
-    },
-    {
-      "id": "56a68126f6ab",
-      "visibility": "personal",
-      "kind": "docs",
-      "message": "docs: add architecture diagrams, ER schema and system design PDF",
-      "repo": "yashdagar/order_karo_partners",
-      "url": "https://github.com/yashdagar/order_karo_partners/commit/56a68126f6abd516f49d676e9ca62ef87db2f1ed",
-      "language": "Dart",
-      "at": "2026-10-11T07:52:46Z"
-    },
-    {
-      "id": "9e2f7c253935",
-      "visibility": "personal",
-      "kind": "docs",
-      "message": "docs: add architecture diagrams, ER schema and system design PDF",
-      "repo": "yashdagar/order_karo",
-      "url": "https://github.com/yashdagar/order_karo/commit/9e2f7c253935e771186f609c8e0bb912fe262ace",
-      "language": "Dart",
-      "at": "2026-10-11T07:52:42Z"
-    },
-    {
-      "id": "e9977cb61153",
-      "visibility": "personal",
-      "kind": "feat",
-      "message": "Add logos and links to the AWS and Assessli community cards",
-      "repo": "yashdagar/portfolio-3d",
-      "url": "https://github.com/yashdagar/portfolio-3d/commit/e9977cb6115360fd2c408a5339b5cf6869d8a0b6",
-      "language": "TypeScript",
-      "at": "2026-10-11T05:55:17Z"
-    },
-    {
-      "id": "012cf9b4ed25",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Coil an ouroboros serpent in the cave and drop the eyes",
-      "repo": "yashdagar/portfolio-3d",
-      "url": "https://github.com/yashdagar/portfolio-3d/commit/012cf9b4ed25f0c7b423f2c9dac7dbdff74b7898",
-      "language": "TypeScript",
-      "at": "2026-10-11T05:51:43Z"
-    },
-    {
-      "id": "d4112c23d146",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Frame the hero in layered Kells foliage",
-      "repo": "yashdagar/portfolio-3d",
-      "url": "https://github.com/yashdagar/portfolio-3d/commit/d4112c23d14664be22089e2d73be527156bd8329",
-      "language": "TypeScript",
-      "at": "2026-10-11T05:32:41Z"
-    },
-    {
-      "id": "28df4a143bfa",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Redraw the community cave as a layered throat",
-      "repo": "yashdagar/portfolio-3d",
-      "url": "https://github.com/yashdagar/portfolio-3d/commit/28df4a143bfa38d07577621e24f67b3077023831",
-      "language": "TypeScript",
-      "at": "2026-10-11T04:53:47Z"
-    },
-    {
-      "id": "1e0560a545c5",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Let Pangur walk toward, away and across the page",
-      "repo": "yashdagar/portfolio-3d",
-      "url": "https://github.com/yashdagar/portfolio-3d/commit/1e0560a545c5257c5ca66d139c3d5bc9aa763c2b",
-      "language": "TypeScript",
-      "at": "2026-10-11T04:39:19Z"
-    },
-    {
-      "id": "0ea6908cb1f4",
-      "visibility": "personal",
-      "kind": "fix",
-      "message": "Fix the last audit findings",
-      "repo": "yashdagar/portfolio-3d",
-      "url": "https://github.com/yashdagar/portfolio-3d/commit/0ea6908cb1f41132feb87619fdcafda7ec295dfd",
-      "language": "TypeScript",
-      "at": "2026-10-10T17:14:22Z"
-    },
-    {
-      "id": "5512cd1b3ebc",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Redraw the Open Graph images in the Kells style",
-      "repo": "yashdagar/portfolio-3d",
-      "url": "https://github.com/yashdagar/portfolio-3d/commit/5512cd1b3ebcebd98c364a9eee1b51205fb29d60",
-      "language": "TypeScript",
-      "at": "2026-10-10T17:14:22Z"
-    },
-    {
-      "id": "a937d164ffe4",
-      "visibility": "personal",
-      "kind": "feat",
-      "message": "Add social metadata, JSON-LD and a Notion facade",
-      "repo": "yashdagar/portfolio-3d",
-      "url": "https://github.com/yashdagar/portfolio-3d/commit/a937d164ffe43fe0e310c72cc39ca623f91e1dc0",
-      "language": "TypeScript",
-      "at": "2026-10-10T12:22:13Z"
-    },
-    {
-      "id": "910368bbdb37",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Cut the home page HTML from 255 kB to 53 kB gzipped",
-      "repo": "yashdagar/portfolio-3d",
-      "url": "https://github.com/yashdagar/portfolio-3d/commit/910368bbdb37c6d3ae5d7c952971d7a5dddbe37e",
-      "language": "TypeScript",
-      "at": "2026-10-10T12:22:13Z"
-    },
-    {
-      "id": "aaa8a76169aa",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Replace the square ending knot with round spiral knotwork",
-      "repo": "yashdagar/portfolio-3d",
-      "url": "https://github.com/yashdagar/portfolio-3d/commit/aaa8a76169aa998a2895bfdc00125e05091b85ee",
-      "language": "TypeScript",
-      "at": "2026-10-10T12:22:13Z"
-    },
-    {
-      "id": "695ac710695f",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Turn the community chapter into Crom's cave",
-      "repo": "yashdagar/portfolio-3d",
-      "url": "https://github.com/yashdagar/portfolio-3d/commit/695ac710695f93c3ee53b719ba3e7e8c8f7c8ebb",
-      "language": "TypeScript",
-      "at": "2026-10-10T12:22:13Z"
-    },
-    {
-      "id": "3354fbb40ec2",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Darken the community chapter into the forbidden stone avenue",
-      "repo": "yashdagar/portfolio-3d",
-      "url": "https://github.com/yashdagar/portfolio-3d/commit/3354fbb40ec227a5bcba6258943b8049fa6256ff",
-      "language": "TypeScript",
-      "at": "2026-10-09T22:10:03Z"
-    },
-    {
-      "id": "c342d4ec6bda",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Pin the ending so the moon and knot play on screen",
-      "repo": "yashdagar/portfolio-3d",
-      "url": "https://github.com/yashdagar/portfolio-3d/commit/c342d4ec6bdaeb675bb01501901e242d69e1b071",
-      "language": "TypeScript",
-      "at": "2026-10-09T21:56:33Z"
-    },
-    {
-      "id": "50850154d791",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Grow Kells branches, leaf frames and a stone circle",
-      "repo": "yashdagar/portfolio-3d",
-      "url": "https://github.com/yashdagar/portfolio-3d/commit/50850154d79195c0577202e0b5146f5d6fd00739",
-      "language": "TypeScript",
-      "at": "2026-10-09T21:56:33Z"
-    },
-    {
-      "id": "64651a01822d",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Chart the LeetCode rating and rename the chapter Contests",
-      "repo": "yashdagar/portfolio-3d",
-      "url": "https://github.com/yashdagar/portfolio-3d/commit/64651a01822d044ba4ffc77c2f134fcd55155842",
-      "language": "TypeScript",
-      "at": "2026-10-09T21:56:33Z"
-    },
-    {
-      "id": "ae5f7e5cbcd6",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Redraw Pangur and let him walk the page with the reader",
-      "repo": "yashdagar/portfolio-3d",
-      "url": "https://github.com/yashdagar/portfolio-3d/commit/ae5f7e5cbcd6bb7004e7416221ea4c69b2724100",
-      "language": "TypeScript",
-      "at": "2026-10-09T21:56:33Z"
-    },
-    {
-      "id": "1f1be29191f8",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Inline the stylesheet into the HTML",
-      "repo": "yashdagar/portfolio-3d",
-      "url": "https://github.com/yashdagar/portfolio-3d/commit/1f1be29191f8b453b51b95ee8e95dedd2f0ae21d",
-      "language": "TypeScript",
-      "at": "2026-10-09T21:08:21Z"
-    },
-    {
-      "id": "aafbbb4cd345",
-      "visibility": "personal",
-      "kind": "feat",
-      "message": "Add the magic moments, the serpent and Pangur",
-      "repo": "yashdagar/portfolio-3d",
-      "url": "https://github.com/yashdagar/portfolio-3d/commit/aafbbb4cd34550f3d8d14b5f98f26e97621476b8",
-      "language": "TypeScript",
-      "at": "2026-10-09T20:51:46Z"
-    },
-    {
-      "id": "17d40c2a71cb",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "End the page at the sea under a knotted moon",
-      "repo": "yashdagar/portfolio-3d",
-      "url": "https://github.com/yashdagar/portfolio-3d/commit/17d40c2a71cbedad3e0f008e413edd8cbce4714a",
-      "language": "TypeScript",
-      "at": "2026-10-09T20:51:46Z"
-    },
-    {
-      "id": "e1d9b9d54b21",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Rebuild the hero around one line and a guide light",
-      "repo": "yashdagar/portfolio-3d",
-      "url": "https://github.com/yashdagar/portfolio-3d/commit/e1d9b9d54b213228a24307835d4ece68fb4e04f6",
-      "language": "TypeScript",
-      "at": "2026-10-09T20:51:46Z"
-    },
-    {
-      "id": "45a3614813fe",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Make the chalk duel a readable rating chart",
-      "repo": "yashdagar/portfolio-3d",
-      "url": "https://github.com/yashdagar/portfolio-3d/commit/45a3614813fe9ebd6a1fd646ce25d3fce1fbb446",
-      "language": "TypeScript",
-      "at": "2026-10-09T20:37:41Z"
-    },
-    {
-      "id": "c78c753acf27",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Move to a natural Secret of Kells palette",
-      "repo": "yashdagar/portfolio-3d",
-      "url": "https://github.com/yashdagar/portfolio-3d/commit/c78c753acf2747a1325c734cad0ae6a0f352028c",
-      "language": "TypeScript",
-      "at": "2026-10-09T20:31:01Z"
-    },
-    {
-      "id": "24e91498b09b",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Restyle the site as ink on vellum",
-      "repo": "yashdagar/portfolio-3d",
-      "url": "https://github.com/yashdagar/portfolio-3d/commit/24e91498b09be487cbac0ec0a3eaee8106b9f66a",
-      "language": "TypeScript",
-      "at": "2026-10-09T18:21:18Z"
-    },
-    {
-      "id": "21ab97ad2063",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Plan theme v2: ink on vellum, chalk duel, building the wall",
-      "repo": "yashdagar/portfolio-3d",
-      "url": "https://github.com/yashdagar/portfolio-3d/commit/21ab97ad2063abbeb075551cd61ef423fb865fad",
-      "language": "TypeScript",
-      "at": "2026-10-09T17:53:24Z"
-    },
-    {
-      "id": "f400003e5b24",
-      "visibility": "personal",
-      "kind": "feat",
-      "message": "Add the procedural art engines",
-      "repo": "yashdagar/portfolio-3d",
-      "url": "https://github.com/yashdagar/portfolio-3d/commit/f400003e5b24bec2bf5c09018f9472c6011481d2",
-      "language": "TypeScript",
-      "at": "2026-10-09T17:48:10Z"
-    },
-    {
-      "id": "89014b3d17cf",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Rebuild the home page as one illuminated scroll",
-      "repo": "yashdagar/portfolio-3d",
-      "url": "https://github.com/yashdagar/portfolio-3d/commit/89014b3d17cf5c5c4fa77f540a2a755c1416cdf5",
-      "language": "TypeScript",
-      "at": "2026-10-09T17:48:10Z"
-    },
-    {
-      "id": "ce01847d2424",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Move the site into a themed route group",
-      "repo": "yashdagar/portfolio-3d",
-      "url": "https://github.com/yashdagar/portfolio-3d/commit/ce01847d2424fbf8db0dc4fcda3bb4efb7b42e8c",
-      "language": "TypeScript",
-      "at": "2026-10-09T17:48:10Z"
-    },
-    {
-      "id": "9b07b51071b7",
-      "visibility": "personal",
-      "kind": "fix",
-      "message": "Fix metadata domain, zoom, fonts, images and dead deps",
-      "repo": "yashdagar/portfolio-3d",
-      "url": "https://github.com/yashdagar/portfolio-3d/commit/9b07b51071b756d028bf9455dd381b26040b7869",
-      "language": "TypeScript",
-      "at": "2026-10-09T17:05:08Z"
     }
   ],
   "totals": {
-    "year": 523,
-    "streak": 3
+    "year": 566,
+    "streak": 4
   }
 }
