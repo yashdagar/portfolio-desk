@@ -1,6 +1,26 @@
 {
-  "generatedAt": "2026-11-11T14:41:25.589Z",
+  "generatedAt": "2026-11-11T21:39:49.581Z",
   "commits": [
+    {
+      "id": "886befb51409",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Rewrite week 2 as boundary-graded tickets with test cards",
+      "repo": "yashdagar/portfolio-3d",
+      "url": "https://github.com/yashdagar/portfolio-3d/commit/886befb5140980d62004e236d582d2d9cb778fcc",
+      "language": "TypeScript",
+      "at": "2026-11-11T20:57:49Z"
+    },
+    {
+      "id": "84c5a1d1107d",
+      "visibility": "public",
+      "kind": "other",
+      "message": "Grade week 2 at the boundary instead of through package APIs",
+      "repo": "yashdagar/zomato-prep",
+      "url": "https://github.com/yashdagar/zomato-prep/commit/84c5a1d1107d9b5b1f839ee204a39679fe1fe93f",
+      "language": "Go",
+      "at": "2026-11-11T20:56:24Z"
+    },
     {
       "id": "ef9b3c8ed062",
       "visibility": "public",
@@ -1973,30 +1993,10 @@
       "url": "https://github.com/yashdagar/my-configs/commit/f82001aef011dcb6a5e60c942b6acd387c7cfe2a",
       "language": "Python",
       "at": "2026-10-17T19:22:27Z"
-    },
-    {
-      "id": "85a10caa7060",
-      "visibility": "personal",
-      "kind": "feat",
-      "message": "Add an after-reset checklist, Claude backup script and fresh job-mailer",
-      "repo": "yashdagar/my-configs",
-      "url": "https://github.com/yashdagar/my-configs/commit/85a10caa70609d1647d20a8af32637e511861d26",
-      "language": "Python",
-      "at": "2026-10-17T19:22:03Z"
-    },
-    {
-      "id": "f43e34d0e667",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Claude Code history snapshot 2026-10-18",
-      "repo": "yashdagar/claude-backup",
-      "url": "https://github.com/yashdagar/claude-backup/commit/f43e34d0e667ca543484df219becb13033075361",
-      "language": "Python",
-      "at": "2026-10-17T19:20:23Z"
     }
   ],
   "totals": {
-    "year": 566,
+    "year": 568,
     "streak": 4
   }
 }
