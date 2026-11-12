@@ -1,6 +1,36 @@
 {
-  "generatedAt": "2026-11-12T18:21:26.678Z",
+  "generatedAt": "2026-11-12T23:51:17.986Z",
   "commits": [
+    {
+      "id": "8912d428f881",
+      "visibility": "public",
+      "kind": "other",
+      "message": "Make the racing-events test's event IDs unique",
+      "repo": "yashdagar/zomato-prep",
+      "url": "https://github.com/yashdagar/zomato-prep/commit/8912d428f88183fd502b882ace3ef0b2e21cb9c9",
+      "language": "Go",
+      "at": "2026-11-12T18:31:58Z"
+    },
+    {
+      "id": "730ed08fbb33",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Rewrite week 3 as boundary-graded tickets with test cards",
+      "repo": "yashdagar/portfolio-3d",
+      "url": "https://github.com/yashdagar/portfolio-3d/commit/730ed08fbb3334b01a5a2a81c8d77b3a017bf472",
+      "language": "TypeScript",
+      "at": "2026-11-12T17:53:49Z"
+    },
+    {
+      "id": "6a6f22330153",
+      "visibility": "public",
+      "kind": "other",
+      "message": "Grade week 3 at the boundary instead of through package APIs",
+      "repo": "yashdagar/zomato-prep",
+      "url": "https://github.com/yashdagar/zomato-prep/commit/6a6f2233015394bb5599cd3953fc49a5642a2a7e",
+      "language": "Go",
+      "at": "2026-11-12T17:47:31Z"
+    },
     {
       "id": "886befb51409",
       "visibility": "personal",
@@ -1963,40 +1993,10 @@
       "url": "https://github.com/yashdagar/portfolio-3d/commit/61cdc475ea4602726fb1c3170b7d43282c4c6b88",
       "language": "TypeScript",
       "at": "2026-10-21T22:18:46Z"
-    },
-    {
-      "id": "331c37ab70de",
-      "visibility": "personal",
-      "kind": "feat",
-      "message": "Add a one-command VS Code, Go and React Native setup",
-      "repo": "yashdagar/my-configs",
-      "url": "https://github.com/yashdagar/my-configs/commit/331c37ab70de6b5f1c287c3aaf92d5bea5838414",
-      "language": "Python",
-      "at": "2026-10-21T21:09:56Z"
-    },
-    {
-      "id": "8e28a27ecdfe",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Make the restore personal-only and drop rbenv and uv from setup",
-      "repo": "yashdagar/my-configs",
-      "url": "https://github.com/yashdagar/my-configs/commit/8e28a27ecdfe42a6ee35effe9ab4cfda4806d13c",
-      "language": "Python",
-      "at": "2026-10-21T20:52:06Z"
-    },
-    {
-      "id": "f82001aef011",
-      "visibility": "personal",
-      "kind": "feat",
-      "message": "Add the reset backups memory",
-      "repo": "yashdagar/my-configs",
-      "url": "https://github.com/yashdagar/my-configs/commit/f82001aef011dcb6a5e60c942b6acd387c7cfe2a",
-      "language": "Python",
-      "at": "2026-10-17T19:22:27Z"
     }
   ],
   "totals": {
-    "year": 568,
-    "streak": 4
+    "year": 571,
+    "streak": 5
   }
 }
