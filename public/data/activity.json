@@ -1,6 +1,36 @@
 {
-  "generatedAt": "2026-11-15T16:33:40.368Z",
+  "generatedAt": "2026-11-15T21:13:13.185Z",
   "commits": [
+    {
+      "id": "524bd6450f6a",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Check course style in the build for restyled modules",
+      "repo": "yashdagar/portfolio-3d",
+      "url": "https://github.com/yashdagar/portfolio-3d/commit/524bd6450f6a5d086999a647d8f52dc9301fab35",
+      "language": "TypeScript",
+      "at": "2026-11-15T16:25:48Z"
+    },
+    {
+      "id": "6650e8785963",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Rewrite week 2 modules 5 to 9 and the overview",
+      "repo": "yashdagar/portfolio-3d",
+      "url": "https://github.com/yashdagar/portfolio-3d/commit/6650e8785963f0b7e7c357c0de3489ff3681cf6f",
+      "language": "TypeScript",
+      "at": "2026-11-15T16:25:48Z"
+    },
+    {
+      "id": "a7b398f97320",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Render the API contract on exercise pages",
+      "repo": "yashdagar/portfolio-3d",
+      "url": "https://github.com/yashdagar/portfolio-3d/commit/a7b398f97320701b92cf73afbf0a7c38450c404b",
+      "language": "TypeScript",
+      "at": "2026-11-15T16:25:48Z"
+    },
     {
       "id": "8912d428f881",
       "visibility": "public",
@@ -1963,40 +1993,10 @@
       "url": "https://github.com/yashdagar/portfolio-3d/commit/c27939c80e3719d9d985861c47ab1f1bc43bd8fe",
       "language": "TypeScript",
       "at": "2026-10-22T08:15:09Z"
-    },
-    {
-      "id": "63b0965eed25",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Turn the Zomato week pages into a step deck",
-      "repo": "yashdagar/portfolio-3d",
-      "url": "https://github.com/yashdagar/portfolio-3d/commit/63b0965eed25320d8d7ddbdb646bad54a52574a9",
-      "language": "TypeScript",
-      "at": "2026-10-22T07:59:28Z"
-    },
-    {
-      "id": "f963b852f382",
-      "visibility": "personal",
-      "kind": "feat",
-      "message": "Add reference code, hard requirements and a resources page to the Zomato plan",
-      "repo": "yashdagar/portfolio-3d",
-      "url": "https://github.com/yashdagar/portfolio-3d/commit/f963b852f3829abc1e6709e9cf8d438ac5c35471",
-      "language": "TypeScript",
-      "at": "2026-10-22T06:35:27Z"
-    },
-    {
-      "id": "61cdc475ea46",
-      "visibility": "personal",
-      "kind": "feat",
-      "message": "Add the Zomato prep plan under /zomato",
-      "repo": "yashdagar/portfolio-3d",
-      "url": "https://github.com/yashdagar/portfolio-3d/commit/61cdc475ea4602726fb1c3170b7d43282c4c6b88",
-      "language": "TypeScript",
-      "at": "2026-10-21T22:18:46Z"
     }
   ],
   "totals": {
-    "year": 570,
-    "streak": 0
+    "year": 573,
+    "streak": 1
   }
 }
