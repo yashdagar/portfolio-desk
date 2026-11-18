@@ -1,6 +1,126 @@
 {
-  "generatedAt": "2026-11-17T19:30:08.476Z",
+  "generatedAt": "2026-11-18T01:51:18.154Z",
   "commits": [
+    {
+      "id": "cf689a145c7e",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Rewrite Week 8 teaching content against its tests",
+      "repo": "yashdagar/portfolio-3d",
+      "url": "https://github.com/yashdagar/portfolio-3d/commit/cf689a145c7e892e3434ff302bbbcfe0170fc5ef",
+      "language": "TypeScript",
+      "at": "2026-11-17T20:46:15Z"
+    },
+    {
+      "id": "9c0accca8fa1",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Rewrite Week 7 teaching content against its tests",
+      "repo": "yashdagar/portfolio-3d",
+      "url": "https://github.com/yashdagar/portfolio-3d/commit/9c0accca8fa12c946babfa05bcf23c44bc3c8e68",
+      "language": "TypeScript",
+      "at": "2026-11-17T16:54:10Z"
+    },
+    {
+      "id": "9734391374a8",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Rewrite Week 6 teaching content against its tests",
+      "repo": "yashdagar/portfolio-3d",
+      "url": "https://github.com/yashdagar/portfolio-3d/commit/9734391374a8bbfa927ddf3f70def6e1fe7431c0",
+      "language": "TypeScript",
+      "at": "2026-11-17T15:54:27Z"
+    },
+    {
+      "id": "ea8730a77be2",
+      "visibility": "public",
+      "kind": "other",
+      "message": "Remove the W5B7 reference tests from the learner repo",
+      "repo": "yashdagar/zomato-prep",
+      "url": "https://github.com/yashdagar/zomato-prep/commit/ea8730a77be212c0daf16ad8a5cecf078716a931",
+      "language": "Go",
+      "at": "2026-11-17T15:12:11Z"
+    },
+    {
+      "id": "ee4ce2547c8b",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Rewrite Week 5 to the course style and turn on its style checks",
+      "repo": "yashdagar/portfolio-3d",
+      "url": "https://github.com/yashdagar/portfolio-3d/commit/ee4ce2547c8ba4b7236acecfbdb1db7100b5d5fb",
+      "language": "TypeScript",
+      "at": "2026-11-17T07:30:00Z"
+    },
+    {
+      "id": "5f773f58f6f3",
+      "visibility": "public",
+      "kind": "other",
+      "message": "Name the two-riders claim race test after step W5B4",
+      "repo": "yashdagar/zomato-prep",
+      "url": "https://github.com/yashdagar/zomato-prep/commit/5f773f58f6f3e9739a9adec7b3ea3cdc12ce594c",
+      "language": "Go",
+      "at": "2026-11-15T22:37:24Z"
+    },
+    {
+      "id": "b7d2ae7a21e8",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Rewrite Week 4 to the course style and turn on its style checks",
+      "repo": "yashdagar/portfolio-3d",
+      "url": "https://github.com/yashdagar/portfolio-3d/commit/b7d2ae7a21e87554930a6879f36f4dc6eb47dc72",
+      "language": "TypeScript",
+      "at": "2026-11-15T22:35:25Z"
+    },
+    {
+      "id": "8c9c4f5742a5",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Unquote the database/sql concept link label in the transactions lesson",
+      "repo": "yashdagar/portfolio-3d",
+      "url": "https://github.com/yashdagar/portfolio-3d/commit/8c9c4f5742a555696fe90fde692be6f5f3f80b37",
+      "language": "TypeScript",
+      "at": "2026-11-15T22:35:25Z"
+    },
+    {
+      "id": "a2c54c2c101e",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Rewrite week 3 to the course style",
+      "repo": "yashdagar/portfolio-3d",
+      "url": "https://github.com/yashdagar/portfolio-3d/commit/a2c54c2c101e38ba9c1eb6e0d234cb462bed8fe4",
+      "language": "TypeScript",
+      "at": "2026-11-15T18:14:01Z"
+    },
+    {
+      "id": "f79248ecb57d",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Sync the API contract with zomato-prep 0719a92",
+      "repo": "yashdagar/portfolio-3d",
+      "url": "https://github.com/yashdagar/portfolio-3d/commit/f79248ecb57dfe43980fa2bc9f1875266b4eeb22",
+      "language": "TypeScript",
+      "at": "2026-11-15T18:14:01Z"
+    },
+    {
+      "id": "1e290f58e9d0",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Show every endpoint an exercise builds",
+      "repo": "yashdagar/portfolio-3d",
+      "url": "https://github.com/yashdagar/portfolio-3d/commit/1e290f58e9d0ff3a6b4d440b669cb4fa0a609d4c",
+      "language": "TypeScript",
+      "at": "2026-11-15T18:14:01Z"
+    },
+    {
+      "id": "0719a924a76e",
+      "visibility": "public",
+      "kind": "other",
+      "message": "Quote openapi descriptions that contain commas",
+      "repo": "yashdagar/zomato-prep",
+      "url": "https://github.com/yashdagar/zomato-prep/commit/0719a924a76e77b9c1511a9203b4d76357d98c07",
+      "language": "Go",
+      "at": "2026-11-15T18:13:21Z"
+    },
     {
       "id": "524bd6450f6a",
       "visibility": "personal",
@@ -1873,130 +1993,10 @@
       "url": "https://github.com/yashdagar/conveyor-motor-speed-control/commit/362ae65b4ee0a73673f8259f6ae0312e16c4bc62",
       "language": "TeX",
       "at": "2026-10-22T14:28:00Z"
-    },
-    {
-      "id": "0845aba77642",
-      "visibility": "personal",
-      "kind": "feat",
-      "message": "Add a Verify block with the test command to every build and check step",
-      "repo": "yashdagar/portfolio-3d",
-      "url": "https://github.com/yashdagar/portfolio-3d/commit/0845aba77642749e3333bec78194c663fce0dbb7",
-      "language": "TypeScript",
-      "at": "2026-10-22T10:45:59Z"
-    },
-    {
-      "id": "15c52a91f235",
-      "visibility": "public",
-      "kind": "other",
-      "message": "Type the caught errors in the ApiClient tests",
-      "repo": "yashdagar/zomato-prep",
-      "url": "https://github.com/yashdagar/zomato-prep/commit/15c52a91f235dc09551b44c048618472afe1b198",
-      "language": "Go",
-      "at": "2026-10-22T10:43:20Z"
-    },
-    {
-      "id": "15c52a91f235",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Type the caught errors in the ApiClient tests",
-      "repo": "yashdagar/zomato-prep-work",
-      "url": "https://github.com/yashdagar/zomato-prep-work/commit/15c52a91f235dc09551b44c048618472afe1b198",
-      "language": "Go",
-      "at": "2026-10-22T10:43:20Z"
-    },
-    {
-      "id": "15c52a91f235",
-      "visibility": "public",
-      "kind": "other",
-      "message": "Type the caught errors in the ApiClient tests",
-      "repo": "yashdagar/zomato-prep-fork",
-      "url": "https://github.com/yashdagar/zomato-prep-fork/commit/15c52a91f235dc09551b44c048618472afe1b198",
-      "language": "Go",
-      "at": "2026-10-22T10:43:20Z"
-    },
-    {
-      "id": "d7890c428549",
-      "visibility": "public",
-      "kind": "test",
-      "message": "Tests for every step of the Zomato prep plan",
-      "repo": "yashdagar/zomato-prep",
-      "url": "https://github.com/yashdagar/zomato-prep/commit/d7890c428549f42f6f4ec07b9cd95152db434495",
-      "language": "Go",
-      "at": "2026-10-22T10:41:40Z"
-    },
-    {
-      "id": "d7890c428549",
-      "visibility": "personal",
-      "kind": "test",
-      "message": "Tests for every step of the Zomato prep plan",
-      "repo": "yashdagar/zomato-prep-work",
-      "url": "https://github.com/yashdagar/zomato-prep-work/commit/d7890c428549f42f6f4ec07b9cd95152db434495",
-      "language": "Go",
-      "at": "2026-10-22T10:41:40Z"
-    },
-    {
-      "id": "d7890c428549",
-      "visibility": "public",
-      "kind": "test",
-      "message": "Tests for every step of the Zomato prep plan",
-      "repo": "yashdagar/zomato-prep-fork",
-      "url": "https://github.com/yashdagar/zomato-prep-fork/commit/d7890c428549f42f6f4ec07b9cd95152db434495",
-      "language": "Go",
-      "at": "2026-10-22T10:41:40Z"
-    },
-    {
-      "id": "da5852532fad",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Workspace: flat drawer, text-heavy descriptions, dynamic tabs, key hints",
-      "repo": "yashdagar/portfolio-3d",
-      "url": "https://github.com/yashdagar/portfolio-3d/commit/da5852532fad90a11c98433ed00ed8920e7a2018",
-      "language": "TypeScript",
-      "at": "2026-10-22T10:04:20Z"
-    },
-    {
-      "id": "471a1c7a2b03",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Merge zomato-grpc into zomato-workspace",
-      "repo": "yashdagar/portfolio-3d",
-      "url": "https://github.com/yashdagar/portfolio-3d/commit/471a1c7a2b03bddbe49134d0fbf09bdf7d64eceb",
-      "language": "TypeScript",
-      "at": "2026-10-22T10:00:23Z"
-    },
-    {
-      "id": "a1ccccbbd2bc",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Rebuild the Zomato plan as a full-screen workspace",
-      "repo": "yashdagar/portfolio-3d",
-      "url": "https://github.com/yashdagar/portfolio-3d/commit/a1ccccbbd2bc9ea740e66a83e56fb7f5abd13c81",
-      "language": "TypeScript",
-      "at": "2026-10-22T09:33:39Z"
-    },
-    {
-      "id": "fe5b0f8ef1cb",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Week 7: add a gRPC version of the order service",
-      "repo": "yashdagar/portfolio-3d",
-      "url": "https://github.com/yashdagar/portfolio-3d/commit/fe5b0f8ef1cb0d18ae6499ca1fff11c8f3d82042",
-      "language": "TypeScript",
-      "at": "2026-10-22T09:13:22Z"
-    },
-    {
-      "id": "c27939c80e37",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Deck: dark code, labelled pills, inline-code descriptions, theme switch",
-      "repo": "yashdagar/portfolio-3d",
-      "url": "https://github.com/yashdagar/portfolio-3d/commit/c27939c80e3719d9d985861c47ab1f1bc43bd8fe",
-      "language": "TypeScript",
-      "at": "2026-10-22T08:15:09Z"
     }
   ],
   "totals": {
-    "year": 573,
-    "streak": 0
+    "year": 585,
+    "streak": 1
   }
 }
