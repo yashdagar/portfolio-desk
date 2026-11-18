@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-18T09:28:29.497Z",
+  "generatedAt": "2026-11-18T18:21:40.596Z",
   "commits": [
     {
       "id": "cf689a145c7e",
@@ -180,6 +180,16 @@
       "url": "https://github.com/yashdagar/zomato-prep/commit/6a6f2233015394bb5599cd3953fc49a5642a2a7e",
       "language": "Go",
       "at": "2026-11-12T17:47:31Z"
+    },
+    {
+      "id": "13800674e339",
+      "visibility": "public",
+      "kind": "feat",
+      "message": "Add Experiment-8 (Hindi summarization with mT5 and mBART)",
+      "repo": "yashdagar/CLNLP",
+      "url": "https://github.com/yashdagar/CLNLP/commit/13800674e3397eb8c8fc47965c7e810f48debaec",
+      "language": "Jupyter Notebook",
+      "at": "2026-11-12T03:51:07Z"
     },
     {
       "id": "886befb51409",
@@ -803,6 +813,16 @@
       "url": "https://github.com/yashdagar/zomato-prep-work/commit/6b3b8d74edf11cc27a8de0ff154f86de3be14d70",
       "language": "Go",
       "at": "2026-11-08T05:37:12Z"
+    },
+    {
+      "id": "ff20a6e5b5cd",
+      "visibility": "public",
+      "kind": "feat",
+      "message": "Add Experiment-7 (IMDB sentiment analysis: LR, LSTM, Transformer, BERT)",
+      "repo": "yashdagar/CLNLP",
+      "url": "https://github.com/yashdagar/CLNLP/commit/ff20a6e5b5cd349973ee85cfe804aaa32d90a376",
+      "language": "Jupyter Notebook",
+      "at": "2026-11-05T03:36:41Z"
     },
     {
       "id": "49c670eba93a",
@@ -1615,6 +1635,16 @@
       "at": "2026-10-29T22:02:00Z"
     },
     {
+      "id": "8634748539e4",
+      "visibility": "public",
+      "kind": "feat",
+      "message": "Add Experiment-6 (GloVe embeddings and N-gram language model)",
+      "repo": "yashdagar/CLNLP",
+      "url": "https://github.com/yashdagar/CLNLP/commit/8634748539e48e76a90445a0bb7f16e9831794d3",
+      "language": "Jupyter Notebook",
+      "at": "2026-10-29T03:44:22Z"
+    },
+    {
       "id": "66df100921f3",
       "visibility": "public",
       "kind": "feat",
@@ -1963,40 +1993,10 @@
       "url": "https://github.com/yashdagar/my-configs/commit/bdca3d7c695f447770ef3bbb4cea2c18c392ce1b",
       "language": "Python",
       "at": "2026-10-22T15:50:36Z"
-    },
-    {
-      "id": "c1638148f6f6",
-      "visibility": "public",
-      "kind": "feat",
-      "message": "Add editorial SVG diagrams to the README",
-      "repo": "yashdagar/conveyor-motor-speed-control",
-      "url": "https://github.com/yashdagar/conveyor-motor-speed-control/commit/c1638148f6f624ffdc4f576886553d5b4e680f0a",
-      "language": "TeX",
-      "at": "2026-10-22T15:49:20Z"
-    },
-    {
-      "id": "d8396af14557",
-      "visibility": "public",
-      "kind": "feat",
-      "message": "Add project report, figure pipeline and README",
-      "repo": "yashdagar/conveyor-motor-speed-control",
-      "url": "https://github.com/yashdagar/conveyor-motor-speed-control/commit/d8396af145574b13d2ca90df27614f4a1b161120",
-      "language": "TeX",
-      "at": "2026-10-22T14:56:49Z"
-    },
-    {
-      "id": "362ae65b4ee0",
-      "visibility": "public",
-      "kind": "other",
-      "message": "Tune PID, fix URDF inertia loading and add load-change metrics",
-      "repo": "yashdagar/conveyor-motor-speed-control",
-      "url": "https://github.com/yashdagar/conveyor-motor-speed-control/commit/362ae65b4ee0a73673f8259f6ae0312e16c4bc62",
-      "language": "TeX",
-      "at": "2026-10-22T14:28:00Z"
     }
   ],
   "totals": {
-    "year": 585,
+    "year": 588,
     "streak": 1
   }
 }
