@@ -1,6 +1,46 @@
 {
-  "generatedAt": "2026-11-19T23:46:36.787Z",
+  "generatedAt": "2026-11-20T04:50:35.899Z",
   "commits": [
+    {
+      "id": "4aeaf56d5930",
+      "visibility": "public",
+      "kind": "other",
+      "message": "Skip test files in make lint",
+      "repo": "yashdagar/zomato-prep",
+      "url": "https://github.com/yashdagar/zomato-prep/commit/4aeaf56d59302ee4f4f8c4f019135520ddf59cb3",
+      "language": "Go",
+      "at": "2026-11-20T00:44:22Z"
+    },
+    {
+      "id": "18194122a591",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "feat(restaurant): report is_open from an in-memory opening hours index",
+      "repo": "yashdagar/zomato-prep-work",
+      "url": "https://github.com/yashdagar/zomato-prep-work/commit/18194122a5913799a220613570806e8abf56d38e",
+      "language": "Go",
+      "at": "2026-11-20T00:36:28Z"
+    },
+    {
+      "id": "a79e50bad3c6",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "feat(menu): price an item with options through POST /v1/menu/price",
+      "repo": "yashdagar/zomato-prep-work",
+      "url": "https://github.com/yashdagar/zomato-prep-work/commit/a79e50bad3c696f4cd54452e6942290c7fac3226",
+      "language": "Go",
+      "at": "2026-11-20T00:36:10Z"
+    },
+    {
+      "id": "f15b54fe498e",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "feat(restaurant): return structured errors and hide inactive restaurants",
+      "repo": "yashdagar/zomato-prep-work",
+      "url": "https://github.com/yashdagar/zomato-prep-work/commit/f15b54fe498eee9195de43c7ddc7fbe2b0886cc0",
+      "language": "Go",
+      "at": "2026-11-20T00:35:55Z"
+    },
     {
       "id": "ec88aa6516bf",
       "visibility": "public",
@@ -172,6 +212,16 @@
       "at": "2026-11-12T18:31:58Z"
     },
     {
+      "id": "8912d428f881",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Make the racing-events test's event IDs unique",
+      "repo": "yashdagar/zomato-prep-work",
+      "url": "https://github.com/yashdagar/zomato-prep-work/commit/8912d428f88183fd502b882ace3ef0b2e21cb9c9",
+      "language": "Go",
+      "at": "2026-11-12T18:31:58Z"
+    },
+    {
       "id": "730ed08fbb33",
       "visibility": "personal",
       "kind": "other",
@@ -188,6 +238,16 @@
       "message": "Grade week 3 at the boundary instead of through package APIs",
       "repo": "yashdagar/zomato-prep",
       "url": "https://github.com/yashdagar/zomato-prep/commit/6a6f2233015394bb5599cd3953fc49a5642a2a7e",
+      "language": "Go",
+      "at": "2026-11-12T17:47:31Z"
+    },
+    {
+      "id": "6a6f22330153",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Grade week 3 at the boundary instead of through package APIs",
+      "repo": "yashdagar/zomato-prep-work",
+      "url": "https://github.com/yashdagar/zomato-prep-work/commit/6a6f2233015394bb5599cd3953fc49a5642a2a7e",
       "language": "Go",
       "at": "2026-11-12T17:47:31Z"
     },
@@ -218,6 +278,16 @@
       "message": "Grade week 2 at the boundary instead of through package APIs",
       "repo": "yashdagar/zomato-prep",
       "url": "https://github.com/yashdagar/zomato-prep/commit/84c5a1d1107d9b5b1f839ee204a39679fe1fe93f",
+      "language": "Go",
+      "at": "2026-11-11T20:56:24Z"
+    },
+    {
+      "id": "84c5a1d1107d",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Grade week 2 at the boundary instead of through package APIs",
+      "repo": "yashdagar/zomato-prep-work",
+      "url": "https://github.com/yashdagar/zomato-prep-work/commit/84c5a1d1107d9b5b1f839ee204a39679fe1fe93f",
       "language": "Go",
       "at": "2026-11-11T20:56:24Z"
     },
@@ -702,6 +772,16 @@
       "at": "2026-11-09T03:25:49Z"
     },
     {
+      "id": "aa67ddb62cda",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Read the PR through the pulls API in pr-check",
+      "repo": "yashdagar/zomato-prep-work",
+      "url": "https://github.com/yashdagar/zomato-prep-work/commit/aa67ddb62cda93ae43d72fa09c72661e2888dfdc",
+      "language": "Go",
+      "at": "2026-11-09T03:25:49Z"
+    },
+    {
       "id": "76c53c6e48fe",
       "visibility": "personal",
       "kind": "other",
@@ -1025,6 +1105,16 @@
       "at": "2026-11-04T02:57:13Z"
     },
     {
+      "id": "4139829e150c",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "Add the delete-merged-branches convention",
+      "repo": "yashdagar/zomato-prep-work",
+      "url": "https://github.com/yashdagar/zomato-prep-work/commit/4139829e150c4b91a4d429fd7dbf2a3d75009866",
+      "language": "Go",
+      "at": "2026-11-04T02:57:13Z"
+    },
+    {
       "id": "d235c9e503a3",
       "visibility": "personal",
       "kind": "feat",
@@ -1045,6 +1135,16 @@
       "at": "2026-11-04T02:51:53Z"
     },
     {
+      "id": "604bfeec4794",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Reword the flaky test hint",
+      "repo": "yashdagar/zomato-prep-work",
+      "url": "https://github.com/yashdagar/zomato-prep-work/commit/604bfeec47946e8cf804abd36cb856cfb300b9bd",
+      "language": "Go",
+      "at": "2026-11-04T02:51:53Z"
+    },
+    {
       "id": "66a2aa20c023",
       "visibility": "public",
       "kind": "other",
@@ -1055,12 +1155,32 @@
       "at": "2026-11-04T02:51:47Z"
     },
     {
+      "id": "66a2aa20c023",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Expand the README with a quick start, curriculum, test conventions and troubleshooting",
+      "repo": "yashdagar/zomato-prep-work",
+      "url": "https://github.com/yashdagar/zomato-prep-work/commit/66a2aa20c023af733adf987d482d22890ce29463",
+      "language": "Go",
+      "at": "2026-11-04T02:51:47Z"
+    },
+    {
       "id": "b69f38315f93",
       "visibility": "public",
       "kind": "feat",
       "message": "Add the tech-debt label to the PR conventions",
       "repo": "yashdagar/zomato-prep",
       "url": "https://github.com/yashdagar/zomato-prep/commit/b69f38315f93f1c0f67851ee03a3bb038005906d",
+      "language": "Go",
+      "at": "2026-11-04T02:49:20Z"
+    },
+    {
+      "id": "b69f38315f93",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "Add the tech-debt label to the PR conventions",
+      "repo": "yashdagar/zomato-prep-work",
+      "url": "https://github.com/yashdagar/zomato-prep-work/commit/b69f38315f93f1c0f67851ee03a3bb038005906d",
       "language": "Go",
       "at": "2026-11-04T02:49:20Z"
     },
@@ -1081,6 +1201,16 @@
       "message": "Add pull request template, conventions and a check workflow",
       "repo": "yashdagar/zomato-prep",
       "url": "https://github.com/yashdagar/zomato-prep/commit/d4b7cb631822022cf1c45c148f3d36ab32597ca8",
+      "language": "Go",
+      "at": "2026-11-04T02:37:48Z"
+    },
+    {
+      "id": "d4b7cb631822",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "Add pull request template, conventions and a check workflow",
+      "repo": "yashdagar/zomato-prep-work",
+      "url": "https://github.com/yashdagar/zomato-prep-work/commit/d4b7cb631822022cf1c45c148f3d36ab32597ca8",
       "language": "Go",
       "at": "2026-11-04T02:37:48Z"
     },
@@ -1295,16 +1425,6 @@
       "at": "2026-11-02T03:45:43Z"
     },
     {
-      "id": "7d38e58af2cd",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Give the course its own metadata, share image, icons and manifest",
-      "repo": "yashdagar/portfolio-3d",
-      "url": "https://github.com/yashdagar/portfolio-3d/commit/7d38e58af2cd3cd8b9cceb23752a42c7f9ca66f8",
-      "language": "TypeScript",
-      "at": "2026-11-02T03:45:42Z"
-    },
-    {
       "id": "1a570d14d153",
       "visibility": "public",
       "kind": "test",
@@ -1322,6 +1442,16 @@
       "repo": "yashdagar/zomato-prep-work",
       "url": "https://github.com/yashdagar/zomato-prep-work/commit/1a570d14d1534e36c6b7299d2d794361b455d69c",
       "language": "Go",
+      "at": "2026-11-02T03:45:42Z"
+    },
+    {
+      "id": "7d38e58af2cd",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Give the course its own metadata, share image, icons and manifest",
+      "repo": "yashdagar/portfolio-3d",
+      "url": "https://github.com/yashdagar/portfolio-3d/commit/7d38e58af2cd3cd8b9cceb23752a42c7f9ca66f8",
+      "language": "TypeScript",
       "at": "2026-11-02T03:45:42Z"
     },
     {
@@ -1863,140 +1993,10 @@
       "url": "https://github.com/yashdagar/my-configs/commit/6244b6dc1ab4db1bf7a460341adb9e3e54ebc600",
       "language": "Python",
       "at": "2026-10-25T10:46:12Z"
-    },
-    {
-      "id": "75fb8672423b",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Claude Code history snapshot 2026-10-25",
-      "repo": "yashdagar/claude-backup",
-      "url": "https://github.com/yashdagar/claude-backup/commit/75fb8672423bf501e14fd6ae312b4d8953cf38fd",
-      "language": "Python",
-      "at": "2026-10-25T10:46:00Z"
-    },
-    {
-      "id": "1b6cb15cbf1c",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Restore sessions removed by local 30-day cleanup",
-      "repo": "yashdagar/claude-backup",
-      "url": "https://github.com/yashdagar/claude-backup/commit/1b6cb15cbf1c40dd2a254dc29ee3967e073630c8",
-      "language": "Python",
-      "at": "2026-10-25T10:45:32Z"
-    },
-    {
-      "id": "f96a0844327c",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Refresh Claude config and memory 2026-10-25",
-      "repo": "yashdagar/my-configs",
-      "url": "https://github.com/yashdagar/my-configs/commit/f96a0844327ccffd58d2ed7b39fedcd6cac1e3f2",
-      "language": "Python",
-      "at": "2026-10-25T10:44:44Z"
-    },
-    {
-      "id": "68cc0a4d6280",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Claude Code history snapshot 2026-10-25",
-      "repo": "yashdagar/claude-backup",
-      "url": "https://github.com/yashdagar/claude-backup/commit/68cc0a4d628042e072b9657d41961752bac991ea",
-      "language": "Python",
-      "at": "2026-10-25T10:44:32Z"
-    },
-    {
-      "id": "64ed8acd4bd4",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Use only the yashdagar GitHub login in the Claude backup and restore",
-      "repo": "yashdagar/my-configs",
-      "url": "https://github.com/yashdagar/my-configs/commit/64ed8acd4bd4552641b5c1f782cc6e435d0c82cc",
-      "language": "Python",
-      "at": "2026-10-25T10:44:02Z"
-    },
-    {
-      "id": "b10b5c89d2f6",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Keep the backup script out of GitHub account switching",
-      "repo": "yashdagar/my-configs",
-      "url": "https://github.com/yashdagar/my-configs/commit/b10b5c89d2f6f70dc84518ee96eab4131973e139",
-      "language": "Python",
-      "at": "2026-10-23T21:18:17Z"
-    },
-    {
-      "id": "f1bded029c46",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Switch gh back to the previous account after a backup",
-      "repo": "yashdagar/my-configs",
-      "url": "https://github.com/yashdagar/my-configs/commit/f1bded029c46f2d03484e2908338d002ddcb2d51",
-      "language": "Python",
-      "at": "2026-10-23T21:16:58Z"
-    },
-    {
-      "id": "879862d40a4c",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Refresh Claude config and memory 2026-10-24",
-      "repo": "yashdagar/my-configs",
-      "url": "https://github.com/yashdagar/my-configs/commit/879862d40a4c443873a094fd1ab765c2fd699d92",
-      "language": "Python",
-      "at": "2026-10-23T21:16:20Z"
-    },
-    {
-      "id": "2b8434701773",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Claude Code history snapshot 2026-10-24",
-      "repo": "yashdagar/claude-backup",
-      "url": "https://github.com/yashdagar/claude-backup/commit/2b8434701773b1d4b85a896c518830d115cd45de",
-      "language": "Python",
-      "at": "2026-10-23T21:16:05Z"
-    },
-    {
-      "id": "a973809a7351",
-      "visibility": "personal",
-      "kind": "feat",
-      "message": "Add one-command Claude backup and restore scripts",
-      "repo": "yashdagar/my-configs",
-      "url": "https://github.com/yashdagar/my-configs/commit/a973809a7351a61ed7f34219541f95839d7f90e1",
-      "language": "Python",
-      "at": "2026-10-23T21:15:35Z"
-    },
-    {
-      "id": "1853ad043398",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Back up only personal Claude sessions and document moving to a new account",
-      "repo": "yashdagar/my-configs",
-      "url": "https://github.com/yashdagar/my-configs/commit/1853ad0433980305fbca2c7302df14085cae2c53",
-      "language": "Python",
-      "at": "2026-10-23T10:43:20Z"
-    },
-    {
-      "id": "4f6adde7aafd",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Claude Code history snapshot 2026-10-23, personal sessions only",
-      "repo": "yashdagar/claude-backup",
-      "url": "https://github.com/yashdagar/claude-backup/commit/4f6adde7aafd1389e7fa786750341c258618b0c3",
-      "language": "Python",
-      "at": "2026-10-23T10:43:20Z"
-    },
-    {
-      "id": "49ac01bdcf48",
-      "visibility": "public",
-      "kind": "other",
-      "message": "Replace the ASCII physical model sketch with a drawn schematic",
-      "repo": "yashdagar/conveyor-motor-speed-control",
-      "url": "https://github.com/yashdagar/conveyor-motor-speed-control/commit/49ac01bdcf4897320133c107030050761a531716",
-      "language": "TeX",
-      "at": "2026-10-23T05:53:42Z"
     }
   ],
   "totals": {
-    "year": 589,
-    "streak": 1
+    "year": 602,
+    "streak": 2
   }
 }
