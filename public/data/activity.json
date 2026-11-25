@@ -1,6 +1,46 @@
 {
-  "generatedAt": "2026-11-25T13:46:29.648Z",
+  "generatedAt": "2026-11-25T22:52:46.448Z",
   "commits": [
+    {
+      "id": "2a7fb2f62ad7",
+      "visibility": "public",
+      "kind": "feat",
+      "message": "Add Experiment-10 (English-Assamese NMT with NLLB zero-shot and fine-tuned)",
+      "repo": "yashdagar/CLNLP",
+      "url": "https://github.com/yashdagar/CLNLP/commit/2a7fb2f62ad75ae63240bb5e8adce9ff0a2b9326",
+      "language": "Jupyter Notebook",
+      "at": "2026-11-25T20:42:06Z"
+    },
+    {
+      "id": "dd97ecc309a2",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "Add stickers, dividers and work layout tests",
+      "repo": "yashdagar/portfolio-anime",
+      "url": "https://github.com/yashdagar/portfolio-anime/commit/dd97ecc309a2638375e679a30c72bc3ebb281917",
+      "language": "JavaScript",
+      "at": "2026-11-25T19:03:03Z"
+    },
+    {
+      "id": "8b9f4cb951a8",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "Add detail pass, project colors and screenshots",
+      "repo": "yashdagar/portfolio-anime",
+      "url": "https://github.com/yashdagar/portfolio-anime/commit/8b9f4cb951a875cf7d0ca78549a50d1156830b04",
+      "language": "JavaScript",
+      "at": "2026-11-25T19:03:02Z"
+    },
+    {
+      "id": "3878cad7c247",
+      "visibility": "public",
+      "kind": "feat",
+      "message": "Add Experiment-9 (Hinglish cyberbullying classification with six models)",
+      "repo": "yashdagar/CLNLP",
+      "url": "https://github.com/yashdagar/CLNLP/commit/3878cad7c247619965b0778c4654573108a343ab",
+      "language": "Jupyter Notebook",
+      "at": "2026-11-25T18:53:58Z"
+    },
     {
       "id": "22e37b657337",
       "visibility": "personal",
@@ -72,12 +112,12 @@
       "at": "2026-11-20T00:35:55Z"
     },
     {
-      "id": "ec88aa6516bf",
+      "id": "a41f9af47c03",
       "visibility": "public",
       "kind": "feat",
       "message": "Add micro and macro F1 comparison to Experiment-7",
       "repo": "yashdagar/CLNLP",
-      "url": "https://github.com/yashdagar/CLNLP/commit/ec88aa6516bf1c4581fbc94dd52f3038ca734c3f",
+      "url": "https://github.com/yashdagar/CLNLP/commit/a41f9af47c03db4bbd9942659d955e8dd327ffca",
       "language": "Jupyter Notebook",
       "at": "2026-11-19T03:10:26Z"
     },
@@ -282,12 +322,12 @@
       "at": "2026-11-12T17:47:31Z"
     },
     {
-      "id": "13800674e339",
+      "id": "cb69e2c1115b",
       "visibility": "public",
       "kind": "feat",
       "message": "Add Experiment-8 (Hindi summarization with mT5 and mBART)",
       "repo": "yashdagar/CLNLP",
-      "url": "https://github.com/yashdagar/CLNLP/commit/13800674e3397eb8c8fc47965c7e810f48debaec",
+      "url": "https://github.com/yashdagar/CLNLP/commit/cb69e2c1115bbece858ce2b68bee48aa796fee55",
       "language": "Jupyter Notebook",
       "at": "2026-11-12T03:51:07Z"
     },
@@ -935,12 +975,12 @@
       "at": "2026-11-08T05:37:12Z"
     },
     {
-      "id": "ff20a6e5b5cd",
+      "id": "69eed8f5d9f1",
       "visibility": "public",
       "kind": "feat",
       "message": "Add Experiment-7 (IMDB sentiment analysis: LR, LSTM, Transformer, BERT)",
       "repo": "yashdagar/CLNLP",
-      "url": "https://github.com/yashdagar/CLNLP/commit/ff20a6e5b5cd349973ee85cfe804aaa32d90a376",
+      "url": "https://github.com/yashdagar/CLNLP/commit/69eed8f5d9f1b35c91fd659f8c5c8847a93f1bd2",
       "language": "Jupyter Notebook",
       "at": "2026-11-05T03:36:41Z"
     },
@@ -1805,12 +1845,12 @@
       "at": "2026-10-29T22:02:00Z"
     },
     {
-      "id": "8634748539e4",
+      "id": "ebc067eb2dc9",
       "visibility": "public",
       "kind": "feat",
       "message": "Add Experiment-6 (GloVe embeddings and N-gram language model)",
       "repo": "yashdagar/CLNLP",
-      "url": "https://github.com/yashdagar/CLNLP/commit/8634748539e48e76a90445a0bb7f16e9831794d3",
+      "url": "https://github.com/yashdagar/CLNLP/commit/ebc067eb2dc9dc82e03b443689ddf7c6cd153c57",
       "language": "Jupyter Notebook",
       "at": "2026-10-29T03:44:22Z"
     },
@@ -1953,50 +1993,10 @@
       "url": "https://github.com/yashdagar/job-hunt/commit/57d160e8157496251edb184189b861e29f645611",
       "language": "HTML",
       "at": "2026-10-26T03:10:30Z"
-    },
-    {
-      "id": "93f1599a445e",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Back up the latest tracker, leads and job descriptions",
-      "repo": "yashdagar/job-hunt",
-      "url": "https://github.com/yashdagar/job-hunt/commit/93f1599a445eca36e37a59e973ca1e16583c02b2",
-      "language": "HTML",
-      "at": "2026-10-26T02:32:36Z"
-    },
-    {
-      "id": "b79d796290d8",
-      "visibility": "personal",
-      "kind": "feat",
-      "message": "Add the move generation benchmark",
-      "repo": "yashdagar/chess",
-      "url": "https://github.com/yashdagar/chess/commit/b79d796290d838c9f0e14bc86d8554f9c2d75582",
-      "language": "Dart",
-      "at": "2026-10-26T02:32:33Z"
-    },
-    {
-      "id": "f15818cb6aae",
-      "visibility": "public",
-      "kind": "feat",
-      "message": "Add make test and make run with a grouped, logo-headed runner",
-      "repo": "yashdagar/zomato-prep",
-      "url": "https://github.com/yashdagar/zomato-prep/commit/f15818cb6aae1f59861344296d1c77ba60160ede",
-      "language": "Go",
-      "at": "2026-10-25T11:09:28Z"
-    },
-    {
-      "id": "f15818cb6aae",
-      "visibility": "personal",
-      "kind": "feat",
-      "message": "Add make test and make run with a grouped, logo-headed runner",
-      "repo": "yashdagar/zomato-prep-work",
-      "url": "https://github.com/yashdagar/zomato-prep-work/commit/f15818cb6aae1f59861344296d1c77ba60160ede",
-      "language": "Go",
-      "at": "2026-10-25T11:09:28Z"
     }
   ],
   "totals": {
-    "year": 605,
+    "year": 609,
     "streak": 1
   }
 }
