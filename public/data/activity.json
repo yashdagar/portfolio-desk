@@ -1,6 +1,16 @@
 {
-  "generatedAt": "2026-11-25T03:57:17.612Z",
+  "generatedAt": "2026-11-25T13:46:29.648Z",
   "commits": [
+    {
+      "id": "22e37b657337",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "Add anime portfolio home page",
+      "repo": "yashdagar/portfolio-anime",
+      "url": "https://github.com/yashdagar/portfolio-anime/commit/22e37b657337b19f38ea2b45d831e5559b0bf862",
+      "language": "JavaScript",
+      "at": "2026-11-25T11:28:11Z"
+    },
     {
       "id": "eb63c75ade6c",
       "visibility": "personal",
@@ -1983,20 +1993,10 @@
       "url": "https://github.com/yashdagar/zomato-prep-work/commit/f15818cb6aae1f59861344296d1c77ba60160ede",
       "language": "Go",
       "at": "2026-10-25T11:09:28Z"
-    },
-    {
-      "id": "f15818cb6aae",
-      "visibility": "public",
-      "kind": "feat",
-      "message": "Add make test and make run with a grouped, logo-headed runner",
-      "repo": "yashdagar/zomato-prep-fork",
-      "url": "https://github.com/yashdagar/zomato-prep-fork/commit/f15818cb6aae1f59861344296d1c77ba60160ede",
-      "language": "Go",
-      "at": "2026-10-25T11:09:28Z"
     }
   ],
   "totals": {
-    "year": 604,
-    "streak": 0
+    "year": 605,
+    "streak": 1
   }
 }
