@@ -1,6 +1,46 @@
 {
-  "generatedAt": "2026-11-26T23:05:34.143Z",
+  "generatedAt": "2026-11-27T05:05:05.393Z",
   "commits": [
+    {
+      "id": "96660e855fb0",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Polish the guestbook and add site meta, icons and nav",
+      "repo": "yashdagar/portfolio-anime",
+      "url": "https://github.com/yashdagar/portfolio-anime/commit/96660e855fb0895485d6609c9d473318b0177677",
+      "language": "TypeScript",
+      "at": "2026-11-27T01:57:02Z"
+    },
+    {
+      "id": "9991e8086c45",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Point guestbook approval links at yashdagar.netlify.app",
+      "repo": "yashdagar/portfolio-anime",
+      "url": "https://github.com/yashdagar/portfolio-anime/commit/9991e8086c45cc5e779feadd58b7e965d968d448",
+      "language": "TypeScript",
+      "at": "2026-11-27T00:56:47Z"
+    },
+    {
+      "id": "3f27cc666cb8",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Serve /resume on Netlify and use the netlify.app URL",
+      "repo": "yashdagar/portfolio-anime",
+      "url": "https://github.com/yashdagar/portfolio-anime/commit/3f27cc666cb891103d4bfd770cb0e0992c50f77b",
+      "language": "TypeScript",
+      "at": "2026-11-27T00:54:02Z"
+    },
+    {
+      "id": "ea6949e5e8fc",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Move to Next.js with the course, guestbook and new sections",
+      "repo": "yashdagar/portfolio-anime",
+      "url": "https://github.com/yashdagar/portfolio-anime/commit/ea6949e5e8fca8cd5579c5ece472d30c556473f7",
+      "language": "TypeScript",
+      "at": "2026-11-27T00:47:53Z"
+    },
     {
       "id": "2a7fb2f62ad7",
       "visibility": "public",
@@ -18,7 +58,7 @@
       "message": "Add stickers, dividers and work layout tests",
       "repo": "yashdagar/portfolio-anime",
       "url": "https://github.com/yashdagar/portfolio-anime/commit/dd97ecc309a2638375e679a30c72bc3ebb281917",
-      "language": "JavaScript",
+      "language": "TypeScript",
       "at": "2026-11-25T19:03:03Z"
     },
     {
@@ -28,7 +68,7 @@
       "message": "Add detail pass, project colors and screenshots",
       "repo": "yashdagar/portfolio-anime",
       "url": "https://github.com/yashdagar/portfolio-anime/commit/8b9f4cb951a875cf7d0ca78549a50d1156830b04",
-      "language": "JavaScript",
+      "language": "TypeScript",
       "at": "2026-11-25T19:03:02Z"
     },
     {
@@ -48,7 +88,7 @@
       "message": "Add anime portfolio home page",
       "repo": "yashdagar/portfolio-anime",
       "url": "https://github.com/yashdagar/portfolio-anime/commit/22e37b657337b19f38ea2b45d831e5559b0bf862",
-      "language": "JavaScript",
+      "language": "TypeScript",
       "at": "2026-11-25T11:28:11Z"
     },
     {
@@ -1953,50 +1993,10 @@
       "url": "https://github.com/yashdagar/zomato-prep-fork/commit/6c46d696803daae41afeebeb7a026ff2fc6f77fa",
       "language": "Go",
       "at": "2026-10-26T18:18:00Z"
-    },
-    {
-      "id": "42e2ca525044",
-      "visibility": "public",
-      "kind": "build",
-      "message": "build(repo): add lint config, docker-compose and Makefile targets",
-      "repo": "yashdagar/zomato-prep",
-      "url": "https://github.com/yashdagar/zomato-prep/commit/42e2ca5250445d7a803b4f7310a7d563f5ffa412",
-      "language": "Go",
-      "at": "2026-10-26T16:15:00Z"
-    },
-    {
-      "id": "42e2ca525044",
-      "visibility": "personal",
-      "kind": "build",
-      "message": "build(repo): add lint config, docker-compose and Makefile targets",
-      "repo": "yashdagar/zomato-prep-work",
-      "url": "https://github.com/yashdagar/zomato-prep-work/commit/42e2ca5250445d7a803b4f7310a7d563f5ffa412",
-      "language": "Go",
-      "at": "2026-10-26T16:15:00Z"
-    },
-    {
-      "id": "42e2ca525044",
-      "visibility": "public",
-      "kind": "build",
-      "message": "build(repo): add lint config, docker-compose and Makefile targets",
-      "repo": "yashdagar/zomato-prep-fork",
-      "url": "https://github.com/yashdagar/zomato-prep-fork/commit/42e2ca5250445d7a803b4f7310a7d563f5ffa412",
-      "language": "Go",
-      "at": "2026-10-26T16:15:00Z"
-    },
-    {
-      "id": "57d160e81574",
-      "visibility": "personal",
-      "kind": "other",
-      "message": "Update the tracker from Gmail, 10 to 26 October",
-      "repo": "yashdagar/job-hunt",
-      "url": "https://github.com/yashdagar/job-hunt/commit/57d160e8157496251edb184189b861e29f645611",
-      "language": "HTML",
-      "at": "2026-10-26T03:10:30Z"
     }
   ],
   "totals": {
-    "year": 609,
+    "year": 613,
     "streak": 1
   }
 }
