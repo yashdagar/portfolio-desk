@@ -1,6 +1,26 @@
 {
-  "generatedAt": "2026-11-27T23:29:34.430Z",
+  "generatedAt": "2026-11-28T04:56:34.680Z",
   "commits": [
+    {
+      "id": "045699e13ca7",
+      "visibility": "personal",
+      "kind": "other",
+      "message": "Serve home and guestbook through their routes",
+      "repo": "yashdagar/portfolio-anime",
+      "url": "https://github.com/yashdagar/portfolio-anime/commit/045699e13ca710eb33488d1be867837aed2bfe34",
+      "language": "TypeScript",
+      "at": "2026-11-28T00:25:01Z"
+    },
+    {
+      "id": "b4eb4ba7878b",
+      "visibility": "personal",
+      "kind": "feat",
+      "message": "Add doodle editor, performance pass, project pages and analytics",
+      "repo": "yashdagar/portfolio-anime",
+      "url": "https://github.com/yashdagar/portfolio-anime/commit/b4eb4ba7878b786aeb71a0b19c97815f19ff49cb",
+      "language": "TypeScript",
+      "at": "2026-11-28T00:21:28Z"
+    },
     {
       "id": "96660e855fb0",
       "visibility": "personal",
@@ -1973,30 +1993,10 @@
       "url": "https://github.com/yashdagar/zomato-prep/commit/6c46d696803daae41afeebeb7a026ff2fc6f77fa",
       "language": "Go",
       "at": "2026-10-26T18:18:00Z"
-    },
-    {
-      "id": "6c46d696803d",
-      "visibility": "personal",
-      "kind": "test",
-      "message": "test(zt): gate the Redis window test behind a redis build tag",
-      "repo": "yashdagar/zomato-prep-work",
-      "url": "https://github.com/yashdagar/zomato-prep-work/commit/6c46d696803daae41afeebeb7a026ff2fc6f77fa",
-      "language": "Go",
-      "at": "2026-10-26T18:18:00Z"
-    },
-    {
-      "id": "6c46d696803d",
-      "visibility": "public",
-      "kind": "test",
-      "message": "test(zt): gate the Redis window test behind a redis build tag",
-      "repo": "yashdagar/zomato-prep-fork",
-      "url": "https://github.com/yashdagar/zomato-prep-fork/commit/6c46d696803daae41afeebeb7a026ff2fc6f77fa",
-      "language": "Go",
-      "at": "2026-10-26T18:18:00Z"
     }
   ],
   "totals": {
-    "year": 613,
-    "streak": 1
+    "year": 615,
+    "streak": 2
   }
 }
